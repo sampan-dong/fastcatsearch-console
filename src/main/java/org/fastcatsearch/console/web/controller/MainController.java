@@ -10,10 +10,22 @@ public class MainController {
 	@RequestMapping("/index")
 	public ModelAndView index() {
 		
+		//TODO 로긴여부 확인.
 		//로긴되어있으면 start로, 아니면 login페이지로.
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("login");
 		//mav.setViewName("start");
+		return mav;
+	}
+	
+	@RequestMapping("/user/login")
+	public ModelAndView login() {
+		
+		//TODO 로그인 적합성 체크
+		
+		//로그인이 올바를 경우 메인 화면으로 이동한다.
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("start");
 		return mav;
 	}
 	

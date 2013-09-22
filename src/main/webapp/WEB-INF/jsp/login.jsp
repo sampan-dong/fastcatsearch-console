@@ -19,7 +19,7 @@
 	<div class="box">
 		<div class="content">
 			<!-- Login Formular -->
-			<form class="form-vertical login-form" action="index.html" method="post">
+			<form class="form-vertical login-form" action="user/login.html" method="post">
 				<!-- Title -->
 				<h3 class="form-title">Log In to your Account</h3>
 
