@@ -19,7 +19,7 @@
 						</li>
 					</ul>
 					<ul class="crumb-buttons">
-						<li><a href="<c:url value="/searchConfig.html"/>" title=""><i class="icon-cog"></i><span>Config</span></a></li>
+						<li><a href="<c:url value="/search/config.html"/>" title=""><i class="icon-cog"></i><span>Config</span></a></li>
 					</ul>
 				</div>
 				<!-- /Breadcrumbs line -->
