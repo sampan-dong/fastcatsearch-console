@@ -60,7 +60,7 @@
 							<li class="<c:if test="${ param.scat  == 'data'}">current</c:if>"><a href="<c:url value="/manager/collections/vol/data.html"/>"> <i
 									class="icon-angle-right"></i> Data
 							</a></li>
-							<li class="<c:if test="${ param.scat  == 'dataSource'}">current</c:if>"><a href="<c:url value="/manager/collections/vol/datasource.html"/>"> <i
+							<li class="<c:if test="${ param.scat  == 'datasource'}">current</c:if>"><a href="<c:url value="/manager/collections/vol/datasource.html"/>"> <i
 									class="icon-angle-right"></i> DataSource
 							</a></li>
 							<li class="<c:if test="${ param.scat  == 'shard'}">current</c:if>"><a href="<c:url value="/manager/collections/vol/shard.html"/>"> <i
