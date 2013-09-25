@@ -53,164 +53,166 @@
 
 						<!--=== Overview ===-->
 						<div class="tab-pane active" id="tab_field">
-							<div class="widget box">
-
-								<div class="widget-content no-padding">
-									<div class="dataTables_header clearfix">
-										<div class="col-md-6">
-											Rows 1 - 50 of 2809
-										</div>
-										<div class="col-md-6">
-											<div class="btn-group pull-right">
-												<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&laquo;</a>
-												<a href="javascript:void(0);" class="btn btn-sm btn-primary" rel="tooltip">1</a>
-												<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">2</a>
-												<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">3</a>
-												<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">4</a>
-												<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">5</a>
-												<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&raquo;</a>
+							<div class="col-md-12">
+								<div class="widget box">
+	
+									<div class="widget-content no-padding">
+										<div class="dataTables_header clearfix">
+											<div class="col-md-6">
+												Rows 1 - 50 of 2809
+											</div>
+											<div class="col-md-6">
+												<div class="btn-group pull-right">
+													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&laquo;</a>
+													<a href="javascript:void(0);" class="btn btn-sm btn-primary" rel="tooltip">1</a>
+													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">2</a>
+													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">3</a>
+													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">4</a>
+													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">5</a>
+													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&raquo;</a>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div style="overflow: scroll; height: 400px;">
-
-										<table class="table table-hover table-bordered" style="white-space:nowrap;table-layout:fixed; ">
-											<thead>
-												<tr>
-													<th class="width100">#</th>
-													<th class="width100">ID</th>
-													<th class="width100">TITLE</th>
-													<th class="width100">BODY</th>
-													<th class="width100">REGDT</th>
-													<th class="width100">TAGS</th>
-													<th class="width100">YEAR</th>
-													<th class="width100">TAGS</th>
-													<th class="width100">YEAR</th>
-													<th class="width100">TAGS</th>
-													<th class="width100">YEAR</th>
-													<th class="width100">TAGS</th>
-													<th class="width100">YEAR</th>
-													<th class="width100">TAGS</th>
-													<th class="width100">YEAR</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td class="width100">1</td>
-													<td class="width100">123</td>
-													<td class="width100" style="overflow:hidden;">this is sample</td>
-													<td class="width100"><div style="overflow:hidden;">this is sample. this is sample. this is sample. this is sample. this is sample.</div></td>
-													<td class="width100">2013-09-01</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-												</tr>
-												<tr>
-													<td class="width100">2</td>
-													<td class="width100">124</td>
-													<td class="width100" style="overflow:hidden;">this is sample</td>
-													<td class="width100" style="overflow:hidden;">this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.</td>
-													<td class="width100">2013-09-01</td>
-													<td class="width100">sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-												</tr>
-												<tr>
-													<td class="width100">2</td>
-													<td class="width100">124</td>
-													<td class="width100">this is sample</td>
-													<td class="width100" style="overflow:hidden;">this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.</td>
-													<td class="width100">2013-09-01</td>
-													<td class="width100">sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-													<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search
-													,sample,search,sample,search,sample,search</td>
-													<td class="width100">2013</td>
-												</tr>
-												
-											</tbody>
-										</table>
-									</div>
-
-									<div class="table-footer">
-										<!-- <div class="panel">
-											this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.
-										</div> -->
-										<label class="col-md-2 control-label">Selected Data:</label>
-										<div class="col-md-10">
-											<div class="panel">
-											this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.
+										<div style="overflow: scroll; height: 400px;">
+	
+											<table class="table table-hover table-bordered" style="white-space:nowrap;table-layout:fixed; ">
+												<thead>
+													<tr>
+														<th class="width100">#</th>
+														<th class="width100">ID</th>
+														<th class="width100">TITLE</th>
+														<th class="width100">BODY</th>
+														<th class="width100">REGDT</th>
+														<th class="width100">TAGS</th>
+														<th class="width100">YEAR</th>
+														<th class="width100">TAGS</th>
+														<th class="width100">YEAR</th>
+														<th class="width100">TAGS</th>
+														<th class="width100">YEAR</th>
+														<th class="width100">TAGS</th>
+														<th class="width100">YEAR</th>
+														<th class="width100">TAGS</th>
+														<th class="width100">YEAR</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="width100">1</td>
+														<td class="width100">123</td>
+														<td class="width100" style="overflow:hidden;">this is sample</td>
+														<td class="width100"><div style="overflow:hidden;">this is sample. this is sample. this is sample. this is sample. this is sample.</div></td>
+														<td class="width100">2013-09-01</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+													</tr>
+													<tr>
+														<td class="width100">2</td>
+														<td class="width100">124</td>
+														<td class="width100" style="overflow:hidden;">this is sample</td>
+														<td class="width100" style="overflow:hidden;">this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.</td>
+														<td class="width100">2013-09-01</td>
+														<td class="width100">sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+													</tr>
+													<tr>
+														<td class="width100">2</td>
+														<td class="width100">124</td>
+														<td class="width100">this is sample</td>
+														<td class="width100" style="overflow:hidden;">this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.</td>
+														<td class="width100">2013-09-01</td>
+														<td class="width100">sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search
+														,sample,search,sample,search,sample,search</td>
+														<td class="width100">2013</td>
+													</tr>
+													
+												</tbody>
+											</table>
+										</div>
+	
+										<div class="table-footer">
+											<!-- <div class="panel">
+												this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.
+											</div> -->
+											<label class="col-md-2 control-label">Selected Data:</label>
+											<div class="col-md-10">
+												<div class="panel">
+												this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.
+												</div>
 											</div>
 										</div>
 									</div>

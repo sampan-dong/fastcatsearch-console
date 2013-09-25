@@ -39,286 +39,171 @@
 				
 				<div class="tabbable tabbable-custom tabbable-full-width ">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#tab_datasource_overview" data-toggle="tab">Overview</a></li>
-						<li class=""><a href="#tab_datasource_file" data-toggle="tab">File1</a></li>
-						<li class=""><a href="#tab_datasource_db" data-toggle="tab">DB1</a></li>
-						<li class=""><a href="#tab_datasource_db" data-toggle="tab">DB2</a></li>
-						<li class=""><a href="#tab_analyzed_data" data-toggle="tab">OTHER1</a></li>
+						<li class="active"><a href="#tab_datasource_full" data-toggle="tab">Full Indexing</a></li>
+						<li class=""><a href="#tab_datasource_add" data-toggle="tab">Add Indexing</a></li>
+						<li class=""><a href="#tab_db_sources" data-toggle="tab"><i class="icon-reorder"></i> JDBC Sources</a></li>
 					</ul>
 					<div class="tab-content row">
 
 						<!--=== Overview ===-->
-						<div class="tab-pane active" id="tab_datasource_overview">
-							<div class="widget box">
-								<div class="widget-content no-padding">
-									<div class="dataTables_header clearfix">
-										<div class="input-group col-md-12">
-											<a href="javascript:void(0);" class="btn btn-sm"><span
-												class="glyphicon glyphicon-plus-sign"></span> Add Datasource</a>
-												&nbsp;
-											<a href="javascript:void(0);" class="btn btn-sm">
-												<span class="glyphicon glyphicon-minus-sign"></span> Remove Datasource
-											</a>
-										</div>
-										
-									</div>
-									<table class="table table-hover table-bordered">
-										<thead>
-											<tr>
-												<th><input type="checkbox" /></th>
-												<th>Type</th>
-												<th>ID</th>
-												<th>Name</th>
-												<th>Reader Class</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td><input type="checkbox" /></td>
-												<td>File</td>
-												<td><strong>file1</strong></td>
-												<td>FILE1</td>
-												<td>org.fastcatsearch.datasource.reader.FileReader</td>
-											</tr>
-											<tr>
-												<td><input type="checkbox" /></td>
-												<td>DB</td>
-												<td><strong>db1</strong></td>
-												<td>DB1</td>
-												<td>org.fastcatsearch.datasource.reader.DBReader</td>
-											</tr>
-											<tr>
-												<td><input type="checkbox" /></td>
-												<td>DB</td>
-												<td><strong>db2</strong></td>
-												<td>DB2</td>
-												<td>org.fastcatsearch.datasource.reader.DBReader</td>
-											</tr>
-											<tr>
-												<td><input type="checkbox" /></td>
-												<td>CUSTOM</td>
-												<td><strong>other</strong></td>
-												<td>OTHER1</td>
-												<td>org.fastcatsearch.datasource.reader.MyCustomReader</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-						
-						
-						
-						<div class="tab-pane" id="tab_datasource_file">
-							<form class="form-horizontal" action="#">
-								<div class="col-md-12">
-									<div class="widget">
-										<div class="widget-header">
-											<h4>Setting</h4>
-										</div>
-										<div class="widget-content">
-											<div class="row">
-												<div class="col-md-12">
-													<div class="form-group">
-														<label class="col-md-2 control-label">Reader Class:</label>
-														<div class="col-md-10"><input type="text" name="regular" class="form-control" value="org.fastcatsearch.datasource.reader.DBReader"></div>
-													</div>
-													
-													<div class="form-group">
-														<label class="col-md-2 control-label">File Encoding:</label>
-														<div class="col-md-10"><input type="text" name="regular" class="form-control input-width-small" value="UTF-8"></div>
-													</div>
-													
-													<div class="form-group">
-														<label class="col-md-2 control-label">Modifier Class:</label>
-														<div class="col-md-10"><input type="text" name="regular" class="form-control" value="org.fastcatsearch.datasource.reader.Modifier"></div>
-													</div>
-												</div>
-												
-											</div>
-										</div>
-									</div> <!-- /.widget -->
-								</div>
-							</form>
-							
+						<div class="tab-pane active" id="tab_datasource_full">
 							<div class="col-md-12">
-								<div class="widget">
-									<div class="widget-header">
-										<h4>File Path</h4>
-									</div>
-									<div class="widget-content">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="tabbable tabbable-custom tabs-left">
-													<!-- Only required for left/right tabs -->
-													<ul class="nav nav-tabs tabs-left">
-														<li class="active"><a href="#tab_3_1" data-toggle="tab">ROOT</a></li>
-														<li ><a href="#tab_3_2" data-toggle="tab">VOL1 Shard</a></li>
-														<li><a href="#tab_3_3" data-toggle="tab">VOL2 Shard</a></li>
-													</ul>
-													<div class="tab-content">
-														<div class="tab-pane active" id="tab_3_1">
-															<form class="form-horizontal" action="#">
-																<div class="col-md-12">
-																	<div class="form-group">
-																		<label class="col-md-2 control-label">Full-Indexing :</label>
-																		<div class="col-md-10"><textarea name="regular" class="form-control"></textarea></div>
-																	</div>
-				
-																	<div class="form-group">
-																		<label class="col-md-2 control-label">Add-Indexing :</label>
-																		<div class="col-md-10"><textarea name="regular" class="form-control"></textarea></div>
-																	</div>
-																	<div class="form-group">
-																		<label class="col-md-2 control-label">Delete-ID :</label>
-																		<div class="col-md-10"><textarea name="regular" class="form-control"></textarea></div>
-																	</div>
-																</div>
-															</form>
-														</div>
-														<div class="tab-pane " id="tab_3_2">
-															<p>I'm in Section 2.</p>
-															<p>
-																Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
-															</p>
-														</div>
-														<div class="tab-pane" id="tab_3_3">
-															<p>I'm in Section 3.</p>
-														</div>
-													</div>
-												</div>
+								<div class="widget box">
+									<div class="widget-content no-padding">
+										<div class="dataTables_header clearfix">
+											<div class="input-group col-md-12">
+												<a href="javascript:void(0);" class="btn btn-sm"><span
+													class="glyphicon glyphicon-plus-sign"></span> Add Datasource</a>
 											</div>
+											
 										</div>
+										<table class="table table-hover table-bordered table-checkable">
+											<thead>
+												<tr>
+													<th>Type</th>
+													<th>ID</th>
+													<th>Name</th>
+													<th>Enable</th>
+													<th>Reader Class</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>File</td>
+													<td><a href="datasource/file.html"><strong>file1</strong></a></td>
+													<td>FILE1</td>
+													<td>Enabled</td>
+													<td>org.fastcatsearch.datasource.reader.FileReader</td>
+												</tr>
+												<tr>
+													<td>DB</td>
+													<td><a href="datasource/db.html"><strong>db1</strong></a></td>
+													<td>DB1</td>
+													<td>Disabled</td>
+													<td>org.fastcatsearch.datasource.reader.DBReader</td>
+												</tr>
+												<tr>
+													<td>DB</td>
+													<td><a href="datasource/db.html"><strong>db2</strong></a></td>
+													<td>DB2</td>
+													<td>Enabled</td>
+													<td>org.fastcatsearch.datasource.reader.DBReader</td>
+												</tr>
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</div>
 						</div>
 						
 						
-						<div class="tab-pane" id="tab_datasource_db">
-							<form class="form-horizontal" action="#">
-								<div class="col-md-12">
-									<div class="widget">
-										<div class="widget-header">
-											<h4>Connection Information</h4>
-										</div>
-										<div class="widget-content">
-											<div class="row">
-												<div class="col-md-12">
-													<div class="form-group">
-														<label class="col-md-2 control-label">JDBC Driver:</label>
-														<div class="col-md-10"><input type="text" name="regular" class="form-control" value="oracle.jdbc.driver.OracleDriver"></div>
-													</div>
-
-													<div class="form-group">
-														<label class="col-md-2 control-label">JDBC URL:</label>
-														<div class="col-md-10"><input type="text" name="regular" class="form-control" value="jdbc:oracle:thin:@203.250.196.44:1551:KISTI5"></div>
-													</div>
-												</div>
-
-
-												<div class="col-md-6">
-													<div class="form-group">
-														<label class="col-md-4 control-label">Username:</label>
-														<div class="col-md-8"><input type="text" name="regular" class="form-control input-width-small" value="scopus"></div>
-													</div>
-
-													<div class="form-group">
-														<label class="col-md-4 control-label">Password:</label>
-														<div class="col-md-8"><input type="password" name="regular" class="form-control input-width-small" value="scopus"></div>
-													</div>
-												</div>
-											</div> <!-- /.row -->
-										</div> <!-- /.widget-content -->
-										
-										
-										<div class="widget-header">
-											<h4>Setting</h4>
-										</div>
-										<div class="widget-content">
-											<div class="row">
-												<div class="col-md-12">
-													<div class="form-group">
-														<label class="col-md-2 control-label">Reader Class:</label>
-														<div class="col-md-10"><input type="text" name="regular" class="form-control" value="org.fastcatsearch.datasource.reader.DBReader"></div>
-													</div>
-													
-													<div class="form-group">
-														<label class="col-md-2 control-label">Fetch Size:</label>
-														<div class="col-md-10"><input type="text" name="regular" class="form-control input-width-small" value="1000"></div>
-													</div>
-
-													<div class="form-group">
-														<label class="col-md-2 control-label">Bulk Size:</label>
-														<div class="col-md-10"><input type="text" name="regular" class="form-control input-width-small" value="100"></div>
-													</div>
-													
-													<div class="form-group">
-														<label class="col-md-2 control-label">Modifier Class:</label>
-														<div class="col-md-10"><input type="text" name="regular" class="form-control" value="org.fastcatsearch.datasource.reader.Modifier"></div>
-													</div>
-												</div>
-												
-											</div>
-										</div>
-									</div> <!-- /.widget -->
-								</div>
-							</form>
-							
+						<div class="tab-pane" id="tab_datasource_add">
 							<div class="col-md-12">
-								<div class="widget">
-									<div class="widget-header">
-										<h4>Query</h4>
-									</div>
-									<div class="widget-content">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="tabbable tabbable-custom tabs-left">
-													<!-- Only required for left/right tabs -->
-													<ul class="nav nav-tabs tabs-left">
-														<li class="active"><a href="#tab_3_1" data-toggle="tab">ROOT</a></li>
-														<li ><a href="#tab_3_2" data-toggle="tab">VOL1 Shard</a></li>
-														<li><a href="#tab_3_3" data-toggle="tab">VOL2 Shard</a></li>
-													</ul>
-													<div class="tab-content">
-														<div class="tab-pane active" id="tab_3_1">
-															<form class="form-horizontal" action="#">
-																<div class="col-md-12">
-																	<div class="form-group">
-																		<label class="col-md-2 control-label">Full-Indexing :</label>
-																		<div class="col-md-10"><textarea name="regular" class="form-control"></textarea></div>
-																	</div>
-				
-																	<div class="form-group">
-																		<label class="col-md-2 control-label">Add-Indexing :</label>
-																		<div class="col-md-10"><textarea name="regular" class="form-control"></textarea></div>
-																	</div>
-																	<div class="form-group">
-																		<label class="col-md-2 control-label">Delete-ID :</label>
-																		<div class="col-md-10"><textarea name="regular" class="form-control"></textarea></div>
-																	</div>
-																</div>
-															</form>
-														</div>
-														<div class="tab-pane " id="tab_3_2">
-															<p>I'm in Section 2.</p>
-															<p>
-																Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
-															</p>
-														</div>
-														<div class="tab-pane" id="tab_3_3">
-															<p>I'm in Section 3.</p>
-														</div>
-													</div>
-												</div>
+								<div class="widget box">
+									<div class="widget-content no-padding">
+										<div class="dataTables_header clearfix">
+											<div class="input-group col-md-12">
+												<a href="javascript:void(0);" class="btn btn-sm"><span
+													class="glyphicon glyphicon-plus-sign"></span> Add Datasource</a>
 											</div>
+											
 										</div>
+										<table class="table table-hover table-bordered table-checkable">
+											<thead>
+												<tr>
+													<th>Type</th>
+													<th>ID</th>
+													<th>Name</th>
+													<th>Enable</th>
+													<th>Reader Class</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>File</td>
+													<td><a href="datasource/file.html"><strong>file2</strong></a></td>
+													<td>FILE1</td>
+													<td>Enabled</td>
+													<td>org.fastcatsearch.datasource.reader.FileReader</td>
+												</tr>
+												<tr>
+													<td>DB</td>
+													<td><a href="datasource/db.html"><strong>db2</strong></a></td>
+													<td>DB1</td>
+													<td>Disabled</td>
+													<td>org.fastcatsearch.datasource.reader.DBReader</td>
+												</tr>
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</div>
 						</div>
+						
+					
 						<!-- //tab field -->
-						
+						<div class="tab-pane" id="tab_db_sources">
+							<div class="col-md-12">
+								<div class="widget box">
+									<div class="widget-content no-padding">
+										<div class="dataTables_header clearfix">
+											<div class="input-group col-md-12">
+												<a href="javascript:void(0);" class="btn btn-sm"><span
+													class="glyphicon glyphicon-plus-sign"></span> Add JDBC</a>
+													&nbsp;
+												<a href="javascript:void(0);" class="btn btn-sm">
+													<span class="glyphicon glyphicon-edit"></span> Edit JDBC
+												</a>
+													&nbsp;
+												<a href="javascript:void(0);" class="btn btn-sm">
+													<span class="glyphicon glyphicon-minus-sign"></span> Remove JDBC
+												</a>
+											</div>
+											
+										</div>
+										<table class="table table-hover table-bordered table-checkable">
+											<thead>
+												<tr>
+													<th class="checkbox-column">
+														<input type="checkbox" class="uniform">
+													</th>
+													<th>ID</th>
+													<th>Name</th>
+													<th>Driver</th>
+													<th>URL</th>
+													<th>User</th>
+													<th>Password</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td class="checkbox-column">
+														<input type="checkbox" class="uniform">
+													</td>
+													<td>sysdb1</td>
+													<td>시스템디비</td>
+													<td>com.mysql.driver.Driver</td>
+													<td>jdbc://mysql:192.168.0.50/sample</td>
+													<td>system</td>
+													<td>12***a</td>
+												</tr>
+												<tr>
+													<td class=" ">
+														<input type="checkbox" class="uniform">
+													</td>
+													<td>sysdb2</td>
+													<td>시스템디비2</td>
+													<td>com.mysql.driver.Driver</td>
+													<td>jdbc://mysql:192.168.0.50/sample</td>
+													<td>system</td>
+													<td>23***b</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
 						
 					</div>
 					<!-- /.tab-content -->

@@ -34,7 +34,6 @@
 					</div>
 				</div>
 				<!-- /Page Header -->
-
 				<div class="widget box">
 					<div class="widget-content no-padding">
 						<div class="dataTables_header clearfix">

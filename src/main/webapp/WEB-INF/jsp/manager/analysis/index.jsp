@@ -203,7 +203,7 @@
 													<input type="checkbox" class="uniform">
 												</th>
 												<th>URI</th>
-												<th>Content Type</th>
+												<th>Method</th>
 												<th>Class</th>
 											</tr>
 										</thead>
@@ -213,7 +213,7 @@
 													<input type="checkbox" class="uniform">
 												</td>
 												<td><strong>/analysis/product/synonym</strong></td>
-												<td>json</td>
+												<td>GET,POST</td>
 												<td><i>org.fastcatsearch.plugin.analysis.product.servlet.SynonymDictionaryServlet</i></td>
 											</tr>
 										</tbody>

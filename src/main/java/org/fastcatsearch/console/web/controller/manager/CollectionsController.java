@@ -29,6 +29,27 @@ public class CollectionsController {
 		return mav;
 	}
 	
+	@RequestMapping("/{id}/datasource/file")
+	public ModelAndView datasourceFile() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/datasourceFile");
+		return mav;
+	}
+	
+	@RequestMapping("/{id}/datasource/file/edit")
+	public ModelAndView datasourceFileEdit() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/datasourceFileEdit");
+		return mav;
+	}
+	
+	@RequestMapping("/{id}/datasource/db")
+	public ModelAndView datasourceDB() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/datasourceDB");
+		return mav;
+	}
+	
 	@RequestMapping("/{id}/shard")
 	public ModelAndView shard() {
 		ModelAndView mav = new ModelAndView();
