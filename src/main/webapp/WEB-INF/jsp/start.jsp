@@ -21,7 +21,6 @@
 	
 			</div>
 			<!-- /Breadcrumbs line -->
-	
 			<!--=== Page Header ===-->
 			<div class="page-header">
 				<div class="page-title">

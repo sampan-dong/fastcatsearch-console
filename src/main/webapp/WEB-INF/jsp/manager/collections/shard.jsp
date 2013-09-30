@@ -61,7 +61,6 @@
 									<th>ID</th>
 									<th>Name</th>
 									<th>Filter</th>
-									<th>Indexing Node</th>
 									<th>Data Node</th>
 								</tr>
 							</thead>
@@ -73,7 +72,6 @@
 									<td>*<strong>VOL</strong></td>
 									<td>TOTAL</td>
 									<td></td>
-									<td>Node1</td>
 									<td>Node1, Node2</td>
 								</tr>
 								<tr>
@@ -83,7 +81,6 @@
 									<td><strong>VOL1</strong></td>
 									<td>ELEC</td>
 									<td>cate1=(123,456,789)</td>
-									<td>Node1</td>
 									<td>Node1, Node2</td>
 								</tr>
 								<tr>
@@ -93,7 +90,6 @@
 									<td><strong>VOL2</strong></td>
 									<td>COMPUTER</td>
 									<td>cate1=a01</td>
-									<td>Node1</td>
 									<td>Node1, Node2</td>
 								</tr>
 								<tr>
@@ -103,7 +99,6 @@
 									<td><strong>VOL2011</strong></td>
 									<td>PRODUCT 2011</td>
 									<td>year<2012</td>
-									<td>Node1</td>
 									<td>Node1, Node2</td>
 								</tr>
 								<tr>
@@ -113,7 +108,6 @@
 									<td><strong>VOL2012</strong></td>
 									<td>PRODUCT 2012</td>
 									<td>year>=2012<2013</td>
-									<td>Node1</td>
 									<td>Node1, Node2</td>
 								</tr>
 								<tr>
@@ -123,7 +117,6 @@
 									<td><strong>VOL2013</strong></td>
 									<td>PRODUCT 2013</td>
 									<td>year>2013</td>
-									<td>Node1</td>
 									<td>Node1, Node2</td>
 								</tr>
 							</tbody>

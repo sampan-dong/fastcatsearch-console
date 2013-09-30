@@ -19,7 +19,7 @@
 	<div class="box">
 		<div class="content">
 			<!-- Login Formular -->
-			<form class="form-vertical login-form" action="user/login.html" method="post">
+			<form class="form-vertical login-form" action="<c:url value="/doLogin.html"/>" method="post">
 				<!-- Title -->
 				<h3 class="form-title">Log In to your Account</h3>
 
@@ -27,7 +27,13 @@
 				<div class="form-group">
 					<div class="input-icon">
 						<i class="icon-user"></i>
-						<input type="text" name="username" class="form-control" placeholder="Username" autofocus="autofocus" />
+						<input type="text" name="host" class="form-control" placeholder="Address:Port" autofocus="autofocus" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-icon">
+						<i class="icon-user"></i>
+						<input type="text" name="username" class="form-control" placeholder="Username" />
 					</div>
 				</div>
 				<div class="form-group">

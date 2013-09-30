@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="org.json.*"%>
+
+<%
+	String collectionId = (String) request.getAttribute("collectionId");
+	JSONObject indexingStatus = (JSONObject) request.getAttribute("indexingStatus");
+	JSONArray shardStatusList = indexingStatus.getJSONArray("shardStatus");
+%>
+
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
@@ -58,9 +66,9 @@
 									<div class="widget-content">
 										<dl class="dl-horizontal">
 											<dt>Total Document Size</dt>
-											<dd>9000</dd>
+											<dd><%=indexingStatus.getInt("totalDocumentSize") %></dd>
 											<dt>Total Disk Size</dt>
-											<dd>1010MB</dd>
+											<dd><%=indexingStatus.getString("totalDiskSize") %></dd>
 										</dl>
 										<table class="table table-hover table-bordered">
 											<thead>
@@ -73,48 +81,20 @@
 												</tr>
 											</thead>
 											<tbody>
+												<%
+												for(int i =0;i<shardStatusList.length();i++){
+													JSONObject obj = shardStatusList.getJSONObject(i);
+												%>
 												<tr>
-													<td>*<strong>VOL</strong></td>
-													<td>1</td>
-													<td>100</td>
-													<td>128.5MB</td>
-													<td>2013.09.05 12:50:00</td>
+													<td><strong><%=obj.getString("id") %></strong></td>
+													<td><%=obj.getInt("sequence") %></td>
+													<td><%=obj.getInt("documentSize") %></td>
+													<td><%=obj.getString("diskSize") %></td>
+													<td><%=obj.getString("createTime") %></td>
 												</tr>
-												<tr>
-													<td>VOL1</td>
-													<td>1</td>
-													<td>100</td>
-													<td>128.5MB</td>
-													<td>2013.09.05 12:50:00</td>
-												</tr>
-												<tr>
-													<td>VOL2</td>
-													<td>1</td>
-													<td>1500</td>
-													<td>128.5MB</td>
-													<td>2013.09.05 12:50:00</td>
-												</tr>
-												<tr>
-													<td>VOL2011</td>
-													<td>1</td>
-													<td>1500</td>
-													<td>128.5MB</td>
-													<td>2013.09.05 12:50:00</td>
-												</tr>
-												<tr>
-													<td>VOL2012</td>
-													<td>1</td>
-													<td>1500</td>
-													<td>128.5MB</td>
-													<td>2013.09.05 12:50:00</td>
-												</tr>
-												<tr>
-													<td>VOL2013</td>
-													<td>1</td>
-													<td>1500</td>
-													<td>128.5MB</td>
-													<td>2013.09.05 12:50:00</td>
-												</tr>
+												<%
+												}
+												%>
 											</tbody>
 										</table>
 									</div>
@@ -292,78 +272,57 @@
 						
 						
 							<div class="col-md-12">
-								<div class="widget">
+								
+								<div class="widget ">
 									<div class="widget-header">
 										<h4>Collection Indexing</h4>
 									</div>
 									<div class="widget-content">
-											<div class="row">
-												<div class="col-md-12">
-													<a href="javascript:void(0);" class="btn btn-sm"><span
-														class="glyphicon glyphicon-play"></span> Run Full Indexing</a>
-														&nbsp;
-													<a href="javascript:void(0);" class="btn btn-sm"><span
-														class="glyphicon glyphicon-play"></span> Run Add Indexing</a>
-														&nbsp;
-													<a href="javascript:void(0);" class="btn btn-sm btn-danger">
-														<span class="glyphicon glyphicon-stop"></span> Stop Indexing</a>
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
-							<br>
-							<div class="col-md-12">
-								
-								<div class="widget ">
-									<div class="widget-header">
-										<h4>Shard Indexing</h4>
-									</div>
-									<div class="widget-content">
 										<div class="row">
 											<div class=" col-md-12">
-												<a href="javascript:void(0);" class="btn btn-sm"><span
+												<a href="javascript:runFullIndexing('<%=collectionId %>');" class="btn btn-sm"><span
 													class="glyphicon glyphicon-play"></span> Run Full Indexing</a>
 													&nbsp;
-												<a href="javascript:void(0);" class="btn btn-sm"><span
+												<a href="javascript:runAddIndexing('<%=collectionId %>');" class="btn btn-sm"><span
 													class="glyphicon glyphicon-play"></span> Run Add Indexing</a>
 													&nbsp;
-												<a href="javascript:void(0);" class="btn btn-sm btn-danger">
+												<a href="javascript:stopIndexing('<%=collectionId %>');" class="btn btn-sm btn-danger">
 													<span class="glyphicon glyphicon-stop"></span> Stop Indexing</a>
 											</div>
 										</div>
 										<br>
+										
 										<table class="table table-hover table-bordered">
 											<thead>
 												<tr>
-													<th><input type="checkbox" /></th>
+													<th>#</th>
 													<th>Shard</th>
 													<th>Status</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<td><input type="checkbox" /></td>
+													<td>1</td>
 													<td>VOL1</td>
 													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
 												</tr>
 												<tr>
-													<td><input type="checkbox" /></td>
+													<td>2</td>
 													<td>VOL2</td>
 													<td><span class="label label-danger"><i class="glyphicon glyphicon-warning-sign"></i> Fail</span></td>
 												</tr>
 												<tr>
-													<td><input type="checkbox" /></td>
+													<td>3</td>
 													<td>VOL2011</td>
 													<td><i class="icon-spinner icon-spin icon-large"></i> Indexing 400..</td>
 												</tr>
 												<tr>
-													<td><input type="checkbox" /></td>
+													<td>4</td>
 													<td>VOL2012</td>
 													<td><i class="icon-spinner icon-spin icon-large"></i> Indexing 300..</td>
 												</tr>
 												<tr>
-													<td><input type="checkbox" /></td>
+													<td>5</td>
 													<td>VOL2013</td>
 													<td><i class="icon-spinner icon-spin icon-large"></i> Indexing 1000..</td>
 												</tr>

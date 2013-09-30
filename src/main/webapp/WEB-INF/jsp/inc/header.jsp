@@ -35,7 +35,10 @@
 <link
 	href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700'
 	rel='stylesheet' type='text/css'>
-
+	
+<link rel="stylesheet"
+	href="${contextPath}/resources/assets/css/console.css">
+	
 <!--=== JavaScript ===-->
 
 <script type="text/javascript" src="${contextPath}/resources/assets/js/libs/jquery-1.10.2.min.js"></script>
@@ -118,6 +121,8 @@
 <!-- Demo JS -->
 <script type="text/javascript" src="${contextPath}/resources/assets/js/custom.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/assets/js/demo/pages_calendar.js"></script>
+
+<script type="text/javascript" src="${contextPath}/resources/assets/js/console.js"></script>
 
 <script>
 	$(document).ready(function() {

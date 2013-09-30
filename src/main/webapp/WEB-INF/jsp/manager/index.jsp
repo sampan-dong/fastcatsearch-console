@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <c:set var="ROOT_PATH" value=".."/>
+
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>
@@ -9,6 +11,7 @@
 </head>
 <body>
 <c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
+
 <div id="container">
 	<c:import url="${ROOT_PATH}/inc/sideMenu.jsp" />
 	<div id="content">

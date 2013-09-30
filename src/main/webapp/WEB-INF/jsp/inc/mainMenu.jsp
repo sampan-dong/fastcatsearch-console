@@ -24,10 +24,10 @@
 
 		<!-- Top Left Menu -->
 		<ul class="nav navbar-nav navbar-left">
-				<li><a href="<c:url value="/start.html"/>"> Start </a></li>
-				<li><a href="<c:url value="/dashboard.html"/>"> Dashboard </a></li>
-				<li><a href="<c:url value="/search.html"/>"> Search </a></li>
-				<li><a href="<c:url value="/manager.html"/>"> Manager </a></li>
+				<li><a href="<c:url value="/main/start.html"/>"> Start </a></li>
+				<li><a href="<c:url value="/main/dashboard.html"/>"> Dashboard </a></li>
+				<li><a href="<c:url value="/main/search.html"/>"> Search </a></li>
+				<li><a href="<c:url value="/manager/index.html"/>"> Manager </a></li>
 			</ul>
 		<!-- /Top Left Menu -->
 
@@ -104,7 +104,7 @@
 				</ul></li> -->
 
 			<!-- .row .row-bg Toggler -->
-			<li><a href="<c:url value="/settings.html"/>" class="dropdown-toggle"> <i class="icon-cog"></i>
+			<li><a href="<c:url value="/main/settings.html"/>" class="dropdown-toggle"> <i class="icon-cog"></i>
 			</a></li>
 
 			<!-- User Login Dropdown -->
@@ -114,10 +114,10 @@
 					class="icon-caret-down small"></i>
 			</a>
 				<ul class="dropdown-menu">
-					<li><a href="<c:url value="/user/profile.html"/>"><i class="icon-user"></i>
+					<li><a href="<c:url value="/main/profile.html"/>"><i class="icon-user"></i>
 							My Profile</a></li>
 					<li class="divider"></li>
-					<li><a href="<c:url value="/user/logout.html" />"><i class="icon-key"></i> Log Out</a></li>
+					<li><a href="<c:url value="/main/logout.html" />"><i class="icon-key"></i> Log Out</a></li>
 				</ul>
 			</li>
 			<!-- /user login dropdown -->
