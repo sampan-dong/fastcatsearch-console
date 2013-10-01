@@ -3,7 +3,6 @@ package org.fastcatsearch.console.web.http;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,16 +72,27 @@ public class JSONHttpClient {
 		isActive = false;
 	}
 
-	public static class GetMethod {
-		JSONHttpClient jsonHttpClient;
-		String url;
-		String queryString;
+	public static abstract class AbstractMethod {
+		protected JSONHttpClient jsonHttpClient;
+		protected String url;
 		
-		public GetMethod(JSONHttpClient jsonHttpClient, String url) {
+		public AbstractMethod(JSONHttpClient jsonHttpClient, String url) {
 			this.jsonHttpClient = jsonHttpClient;
 			this.url = url;
 		}
+		public abstract JSONObject request() throws ClientProtocolException, IOException;
+		public abstract AbstractMethod addParameter(String key, String value);
+	}
+	
+	public static class GetMethod extends AbstractMethod {
+		
+		private String queryString;
+		
+		public GetMethod(JSONHttpClient jsonHttpClient, String url) {
+			super(jsonHttpClient, url);
+		}
 
+		@Override
 		public JSONObject request() throws ClientProtocolException, IOException {
 			HttpGet httpget = null;
 			
@@ -101,11 +111,14 @@ public class JSONHttpClient {
 			return null;
 		}
 		
+		@Override
 		public GetMethod addParameter(String key, String value) {
-			if (queryString == null) {
-				queryString = "";
-			}
 			try {
+				if(queryString == null){
+					queryString = "";
+				}else{
+					queryString += "&";
+				}
 				queryString += (key + "=" + URLEncoder.encode(value, "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
 				logger.error("", e);
@@ -116,17 +129,16 @@ public class JSONHttpClient {
 
 	}
 
-	public static class PostMethod {
-		JSONHttpClient jsonHttpClient;
-		HttpPost httpost;
+	public static class PostMethod extends AbstractMethod {
 		private List<NameValuePair> nvps;
 
 		public PostMethod(JSONHttpClient jsonHttpClient, String url) {
-			this.jsonHttpClient = jsonHttpClient;
-			httpost = new HttpPost(url);
+			super(jsonHttpClient, url);
 		}
 
+		@Override
 		public JSONObject request() throws ClientProtocolException, IOException {
+			HttpPost httpost = new HttpPost(url);
 			if (nvps != null) {
 				httpost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 			}
@@ -141,6 +153,7 @@ public class JSONHttpClient {
 			return null;
 		}
 
+		@Override
 		public PostMethod addParameter(String key, String value) {
 			if (nvps == null) {
 				nvps = new ArrayList<NameValuePair>();
