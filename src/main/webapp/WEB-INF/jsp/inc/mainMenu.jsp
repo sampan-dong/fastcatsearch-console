@@ -1,5 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script>
+$(document).ready(function(){
+	/* $('#indexing_tab a[href!="#tab_indexing_run"]').click(function() {
+		stopPollingIndexTaskState();
+		console.log("stop polling ${collectionId}");
+	});
+	$('#indexing_tab a[href="#tab_indexing_run"]').click(function() {
+		startPollingIndexTaskState('${collectionId}');
+		console.log("start polling ${collectionId}");
+	}); */
+	
+	$('#running_tasks_dropdown').on('show.bs.dropdown', function () {
+		startPollingAllTaskState();
+	});
+	$('#running_tasks_dropdown').on('hide.bs.dropdown', function () {
+		stopPollingAllTaskState();
+	});
+});
+</script>
 <!-- Header -->
 <header class="header navbar navbar-fixed-top" role="banner">
 	<!-- Top Navigation Bar -->
@@ -31,12 +50,13 @@
 			</ul>
 		<!-- /Top Left Menu -->
 
+
 		<!-- Top Right Menu -->
 		<ul class="nav navbar-nav navbar-right">
 			<!-- Notifications -->
 			<li class="dropdown hidden-xs"><a href="#" class="dropdown-toggle"
 				data-toggle="dropdown"> <i class="icon-bell"></i> <span
-					class="badge">2</span>
+					class="badge"></span>
 			</a>
 				<ul class="dropdown-menu extended notification">
 					<li class="title">
@@ -57,31 +77,16 @@
 				</ul></li>
 
 			<!-- Tasks -->
-			<li class="dropdown hidden-xs"><a href="#"
+			<li class="dropdown hidden-xs" id="running_tasks_dropdown"><a href="#"
 				class="dropdown-toggle" data-toggle="dropdown"> <i
-					class="icon-tasks"></i> <span class="badge">2</span>
+					class="icon-tasks"></i> <span class="badge"></span>
 			</a>
-				<ul class="dropdown-menu extended notification">
+				<ul class="dropdown-menu extended notification" id="running_tasks_top">
 					<li class="title">
-						<p>You have 2 running tasks</p>
+						<p>You have <span class="count"></span> running tasks</p>
 					</li>
-					<li><a href="javascript:void(0);"> <span class="task">
-								<span class="desc">Vol1 Collection indexing</span> <span
-								class="percent">30%</span>
-						</span>
-							<div class="progress progress-small progress-striped active">
-								<div style="width: 30%;" class="progress-bar progress-bar-info"></div>
-							</div>
-					</a></li>
-					<li><a href="javascript:void(0);"> <span class="task">
-								<span class="desc">Apply dictionary</span> <span class="percent">80%</span>
-						</span>
-							<div class="progress progress-small progress-striped active">
-								<div style="width: 80%;" class="progress-bar progress-bar-info"></div>
-							</div>
-					</a></li>
-					<li class="footer"><a href="<c:url value="/manager/logs/tasks.html"/>">View all
-							tasks</a></li>
+					<%-- <li class="footer"><a href="<c:url value="/manager/logs/tasks.html"/>">View all
+							tasks</a></li> --%>
 				</ul></li>
 
 			<!-- Messages -->

@@ -20,9 +20,9 @@ public class JSONResponseHandler implements ResponseHandler<JSONObject> {
              if (status >= 200 && status < 300) {
                  HttpEntity entity = response.getEntity();
                  if(entity != null){
-                	 logger.debug("Raw JSON len = {}", entity.getContentLength());
+//                	 logger.debug("Raw JSON len = {}", entity.getContentLength());
                 	 String jsonString = EntityUtils.toString(entity);
-                	 logger.debug("Raw JSON >>{}<<", jsonString);
+//                	 logger.debug("Raw JSON >>{}<<", jsonString);
                 	 return new JSONObject(jsonString);
                  }else{
                 	 return new JSONObject();

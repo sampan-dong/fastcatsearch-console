@@ -4,16 +4,31 @@
 <%@page import="org.json.*"%>
 
 <%
-	String collectionId = (String) request.getAttribute("collectionId");
+	//String collectionId = (String) request.getAttribute("collectionId");
 	JSONObject indexingStatus = (JSONObject) request.getAttribute("indexingStatus");
 	JSONArray shardStatusList = indexingStatus.getJSONArray("shardStatus");
 %>
+
 
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+
+<script>
+$(document).ready(function(){
+	
+	$('#indexing_tab a[href!="#tab_indexing_run"]').on('show.bs.tab', function (e) {
+		stopPollingIndexTaskState();
+	});
+	$('#indexing_tab a[href="#tab_indexing_run"]').on('show.bs.tab', function (e) {
+		startPollingIndexTaskState('${collectionId}');
+	});
+});
+</script>
+
+
 </head>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
@@ -47,7 +62,7 @@
 				
 				
 				<div class="tabbable tabbable-custom tabbable-full-width ">
-					<ul class="nav nav-tabs">
+					<ul class="nav nav-tabs" id="indexing_tab">
 						<li class="active"><a href="#tab_indexing_status" data-toggle="tab">Status</a></li>
 						<li class=""><a href="#tab_indexing_schedule" data-toggle="tab">Schedule</a></li>
 						<li class=""><a href="#tab_indexing_run" data-toggle="tab">Run</a></li>
@@ -95,77 +110,6 @@
 												<%
 												}
 												%>
-											</tbody>
-										</table>
-									</div>
-								</div>
-								
-								
-								<div class="widget ">
-									<div class="widget-header">
-										<h4>Indexing Status</h4>
-									</div>
-									<div class="widget-content">
-										<table class="table table-hover table-bordered">
-											<thead>
-												<tr>
-													<th>Shard</th>
-													<th>Status</th>
-													<th>Schedule</th>
-													<th>Start</th>
-													<th>Finish</th>
-													<th>Duration</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>*<strong>VOL</strong></td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>VOL1</td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>VOL2</td>
-													<td><span class="label label-danger"><i class="glyphicon glyphicon-warning-sign"></i> Fail</span></td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>VOL2011</td>
-													<td><i class="icon-spinner icon-spin icon-large"></i> Indexing 400..</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>VOL2012</td>
-													<td><i class="icon-spinner icon-spin icon-large"></i> Indexing 300..</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>VOL2013</td>
-													<td><i class="icon-spinner icon-spin icon-large"></i> Indexing 1000..</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
 											</tbody>
 										</table>
 									</div>
@@ -280,51 +224,42 @@
 									<div class="widget-content">
 										<div class="row">
 											<div class=" col-md-12">
-												<a href="javascript:runFullIndexing('<%=collectionId %>');" class="btn btn-sm"><span
+												<a href="javascript:runFullIndexing('${collectionId}');" class="btn btn-sm"><span
 													class="glyphicon glyphicon-play"></span> Run Full Indexing</a>
 													&nbsp;
-												<a href="javascript:runAddIndexing('<%=collectionId %>');" class="btn btn-sm"><span
+												<a href="javascript:runAddIndexing('${collectionId}');" class="btn btn-sm"><span
 													class="glyphicon glyphicon-play"></span> Run Add Indexing</a>
 													&nbsp;
-												<a href="javascript:stopIndexing('<%=collectionId %>');" class="btn btn-sm btn-danger">
+												<a href="javascript:stopIndexing('${collectionId}');" class="btn btn-sm btn-danger">
 													<span class="glyphicon glyphicon-stop"></span> Stop Indexing</a>
 											</div>
 										</div>
-										<br>
-										
+									</div>
+								</div>
+								<div class="widget ">
+									<div class="widget-header">
+										<h4>Running Indexing Tasks</h4>
+									</div>
+									<div class="widget-content">
 										<table class="table table-hover table-bordered">
 											<thead>
 												<tr>
-													<th>#</th>
-													<th>Shard</th>
-													<th>Status</th>
+													<th>Type</th>
+													<th>State</th>
+													<th>Document Count</th>
+													<th>Schedule</th>
+													<th>Start</th>
+													<th>Duration</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<td>1</td>
-													<td>VOL1</td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td>VOL2</td>
-													<td><span class="label label-danger"><i class="glyphicon glyphicon-warning-sign"></i> Fail</span></td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td>VOL2011</td>
-													<td><i class="icon-spinner icon-spin icon-large"></i> Indexing 400..</td>
-												</tr>
-												<tr>
-													<td>4</td>
-													<td>VOL2012</td>
-													<td><i class="icon-spinner icon-spin icon-large"></i> Indexing 300..</td>
-												</tr>
-												<tr>
-													<td>5</td>
-													<td>VOL2013</td>
-													<td><i class="icon-spinner icon-spin icon-large"></i> Indexing 1000..</td>
+													<td><div id="indexing_type"></div></td>
+													<td><div id="indexing_state"></div></td>
+													<td><div id="indexing_document_count"></div></td>
+													<td><div id="indexing_scheduled"></div></td>
+													<td><div id="indexing_start_time"></div></td>
+													<td><div id="indexing_elapsed"></div></td>
 												</tr>
 											</tbody>
 										</table>

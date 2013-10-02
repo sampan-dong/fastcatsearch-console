@@ -101,7 +101,7 @@ public class JSONHttpClient {
 			}else{
 				httpget = new HttpGet(url);
 			}
-			logger.debug("request >> {}", httpget);
+//			logger.debug("request >> {}", httpget);
 			try {
 				return jsonHttpClient.httpclient.execute(httpget, responseHandler);
 			}catch(SocketException e){
@@ -143,7 +143,7 @@ public class JSONHttpClient {
 				httpost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 			}
 
-			logger.debug("request >> {}", httpost);
+//			logger.debug("request >> {}", httpost);
 			try {
 				return jsonHttpClient.httpclient.execute(httpost, responseHandler);
 			}catch(SocketException e){
