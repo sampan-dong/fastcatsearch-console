@@ -3,7 +3,7 @@ package org.fastcatsearch.console.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.fastcatsearch.console.web.http.JSONHttpClient;
+import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -14,7 +14,7 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
 			
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		JSONHttpClient httpClient = (JSONHttpClient) request.getSession().getAttribute("httpclient");
+		ResponseHttpClient httpClient = (ResponseHttpClient) request.getSession().getAttribute("httpclient");
 		
 		if(httpClient == null || !httpClient.isActive()){
 			//연결에러..

@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.http.client.ClientProtocolException;
-import org.fastcatsearch.console.web.http.JSONHttpClient;
-import org.fastcatsearch.console.web.http.JSONHttpClient.AbstractMethod;
-import org.fastcatsearch.console.web.http.JSONHttpClient.PostMethod;
+import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
+import org.fastcatsearch.console.web.http.ResponseHttpClient.PostMethod;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,10 +61,10 @@ public class MainController {
 
 		// TODO 로그인되었다면 바로 start.html로 간다.
 
-		JSONHttpClient httpClient = new JSONHttpClient(host);
+		ResponseHttpClient httpClient = new ResponseHttpClient(host);
 		try {
 			JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("username", username).addParameter("password", password)
-					.request();
+					.requestJSON();
 			logger.debug("loginResult > {}", loginResult);
 			if (loginResult.getInt("status") == 0) {
 				// 로그인이 올바를 경우 메인 화면으로 이동한다.
@@ -146,7 +146,7 @@ public class MainController {
 			uri = uri.substring(0, parameterStart);
 		}
 		
-		JSONHttpClient httpClient = (JSONHttpClient) request.getSession().getAttribute("httpclient");
+		ResponseHttpClient httpClient = (ResponseHttpClient) request.getSession().getAttribute("httpclient");
 
 		
 		AbstractMethod abstractMethod = null;
@@ -170,7 +170,7 @@ public class MainController {
 		}
 		JSONObject result = null;
 		try {
-			result = abstractMethod.request();
+			result = abstractMethod.requestJSON();
 		} catch (Exception e) {
 			logger.error("", e);
 			return "";

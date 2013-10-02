@@ -13,24 +13,24 @@ import org.slf4j.LoggerFactory;
 
 public class JSONResponseHandler implements ResponseHandler<JSONObject> {
 	private static Logger logger = LoggerFactory.getLogger(JSONResponseHandler.class);
-	
+
 	@Override
 	public JSONObject handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-             int status = response.getStatusLine().getStatusCode();
-             if (status >= 200 && status < 300) {
-                 HttpEntity entity = response.getEntity();
-                 if(entity != null){
-//                	 logger.debug("Raw JSON len = {}", entity.getContentLength());
-                	 String jsonString = EntityUtils.toString(entity);
-//                	 logger.debug("Raw JSON >>{}<<", jsonString);
-                	 return new JSONObject(jsonString);
-                 }else{
-                	 return new JSONObject();
-                 }
-                 
-             } else {
-                 throw new ClientProtocolException("Unexpected response status: " + status);
-             }
+		int status = response.getStatusLine().getStatusCode();
+		if (status >= 200 && status < 300) {
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				// logger.debug("Raw JSON len = {}", entity.getContentLength());
+				String jsonString = EntityUtils.toString(entity);
+				// logger.debug("Raw JSON >>{}<<", jsonString);
+				return new JSONObject(jsonString);
+			} else {
+				return new JSONObject();
+			}
+
+		} else {
+			throw new ClientProtocolException("Unexpected response status: " + status);
+		}
 	}
 
 }

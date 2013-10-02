@@ -19,20 +19,22 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.jdom2.Document;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JSONHttpClient {
-	private static Logger logger = LoggerFactory.getLogger(JSONHttpClient.class);
+public class ResponseHttpClient {
+	private static Logger logger = LoggerFactory.getLogger(ResponseHttpClient.class);
 
 	private CloseableHttpClient httpclient;
 	private String urlPrefix;
 	private boolean isActive;
 
-	private static final ResponseHandler<JSONObject> responseHandler = new JSONResponseHandler();
+	private static final ResponseHandler<JSONObject> jsonResponseHandler = new JSONResponseHandler();
+	private static final ResponseHandler<Document> xmlResponseHandler = new XMLResponseHandler();
 
-	public JSONHttpClient(String host) {
+	public ResponseHttpClient(String host) {
 
 		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
 		cm.setMaxTotal(100);
@@ -73,14 +75,15 @@ public class JSONHttpClient {
 	}
 
 	public static abstract class AbstractMethod {
-		protected JSONHttpClient jsonHttpClient;
+		protected ResponseHttpClient responseHttpClient;
 		protected String url;
 		
-		public AbstractMethod(JSONHttpClient jsonHttpClient, String url) {
-			this.jsonHttpClient = jsonHttpClient;
+		public AbstractMethod(ResponseHttpClient responseHttpClient, String url) {
+			this.responseHttpClient = responseHttpClient;
 			this.url = url;
 		}
-		public abstract JSONObject request() throws ClientProtocolException, IOException;
+		public abstract JSONObject requestJSON() throws ClientProtocolException, IOException;
+		public abstract Document requestXML() throws ClientProtocolException, IOException;
 		public abstract AbstractMethod addParameter(String key, String value);
 	}
 	
@@ -88,25 +91,35 @@ public class JSONHttpClient {
 		
 		private String queryString;
 		
-		public GetMethod(JSONHttpClient jsonHttpClient, String url) {
-			super(jsonHttpClient, url);
+		public GetMethod(ResponseHttpClient responseHttpClient, String url) {
+			super(responseHttpClient, url);
 		}
 
-		@Override
-		public JSONObject request() throws ClientProtocolException, IOException {
-			HttpGet httpget = null;
-			
+		private HttpGet getHttpGet(){
 			if(queryString != null){
-				httpget = new HttpGet(url + "?" + queryString);
+				return new HttpGet(url + "?" + queryString);
 			}else{
-				httpget = new HttpGet(url);
+				return new HttpGet(url);
 			}
-//			logger.debug("request >> {}", httpget);
+		}
+		@Override
+		public JSONObject requestJSON() throws ClientProtocolException, IOException {
 			try {
-				return jsonHttpClient.httpclient.execute(httpget, responseHandler);
+				return responseHttpClient.httpclient.execute(getHttpGet(), jsonResponseHandler);
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
-				jsonHttpClient.close();
+				responseHttpClient.close();
+			}
+			return null;
+		}
+		
+		@Override
+		public Document requestXML() throws ClientProtocolException, IOException {
+			try {
+				return responseHttpClient.httpclient.execute(getHttpGet(), xmlResponseHandler);
+			}catch(SocketException e){
+				logger.debug("httpclient socket error! >> {}", e.getMessage());
+				responseHttpClient.close();
 			}
 			return null;
 		}
@@ -132,23 +145,35 @@ public class JSONHttpClient {
 	public static class PostMethod extends AbstractMethod {
 		private List<NameValuePair> nvps;
 
-		public PostMethod(JSONHttpClient jsonHttpClient, String url) {
-			super(jsonHttpClient, url);
+		public PostMethod(ResponseHttpClient responseHttpClient, String url) {
+			super(responseHttpClient, url);
 		}
 
-		@Override
-		public JSONObject request() throws ClientProtocolException, IOException {
+		private HttpPost getHttpPost(){
 			HttpPost httpost = new HttpPost(url);
 			if (nvps != null) {
 				httpost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 			}
-
-//			logger.debug("request >> {}", httpost);
+			return httpost;
+		}
+		@Override
+		public JSONObject requestJSON() throws ClientProtocolException, IOException {
 			try {
-				return jsonHttpClient.httpclient.execute(httpost, responseHandler);
+				return responseHttpClient.httpclient.execute(getHttpPost(), jsonResponseHandler);
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
-				jsonHttpClient.close();
+				responseHttpClient.close();
+			}
+			return null;
+		}
+		
+		@Override
+		public Document requestXML() throws ClientProtocolException, IOException {
+			try {
+				return responseHttpClient.httpclient.execute(getHttpPost(), xmlResponseHandler);
+			}catch(SocketException e){
+				logger.debug("httpclient socket error! >> {}", e.getMessage());
+				responseHttpClient.close();
 			}
 			return null;
 		}

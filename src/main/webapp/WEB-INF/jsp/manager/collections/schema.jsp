@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="org.jdom2.*"%>
+<%@page import="java.util.*"%>
+<%
+	Document document = (Document) request.getAttribute("document");
+
+%>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
@@ -26,8 +32,39 @@
 .fcol5 {
 	width: 150px;
 }
-
 </style>
+<script>
+	$(document).ready(function() {
+		$('#schema_table').on('click', 'tbody tr', function(event) {
+			$(this).addClass('checked').siblings().removeClass('checked');
+			//alert($(this).find("._field_multivalue").text());
+			var id = $(this).attr("id");
+			var store = $("#data_store").find("."+id+">._field_store").text();
+			var multivalue = $("#data_store").find("."+id+">._field_multivalue").text();
+			var multivalueDelimiter = $("#data_store").find("."+id+">._field_multivalue_delimiter").text();
+			if(store){
+				$('#_footer_field').find("._field_store").prop("checked", true);
+			}else{
+				$('#_footer_field').find("._field_store").removeAttr("checked");
+			}
+			if(multivalue == "true"){
+				$('#_footer_field').find("._field_multivalue").prop("checked", true);
+			}else{
+				$('#_footer_field').find("._field_multivalue").removeAttr("checked");
+			}
+			$('#_footer_field').find("._field_multivalue_delimiter").val(multivalueDelimiter);
+			//console.log($('#_footer_field').find("._field_store").prop("nodeName"), store, multivalue, multivalueDelimiter);
+			$.uniform.update();
+		});
+		$('#schema_table2').on('click', 'tbody tr', function(event) {
+			$(this).addClass('checked').siblings().removeClass('checked');
+		});
+	});
+	
+	function selectFieldRow(id){
+		
+	}
+</script>
 </head>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
@@ -111,9 +148,9 @@
 														<tr>
 															<th class="fcol1">#</th>
 															<th class="fcol2">Field</th>
+															<th class="fcol2">Name</th>
 															<th class="fcol3">Type</th>
 															<th class="fcol4">Length</th>
-															<th class="fcol5">Key</th>
 														</tr>
 													</thead>
 												</table>
@@ -122,91 +159,72 @@
 
 												<table id="schema_table" class="table table-bordered table-checkable">
 													<tbody>
-														<tr>
-															<td class="fcol1">1</td>
-															<td class="fcol2">id</td>
-															<td class="fcol3"><span class="label label-default">Int</span></td>
-															<td class="fcol4">4</td>
-															<td class="fcol5"><span class="label label-success">Yes</span></td>
-														</tr>
-														<tr>
-															<td>2</td>
-															<td>title</td>
-															<td><span class="label label-default">String</span></td>
-															<td class="hidden-xs">20</td>
-															<td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td>3</td>
-															<td>body</td>
-															<td><span class="label label-default">String</span></td>
-															<td class="hidden-xs">8</td>
-															<td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td>4</td>
-															<td>tags</td>
-															<td><span class="label label-default">AString</span></td>
-															<td class="hidden-xs">4</td>
-															<td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td>4</td>
-															<td>tags</td>
-															<td><span class="label label-default">AString</span></td>
-															<td class="hidden-xs">4</td>
-															<td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td>4</td>
-															<td>tags</td>
-															<td><span class="label label-default">AString</span></td>
-															<td class="hidden-xs">4</td>
-															<td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td>4</td>
-															<td>tags</td>
-															<td>char</td>
-															<td class="hidden-xs">4</td>
-															<td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td>4</td>
-															<td>tags</td>
-															<td>char</td>
-															<td class="hidden-xs">4</td>
-															<td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td>4</td>
-															<td>tags</td>
-															<td>char</td>
-															<td class="hidden-xs">4</td>
-															<td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td>4</td>
-															<td>tags</td>
-															<td>char</td>
-															<td class="hidden-xs">4</td>
-															<td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td>4</td>
-															<td>tags</td>
-															<td>char</td>
-															<td class="hidden-xs">4</td>
-															<td>&nbsp;</td>
-														</tr>
+													<%
+													Element root = document.getRootElement();
+													Element el = root.getChild("field-list");
+													if(el != null){
+													List<Element> fildList = el.getChildren();
+														for(int i = 0; i <fildList.size(); i++){
+															Element field = fildList.get(i);
+															String id = field.getAttributeValue("id");
+															String type = field.getAttributeValue("type");
+															String name = field.getAttributeValue("name", "");
+															String source = field.getAttributeValue("source", "");
+															String size = field.getAttributeValue("size", "");
+															String removeTag = field.getAttributeValue("removeTag", "");
+															String multiValue = field.getAttributeValue("multiValue", "false");
+															String multiValueDelimeter = field.getAttributeValue("multiValueDelimeter", "");
+															String store = field.getAttributeValue("store", "true");
+														%>
+														<tr id="_row_<%=id%>">
+															<td class="fcol1"><%=i+1 %></td>
+															<td class="fcol2"><%=id %></td>
+															<td class="fcol2"><%=name %></td>
+															<td class="fcol3"><%=type %></td>
+															<td class="fcol4"><%=size %></td>
+															
+															
+														</tr>														
+														<%
+														}
+													}
+													%>
 													</tbody>
 												</table>
 											</div>
 										</div>
 										
+										<div id="data_store" class="hidden">
+										<%
+										root = document.getRootElement();
+										el = root.getChild("field-list");
+										if(el != null){
+										List<Element> fildList = el.getChildren();
+											for(int i = 0; i <fildList.size(); i++){
+												Element field = fildList.get(i);
+												String id = field.getAttributeValue("id");
+												String type = field.getAttributeValue("type");
+												String name = field.getAttributeValue("name", "");
+												String source = field.getAttributeValue("source", "");
+												String size = field.getAttributeValue("size", "");
+												String removeTag = field.getAttributeValue("removeTag", "");
+												String multiValue = field.getAttributeValue("multiValue", "false");
+												String multiValueDelimeter = field.getAttributeValue("multiValueDelimiter", "");
+												String store = field.getAttributeValue("store", "true");
+											%>
+											<div class="_row_<%=id%>">
+												<div class="_field_store" ><%=store %></div>
+												<div class="_field_multivalue" ><%=multiValue %></div>
+												<div class="_field_multivalue_delimiter" ><%=multiValueDelimeter %></div>
+											</div>
+										<%
+											}
+										}
+										%>
+										</div>
 										
 										<!-- ---- -->
-										<div>
+										<!-- <div>
 											<div style="margin-right: 15px">
 												<table class="table table-bordered">
 													<thead>
@@ -239,141 +257,21 @@
 															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
 															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
 														</tr>
-														<tr>
-															<td>2</td>
-															<td class="fcol2"><input type="text" class="form-control"></td>
-															<td class="fcol3">
-															<select class="select2">
-																<option value="int">Int</option>
-																<option value="int">String</option>
-																<option value="int">AString</option>
-																<option value="int">Long</option>
-																<option value="int">Datetime</option>
-															</select>
-															</td>
-															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
-															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
-														</tr>
-														<tr>
-															<td>3</td>
-															<td class="fcol2"><input type="text" class="form-control"></td>
-															<td class="fcol3">
-															<select class="select2">
-																<option value="int">Int</option>
-																<option value="int">String</option>
-																<option value="int">AString</option>
-																<option value="int">Long</option>
-																<option value="int">Datetime</option>
-															</select>
-															</td>
-															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
-															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
-														</tr>
-														<tr>
-															<td>4</td>
-															<td class="fcol2"><input type="text" class="form-control"></td>
-															<td class="fcol3">
-															<select class="select2">
-																<option value="int">Int</option>
-																<option value="int">String</option>
-																<option value="int">AString</option>
-																<option value="int">Long</option>
-																<option value="int">Datetime</option>
-															</select>
-															</td>
-															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
-															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
-														</tr>
-														<tr>
-															<td>5</td>
-															<td class="fcol2"><input type="text" class="form-control"></td>
-															<td class="fcol3">
-															<select class="select2">
-																<option value="int">Int</option>
-																<option value="int">String</option>
-																<option value="int">AString</option>
-																<option value="int">Long</option>
-																<option value="int">Datetime</option>
-															</select>
-															</td>
-															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
-															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
-														</tr>
-														<tr>
-															<td>6</td>
-															<td class="fcol2"><input type="text" class="form-control"></td>
-															<td class="fcol3">
-															<select class="select2">
-																<option value="int">Int</option>
-																<option value="int">String</option>
-																<option value="int">AString</option>
-																<option value="int">Long</option>
-																<option value="int">Datetime</option>
-															</select>
-															</td>
-															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
-															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
-														</tr>
-														<tr>
-															<td>7</td>
-															<td class="fcol2"><input type="text" class="form-control"></td>
-															<td class="fcol3">
-															<select class="select2">
-																<option value="int">Int</option>
-																<option value="int">String</option>
-																<option value="int">AString</option>
-																<option value="int">Long</option>
-																<option value="int">Datetime</option>
-															</select>
-															</td>
-															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
-															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
-														</tr>
-														<tr>
-															<td>8</td>
-															<td class="fcol2"><input type="text" class="form-control"></td>
-															<td class="fcol3">
-															<select class="select2">
-																<option value="int">Int</option>
-																<option value="int">String</option>
-																<option value="int">AString</option>
-																<option value="int">Long</option>
-																<option value="int">Datetime</option>
-															</select>
-															</td>
-															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
-															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
-														</tr>
-														<tr>
-															<td>9</td>
-															<td class="fcol2"><input type="text" class="form-control"></td>
-															<td class="fcol3">
-															<select class="select2">
-																<option value="int">Int</option>
-																<option value="int">String</option>
-																<option value="int">AString</option>
-																<option value="int">Long</option>
-																<option value="int">Datetime</option>
-															</select>
-															</td>
-															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
-															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
-														</tr>
 													</tbody>
 												</table>
 											</div>
-										</div>
+										</div> -->
 										
 										<!-- --- -->
 
 										<div class="row form-horizontal">
-											<div class="table-footer ">
+											<div id="_footer_field" class="table-footer ">
 												<div class="col-md-12">
 													<div class="form-group">
 														<label class="col-md-3 control-label">Store:</label>
 														<div class="col-md-9">
 															<label class="checkbox"> <input type="checkbox"
-																class="uniform" value="" checked="true" > Yes
+																class="uniform _field_store"> Yes
 															</label>
 														</div>
 													</div>
@@ -383,7 +281,7 @@
 														<label class="col-md-3 control-label">Multi Value:</label>
 														<div class="col-md-9">
 															<label class="checkbox"> <input type="checkbox"
-																class="uniform" value=""> Yes
+																class="uniform _field_multivalue" value=""> Yes
 															</label>
 														</div>
 													</div>
@@ -394,7 +292,7 @@
 														<label class="col-md-3 control-label">Multi Value
 															Delimiter: </label>
 														<div class="col-md-9">
-															<input type="text" name="regular" class="form-control">
+															<input type="text" name="regular" class="form-control _field_multivalue_delimiter">
 														</div>
 													</div>
 												</div>

@@ -2,7 +2,8 @@ package org.fastcatsearch.console.web.controller.manager;
 
 import javax.servlet.http.HttpSession;
 
-import org.fastcatsearch.console.web.http.JSONHttpClient;
+import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.jdom2.Document;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,19 @@ public class CollectionsController {
 	private static Logger logger = LoggerFactory.getLogger(CollectionsController.class);
 	
 	@RequestMapping("/schema")
-	public ModelAndView schema(@PathVariable String collectionId) {
+	public ModelAndView schema(HttpSession session, @PathVariable String collectionId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/collections/schema.xml";
+		Document document = null;
+		try {
+			document = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/schema");
+		mav.addObject("document", document);
 		return mav;
 	}
 	
@@ -70,11 +81,11 @@ public class CollectionsController {
 	@RequestMapping("/indexing")
 	public ModelAndView indexing(HttpSession session, @PathVariable String collectionId) {
 		
-		JSONHttpClient httpClient = (JSONHttpClient) session.getAttribute("httpclient");
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/indexing-status";
 		JSONObject indexingStatus = null;
 		try {
-			indexingStatus = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).request();
+			indexingStatus = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestJSON();
 		} catch (Exception e) {
 			logger.error("", e);
 		}
