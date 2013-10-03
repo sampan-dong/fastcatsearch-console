@@ -47,10 +47,20 @@ public class CollectionsController {
 	}
 	
 	@RequestMapping("/datasource")
-	public ModelAndView datasource(@PathVariable String collectionId) {
+	public ModelAndView datasource(HttpSession session, @PathVariable String collectionId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/collections/datasource.xml";
+		Document document = null;
+		try {
+			document = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/datasource");
 		mav.addObject("collectionId", collectionId);
+		mav.addObject("document", document);
 		return mav;
 	}
 	
@@ -79,10 +89,20 @@ public class CollectionsController {
 	}
 	
 	@RequestMapping("/shard")
-	public ModelAndView shard(@PathVariable String collectionId) {
+	public ModelAndView shard(HttpSession session, @PathVariable String collectionId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/collections/shardList.xml";
+		Document document = null;
+		try {
+			document = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/shard");
 		mav.addObject("collectionId", collectionId);
+		mav.addObject("document", document);
 		return mav;
 	}
 	

@@ -16,7 +16,6 @@
 <div id="sidebar" class="sidebar-fixed">
 	<div id="sidebar-content">
 		<!--=== Navigation ===-->
-		CAT = <%=request.getParameter("lcat") %> : <%=request.getParameter("mcat") %> : <%=request.getParameter("scat") %>
 		<ul id="nav">
 			<%
 				boolean lcatCurrent = "dictionary".equals(lcat);
@@ -87,7 +86,7 @@
 					Analysis <span class="label label-info pull-right"><%=analysisPluginList.length() %></span>
 			</a>
 				<ul class="sub-menu">
-					<li class="<c:if test="${ param.mcat  == 'plugin'}">current</c:if>"><a href="<c:url value="/manager/analysis/plugin.html"/>"> <i
+					<li class="<%=(lcatCurrent && "plugin".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/analysis/plugin.html"/>"> <i
 							class="icon-cogs"></i> Plugin
 					</a></li>
 					<%
@@ -110,7 +109,7 @@
 			<%
 				lcatCurrent = "logs".equals(lcat);
 			%>
-			<li class="<c:if test="${ param.lcat  == 'logs'}">current</c:if>"><a href="javascript:void(0);"> <i class="icon-list-ol"></i>
+			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-list-ol"></i>
 							Logs
 			</a>
 				<ul class="sub-menu">

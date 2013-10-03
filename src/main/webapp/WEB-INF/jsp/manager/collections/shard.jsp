@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="org.jdom2.*"%>
+<%@page import="java.util.*"%>
+<%
+	Document document = (Document) request.getAttribute("document");
+
+%>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
@@ -65,6 +71,11 @@
 								</tr>
 							</thead>
 							<tbody>
+							
+								<%
+								Element root = document.getRootElement();
+								//String collectionName = root.getChildText("name");
+								%>
 								<tr>
 									<td class="checkbox-column">
 										<input type="checkbox" class="uniform">
