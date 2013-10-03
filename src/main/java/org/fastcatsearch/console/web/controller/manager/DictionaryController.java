@@ -1,6 +1,7 @@
 package org.fastcatsearch.console.web.controller.manager;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -8,10 +9,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/manager/dictionary")
 public class DictionaryController {
 	
-	@RequestMapping("/{id}/index")
-	public ModelAndView index() {
+	@RequestMapping("/{analysisId}/index")
+	public ModelAndView index(@PathVariable String analysisId) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/dictionary/index");
+		mav.addObject("analysisId", analysisId);
 		return mav;
 	}
 }

@@ -33,9 +33,9 @@ $(document).ready(function(){
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 	<div id="container">
-		<c:import url="${ROOT_PATH}/inc/sideMenu.jsp">
+		<c:import url="${ROOT_PATH}/manager/sideMenu.jsp">
 			<c:param name="lcat" value="collections" />
-			<c:param name="mcat" value="sample" />
+			<c:param name="mcat" value="${collectionId}" />
 			<c:param name="scat" value="indexing" />
 		</c:import>
 		<div id="content">

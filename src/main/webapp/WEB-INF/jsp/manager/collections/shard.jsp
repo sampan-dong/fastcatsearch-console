@@ -10,9 +10,8 @@
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 	<div id="container">
-		<c:import url="${ROOT_PATH}/inc/sideMenu.jsp">
+		<c:import url="${ROOT_PATH}/maanger/sideMenu.jsp">
 			<c:param name="lcat" value="collections" />
-			<c:param name="mcat" value="sample" />
 			<c:param name="scat" value="shard" />
 		</c:import>
 		<div id="content">

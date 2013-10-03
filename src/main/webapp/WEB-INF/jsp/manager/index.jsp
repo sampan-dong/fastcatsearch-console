@@ -13,7 +13,7 @@
 <c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 
 <div id="container">
-	<c:import url="${ROOT_PATH}/inc/sideMenu.jsp" />
+	<c:import url="${ROOT_PATH}/manager/sideMenu.jsp" />
 	<div id="content">
 	<div class="container">
 		<!-- Breadcrumbs line -->

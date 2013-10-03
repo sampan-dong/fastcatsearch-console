@@ -32,6 +32,7 @@ public class CollectionsController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/schema");
+		mav.addObject("collectionId", collectionId);
 		mav.addObject("document", document);
 		mav.addObject("tab", tab);
 		return mav;
@@ -41,6 +42,7 @@ public class CollectionsController {
 	public ModelAndView data(@PathVariable String collectionId, @RequestParam("shardId") String shardId) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/data");
+		mav.addObject("collectionId", collectionId);
 		return mav;
 	}
 	
@@ -48,6 +50,7 @@ public class CollectionsController {
 	public ModelAndView datasource(@PathVariable String collectionId) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/datasource");
+		mav.addObject("collectionId", collectionId);
 		return mav;
 	}
 	
@@ -55,6 +58,7 @@ public class CollectionsController {
 	public ModelAndView datasourceFile(@PathVariable String collectionId) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/datasourceFile");
+		mav.addObject("collectionId", collectionId);
 		return mav;
 	}
 	
@@ -62,6 +66,7 @@ public class CollectionsController {
 	public ModelAndView datasourceFileEdit(@PathVariable String collectionId) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/datasourceFileEdit");
+		mav.addObject("collectionId", collectionId);
 		return mav;
 	}
 	
@@ -69,6 +74,7 @@ public class CollectionsController {
 	public ModelAndView datasourceDB(@PathVariable String collectionId) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/datasourceDB");
+		mav.addObject("collectionId", collectionId);
 		return mav;
 	}
 	
@@ -76,6 +82,7 @@ public class CollectionsController {
 	public ModelAndView shard(@PathVariable String collectionId) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/shard");
+		mav.addObject("collectionId", collectionId);
 		return mav;
 	}
 	
@@ -99,10 +106,21 @@ public class CollectionsController {
 		return mav;
 	}
 	
-	@RequestMapping("/settings")
-	public ModelAndView settings(@PathVariable String collectionId) {
+	@RequestMapping("/config")
+	public ModelAndView settings(HttpSession session, @PathVariable String collectionId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/collections/config.xml";
+		Document document = null;
+		try {
+			document = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/collections/settings");
+		mav.setViewName("manager/collections/config");
+		mav.addObject("collectionId", collectionId);
+		mav.addObject("document", document);
 		return mav;
 	}
 }

@@ -10,9 +10,9 @@
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 	<div id="container">
-		<c:import url="${ROOT_PATH}/inc/sideMenu.jsp">
+		<c:import url="${ROOT_PATH}/manager/sideMenu.jsp">
 			<c:param name="lcat" value="analysis" />
-			<c:param name="mcat" value="korean" />
+			<c:param name="mcat" value="${analysisId}" />
 		</c:import>
 		<div id="content">
 			<div class="container">
