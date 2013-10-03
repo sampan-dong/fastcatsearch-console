@@ -72,11 +72,11 @@
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 	<div id="container">
-	 <jsp:include page="${ROOT_PATH}/manager/sideMenu.jsp" flush="true">
-	 	<jsp:param name="lcat" value="collections"/>
-	 	<jsp:param name="mcat" value="${collectionId}" />
-		<jsp:param name="scat" value="schema" />
-	 </jsp:include>
+	 <c:import url="${ROOT_PATH}/manager/sideMenu.jsp" >
+	 	<c:param name="lcat" value="collections"/>
+	 	<c:param name="mcat" value="${collectionId}" />
+		<c:param name="scat" value="schema" />
+	 </c:import>
 		
 		<div id="content">
 			<div class="container">
