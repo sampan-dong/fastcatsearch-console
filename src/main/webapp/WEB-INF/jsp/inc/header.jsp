@@ -17,6 +17,7 @@
 		<link rel="stylesheet" type="text/css" href="plugins/jquery-ui/jquery.ui.1.10.2.ie.css"/>
 	<![endif]-->
 
+
 <!-- Theme -->
 <link href="${contextPath}/resources/assets/css/main.css" rel="stylesheet" type="text/css" />
 <link href="${contextPath}/resources/assets/css/plugins.css" rel="stylesheet" type="text/css" />

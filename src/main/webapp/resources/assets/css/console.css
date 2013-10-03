@@ -1,3 +1,27 @@
+.fcol1 {
+	width: 30px;
+}
+
+.fcol1-2 {
+	width: 100px;
+}
+
+.fcol2 {
+	width: 150px;
+}
+
+.fcol3 {
+	width: 300px;
+}
+
+.fcol4 {
+	width: 400px;
+}
+
+.fcol5 {
+	width: 500px;
+}
+
 .form-actions-sm {
   padding: 10px 20px 10px;
   margin-top: 10px;
@@ -5,4 +29,15 @@
   background-color: #f5f5f5;
   border-top: 1px solid #e5e5e5;
   *zoom: 1;
+}
+.badge-sm {
+	padding: 3px 4px;
+}
+
+.table-fixed {
+	table-layout:fixed;
+}
+
+.table-fixed  td {
+	word-break:break-all;
 }

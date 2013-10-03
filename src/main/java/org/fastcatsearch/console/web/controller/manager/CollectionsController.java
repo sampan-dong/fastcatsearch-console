@@ -20,7 +20,7 @@ public class CollectionsController {
 	private static Logger logger = LoggerFactory.getLogger(CollectionsController.class);
 	
 	@RequestMapping("/schema")
-	public ModelAndView schema(HttpSession session, @PathVariable String collectionId) {
+	public ModelAndView schema(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue="fields", required=false) String tab) {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/schema.xml";
 		Document document = null;
@@ -33,6 +33,7 @@ public class CollectionsController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/schema");
 		mav.addObject("document", document);
+		mav.addObject("tab", tab);
 		return mav;
 	}
 	

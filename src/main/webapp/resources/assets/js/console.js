@@ -1,3 +1,44 @@
+if (typeof console == "undefined") var console = { log: function() {} };
+
+function nl2br(str){
+	return $.trim(str).replace(/\n/g,"<br>");
+}
+
+function br2nl(str){
+	return str.replace(/(<br>)|(<br \/>)|(<p>)|(<\/p>)/g,"\n");
+}
+
+function submitGet(url, data){
+	submitForm(url, data, "GET");
+}
+function submitPost(url, data){
+	submitForm(url, data, "POST");
+}
+//가상의 폼을 만들어서 sumit한다.
+function submitForm(url, data, method){
+	
+    $('body').append($('<form/>', {
+		id : 'jQueryPostItForm',
+		method : method,
+		action : url
+	}));
+
+	for ( var i in data) {
+		$('#jQueryPostItForm').append($('<input/>', {
+			type : 'hidden',
+			name : i,
+			value : data[i]
+		}));
+	}
+
+	$('#jQueryPostItForm').submit();
+}
+
+
+
+
+
+
 var PROXY_REQUEST_URI = window.location.protocol + "//" + window.location.host
 		+ "/console/main/request.html";
 
