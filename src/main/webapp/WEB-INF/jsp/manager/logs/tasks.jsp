@@ -14,6 +14,11 @@ color: #adadad;
 font-size: 11px;
 }
 </style>
+<script>
+$(document).ready(function(){
+	startPollingAllTaskState();
+});
+</script>
 </head>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
@@ -43,7 +48,7 @@ font-size: 11px;
 				</div>
 				<!-- /Page Header -->
 
-				<table class="table table-hover table-bordered ">
+				<table class="table table-hover table-bordered table-highlight-head" id="_logs_tasks_table">
 					<thead>
 						<tr>
 							<th>#</th>

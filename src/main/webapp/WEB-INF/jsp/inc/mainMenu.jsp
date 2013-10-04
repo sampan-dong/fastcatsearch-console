@@ -12,10 +12,10 @@ $(document).ready(function(){
 	}); */
 	
 	$('#running_tasks_dropdown').on('show.bs.dropdown', function () {
-		startPollingAllTaskState();
+		startPollingAllTaskStateForTaskBar();
 	});
 	$('#running_tasks_dropdown').on('hide.bs.dropdown', function () {
-		stopPollingAllTaskState();
+		stopPollingAllTaskStateForTaskBar();
 	});
 });
 </script>

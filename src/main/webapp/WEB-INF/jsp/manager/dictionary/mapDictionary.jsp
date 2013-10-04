@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="ROOT_PATH" value="../.." scope="request" />
+<c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>
@@ -34,12 +34,13 @@
 					</div>
 				</div>
 				<!-- /Page Header -->
+
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#tab_dictionary_overview" data-toggle="tab">Overview</a></li>
-						<li class=""><a href="javascript:loadToTab('set/list.html', {dictionaryId: 'user', length: 40}, '#tab_dictionary_overview')" >User</a></li>
+						<li class=""><a href="#tab_user_dictionary" data-toggle="tab">User</a></li>
 						<li class=""><a href="#tab_synonym_dictionary" data-toggle="tab">Synonym</a></li>
-						<li class=""><a href="javascript:loadToTab('set/list.html', {dictionaryId: 'set', length: 40}, '#tab_dictionary_overview')">Stop</a></li>
+						<li class=""><a href="#tab_stop_dictionary" data-toggle="tab">Stop</a></li>
 						<li class=""><a href="#tab_system_dictionary" data-toggle="tab">System</a></li>
 					</ul>
 					<div class="tab-content row">

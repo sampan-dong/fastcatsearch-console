@@ -7,7 +7,7 @@
 	Document document = (Document) request.getAttribute("document");
 
 %>
-<c:set var="ROOT_PATH" value="../.." />
+<c:set var="ROOT_PATH" value="../.." scope="request"/>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>

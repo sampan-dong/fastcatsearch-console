@@ -34,6 +34,17 @@ function submitForm(url, data, method){
 	$('#jQueryPostItForm').submit();
 }
 
+function loadToTab(url, data, id){
+	console.log(url, data, id);
+	$.ajax({
+		url : url,
+		data : data,
+		type : "POST",
+		success : function(response) {
+			$(id).html(response);
+		}
+	});
+} 
 
 
 
@@ -121,34 +132,94 @@ function stopPollingIndexTaskState(){
 }
 
 
-
-
-////////////task polling
-
-var pollingAllTaskStateFlag = false;
+var pollingTimeout = 3000;
+var pollingInterval = 1000;
+var pollingAllTaskURI = "/management/common/all-task-state.json";
+////////////task polling for tasks page
 
 function startPollingAllTaskState(){
-	pollingAllTaskStateFlag = true;
 	// /indexing/state
 	(function poll() {
 	    $.ajax({
 	        url: PROXY_REQUEST_URI,
 	        type: "GET",
 	        data : {
-				uri : "/common/all-task-state"
+				uri : pollingAllTaskURI
 			},
 	        dataType: "json",
-	        complete: function() { if(pollingAllTaskStateFlag) {setTimeout(function() {poll();}, 2000); } },
-	        timeout: 2000,
+	        complete: function() { setTimeout(function() {poll();}, pollingInterval);},
+	        timeout: pollingTimeout,
 	        success: function(data) {
-	        	console.log("polling task", data, data.taskState);
+	        	console.log("polling task for page", data, data.taskState);
+	        	//$("#running_tasks_top").find(".count").text(data.taskState.length);
 	        	
-	        	$("#running_tasks_top").find("li").not(".title").remove();
-	        	$("#running_tasks_top").find(".count").text(data.taskState.length);
+	        	//task페이지가 존재하면.
+	        	if($("#_logs_tasks_table").length > 0){
+	        		$("#_logs_tasks_table").find("tbody tr").remove();
+	        	}
+	        	
 	        	if(data.taskState.length > 0){
 	        		
 	        		for(var i = 0; i < data.taskState.length; i++){
 	        			
+			        	if($("#_logs_tasks_table").length > 0){
+			        		
+			        		var $task = $("<tr><td class=\"_task_num\"></td><td><span class=\"task\"><span class=\"desc\"></span> <span class=\"percent\"></span></span>"
+			        			+"<div class=\"progress progress-small progress-striped active\"><div style=\"width: 20%;\" class=\"progress-bar progress-bar-info\"></div></div>"
+			        			+"</td><td class=\"_task_eclapsed\"></td><td class=\"_task_startTime\">2013-09-10 12:35:00</td></tr>");
+			        		$task.find("._task_num").text(i+1);
+			        		$task.find(".desc").text(data.taskState[i].summary);
+			        		$task.find("._task_eclapsed").text(data.taskState[i].elapsed);
+			        		$task.find("._task_startTime").text(data.taskState[i].startTime);
+			        		if(data.taskState[i].progress != -1){
+				        		$task.find(".percent").text(data.taskState[i].progress+"%");
+				        		$task.find(".progress-bar").css("width", data.taskState[i].progress+"%");
+				        	}else{
+				        		$task.find(".progress-bar").css("width", "50%");
+				        	}
+			        		$("#_logs_tasks_table").append($task);
+			        	}
+			        	
+	        		}
+	        		
+	        	}
+	        }
+	    });
+	})();
+}
+
+
+////////////task polling for taskbar
+
+var pollingAllTaskStateFlagForTaskBar = false;
+
+function startPollingAllTaskStateForTaskBar(){
+	if(pollingAllTaskStateFlagForTaskBar){
+		return;
+	}
+	pollingAllTaskStateFlagForTaskBar = true;
+	// /indexing/state
+	(function poll() {
+	    $.ajax({
+	        url: PROXY_REQUEST_URI,
+	        type: "GET",
+	        data : {
+				uri : pollingAllTaskURI
+			},
+	        dataType: "json",
+	        complete: function() { if(pollingAllTaskStateFlagForTaskBar) {setTimeout(function() {poll();}, pollingInterval); } },
+	        timeout: pollingTimeout,
+	        success: function(data) {
+//	        	console.log("polling task for taskbar", data, data.taskState);
+	        	
+	        	$("#running_tasks_top").find("li").not(".title").remove();
+	        	$("#running_tasks_top").find(".count").text(data.taskState.length);
+	        	
+	        	if(data.taskState.length > 0){
+	        		
+	        		for(var i = 0; i < data.taskState.length; i++){
+	        			
+	        			//상단 task 요약.
 			        	var $task = $("<li><a href=\"javascript:void(0);\"><span class=\"task\"><span class=\"desc\">11</span><span class=\"percent\"></span></span>"
 								+"<div class=\"progress progress-small progress-striped active\"><div style=\"width: 1%;\" class=\"progress-bar progress-bar-info\"></div>"
 								+"</div></a></li>");
@@ -169,8 +240,8 @@ function startPollingAllTaskState(){
 }
 
 
-function stopPollingAllTaskState(){
-	pollingAllTaskStateFlag = false;
+function stopPollingAllTaskStateForTaskBar(){
+	pollingAllTaskStateFlagForTaskBar = false;
 }
 
 
