@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="org.json.*"%>
+
+<%
+	JSONArray nodeList = (JSONArray) request.getAttribute("nodeList");
+%>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
@@ -73,50 +78,37 @@ font-size: 11px;
 									<th>Name</th>
 									<th>IP Address</th>
 									<th>Port</th>
-									<th>Status</th>
+									<th>Enabled</th>
+									<th>Active</th>
 								</tr>
 							</thead>
 							<tbody>
+							<%
+							for(int i=0; i < nodeList.length(); i++){
+								String id = nodeList.getJSONObject(i).getString("id");
+								String name = nodeList.getJSONObject(i).getString("name");
+								String host = nodeList.getJSONObject(i).getString("host");
+								int port = nodeList.getJSONObject(i).getInt("port");
+								boolean enabled = nodeList.getJSONObject(i).getBoolean("enabled");
+								boolean active = nodeList.getJSONObject(i).getBoolean("active");
+								
+								String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
+								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
+							%>
 								<tr>
 									<td class="checkbox-column">
 										<input type="checkbox" class="uniform">
 									</td>
-									<td><strong>node1</strong></td>
-									<td>node1</td>
-									<td>192.168.0.11</td>
-									<td>9090</td>
-									<td><span class="text-primary"><span class="glyphicon glyphicon-ok-sign"></span> Alive</span></td>
+									<td><strong><%=id %></strong></td>
+									<td><%=name %></td>
+									<td><%=host %></td>
+									<td><%=port %></td>
+									<td><%=enabledStatus %></td>
+									<td><%=activeStatus %></td>
 								</tr>
-								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
-									<td><strong>node2</strong></td>
-									<td>node2</td>
-									<td>192.168.0.12</td>
-									<td>9090</td>
-									<td><span class="text-primary"><span class="glyphicon glyphicon-ok-sign"></span> Alive</span></td>
-								</tr>
-								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
-									<td><strong>node3</strong></td>
-									<td>node3</td>
-									<td>192.168.0.13</td>
-									<td>9090</td>
-									<td><span class="text-danger"><span class="glyphicon glyphicon-warning-sign"></span> Fail</span></td>
-								</tr>
-								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
-									<td><strong>node4</strong></td>
-									<td>node4</td>
-									<td>192.168.0.14</td>
-									<td>9090</td>
-									<td><span class="text-primary"><span class="glyphicon glyphicon-ok-sign"></span> Alive</span></td>
-								</tr>
+							<%
+							}
+							%>
 							</tbody>
 						</table>
 					</div>
