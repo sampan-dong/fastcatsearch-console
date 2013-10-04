@@ -185,7 +185,7 @@
 											</div>
 											<div class="innera" style="overflow-y: scroll; height: 300px;">
 
-												<table id="schema_table_fields" class="table table-bordered table-checkable table-condensed">
+												<table id="schema_table_fields" class="table table-bordered table-checkable table-condensed table-selectable">
 													<tbody>
 													<%
 													root = document.getRootElement();
@@ -463,7 +463,7 @@
 											</div>
 											<div class="innera" style="overflow-y: scroll; height: 300px;">
 
-												<table id="schema_table_search_indexes" class="table table-bordered table-checkable table-condensed table-fixed">
+												<table id="schema_table_search_indexes" class="table table-bordered table-checkable table-condensed table-fixed table-selectable">
 													<tbody>
 													<%
 													root = document.getRootElement();

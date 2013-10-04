@@ -55,6 +55,10 @@
 								<a href="javascript:void(0);" class="btn btn-sm">
 									<span class="glyphicon glyphicon-minus-sign"></span> Remove Shard
 								</a>
+								&nbsp;
+								<a href="javascript:void(0);" class="btn btn-sm">
+									<span class="icon-edit"></span> Edit Shard
+								</a>
 							</div>
 							
 						</div>
@@ -74,62 +78,36 @@
 							
 								<%
 								Element root = document.getRootElement();
-								//String collectionName = root.getChildText("name");
+								List<Element> list = root.getChildren();
+								
+								for(int i=0; i < list.size(); i++){
+									Element el = list.get(i);
+									String shardId = el.getChildText("id");
+ 									String shardName = el.getChildText("name");
+									String filter = el.getChildText("filter");
+									List<Element> dataNodeList = el.getChildren("data-node");
+									String dataNodeString = "";
+									
+									for(int j=0; j < dataNodeList.size(); j++){
+										Element dataNode = dataNodeList.get(j);
+										if(j > 0){
+											dataNodeString += ", ";
+										}
+										dataNodeString += dataNode.getChildText("node");
+									}
 								%>
 								<tr>
 									<td class="checkbox-column">
 										<input type="checkbox" class="uniform">
 									</td>
-									<td>*<strong>VOL</strong></td>
-									<td>TOTAL</td>
-									<td></td>
-									<td>Node1, Node2</td>
+									<td><strong><%=shardId %></strong></td>
+									<td><%=shardName %></td>
+									<td><%=filter %></td>
+									<td><%=dataNodeString %></td>
 								</tr>
-								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
-									<td><strong>VOL1</strong></td>
-									<td>ELEC</td>
-									<td>cate1=(123,456,789)</td>
-									<td>Node1, Node2</td>
-								</tr>
-								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
-									<td><strong>VOL2</strong></td>
-									<td>COMPUTER</td>
-									<td>cate1=a01</td>
-									<td>Node1, Node2</td>
-								</tr>
-								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
-									<td><strong>VOL2011</strong></td>
-									<td>PRODUCT 2011</td>
-									<td>year<2012</td>
-									<td>Node1, Node2</td>
-								</tr>
-								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
-									<td><strong>VOL2012</strong></td>
-									<td>PRODUCT 2012</td>
-									<td>year>=2012<2013</td>
-									<td>Node1, Node2</td>
-								</tr>
-								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
-									<td><strong>VOL2013</strong></td>
-									<td>PRODUCT 2013</td>
-									<td>year>2013</td>
-									<td>Node1, Node2</td>
-								</tr>
+								<%
+								}
+								%>
 							</tbody>
 						</table>
 					</div>
