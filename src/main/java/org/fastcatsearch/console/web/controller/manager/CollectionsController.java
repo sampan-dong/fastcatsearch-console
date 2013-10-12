@@ -39,10 +39,41 @@ public class CollectionsController {
 	}
 	
 	@RequestMapping("/data")
-	public ModelAndView data(@PathVariable String collectionId, @RequestParam("shardId") String shardId) {
+	public ModelAndView data(HttpSession session, @PathVariable String collectionId, @RequestParam("shardId") String shardId
+			, @RequestParam(defaultValue = "1") Integer pageNo) {
+		
+		int PAGE_SIZE = 10;
+		int start = 0;
+		int end = 0;
+		
+		if(pageNo > 0){
+			start = (pageNo - 1) * PAGE_SIZE;
+			end = start + PAGE_SIZE - 1;
+		}
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/collections/index-data.json";
+		JSONObject indexData = null;
+		try {
+			indexData = httpClient.httpGet(requestUrl)
+					.addParameter("collectionId", collectionId)
+					.addParameter("shardId", shardId)
+					.addParameter("start", String.valueOf(start))
+					.addParameter("end", String.valueOf(end))
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		logger.debug("indexData >> {}",indexData);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/data");
 		mav.addObject("collectionId", collectionId);
+		mav.addObject("shardId", shardId);
+		mav.addObject("start", start);
+		mav.addObject("pageNo", pageNo);
+		mav.addObject("pageSize", PAGE_SIZE);
+		mav.addObject("indexDataResult", indexData);
 		return mav;
 	}
 	

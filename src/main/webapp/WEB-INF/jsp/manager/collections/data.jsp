@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="org.json.*"%>
+<%
+JSONObject indexDataResult = (JSONObject) request.getAttribute("indexDataResult");
+JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
+
+%>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
@@ -75,133 +81,56 @@
 										</div>
 										<div style="overflow: scroll; height: 400px;">
 	
+											<%
+											if(indexDataList.length() > 0){
+											%>
 											<table class="table table-hover table-bordered" style="white-space:nowrap;table-layout:fixed; ">
 												<thead>
+												<%
+													JSONObject indexHeaderData = indexDataList.getJSONObject(0);
+													JSONObject headerRow = indexHeaderData.getJSONObject("row");
+													JSONArray names = headerRow.names();
+												%>
 													<tr>
 														<th class="width100">#</th>
-														<th class="width100">ID</th>
-														<th class="width100">TITLE</th>
-														<th class="width100">BODY</th>
-														<th class="width100">REGDT</th>
-														<th class="width100">TAGS</th>
-														<th class="width100">YEAR</th>
-														<th class="width100">TAGS</th>
-														<th class="width100">YEAR</th>
-														<th class="width100">TAGS</th>
-														<th class="width100">YEAR</th>
-														<th class="width100">TAGS</th>
-														<th class="width100">YEAR</th>
-														<th class="width100">TAGS</th>
-														<th class="width100">YEAR</th>
+														<th class="width100">segment</th>
+														<%
+														for( int i = 0 ; i < names.length() ; i++ ){
+														%>
+														<th class="width100"><%=names.getString(i) %></th>
+														<%
+														}
+														%>
 													</tr>
 												</thead>
 												<tbody>
+												<%
+												for( int i = 0 ; i < indexDataList.length() ; i++ ){
+													JSONObject indexData = indexDataList.getJSONObject(i);
+												%>
 													<tr>
 														<td class="width100">1</td>
-														<td class="width100">123</td>
-														<td class="width100" style="overflow:hidden;">this is sample</td>
-														<td class="width100"><div style="overflow:hidden;">this is sample. this is sample. this is sample. this is sample. this is sample.</div></td>
-														<td class="width100">2013-09-01</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
+														<td class="width100"><%=indexData.getInt("segmentId") %></td>
+														<%
+														JSONObject row = indexData.getJSONObject("row");
+														
+														for( int j = 0 ; j < row.length() ; j++ ){
+															String fieldName = names.getString(j);
+														%>
+														<td class="width100" style="overflow:hidden;"><%=row.getString(fieldName) %></td>
+														<%
+														}
+														%>
 													</tr>
-													<tr>
-														<td class="width100">2</td>
-														<td class="width100">124</td>
-														<td class="width100" style="overflow:hidden;">this is sample</td>
-														<td class="width100" style="overflow:hidden;">this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.</td>
-														<td class="width100">2013-09-01</td>
-														<td class="width100">sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-													</tr>
-													<tr>
-														<td class="width100">2</td>
-														<td class="width100">124</td>
-														<td class="width100">this is sample</td>
-														<td class="width100" style="overflow:hidden;">this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.</td>
-														<td class="width100">2013-09-01</td>
-														<td class="width100">sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-														<td class="width100" style="overflow:hidden;">sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search
-														,sample,search,sample,search,sample,search</td>
-														<td class="width100">2013</td>
-													</tr>
+												<%
+												}
+												%>
 													
 												</tbody>
 											</table>
+											<%
+											}
+											%>
 										</div>
 	
 										<div class="table-footer">
