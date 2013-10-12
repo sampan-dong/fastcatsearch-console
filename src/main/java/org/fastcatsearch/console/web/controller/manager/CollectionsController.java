@@ -64,30 +64,6 @@ public class CollectionsController {
 		return mav;
 	}
 	
-	@RequestMapping("/datasource/file")
-	public ModelAndView datasourceFile(@PathVariable String collectionId) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/collections/datasourceFile");
-		mav.addObject("collectionId", collectionId);
-		return mav;
-	}
-	
-	@RequestMapping("/datasource/file/edit")
-	public ModelAndView datasourceFileEdit(@PathVariable String collectionId) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/collections/datasourceFileEdit");
-		mav.addObject("collectionId", collectionId);
-		return mav;
-	}
-	
-	@RequestMapping("/datasource/db")
-	public ModelAndView datasourceDB(@PathVariable String collectionId) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/collections/datasourceDB");
-		mav.addObject("collectionId", collectionId);
-		return mav;
-	}
-	
 	@RequestMapping("/shard")
 	public ModelAndView shard(HttpSession session, @PathVariable String collectionId) {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
@@ -110,7 +86,7 @@ public class CollectionsController {
 	public ModelAndView indexing(HttpSession session, @PathVariable String collectionId) {
 		
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/collections/indexing-status";
+		String requestUrl = "/management/collections/indexing-status.json";
 		JSONObject indexingStatus = null;
 		try {
 			indexingStatus = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestJSON();
@@ -119,12 +95,69 @@ public class CollectionsController {
 		}
 		logger.debug("indexingStatus >> {}",indexingStatus);
 		
+		requestUrl = "/management/collections/indexing-result.json";
+		JSONObject indexingResult = null;
+		try {
+			indexingResult = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		logger.debug("indexingResult >> {}",indexingResult);
+		
+		requestUrl = "/management/collections/indexing-schedule.xml";
+		Document indexingSchedule = null;
+		try {
+			indexingSchedule = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		logger.debug("indexingSchedule >> {}",indexingSchedule);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/indexing");
 		mav.addObject("collectionId", collectionId);
 		mav.addObject("indexingStatus", indexingStatus);
+		mav.addObject("indexingResult", indexingResult.getJSONObject("indexingResult"));
+		mav.addObject("indexingSchedule", indexingSchedule);
 		return mav;
 	}
+	
+	@RequestMapping("/indexing/history")
+	public ModelAndView setDictionary(HttpSession session, @PathVariable String collectionId
+			, @RequestParam(defaultValue = "1") Integer pageNo) {
+		
+		int PAGE_SIZE = 10;
+		int start = 0;
+		int end = 0;
+		
+		if(pageNo > 0){
+			start = (pageNo - 1) * PAGE_SIZE + 1;
+			end = start + PAGE_SIZE - 1;
+		}
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/collections/indexing-history.json";
+		JSONObject jsonObj = null;
+		try {
+			jsonObj = httpClient.httpPost(requestUrl)
+					.addParameter("collectionId", collectionId)
+					.addParameter("start", String.valueOf(start))
+					.addParameter("end", String.valueOf(end))
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/indexingHistory");
+		mav.addObject("collectionId", collectionId);
+		mav.addObject("start", start);
+		mav.addObject("pageNo", pageNo);
+		mav.addObject("pageSize", PAGE_SIZE);
+		mav.addObject("list", jsonObj);
+		return mav;
+	}
+	
 	
 	@RequestMapping("/config")
 	public ModelAndView settings(HttpSession session, @PathVariable String collectionId) {

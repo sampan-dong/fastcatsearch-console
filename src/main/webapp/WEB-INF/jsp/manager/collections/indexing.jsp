@@ -2,10 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="org.json.*"%>
+<%@page import="org.jdom2.*"%>
+<%@page import="org.fastcatsearch.console.web.util.*"%>
 
 <%
-	//String collectionId = (String) request.getAttribute("collectionId");
 	JSONObject indexingStatus = (JSONObject) request.getAttribute("indexingStatus");
+	JSONObject indexingResult = (JSONObject) request.getAttribute("indexingResult");
+	Document indexingSchedule = (Document) request.getAttribute("indexingSchedule");
 	JSONArray shardStatusList = indexingStatus.getJSONArray("shardStatus");
 %>
 
@@ -25,7 +28,13 @@ $(document).ready(function(){
 	$('#indexing_tab a[href="#tab_indexing_run"]').on('show.bs.tab', function (e) {
 		startPollingIndexTaskState('${collectionId}');
 	});
+	
+	//load history tab contents
+	$('#indexing_tab a[href="#tab_indexing_history"]').on('shown.bs.tab', function (e) {
+		loadToTab('indexing/history.html', {}, '#tab_indexing_history');
+	});
 });
+
 </script>
 
 
@@ -76,7 +85,7 @@ $(document).ready(function(){
 							
 								<div class="widget ">
 									<div class="widget-header">
-										<h4>Data Status</h4>
+										<h4>Index Data Status</h4>
 									</div>
 									<div class="widget-content">
 										<dl class="dl-horizontal">
@@ -90,7 +99,7 @@ $(document).ready(function(){
 												<tr>
 													<th>Shard</th>
 													<th>Sequence</th>
-													<th>Document Size</th>
+													<th>Documents</th>
 													<th>Disk Size</th>
 													<th>Create Time</th>
 												</tr>
@@ -114,9 +123,85 @@ $(document).ready(function(){
 										</table>
 									</div>
 								</div>
+								
+								<div class="widget ">
+									<div class="widget-header">
+										<h4>Indexing Result</h4>
+									</div>
+									<div class="widget-content">
+										<table class="table table-hover table-bordered">
+											<thead>
+												<tr>
+													<th>Type</th>
+													<th>Result</th>
+													<th>Scheduled</th>
+													<th>Documents</th>
+													<th>Inserts</th>
+													<th>Updates</th>
+													<th>Deletes</th>
+													<th>Start</th>
+													<th>End</th>
+													<th>Duration</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%
+												if(indexingResult.has("FULL")){
+													JSONObject fullIndexingResult = indexingResult.getJSONObject("FULL");
+												%>
+												<tr>
+													<td><strong>FullIndexing</strong></td>
+													<td><%=fullIndexingResult.getString("status") %></td>
+													<td><%=fullIndexingResult.getString("isScheduled") %></td>
+													<td><%=fullIndexingResult.getInt("docSize") %></td>
+													<td><%=fullIndexingResult.getInt("insertSize") %></td>
+													<td><%=fullIndexingResult.getInt("updateSize") %></td>
+													<td><%=fullIndexingResult.getInt("deleteSize") %></td>
+													<td><%=fullIndexingResult.getString("startTime") %></td>
+													<td><%=fullIndexingResult.getString("endTime") %></td>
+													<td><%=fullIndexingResult.getString("duration") %></td>
+												</tr>
+												<%
+												}
+												
+												if(indexingResult.has("ADD")){
+													JSONObject addIndexingResult = indexingResult.getJSONObject("ADD");
+												%>
+												<tr>
+													<td><strong>AddIndexing</strong></td>
+													<td><%=addIndexingResult.getString("status") %></td>
+													<td><%=addIndexingResult.getString("isScheduled") %></td>
+													<td><%=addIndexingResult.getInt("docSize") %></td>
+													<td><%=addIndexingResult.getInt("insertSize") %></td>
+													<td><%=addIndexingResult.getInt("updateSize") %></td>
+													<td><%=addIndexingResult.getInt("deleteSize") %></td>
+													<td><%=addIndexingResult.getString("startTime") %></td>
+													<td><%=addIndexingResult.getString("endTime") %></td>
+													<td><%=addIndexingResult.getString("duration") %></td>
+												</tr>
+												<%
+												}
+												%>
+											</tbody>
+										</table>
+									</div>
+								</div>
 							</div>
 						</div>
 
+
+
+						<%
+						Element rootElement = indexingSchedule.getRootElement();
+						Element fullElement = rootElement.getChild("full-indexing-schedule");
+						Element addElement = rootElement.getChild("add-indexing-schedule");
+						String fullActive = "true".equals(fullElement.getAttributeValue("active")) ? "checked='checked'" : "";
+						String addActive = "true".equals(addElement.getAttributeValue("active")) ? "checked='checked'" : "";
+						String[] fullStartTime = fullElement.getAttributeValue("start").split(" ");
+						String[] addStartTime = addElement.getAttributeValue("start").split(" ");
+						int[] fullTimeUnits = WebUtils.convertSecondsToTimeUnits(Integer.parseInt(fullElement.getAttributeValue("periodInSecond")));
+						int[] addTimeUnits = WebUtils.convertSecondsToTimeUnits(Integer.parseInt(addElement.getAttributeValue("periodInSecond")));
+						%>
 						<div class="tab-pane" id="tab_indexing_schedule">
 							<div class="col-md-12">
 								<div class="widget">
@@ -130,7 +215,7 @@ $(document).ready(function(){
 													<label class="col-md-2 control-label">Scheduled:</label>
 													<div class="col-md-10">
 														<div class="make-switch">
-															<input type="checkbox" checked="true">
+															<input type="checkbox" class="uniform" <%=fullActive %>>
 														</div>
 													</div>
 												</div>
@@ -138,8 +223,8 @@ $(document).ready(function(){
 												<div class="form-group form-inline">
 													<label class="col-md-2 control-label">Base Date:</label>
 													<div class="col-md-10">
-														<input type="text" class="fc_datepicker form-control input-width-small" placeholder="Date">
-														<input type="text" class="fc_timepicker form-control input-width-small" placeholder="Time">
+														<input type="text" class="fc_datepicker form-control input-width-small" placeholder="Date" value="<%=fullStartTime[0] %>">
+														<input type="text" class="fc_timepicker form-control input-width-small" placeholder="Time" value="<%=fullStartTime[1] %>">
 													</div>
 												</div>
 													
@@ -147,12 +232,20 @@ $(document).ready(function(){
 													<label class="col-md-2 control-label">Period:</label>
 													<div class="col-md-10">
 														<div class="input-group col-md-1" style="padding-left: 0px;">
-															<input type="number" name="regular" class="form-control input-width-small" >
+															<input type="number" name="regular" class="form-control input-width-small" value="<%=fullTimeUnits[0] %>">
+  															<span class="input-group-addon">Day</span>
+														</div>
+														<div class="input-group col-md-1" style="padding-left: 0px;">
+															<input type="number" name="regular" class="form-control input-width-small" value="<%=fullTimeUnits[1] %>">
   															<span class="input-group-addon">Hr</span>
 														</div>
 														<div class="input-group col-md-1" style="padding-left: 0px;">
-															<input type="number" name="regular" class="form-control input-width-small" >
+															<input type="number" name="regular" class="form-control input-width-small" value="<%=fullTimeUnits[2] %>">
 															<span class="input-group-addon">Min</span>
+														</div>
+														<div class="input-group col-md-1" style="padding-left: 0px;">
+															<input type="number" name="regular" class="form-control input-width-small" value="<%=fullTimeUnits[3] %>">
+															<span class="input-group-addon">Sec</span>
 														</div>
 													</div>
 												</div>
@@ -173,7 +266,7 @@ $(document).ready(function(){
 													<label class="col-md-2 control-label">Scheduled:</label>
 													<div class="col-md-10">
 														<div class="make-switch">
-															<input type="checkbox" checked="true">
+															<input type="checkbox" class="uniform" <%=addActive %>>
 														</div>
 													</div>
 												</div>
@@ -181,8 +274,8 @@ $(document).ready(function(){
 												<div class="form-group form-inline">
 													<label class="col-md-2 control-label">Base Date:</label>
 													<div class="col-md-10">
-														<input type="text" class="fc_datepicker form-control input-width-small" placeholder="Date">
-														<input type="text" class="fc_timepicker form-control input-width-small" placeholder="Time">
+														<input type="text" class="fc_datepicker form-control input-width-small" placeholder="Date" value="<%=addStartTime[0] %>">
+														<input type="text" class="fc_timepicker form-control input-width-small" placeholder="Time" value="<%=addStartTime[1] %>">
 													</div>
 												</div>
 													
@@ -190,12 +283,20 @@ $(document).ready(function(){
 													<label class="col-md-2 control-label">Period:</label>
 													<div class="col-md-10">
 														<div class="input-group col-md-1" style="padding-left: 0px;">
-															<input type="number" name="regular" class="form-control input-width-small" >
+															<input type="number" name="regular" class="form-control input-width-small" value="<%=addTimeUnits[0] %>">
+  															<span class="input-group-addon">Day</span>
+														</div>
+														<div class="input-group col-md-1" style="padding-left: 0px;">
+															<input type="number" name="regular" class="form-control input-width-small" value="<%=addTimeUnits[1] %>">
   															<span class="input-group-addon">Hr</span>
 														</div>
 														<div class="input-group col-md-1" style="padding-left: 0px;">
-															<input type="number" name="regular" class="form-control input-width-small" >
+															<input type="number" name="regular" class="form-control input-width-small" value="<%=addTimeUnits[2] %>">
 															<span class="input-group-addon">Min</span>
+														</div>
+														<div class="input-group col-md-1" style="padding-left: 0px;">
+															<input type="number" name="regular" class="form-control input-width-small" value="<%=addTimeUnits[3] %>">
+															<span class="input-group-addon">Sec</span>
 														</div>
 													</div>
 												</div>
@@ -270,143 +371,7 @@ $(document).ready(function(){
 	
 						</div>
 						
-						<div class="tab-pane" id="tab_indexing_history">
-							<div class="col-md-12">
-								<div class="widget box">
-									<div class="widget-content no-padding">
-										<table class="table table-hover table-bordered">
-											<thead>
-												<tr>
-													<th>#</th>
-													<th>Shard</th>
-													<th>Status</th>
-													<th>Insert Size</th>
-													<th>Schedule</th>
-													<th>Start</th>
-													<th>Finish</th>
-													<th>Duration</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>10</td>
-													<td>*<strong>VOL</strong></td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>9</td>
-													<td>VOL1</td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>8</td>
-													<td>VOL2</td>
-													<td><span class="label label-danger"><i class="glyphicon glyphicon-warning-sign"></i> Fail</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>7</td>
-													<td>VOL2011</td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>6</td>
-													<td>VOL2012</td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>5</td>
-													<td>VOL2013</td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>4</td>
-													<td>*<strong>VOL</strong></td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td>VOL1</td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td>VOL2</td>
-													<td><span class="label label-danger"><i class="glyphicon glyphicon-warning-sign"></i> Fail</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-												<tr>
-													<td>1</td>
-													<td>VOL2011</td>
-													<td><span class="label label-success"><i class="glyphicon glyphicon-ok"></i> Sucess</span></td>
-													<td>1500</td>
-													<td><span class="label label-default">Scheduled</span></td>
-													<td>2013.09.05 12:40:00</td>
-													<td>2013.09.05 12:50:00</td>
-													<td>1h 20m 20s</td>
-												</tr>
-											</tbody>
-										</table>
-										<div class="table-footer">
-											<div class="col-md-12">
-											Rows 1 - 10 of 200 
-											<ul class="pagination">
-												<li class="disabled"><a href="javascript:void(0);">&laquo;</a></li>
-												<li class="active"><a href="javascript:void(0);">1</a></li>
-												<li><a href="javascript:void(0);">2</a></li>
-												<li><a href="javascript:void(0);">3</a></li>
-												<li><a href="javascript:void(0);">4</a></li>
-												<li><a href="javascript:void(0);">5</a></li>
-												<li><a href="javascript:void(0);">&raquo;</a></li>
-											</ul>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+						<div class="tab-pane active" id="tab_indexing_history">
 						</div>
 						
 					</div>

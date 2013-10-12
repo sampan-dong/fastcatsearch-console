@@ -90,13 +90,12 @@ var indexingStatePollingFlag = false;
 
 function startPollingIndexTaskState(collectionId){
 	indexingStatePollingFlag = true;
-	// /indexing/state
 	(function poll() {
 	    $.ajax({
 	        url: PROXY_REQUEST_URI,
 	        type: "GET",
 	        data : {
-				uri : "/indexing/state",
+				uri : "/indexing/task-state",
 				collectionId : collectionId
 			},
 	        dataType: "json",
@@ -138,7 +137,6 @@ var pollingAllTaskURI = "/management/common/all-task-state.json";
 ////////////task polling for tasks page
 
 function startPollingAllTaskState(){
-	// /indexing/state
 	(function poll() {
 	    $.ajax({
 	        url: PROXY_REQUEST_URI,
@@ -198,7 +196,7 @@ function startPollingAllTaskStateForTaskBar(){
 		return;
 	}
 	pollingAllTaskStateFlagForTaskBar = true;
-	// /indexing/state
+	
 	(function poll() {
 	    $.ajax({
 	        url: PROXY_REQUEST_URI,

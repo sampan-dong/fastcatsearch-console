@@ -28,33 +28,37 @@ if(totalSize > 0){
 	int nextPage = ((pageNo - 1) / width  + 1) * width + 1;
 	
 	if(pageNo > width){
-	    %><li><a href="javascript:<%=callback%>('<%=requestURI%>, 1)">&laquo;</a></li><%
+	    %><li><a href="javascript:<%=callback%>('<%=requestURI%>', 1)">&laquo;</a></li><%
 	}else{
 		%><li class='disabled'><a>&laquo;</a></li><%
 	}
 	
     if(prevStart > 0){
-    	%><li><a href="javascript:<%=callback%>('<%=requestURI%>, <%=prevStart %>)">&lsaquo;</a></li><%
+    	%><li><a href="javascript:<%=callback%>('<%=requestURI%>', <%=prevStart %>)">&lsaquo;</a></li><%
     }else{
     	%><li class='disabled'><a>&lsaquo;</a></li><%
     }
 	
 	for(int c = counterStart; c < counterEnd; c++){
 		if(c <= maxPage){
-			%><li class="<%=(c == pageNo) ? "active" :"" %>"><a href="javascript:<%=callback%>('<%=requestURI%>, <%=c %>)"><%=c %></a></li><%
+			if(c == pageNo){
+				%><li class="active"><a><%=c %></a></li><%
+			}else{
+				%><li><a href="javascript:<%=callback%>('<%=requestURI%>', <%=c %>)"><%=c %></a></li><%
+			}
 		}else{
 			break;
 		}
 	}
 	
 	if(nextPage <= maxPage){
-		%><li><a href="javascript:<%=callback%>('<%=requestURI%>, <%=nextPage %>)">&rsaquo;</a></li><%
+		%><li><a href="javascript:<%=callback%>('<%=requestURI%>', <%=nextPage %>)">&rsaquo;</a></li><%
 	}else{
 		%><li class='disabled'><a>&rsaquo;</a></li><%
 	}
 	
 	if(maxPage > 0 && nextPage <= maxPage){
-		%><li><a href="javascript:<%=callback%>('<%=requestURI%>, <%=maxPage %>)">&raquo;</a></li><%
+		%><li><a href="javascript:<%=callback%>('<%=requestURI%>', <%=maxPage %>)">&raquo;</a></li><%
 	}else{
 		%><li class='disabled'><a>&raquo;</a></li><%
 	}
