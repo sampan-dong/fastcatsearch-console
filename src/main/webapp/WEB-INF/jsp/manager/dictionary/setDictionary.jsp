@@ -14,18 +14,45 @@
 <script>
 $(document).ready(function(){
 	$("#_set_dictionary_search").keyup(function (e) {
-		if(event.keyCode == 13){
+		if(e.keyCode == 13){
 			var keyword = $(this).val();
-			//if(keyword != ""){
-				loadToTab('set/list.html', {dictionaryId: 'user', length: 40, keyword: keyword }, '#tab_dictionary_overview');
-				console.log(keyword);
-			//}
-			console.log($("#tab_dictionary_overview").html());
+			loadToTab('set/list.html', {dictionaryId: 'user', length: 40, keyword: keyword }, '#tab_dictionary_overview');
+			console.log(keyword);
 			return;
 		}
 	});
 	$("#_set_dictionary_search").focus();
+	
+	
+	$("#word_input_button_${dictionaryId}").on("click", function(e){
+		alert(e.keyCode);
+	});
+	$("#word_input_${dictionaryId}").keyup(function (e) {
+		if(e.keyCode == 13){
+			var keyword = $(this).val();
+			if(keyword != ""){
+				requestProxy("POST", { 
+						uri: '/management/dictionary/put.json',
+						pluginId: '${analysisId}',
+						dictionaryId: '${dictionaryId}',
+						keyword: keyword
+					},
+					"json",
+					function(response) {
+						$("#word_input_${dictionaryId}").val("");
+						$("#word_input_result_${dictionaryId}").text(response);
+					},
+					function(response){
+						alert("error= " +response);
+					}
+				);		
+			}
+			return;
+		}
+	});
 });
+
+
 
 </script>
 <div class="tab-pane" id="tab_user_dictionary">
@@ -41,7 +68,7 @@ $(document).ready(function(){
 				<div class="col-md-6">
 					<div class="pull-right">
 						<div class="btn-group">
-							<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip"><i class="icon-plus"></i></a>
+							<a href="#wordInsertModal" data-toggle="modal" class="btn btn-sm" rel="tooltip"><i class="icon-plus"></i></a>
 							<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip"><i class="icon-minus"></i></a>
 							<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
 						</div>
@@ -106,7 +133,7 @@ $(document).ready(function(){
 					}
 				%>
 							<tr>
-								<td id="_<%=dictionaryId %>_<%=obj.getInt("id") %>"><%=obj.getString("word") %></td>
+								<td id="_<%=dictionaryId %>_<%=obj.getInt("ID") %>"><%=obj.getString("KEYWORD") %></td>
 							</tr>
 						
 				<%
@@ -144,5 +171,29 @@ $(document).ready(function(){
 		</div>
 	</div>
 
+</div>
+
+<div class="modal" id="wordInsertModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><%=dictionaryId.toUpperCase() %> Word Insert</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group col-md-7">
+			<input type="text" id="word_input_${dictionaryId}" class="form-control" placeholder="Word">
+			<span class="input-group-btn">
+              <button class="btn btn-default" type="button" id="word_input_button_${dictionaryId}">Put</button>
+            </span>
+		</div>
+		<p>
+		<div id="word_input_result_${dictionaryId}">result</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 						

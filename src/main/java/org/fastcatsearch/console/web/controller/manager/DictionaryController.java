@@ -13,19 +13,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/manager/dictionary")
+@RequestMapping("/manager/dictionary/{analysisId}")
 public class DictionaryController {
 	private static Logger logger = LoggerFactory.getLogger(DictionaryController.class);
 	
-	@RequestMapping("/{analysisId}/index")
-	public ModelAndView index(@PathVariable String analysisId) {
+	@RequestMapping("/index")
+	public ModelAndView index(HttpSession session, @PathVariable String analysisId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/dictionary/overview.json";
+		JSONObject jsonObj = null;
+		try {
+			jsonObj = httpClient.httpPost(requestUrl)
+					.addParameter("pluginId", analysisId)
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/dictionary/index");
 		mav.addObject("analysisId", analysisId);
+		mav.addObject("list", jsonObj.getJSONArray("overview"));
 		return mav;
 	}
 	
-	@RequestMapping("/{analysisId}/set/list")
+	@RequestMapping("/set/list")
 	public ModelAndView setDictionary(HttpSession session, @PathVariable String analysisId, @RequestParam String dictionaryId
 			, @RequestParam(defaultValue = "0") int start, @RequestParam(required = false) int length
 			, @RequestParam(required = false) String keyword) {

@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="org.json.*"%>
+<%
+JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginOverview");
+%>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
@@ -48,10 +52,12 @@
 							</div>
 							
 						</div>
-						<table class="table table-hover table-bordered">
+						<table class="table table-hover table-bordered table-checkable">
 							<thead>
 								<tr>
-									<th><input type="checkbox" /></th>
+									<th class="checkbox-column">
+										<input type="checkbox" class="uniform">
+									</th>
 									<th>ID</th>
 									<th>Name</th>
 									<th>Version</th>
@@ -60,30 +66,23 @@
 								</tr>
 							</thead>
 							<tbody>
+								<%
+								for(int i = 0; i< analysisPluginList.length(); i++){
+									JSONObject pluginInfo = analysisPluginList.getJSONObject(i);
+								%>
 								<tr>
-									<td><input type="checkbox" /></td>
-									<td><strong>Korean</strong></td>
-									<td>한국어분석기</td>
-									<td>1.0</td>
-									<td>한국어분석기 및 한국어분석사전을 제공한다.</td>
-									<td>org.fastcatsearch.plugin.analysis.ko.KoreanAnalysisPlugin</td>
+									<td class="checkbox-column">
+										<input type="checkbox" class="uniform">
+									</td>
+									<td><strong><%=pluginInfo.getString("id") %></strong></td>
+									<td><%=pluginInfo.getString("name") %></td>
+									<td><%=pluginInfo.getString("version") %></td>
+									<td><%=pluginInfo.getString("description") %></td>
+									<td><%=pluginInfo.getString("className") %></td>
 								</tr>
-								<tr>
-									<td><input type="checkbox" /></td>
-									<td><strong>Product</strong></td>
-									<td>상품명분석기</td>
-									<td>1.0</td>
-									<td>상품명분석기 및 분석사전을 제공한다.</td>
-									<td>org.fastcatsearch.plugin.analysis.ProductAnalysisPlugin</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" /></td>
-									<td><strong>English</strong></td>
-									<td>English Analysis</td>
-									<td>1.0</td>
-									<td>English dictionary and analyzer</td>
-									<td>org.fastcatsearch.plugin.analysis.EnglishAnalysisPlugin</td>
-								</tr>
+								<%
+								}
+								%>
 							</tbody>
 						</table>
 					</div>

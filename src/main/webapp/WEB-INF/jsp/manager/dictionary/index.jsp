@@ -1,11 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="org.json.*"%>
+<%
+	JSONArray dictionaryList = (JSONArray) request.getAttribute("list");
+%>
+
+
 <c:set var="ROOT_PATH" value="../.." scope="request" />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+
+<script>
+$(document).ready(function(){
+	//load dictionary tab contents
+	$('#dictionary_tab a').on('shown.bs.tab', function (e) {
+		var targetId = e.target.hash;
+		var aObj = $(e.target);
+		if($(targetId).text() != ""){
+			//이미 로드되어있으면 다시 로드하지 않음.
+			return;
+		}
+		var dictionaryId = aObj.attr("_id");
+		var dictionaryType = aObj.attr("_type");
+		loadToTab(dictionaryType + '/list.html', {dictionaryId: dictionaryId, start:1, length: 40}, targetId);
+	});
+});
+
+</script>
 </head>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
@@ -35,12 +59,20 @@
 				</div>
 				<!-- /Page Header -->
 				<div class="tabbable tabbable-custom tabbable-full-width">
-					<ul class="nav nav-tabs">
+					<ul id="dictionary_tab" class="nav nav-tabs">
 						<li class="active"><a href="#tab_dictionary_overview" data-toggle="tab">Overview</a></li>
-						<li class=""><a href="javascript:loadToTab('set/list.html', {dictionaryId: 'user', length: 40}, '#tab_dictionary_overview')" >User</a></li>
-						<li class=""><a href="#tab_synonym_dictionary" data-toggle="tab">Synonym</a></li>
-						<li class=""><a href="javascript:loadToTab('set/list.html', {dictionaryId: 'set', length: 40}, '#tab_dictionary_overview')">Stop</a></li>
-						<li class=""><a href="#tab_system_dictionary" data-toggle="tab">System</a></li>
+						
+						<%
+						for(int i = 0; i < dictionaryList.length(); i++){
+							JSONObject dictionary = dictionaryList.getJSONObject(i);
+							String id = dictionary.getString("id");
+							String name = dictionary.getString("name");
+							String type = dictionary.getString("type");
+						%>
+						<li class=""><a href="#tab_dictionary_<%=id %>" data-toggle="tab" _type="<%=type %>" _id="<%=id %>"><%=name %></a></li>
+						<%
+						}
+						%>
 					</ul>
 					<div class="tab-content row">
 
@@ -54,24 +86,30 @@
 												class="glyphicon glyphicon-time"></span> Sync Search Engine</a>
 										</div>
 									</div>
-									<table class="table table-hover table-bordered">
+									<table class="table table-hover table-bordered table-checkable">
 										<thead>
 											<tr>
-												<th><input type="checkbox" /></th>
+												<th class="checkbox-column">
+													<input type="checkbox" class="uniform">
+												</th>
 												<th>Name</th>
-												<th>Size</th>
-												<th>Status</th>
+												<th>Entry Size</th>
 												<th>Sync Time</th>
 												<th>Action</th>
 											</tr>
 										</thead>
 										<tbody>
+											<%
+											for(int i = 0; i < dictionaryList.length(); i++){
+												JSONObject dictionary = dictionaryList.getJSONObject(i);
+											%>
 											<tr>
-												<td><input type="checkbox" /></td>
-												<td><strong>User Dictionary</strong></td>
-												<td><strong>1500</strong></td>
-												<td><i class="glyphicon glyphicon-ok-sign"> Sync-Done</i></td>
-												<td>2013.09.01 12:00:00</td>
+												<td class="checkbox-column">
+													<input type="checkbox" class="uniform">
+												</td>
+												<td><strong><%=dictionary.getString("name") %></strong></td>
+												<td><%=dictionary.getInt("entrySize") %></td>
+												<td><%=dictionary.getString("syncTime") %></td>
 												<td>
 												<a href="javascript:void(0);" class="btn btn-default btn-sm">
 													<span class="glyphicon glyphicon-upload"></span> Upload
@@ -82,43 +120,28 @@
 												</a>
 												</td>
 											</tr>
-											<tr>
-												<td><input type="checkbox" /></td>
-												<td><strong>Synonym Dictionary</strong></td>
-												<td><strong>500</strong></td>
-												<td><i class="glyphicon glyphicon-pencil"> Modified</i></td>
-												<td>2013.09.01 12:00:00</td>
-												<td>
-												<a href="javascript:void(0);" class="btn btn-default btn-sm">
-													<span class="glyphicon glyphicon-upload"></span> Upload
-												</a>
-												&nbsp;
-												<a href="javascript:void(0);" class="btn btn-default btn-sm">
-													<span class="glyphicon glyphicon-download"></span> Download
-												</a>
-												</td>
-											</tr>
-											<tr>
-												<td><input type="checkbox" /></td>
-												<td><strong>Stop Dictionary</strong></td>
-												<td><strong>30</strong></td>
-												<td><i class="glyphicon glyphicon-pencil"> Modified</i></td>
-												<td>2013.09.01 12:00:00</td>
-												<td>
-												<a href="javascript:void(0);" class="btn btn-default btn-sm">
-													<span class="glyphicon glyphicon-upload"></span> Upload
-												</a>
-												&nbsp;
-												<a href="javascript:void(0);" class="btn btn-default btn-sm">
-													<span class="glyphicon glyphicon-download"></span> Download
-												</a>
-												</td>
-											</tr>
+											<%
+											}
+											%>
 										</tbody>
 									</table>
 								</div>
 							</div>
 						</div>
+						<%
+						for(int i = 0; i < dictionaryList.length(); i++){
+							JSONObject dictionary = dictionaryList.getJSONObject(i);
+							String id = dictionary.getString("id");
+							String name = dictionary.getString("name");
+							String type = dictionary.getString("type");
+						%>
+						<div class="tab-pane" id="tab_dictionary_<%=id %>"></div>
+						<%
+						}
+						%>
+						
+						
+						
 						
 						<!-- --user dict--- -->
 						<div class="tab-pane" id="tab_user_dictionary">

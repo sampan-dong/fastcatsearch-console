@@ -47,11 +47,20 @@ function loadToTab(url, data, id){
 } 
 
 
-
-
-
 var PROXY_REQUEST_URI = window.location.protocol + "//" + window.location.host
 		+ "/console/main/request.html";
+
+function requestProxy(methodType, data, resultType, successCallback, failCallback){
+	
+	$.ajax({
+		url : PROXY_REQUEST_URI,
+		type : methodType,
+		data : data,
+		dataType : resultType,
+		success: successCallback,
+		fail: failCallback
+	});
+}
 
 function runIndexing(collectionId, indexingType) {
 	if(!indexingStatePollingFlag){

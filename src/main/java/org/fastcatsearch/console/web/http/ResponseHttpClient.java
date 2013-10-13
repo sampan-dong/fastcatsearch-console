@@ -105,6 +105,7 @@ public class ResponseHttpClient {
 		@Override
 		public JSONObject requestJSON() throws ClientProtocolException, IOException {
 			try {
+				logger.debug("{}, {}, {}, {}, {}", responseHttpClient, responseHttpClient.httpclient,getHttpGet(),jsonResponseHandler) ;
 				return responseHttpClient.httpclient.execute(getHttpGet(), jsonResponseHandler);
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
