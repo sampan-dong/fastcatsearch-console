@@ -45,3 +45,10 @@
 .table-selectable tr {
 	cursor:pointer;
 }
+
+.btn-console {
+color: #ffffff;
+background-color: #4d7496;
+border-
+z-index: 2;
+}

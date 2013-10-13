@@ -2,9 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="org.json.*"%>
+<%@page import="java.util.*"%>
 <%
+JSONObject indexDataStatusResult = (JSONObject) request.getAttribute("indexDataStatus");
 JSONObject indexDataResult = (JSONObject) request.getAttribute("indexDataResult");
-JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
+JSONArray indexDataStatusList = indexDataStatusResult.getJSONArray("indexDataStatus");
+
+String selectedShardId = (String) request.getAttribute("shardId");
 
 %>
 <c:set var="ROOT_PATH" value="../.." />
@@ -17,6 +21,20 @@ JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
 	width: 100px;
 }
 </style>
+<script>
+$(document).ready(function(){
+	$("#shardSelect").on("change", function(e) { 
+		submitPost("", {shardId: e.val});
+		}
+	);
+});
+function selectFieldValue(value){
+	$("#selectedDataPanel").text(value);
+}
+function goIndexDataPage(uri, pageNo){
+	submitPost(uri, {shardId: '${shardId}', pageNo: pageNo});
+}
+</script>
 </head>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
@@ -52,8 +70,8 @@ JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#tab_raw_data" data-toggle="tab">Raw</a></li>
-						<li class=""><a href="#tab_analyzed_data" data-toggle="tab">Analyzed Raw</a></li>
-						<li class=""><a href="#tab_analyzed_data" data-toggle="tab">Search</a></li>
+						<!-- <li class=""><a href="#tab_analyzed_data" data-toggle="tab">Analyzed Raw</a></li>
+						<li class=""><a href="#tab_analyzed_data" data-toggle="tab">Search</a></li> -->
 					</ul>
 					<div class="tab-content row">
 
@@ -64,19 +82,51 @@ JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
 	
 									<div class="widget-content no-padding">
 										<div class="dataTables_header clearfix">
-											<div class="col-md-6">
-												Rows 1 - 50 of 2809
+											<div class="col-md-4">
+												<select id="shardSelect" class="select2 col-md-12">
+													<%
+													int totalSize = 0;
+													for( int i = 0 ; i < indexDataStatusList.length() ; i++ ){
+														JSONObject indexDataStatus = indexDataStatusList.getJSONObject(i);
+														String shardId = indexDataStatus.getString("shardId");
+														int documentSize = indexDataStatus.getInt("documentSize");
+														if(shardId.equals(selectedShardId)){
+															totalSize = documentSize;
+														}
+													%>
+													<option value="<%=shardId %>" <%=shardId.equals(selectedShardId) ? "selected" : "" %>><%=shardId %> : <%=documentSize %> documents</option>
+													<%
+													}
+													%>
+												</select>
+												
 											</div>
-											<div class="col-md-6">
-												<div class="btn-group pull-right">
-													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&laquo;</a>
-													<a href="javascript:void(0);" class="btn btn-sm btn-primary" rel="tooltip">1</a>
-													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">2</a>
-													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">3</a>
-													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">4</a>
-													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">5</a>
-													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&raquo;</a>
-												</div>
+											<div class="col-md-4" style="margin-top:5px">
+											<%
+											JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
+											JSONArray fieldList = indexDataResult.getJSONArray("fieldList");
+											if(indexDataList.length() > 0){
+											%>
+												<span>Rows ${start} - ${end} of <%=totalSize %></span>
+											<%
+											}else{
+											%>
+												<span>Rows 0</span>
+											<%
+											}
+											%>
+											</div>
+											<div class="col-md-4">
+												<div class="pull-right">
+													<jsp:include page="../../inc/pagenationTop.jsp" >
+													 	<jsp:param name="pageNo" value="${pageNo }"/>
+													 	<jsp:param name="totalSize" value="<%=totalSize %>" />
+														<jsp:param name="pageSize" value="${pageSize }" />
+														<jsp:param name="width" value="5" />
+														<jsp:param name="callback" value="goIndexDataPage" />
+														<jsp:param name="requestURI" value="" />
+													 </jsp:include>
+												 </div>
 											</div>
 										</div>
 										<div style="overflow: scroll; height: 400px;">
@@ -86,18 +136,11 @@ JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
 											%>
 											<table class="table table-hover table-bordered" style="white-space:nowrap;table-layout:fixed; ">
 												<thead>
-												<%
-													JSONObject indexHeaderData = indexDataList.getJSONObject(0);
-													JSONObject headerRow = indexHeaderData.getJSONObject("row");
-													JSONArray names = headerRow.names();
-												%>
 													<tr>
-														<th class="width100">#</th>
-														<th class="width100">segment</th>
 														<%
-														for( int i = 0 ; i < names.length() ; i++ ){
+														for( int i = 0 ; i < fieldList.length() ; i++ ){
 														%>
-														<th class="width100"><%=names.getString(i) %></th>
+														<th class="width100"><%=fieldList.getString(i) %></th>
 														<%
 														}
 														%>
@@ -109,15 +152,13 @@ JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
 													JSONObject indexData = indexDataList.getJSONObject(i);
 												%>
 													<tr>
-														<td class="width100">1</td>
-														<td class="width100"><%=indexData.getInt("segmentId") %></td>
 														<%
 														JSONObject row = indexData.getJSONObject("row");
 														
-														for( int j = 0 ; j < row.length() ; j++ ){
-															String fieldName = names.getString(j);
+														for( int j = 0 ; j < fieldList.length() ; j++ ){
+															String fieldName = fieldList.getString(j);
 														%>
-														<td class="width100" style="overflow:hidden;"><%=row.getString(fieldName) %></td>
+														<td class="width100" style="overflow:hidden; cursor:pointer" onclick="javascript:selectFieldValue($(this).text())"><%=row.getString(fieldName) %></td>
 														<%
 														}
 														%>
@@ -139,9 +180,7 @@ JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
 											</div> -->
 											<label class="col-md-2 control-label">Selected Data:</label>
 											<div class="col-md-10">
-												<div class="panel">
-												this is sample. this is sample. this is sample. this is sample. this is sample. this is sample. this is sample.
-												</div>
+												<div id="selectedDataPanel" class="panel"></div>
 											</div>
 										</div>
 									</div>

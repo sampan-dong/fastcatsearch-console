@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.jdom2.Document;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,7 @@ public class CollectionsController {
 	}
 	
 	@RequestMapping("/data")
-	public ModelAndView data(HttpSession session, @PathVariable String collectionId, @RequestParam("shardId") String shardId
+	public ModelAndView data(HttpSession session, @PathVariable String collectionId, @RequestParam(value="shardId", required=false) String shardId
 			, @RequestParam(defaultValue = "1") Integer pageNo) {
 		
 		int PAGE_SIZE = 10;
@@ -52,7 +53,26 @@ public class CollectionsController {
 		}
 		
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/collections/index-data.json";
+		
+		String requestUrl = "/management/collections/index-data-status.json";
+		JSONObject indexDataStatus = null;
+		try {
+			indexDataStatus = httpClient.httpGet(requestUrl)
+					.addParameter("collectionId", collectionId)
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		logger.debug("indexDataStatus >> {}", indexDataStatus);
+		if(shardId == null){
+			JSONArray arr = indexDataStatus.getJSONArray("indexDataStatus");
+			if(arr.length() > 0){
+				JSONObject obj = arr.getJSONObject(0);
+				shardId = obj.getString("shardId");
+			}
+		}
+		
+		requestUrl = "/management/collections/index-data.json";
 		JSONObject indexData = null;
 		try {
 			indexData = httpClient.httpGet(requestUrl)
@@ -65,15 +85,19 @@ public class CollectionsController {
 			logger.error("", e);
 		}
 		logger.debug("indexData >> {}",indexData);
+		JSONArray list = indexData.getJSONArray("indexData");
+		int realSize = list.length();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/data");
 		mav.addObject("collectionId", collectionId);
 		mav.addObject("shardId", shardId);
-		mav.addObject("start", start);
+		mav.addObject("start", start + 1);
+		mav.addObject("end", start + realSize);
 		mav.addObject("pageNo", pageNo);
 		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("indexDataResult", indexData);
+		mav.addObject("indexDataStatus", indexDataStatus);
 		return mav;
 	}
 	
