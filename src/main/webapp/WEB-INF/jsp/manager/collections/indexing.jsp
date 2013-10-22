@@ -151,6 +151,7 @@ $(document).ready(function(){
 												%>
 												<tr>
 													<td><strong>FullIndexing</strong></td>
+													<% if(fullIndexingResult != null) { %> 
 													<td><%=fullIndexingResult.getString("status") %></td>
 													<td><%=fullIndexingResult.getString("isScheduled") %></td>
 													<td><%=fullIndexingResult.getInt("docSize") %></td>
@@ -160,6 +161,9 @@ $(document).ready(function(){
 													<td><%=fullIndexingResult.getString("startTime") %></td>
 													<td><%=fullIndexingResult.getString("endTime") %></td>
 													<td><%=fullIndexingResult.getString("duration") %></td>
+													<% } else { %>
+													<td colspan="9">No full indexing result.</td>
+													<% } %>
 												</tr>
 												<%
 												}
@@ -169,6 +173,7 @@ $(document).ready(function(){
 												%>
 												<tr>
 													<td><strong>AddIndexing</strong></td>
+													<% if(addIndexingResult != null) { %> 
 													<td><%=addIndexingResult.getString("status") %></td>
 													<td><%=addIndexingResult.getString("isScheduled") %></td>
 													<td><%=addIndexingResult.getInt("docSize") %></td>
@@ -178,6 +183,9 @@ $(document).ready(function(){
 													<td><%=addIndexingResult.getString("startTime") %></td>
 													<td><%=addIndexingResult.getString("endTime") %></td>
 													<td><%=addIndexingResult.getString("duration") %></td>
+													<% } else { %>
+													<td colspan="9">No add indexing result.</td>
+													<% } %>
 												</tr>
 												<%
 												}

@@ -60,7 +60,7 @@ public class MainController {
 			JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("username", username).addParameter("password", password)
 					.requestJSON();
 			logger.debug("loginResult > {}", loginResult);
-			if (loginResult.getInt("status") == 0) {
+			if (loginResult != null && loginResult.getInt("status") == 0) {
 				// 로그인이 올바를 경우 메인 화면으로 이동한다.
 				ModelAndView mav = new ModelAndView();
 				mav.setViewName("redirect:main/start.html");

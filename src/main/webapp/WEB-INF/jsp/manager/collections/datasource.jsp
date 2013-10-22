@@ -83,7 +83,7 @@
 											<tbody>
 												<%
 												List<Element> sourceConfgiList = fullIndexingNode.getChildren("source");
-												for(int i = 0; i< sourceConfgiList.size(); i++){
+												for(int i = 0; sourceConfgiList != null && i < sourceConfgiList.size(); i++){
 													Element sourceConfig = sourceConfgiList.get(i);
 													String sourceId = sourceConfig.getAttributeValue("id");
 													String name = sourceConfig.getAttributeValue("name");
@@ -139,7 +139,7 @@
 															<div class="col-md-12 form-horizontal">
 																<div class="form-group">
 																	<label class="col-md-3 control-label">ID:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=sourceId %>"></div>
+																	<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=sourceId %>"></div>
 																</div>
 																
 																<div class="form-group">
@@ -176,11 +176,12 @@
 														<div class="row form-horizontal">
 														<%
 														Element properties = sourceConfig.getChild("properties");
-														List<Element> propertyList = properties.getChildren("property");
-														for(int j=0; j<propertyList.size(); j++){
-															Element property = propertyList.get(j);
-															String key = property.getAttributeValue("key");
-															String value = property.getValue();
+														if(properties != null){
+															List<Element> propertyList = properties.getChildren("property");
+															for(int j=0; propertyList != null && j<propertyList.size(); j++){
+																Element property = propertyList.get(j);
+																String key = property.getAttributeValue("key");
+																String value = property.getValue();
 														%>
 															
 																<div class="form-group">
@@ -189,6 +190,7 @@
 																</div>
 														<%
 															}
+														}
 														%>
 														</div>
 													</div>
@@ -235,7 +237,7 @@
 											<tbody>
 												<%
 												sourceConfgiList = addIndexingNode.getChildren("source");
-												for(int i = 0; i< sourceConfgiList.size(); i++){
+												for(int i = 0; sourceConfgiList != null && i< sourceConfgiList.size(); i++){
 													Element sourceConfig = sourceConfgiList.get(i);
 													String sourceId = sourceConfig.getAttributeValue("id");
 													String name = sourceConfig.getAttributeValue("name");
