@@ -17,8 +17,8 @@ String selectedShardId = (String) request.getAttribute("shardId");
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 <style>
-.width100 {
-	width: 100px;
+.dataWidth {
+	width: 150px;
 }
 </style>
 <script>
@@ -140,7 +140,7 @@ function goIndexDataPage(uri, pageNo){
 														<%
 														for( int i = 0 ; i < fieldList.length() ; i++ ){
 														%>
-														<th class="width100"><%=fieldList.getString(i) %></th>
+														<th class="dataWidth"><%=fieldList.getString(i) %></th>
 														<%
 														}
 														%>
@@ -158,7 +158,7 @@ function goIndexDataPage(uri, pageNo){
 														for( int j = 0 ; j < fieldList.length() ; j++ ){
 															String fieldName = fieldList.getString(j);
 														%>
-														<td class="width100" style="overflow:hidden; cursor:pointer" onclick="javascript:selectFieldValue($(this).text())"><%=row.getString(fieldName) %></td>
+														<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectFieldValue($(this).text())"><%=row.getString(fieldName) %></td>
 														<%
 														}
 														%>

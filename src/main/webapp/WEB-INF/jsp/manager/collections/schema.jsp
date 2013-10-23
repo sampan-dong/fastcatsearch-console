@@ -175,7 +175,7 @@
 													<thead>
 														<tr>
 															<th class="fcol1">#</th>
-															<th class="fcol2">Field</th>
+															<th class="fcol2">ID</th>
 															<th class="fcol2">Name</th>
 															<th class="fcol2">Type</th>
 															<th class="fcol2">Length</th>

@@ -13,9 +13,9 @@
 %>
 <script>
 
-function goIndexingHistoryPage(uri, pageNo){
+function goIndexingHistoryPage(pageNo){
 	var data = {collectionId: '${collectionId}', pageNo: pageNo};
-	loadToTab(uri, data, '#tab_indexing_history');
+	loadToTab("indexing/history.html", data, '#tab_indexing_history');
 }
 </script>
 <div class="col-md-12">
@@ -77,7 +77,6 @@ function goIndexingHistoryPage(uri, pageNo){
 					<jsp:param name="pageSize" value="${pageSize }" />
 					<jsp:param name="width" value="5" />
 					<jsp:param name="callback" value="goIndexingHistoryPage" />
-					<jsp:param name="requestURI" value="indexing/history.html" />
 				 </jsp:include>
 				</div>
 			</div>

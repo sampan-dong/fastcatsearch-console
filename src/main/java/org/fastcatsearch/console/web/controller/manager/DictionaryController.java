@@ -37,33 +37,78 @@ public class DictionaryController {
 		return mav;
 	}
 	
-	@RequestMapping("/set/list")
-	public ModelAndView setDictionary(HttpSession session, @PathVariable String analysisId, @RequestParam String dictionaryId
-			, @RequestParam(defaultValue = "0") int start, @RequestParam(required = false) int length
-			, @RequestParam(required = false) String keyword) {
+	@RequestMapping("/{dictionaryType}/list")
+	public ModelAndView listDictionary(HttpSession session, @PathVariable String analysisId, @PathVariable String dictionaryType
+			, @RequestParam String dictionaryId
+			, @RequestParam(defaultValue = "1") Integer pageNo
+			, @RequestParam(required = false) String keyword
+			, @RequestParam(required = false) Boolean isEditable
+			, @RequestParam String targetId, @RequestParam(required = false) String deleteIdList) {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/dictionary/list.json";
+		
 		JSONObject jsonObj = null;
+		Integer deletedSize = 0; 
+		logger.debug("deleteIdList >> {}", deleteIdList);
+		if(deleteIdList != null && deleteIdList.length() > 0){
+			String requestUrl = "/management/dictionary/delete.json";
+			try {
+				jsonObj = httpClient.httpPost(requestUrl)
+						.addParameter("pluginId", analysisId)
+						.addParameter("dictionaryId", dictionaryId)
+						.addParameter("deleteIdList", deleteIdList)
+						.requestJSON();
+				
+				deletedSize = jsonObj.getInt("result");
+			} catch (Exception e) {
+				logger.error("", e);
+			}
+		}
+		
+		
+		
+		String requestUrl = "/management/dictionary/list.json";
+		
+		int PAGE_SIZE = 10;
+		if(dictionaryType.equals("set")){
+			PAGE_SIZE = 40;
+		}
+		int start = 0;
+		
+		if(pageNo > 0){
+			start = (pageNo - 1) * PAGE_SIZE + 1;
+		}
+		
 		try {
+			String searchKeyword = null;
+			if(keyword != null && keyword.length() > 0){
+				searchKeyword = "%25" + keyword + "%25";
+			}
 			jsonObj = httpClient.httpPost(requestUrl)
 					.addParameter("pluginId", analysisId)
 					.addParameter("dictionaryId", dictionaryId)
 					.addParameter("start", String.valueOf(start))
-					.addParameter("length", String.valueOf(length))
-					.addParameter("keyword", keyword)
+					.addParameter("length", String.valueOf(PAGE_SIZE))
+					.addParameter("search", searchKeyword)
 					.requestJSON();
 		} catch (Exception e) {
 			logger.error("", e);
 		}
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/dictionary/setDictionary");
+		if(isEditable != null && isEditable.booleanValue()){
+			mav.setViewName("manager/dictionary/" + dictionaryType + "DictionaryEdit");
+		}else{
+			mav.setViewName("manager/dictionary/" + dictionaryType + "Dictionary");
+		}
 		mav.addObject("analysisId", analysisId);
 		mav.addObject("dictionaryId", dictionaryId);
 		mav.addObject("list", jsonObj);
 		mav.addObject("start", start);
-		mav.addObject("length", length);
+		mav.addObject("pageNo", pageNo);
+		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("keyword", keyword);
+		mav.addObject("targetId", targetId);
+		mav.addObject("deletedSize", deletedSize);
 		return mav;
 	}
 }

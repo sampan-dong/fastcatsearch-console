@@ -46,7 +46,6 @@ function loadToTab(url, data, id){
 	});
 } 
 
-
 var PROXY_REQUEST_URI = window.location.protocol + "//" + window.location.host
 		+ "/console/main/request.html";
 
@@ -250,5 +249,15 @@ function startPollingAllTaskStateForTaskBar(){
 function stopPollingAllTaskStateForTaskBar(){
 	pollingAllTaskStateFlagForTaskBar = false;
 }
+
+
+
+/////////////////// dictionary
+function loadDictionaryTab(dictionaryType, dictionaryId, pageNo, keyword, isEditable, targetId, deleteIdList){
+	console.log("loadDictionaryTab", dictionaryType, dictionaryId, pageNo, keyword, isEditable, targetId, deleteIdList);
+	loadToTab(dictionaryType + '/list.html', {dictionaryId: dictionaryId, pageNo: pageNo, keyword: keyword, isEditable: isEditable, targetId: targetId, deleteIdList: deleteIdList}, targetId);
+}
+
+
 
 
