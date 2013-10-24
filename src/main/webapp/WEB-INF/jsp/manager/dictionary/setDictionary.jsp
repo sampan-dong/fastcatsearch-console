@@ -39,6 +39,9 @@ function goEditablePage(pageNo){
 		<div class="dataTables_header clearfix">
 			
 			<div class="input-group col-md-6">
+				<select id="" class="select2">
+					<option value="volC" selected>Keyword</option>
+				</select>
 				<span class="input-group-addon "><i class="icon-search"></i></span> <input type="text"
 					class="form-control" placeholder="Search" id="_set_dictionary_search" value="${keyword}">
 			</div>
