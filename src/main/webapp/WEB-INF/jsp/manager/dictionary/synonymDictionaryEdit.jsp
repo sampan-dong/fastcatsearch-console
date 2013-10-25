@@ -132,11 +132,62 @@ function <%=dictionaryId%>SynonymInsert(){
 		}
 	);
 }
+//TODO
+function <%=dictionaryId%>SynonymUpdate(obj){
+	var keyword = $.trim(wordInputObj.val());
+	wordInputObj.val(keyword);
+	var synonym = $.trim(synonymInputObj.val());
+	synonymInputObj.val(synonym);
+	
+	if(synonym == ""){
+		wordInputResultObj.text("Synonym is required.");
+		return;
+	}
+	
+	requestProxy("POST", { 
+			uri: '/management/dictionary/update.json',
+			pluginId: '${analysisId}',
+			dictionaryId: '${dictionaryId}',
+			keyword: keyword,
+			synonym: synonym
+		},
+		"json",
+		function(response) {
+			
+			if(response.success){
+				wordInputObj.val("");
+				synonymInputObj.val("");
+				wordInputResultObj.text("\""+keyword+" "+synonym+"\" Inserted.");
+				wordInputResultObj.removeClass("text-danger-imp");
+				wordInputResultObj.addClass("text-success-imp");
+				wordInputObj.focus();
+			}else{
+				var message = "\""+keyword+" "+synonym+"\" Insert failed.";
+				if(response.errorMessage){
+					message = message + " Reason = "+response.errorMessage;
+				}
+				wordInputResultObj.text(message);
+				wordInputResultObj.addClass("text-danger-imp");
+				wordInputResultObj.removeClass("text-success-imp");
+			}
+		},
+		function(response){
+			wordInputResultObj.text("\""+keyword+"\" Insert error.");
+			wordInputResultObj.addClass("text-danger-imp");
+			wordInputResultObj.removeClass("text-success-imp");
+		}
+	);
+}
 function go<%=dictionaryId%>DictionaryPage(uri, pageNo){
 	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 }
 function go<%=dictionaryId%>ViewablePage(pageNo){
 	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');	
+}
+function <%=dictionaryId%>deleteOneWord(deleteId){
+	if(confirm("Are you sure?")){
+		loadDictionaryTab("synonym", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteId);
+	}
 }
 function <%=dictionaryId%>deleteSelectWord(){
 	var idList = new Array();
@@ -241,8 +292,8 @@ function <%=dictionaryId%>deleteSelectWord(){
 						</td>
 						<td class="col-md-2"><input type="text" value="<%=obj.getString("KEYWORD") %>" class="form-control"/></td>
 						<td><input type="text" value="<%=obj.getString("SYNONYM") %>" class="form-control"/></td>
-						<td class="col-md-2"><a href="" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
-						<a href="" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
+						<td class="col-md-2"><a href="javascript:<%=dictionaryId%>SynonymUpdate(this);" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
+						<a href="javascript:<%=dictionaryId%>deleteOneWord(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
 					</tr>
 				<%
 				}
