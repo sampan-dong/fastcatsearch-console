@@ -37,11 +37,34 @@ public class DictionaryController {
 		return mav;
 	}
 	
+	@RequestMapping("/overview")
+	public ModelAndView overview(HttpSession session, @PathVariable String analysisId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/dictionary/overview.json";
+		JSONObject jsonObj = null;
+		try {
+			jsonObj = httpClient.httpPost(requestUrl)
+					.addParameter("pluginId", analysisId)
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/dictionary/overview");
+		mav.addObject("analysisId", analysisId);
+		mav.addObject("list", jsonObj.getJSONArray("overview"));
+		return mav;
+	}
+	
+	
 	@RequestMapping("/{dictionaryType}/list")
 	public ModelAndView listDictionary(HttpSession session, @PathVariable String analysisId, @PathVariable String dictionaryType
 			, @RequestParam String dictionaryId
 			, @RequestParam(defaultValue = "1") Integer pageNo
 			, @RequestParam(required = false) String keyword
+			, @RequestParam(required = false) String searchColumn
+			, @RequestParam(required = false) Boolean exactMatch
 			, @RequestParam(required = false) Boolean isEditable
 			, @RequestParam String targetId, @RequestParam(required = false) String deleteIdList) {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
@@ -80,8 +103,15 @@ public class DictionaryController {
 		
 		try {
 			String searchKeyword = null;
-			if(keyword != null && keyword.length() > 0){
-				searchKeyword = "%25" + keyword + "%25";
+			if(exactMatch){
+				searchKeyword = keyword;
+			}else{
+				if(keyword != null && keyword.length() > 0){
+					searchKeyword = "%25" + keyword + "%25";
+				}
+			}
+			if(searchColumn.equals("_ALL")){
+				searchColumn = null;
 			}
 			jsonObj = httpClient.httpPost(requestUrl)
 					.addParameter("pluginId", analysisId)
@@ -89,6 +119,7 @@ public class DictionaryController {
 					.addParameter("start", String.valueOf(start))
 					.addParameter("length", String.valueOf(PAGE_SIZE))
 					.addParameter("search", searchKeyword)
+					.addParameter("searchColumns", searchColumn)
 					.requestJSON();
 		} catch (Exception e) {
 			logger.error("", e);
@@ -107,8 +138,11 @@ public class DictionaryController {
 		mav.addObject("pageNo", pageNo);
 		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("keyword", keyword);
+		mav.addObject("searchColumn", searchColumn);
+		mav.addObject("exactMatch", exactMatch);
 		mav.addObject("targetId", targetId);
 		mav.addObject("deletedSize", deletedSize);
+		
 		return mav;
 	}
 }

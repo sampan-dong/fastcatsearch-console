@@ -18,15 +18,22 @@ $(document).ready(function(){
 	//load dictionary tab contents
 	$('#dictionary_tab a').on('shown.bs.tab', function (e) {
 		var targetId = e.target.hash;
-		var aObj = $(e.target);
-		if($(targetId).text() != ""){
-			//이미 로드되어있으면 다시 로드하지 않음.
-			return;
+		
+		if(targetId == "#tab_dictionary_overview"){
+			loadToTab("overview.html", null, targetId);
+		}else{
+			var aObj = $(e.target);
+			if($(targetId).text() != ""){
+				//이미 로드되어있으면 다시 로드하지 않음.
+				return;
+			}
+			var dictionaryId = aObj.attr("_id");
+			var dictionaryType = aObj.attr("_type");
+			loadDictionaryTab(dictionaryType, dictionaryId, 1, null, null, false, false, targetId);
 		}
-		var dictionaryId = aObj.attr("_id");
-		var dictionaryType = aObj.attr("_type");
-		loadDictionaryTab(dictionaryType, dictionaryId, 1, null, false, targetId);
 	});
+	
+	loadToTab("overview.html", null, "#tab_dictionary_overview");
 });
 
 </script>
@@ -54,7 +61,7 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Korean</h3>
+						<h3>${analysisId }</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -77,57 +84,8 @@ $(document).ready(function(){
 					<div class="tab-content row">
 
 						<!--=== Overview ===-->
-						<div class="tab-pane active" id="tab_dictionary_overview">
-							<div class="widget box">
-								<div class="widget-content no-padding">
-									<div class="dataTables_header clearfix">
-										<div class="input-group col-md-12">
-											<a href="javascript:void(0);" class="btn btn-sm"><span
-												class="glyphicon glyphicon-time"></span> Sync Search Engine</a>
-										</div>
-									</div>
-									<table class="table table-hover table-bordered table-checkable">
-										<thead>
-											<tr>
-												<th class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</th>
-												<th>Name</th>
-												<th>Entry Size</th>
-												<th>Sync Time</th>
-												<th>Action</th>
-											</tr>
-										</thead>
-										<tbody>
-											<%
-											for(int i = 0; i < dictionaryList.length(); i++){
-												JSONObject dictionary = dictionaryList.getJSONObject(i);
-											%>
-											<tr>
-												<td class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</td>
-												<td><strong><%=dictionary.getString("name") %></strong></td>
-												<td><%=dictionary.getInt("entrySize") %></td>
-												<td><%=dictionary.getString("syncTime") %></td>
-												<td>
-												<a href="javascript:void(0);" class="btn btn-default btn-sm">
-													<span class="glyphicon glyphicon-upload"></span> Upload
-												</a>
-												&nbsp;
-												<a href="javascript:void(0);" class="btn btn-default btn-sm">
-													<span class="glyphicon glyphicon-download"></span> Download
-												</a>
-												</td>
-											</tr>
-											<%
-											}
-											%>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
+						<div class="tab-pane active" id="tab_dictionary_overview"></div>
+						
 						<%
 						for(int i = 0; i < dictionaryList.length(); i++){
 							JSONObject dictionary = dictionaryList.getJSONObject(i);
@@ -139,107 +97,6 @@ $(document).ready(function(){
 						<%
 						}
 						%>
-						
-						<!-- Synonym Dict -->
-						<div class="tab-pane hide" id="tab_synonym_dictionary">
-							<div class="widget box">
-								<div class="widget-content no-padding">
-									<div class="dataTables_header clearfix">
-										
-										
-										<div class="input-group col-md-6">
-											<span class="input-group-addon"><i class="icon-search"></i></span> <input type="text"
-												class="form-control" placeholder="Search">
-										</div>
-										
-										<div class="col-md-6">
-											<div class="pull-right">
-												<div class="btn-group">
-													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip"><i class="icon-plus"></i></a>
-													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip"><i class="icon-minus"></i></a>
-													<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
-												</div>
-												&nbsp;
-												<a href="javascript:void(0);"  class="btn btn-default btn-sm">
-													<span class="glyphicon glyphicon-edit"></span> Edit
-												</a>
-												<a href="javascript:void(0);"  class="btn btn-default btn-sm">
-													<span class="glyphicon glyphicon-saved"></span> Done
-												</a>
-											</div>
-										</div>
-									</div>
-									
-
-									<table class="table table-hover table-bordered">
-										<thead>
-											<tr>
-												<th style="width:20%">Representative</th>
-												<th>Word Entry</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td><span class="my_r_tag">가나다</span></td>
-												<td>
-													<span class="mytag">가나다</span><span class="mytag">마바사</span><span class="mytag">아자차</span><span class="mytag">카타파</span><span class="mytag">하하하</span><span class="mytag">가나다</span><span class="mytag">마바사</span>
-												</td>
-											</tr>
-											<tr>
-												<td><span class="my_r_tag">아이폰</span></td>
-												<td>
-													<span class="mytag">가나다</span><span class="mytag">마바사</span><span class="mytag">아자차</span><span class="mytag">카타파</span><span class="mytag">하하하</span><span class="mytag">가나다</span><span class="mytag">마바사</span>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-									
-									<table id="mytable" class="table table-hover table-bordered">
-										<thead>
-											<tr>
-												<th style="width:30px">&nbsp;</th>
-												<th style="width:20%">Representative</th>
-												<th>Word Entry</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td><label class="radio"><input type="radio" class="uniform" name="wordSelect" value="1"></label></td>
-												<td><input type="text" class="form-control mytag_input" value="나다사"></td>
-												<td>
-													<input type="text" class="tags" value="가나다,라마바사,아자"> 	
-												</td>
-											</tr>
-											<tr>
-												<td><div class="form-group"><label class="radio"><input type="radio" class="uniform" name="wordSelect" value="2"></label></div></td>
-												<td><input type="text" class="form-control mytag_input" value="아이폰"></td>
-												<td><input type="text" class="tags" value="tags,with,autocomplete"> 
-												</td>
-											</tr>
-										</tbody>
-									</table>
-									
-									<div class="table-footer">
-									<div class="col-md-6">
-											Rows 1 - 50 of 2809 (filtered from 8 total entries)
-										</div>
-										
-										<div class="col-md-6">
-											<ul class="pagination">
-												<li class="disabled"><a href="javascript:void(0);">&laquo;</a></li>
-												<li class="active"><a href="javascript:void(0);">1</a></li>
-												<li><a href="javascript:void(0);">2</a></li>
-												<li><a href="javascript:void(0);">3</a></li>
-												<li><a href="javascript:void(0);">4</a></li>
-												<li><a href="javascript:void(0);">5</a></li>
-												<li><a href="javascript:void(0);">&raquo;</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- //Synonym Dict -->
 						<!-- //tab field -->
 					</div>
 					<!-- /.tab-content -->

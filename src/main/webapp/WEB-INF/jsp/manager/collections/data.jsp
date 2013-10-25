@@ -83,7 +83,7 @@ function goIndexDataPage(uri, pageNo){
 									<div class="widget-content no-padding">
 										<div class="dataTables_header clearfix">
 											<div class="col-md-4">
-												<select id="shardSelect" class="select2 col-md-12">
+												<select id="shardSelect" class="select_flat col-md-12">
 													<%
 													int totalSize = 0;
 													for( int i = 0 ; i < indexDataStatusList.length() ; i++ ){

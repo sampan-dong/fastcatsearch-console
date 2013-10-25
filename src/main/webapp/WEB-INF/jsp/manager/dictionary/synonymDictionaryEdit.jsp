@@ -12,43 +12,56 @@
 	int start = (Integer) request.getAttribute("start");
 	String targetId = (String) request.getAttribute("targetId");
 	JSONArray searchableColumnList = (JSONArray) list.getJSONArray("searchableColumnList");
+	String searchColumn = (String) request.getAttribute("searchColumn");
 %>
 <script>
 
 var wordInputObj;
+var synonymInputObj;
 var wordInputResultObj;
 var searchInputObj;
+var searchColumnObj;
 var exactMatchObj;
 
 $(document).ready(function(){
 	
 	wordInputObj = $("#word_input_${dictionaryId}");
+	synonymInputObj = $("#synonym_input_${dictionaryId}");
 	wordInputResultObj = $("#word_input_result_${dictionaryId}");
 	searchInputObj = $("#search_input_${dictionaryId}");
+	searchColumnObj = $("#${dictionaryId}SearchColumn");
 	exactMatchObj = $("#${dictionaryId}ExactMatch");
+	
 	
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = $(this).val();
-			console.log("search > ",keyword);
-			loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, null, exactMatchObj.is(":checked"), true, '<%=targetId%>');
+			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 			return;
 		}
 	});
 	searchInputObj.focus();
 	
+	searchColumnObj.on("change", function(){
+		loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, searchInputObj.val(), searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+	});
 	exactMatchObj.on("change", function(){
-		loadDictionaryTab("set", '<%=dictionaryId %>', 1, searchInputObj.val(), null, exactMatchObj.is(":checked"), true, '<%=targetId%>');
+		loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, searchInputObj.val(), searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 	});
 	
 	//단어추가상자PUT버튼.
 	$("#word_input_button_${dictionaryId}").on("click", function(e){
-		<%=dictionaryId%>SetInsert();
+		<%=dictionaryId%>SynonymInsert();
 	});
 	//단어추가상자 엔터키. 
 	wordInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
-			<%=dictionaryId%>SetInsert();
+			<%=dictionaryId%>SynonymInsert();
+		}
+	});
+	synonymInputObj.keydown(function (e) {
+		if(e.keyCode == 13){
+			<%=dictionaryId%>SynonymInsert();
 		}
 	});
 	
@@ -56,6 +69,7 @@ $(document).ready(function(){
 		<%=dictionaryId%>LoadList();
 		searchInputObj.focus();
 	});
+	
 	$("#<%=dictionaryId%>WordInsertModal").on("shown.bs.modal", function(){
 		wordInputObj.focus();
 	});
@@ -71,14 +85,16 @@ function <%=dictionaryId%>Truncate(){
 }
 function <%=dictionaryId%>LoadList(){
 	var keyword = $.trim(searchInputObj.val());
-	loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, null, exactMatchObj.is(":checked"), true, '<%=targetId%>');
+	loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 }
-function <%=dictionaryId%>SetInsert(){
+function <%=dictionaryId%>SynonymInsert(){
 	var keyword = $.trim(wordInputObj.val());
 	wordInputObj.val(keyword);
+	var synonym = $.trim(synonymInputObj.val());
+	synonymInputObj.val(synonym);
 	
-	if(keyword == ""){
-		wordInputResultObj.text("Keyword is required.");
+	if(synonym == ""){
+		wordInputResultObj.text("Synonym is required.");
 		return;
 	}
 	
@@ -86,18 +102,21 @@ function <%=dictionaryId%>SetInsert(){
 			uri: '/management/dictionary/put.json',
 			pluginId: '${analysisId}',
 			dictionaryId: '${dictionaryId}',
-			keyword: keyword
+			keyword: keyword,
+			synonym: synonym
 		},
 		"json",
 		function(response) {
+			
 			if(response.success){
 				wordInputObj.val("");
-				wordInputResultObj.text("\""+keyword+"\" Inserted.");
+				synonymInputObj.val("");
+				wordInputResultObj.text("\""+keyword+" "+synonym+"\" Inserted.");
 				wordInputResultObj.removeClass("text-danger-imp");
 				wordInputResultObj.addClass("text-success-imp");
 				wordInputObj.focus();
 			}else{
-				var message = "\""+keyword+"\" Insert failed.";
+				var message = "\""+keyword+" "+synonym+"\" Insert failed.";
 				if(response.errorMessage){
 					message = message + " Reason = "+response.errorMessage;
 				}
@@ -111,13 +130,13 @@ function <%=dictionaryId%>SetInsert(){
 			wordInputResultObj.addClass("text-danger-imp");
 			wordInputResultObj.removeClass("text-success-imp");
 		}
-	);		
+	);
 }
 function go<%=dictionaryId%>DictionaryPage(uri, pageNo){
-	loadDictionaryTab("set", '<%=dictionaryId %>', pageNo, '${keyword}', null, exactMatchObj.is(":checked"), true, '<%=targetId%>');
+	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 }
 function go<%=dictionaryId%>ViewablePage(pageNo){
-	loadDictionaryTab("set", '<%=dictionaryId %>', pageNo, '${keyword}', null, exactMatchObj.is(":checked"), false, '<%=targetId%>');	
+	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');	
 }
 function <%=dictionaryId%>deleteSelectWord(){
 	var idList = new Array();
@@ -133,7 +152,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 		return;
 	}
 	var deleteIdList = idList.join(",");
-	loadDictionaryTab("set", '<%=dictionaryId %>', '${pageNo}', '${keyword}', null, exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteIdList);	
+	loadDictionaryTab("synonym", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteIdList);	
 }
 </script>
 
@@ -142,8 +161,21 @@ function <%=dictionaryId%>deleteSelectWord(){
 	<div class="widget-content no-padding">
 		<div class="dataTables_header clearfix">
 			
-			<div class="form-inline col-md-6">
-				<div class="form-group " style="width:240px">
+			<div class="form-inline col-md-7">
+				<div class="form-group">
+					<select id="<%=dictionaryId %>SearchColumn" class="select_flat form-control">
+						<option value="_ALL">ALL</option>
+						<%
+						for(int i=0; i < searchableColumnList.length(); i++){
+							String columnName = searchableColumnList.getString(i);
+						%>
+						<option value="<%=columnName %>" <%=(columnName.equals(searchColumn)) ? "selected" : "" %>><%=columnName %></option>
+						<%
+						}
+						 %>
+					</select>
+				</div>
+				<div class="form-group" style="width:240px">
 			        <div class="input-group" >
 			            <span class="input-group-addon"><i class="icon-search"></i></span>
 			            <input type="text" class="form-control" placeholder="Search" id="search_input_<%=dictionaryId%>" value="${keyword}">
@@ -159,7 +191,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 			    </div>
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-md-5">
 				<div class="pull-right">
 					<a href="javascript:<%=dictionaryId%>Truncate();"  class="btn btn-danger btn-sm">
 						<span class="glyphicon glyphicon-ban-circle"></span> Clean
@@ -187,73 +219,36 @@ function <%=dictionaryId%>deleteSelectWord(){
 		%>
 		<div class="col-md-12" style="overflow:auto">
 		
-			<div class="col-md-3">
-
-				<table class="_table_<%=dictionaryId %> table table-hover table-bordered table-checkable">
-					<thead>
-						<tr>
-							<th class="checkbox-column">
-								<input type="checkbox" class="uniform">
-							</th>
-							<th>Word</th>
-						</tr>
-					</thead>
-					<tbody>
-					
-		<%
-		}
-		%>
-			<%
-			int eachColumnSize = 10;
-			for(int i=0; i < entryList.length(); i++){
-				JSONObject obj = entryList.getJSONObject(i);
-			%>
-			
-			<%
-				if(i > 0 && i % eachColumnSize == 0){
-			%>
-					</tbody>
-				</table>
-			</div>
-			<%
+			<table class="_table_<%=dictionaryId %> table table-hover table-bordered table-checkable table-condensed">
+				<thead>
+					<tr>
+						<th class="checkbox-column">
+							<input type="checkbox" class="uniform">
+						</th>
+						<th>Keyword</th>
+						<th>Synonym words</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+				<%
+				for(int i=0; i < entryList.length(); i++){
+					JSONObject obj = entryList.getJSONObject(i);
+				%>
+					<tr id="_<%=dictionaryId %>_<%=obj.getInt("ID") %>">
+						<td class="checkbox-column">
+							<input type="checkbox" class="uniform">
+						</td>
+						<td class="col-md-2"><input type="text" value="<%=obj.getString("KEYWORD") %>" class="form-control"/></td>
+						<td><input type="text" value="<%=obj.getString("SYNONYM") %>" class="form-control"/></td>
+						<td class="col-md-2"><a href="" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
+						<a href="" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
+					</tr>
+				<%
 				}
-			%>
-			
-			<%
-				if(i > 0 && i % eachColumnSize == 0){
-			%>
-			<div class="col-md-3">
-
-				<table class="_table_<%=dictionaryId %> table table-hover table-bordered table-checkable">
-					<thead>
-						<tr>
-							<th class="checkbox-column">
-								<input type="checkbox" class="uniform">
-							</th>
-							<th>Word</th>
-						</tr>
-					</thead>
-					<tbody>
-			<%
-				}
-			%>
-						<tr id="_<%=dictionaryId %>_<%=obj.getInt("ID") %>">
-							<td class="checkbox-column">
-								<input type="checkbox" class="uniform">
-							</td>
-							<td><%=obj.getString("KEYWORD") %></td>
-						</tr>
-					
-			<%
-			}
-			%>
-			
-		<%
-		if(entryList.length() > 0){
-		%>
-					</tbody>
-				</table>
-			</div>
+				%>
+				</tbody>
+			</table>
 		</div>
 		<%
 		}
@@ -289,12 +284,17 @@ function <%=dictionaryId%>deleteSelectWord(){
 				<h4 class="modal-title"><%=dictionaryId.toUpperCase() %> Word Insert</h4>
 			</div>
 			<div class="modal-body">
-				<div class="row">
-					<div class="input-group col-md-7">
-						<input type="text" name="word_input" id="word_input_${dictionaryId}" class="form-control" placeholder="Word">
-						<span class="input-group-btn">
-			              <button class="btn btn-default" type="button" id="word_input_button_${dictionaryId}">Put</button>
-			            </span>
+				<div class="form-inline">
+					<div class="form-group">
+						<input type="text" id="word_input_${dictionaryId}" class="form-control" placeholder="Keyword">
+					</div>
+					<div class="form-group" style="width:370px">
+						<div class="input-group" >
+							<input type="text" id="synonym_input_${dictionaryId}" class="form-control" placeholder="Synonym">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" id="word_input_button_${dictionaryId}">Put</button>
+				            </span>
+			            </div>
 					</div>
 				</div>
 				<label id="word_input_result_${dictionaryId}" for="word_input" class="help-block" style="word-wrap: break-word;"></label>

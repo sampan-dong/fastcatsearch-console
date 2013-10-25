@@ -107,9 +107,8 @@
 <script type="text/javascript" src="${contextPath}/resources/plugins/noty/themes/default.js"></script>
 
 <!-- Forms -->
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/uniform/jquery.uniform.min.js"></script>
-<script type="text/javascript" src="${contextPath}/resources/plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/uniform/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/validation/jquery.validate.min.js"></script>
 
 <!-- App -->
 <script type="text/javascript" src="${contextPath}/resources/assets/js/app.js"></script>

@@ -52,3 +52,21 @@ background-color: #4d7496;
 border-
 z-index: 2;
 }
+
+.select_flat {
+	background: url(../img/select_arrow.png) no-repeat right 10px top 12px #fff;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	/*appearance: none;*/
+	min-width: 100px;
+	height:	32px;
+	padding: 5px 10px 5px 10px;
+	border: 1px solid #ccc;
+}
+
+.text-danger-imp{
+	color: #b94a48 !important;	
+}
+.text-success-imp{
+	color: #468847 !important;	
+}

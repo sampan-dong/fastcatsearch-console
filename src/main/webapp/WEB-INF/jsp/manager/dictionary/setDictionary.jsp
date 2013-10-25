@@ -11,25 +11,37 @@
 	JSONArray entryList = (JSONArray) list.getJSONArray(dictionaryId);
 	int start = (Integer) request.getAttribute("start");
 	String targetId = (String) request.getAttribute("targetId");
+	JSONArray searchableColumnList = (JSONArray) list.getJSONArray("searchableColumnList");
 %>
 <script>
+
+var searchInputObj;
+var exactMatchObj;
+
 $(document).ready(function(){
-	$("#_set_dictionary_search").keyup(function (e) {
+	
+	searchInputObj = $("#search_input_${dictionaryId}");
+	exactMatchObj = $("#${dictionaryId}ExactMatch");
+	
+	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = $(this).val();
-			console.log("search > ",keyword);
-			loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, false, '<%=targetId%>');
+			loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, null, exactMatchObj.is(":checked"), false, '<%=targetId%>');
 			return;
 		}
 	});
-	$("#_set_dictionary_search").focus();
+	searchInputObj.focus();
+	
+	exactMatchObj.on("change", function(){
+		loadDictionaryTab("set", '<%=dictionaryId %>', 1, searchInputObj.val(), null, exactMatchObj.is(":checked"), false, '<%=targetId%>');
+	});
 });
 
-function goDictionaryPage(uri, pageNo){
-	loadDictionaryTab("set", '<%=dictionaryId %>', pageNo, '${keyword}', false, '<%=targetId%>');	
+function go<%=dictionaryId%>DictionaryPage(uri, pageNo){
+	loadDictionaryTab("set", '<%=dictionaryId %>', pageNo, '${keyword}', null, exactMatchObj.is(":checked"), false, '<%=targetId%>');	
 }
-function goEditablePage(pageNo){
-	loadDictionaryTab("set", '<%=dictionaryId %>', pageNo, '${keyword}', true, '<%=targetId%>');	
+function go<%=dictionaryId%>EditablePage(pageNo){
+	loadDictionaryTab("set", '<%=dictionaryId %>', pageNo, '${keyword}', null, exactMatchObj.is(":checked"), true, '<%=targetId%>');	
 }
 </script>
 
@@ -37,22 +49,34 @@ function goEditablePage(pageNo){
 <div class="widget box">
 	<div class="widget-content no-padding">
 		<div class="dataTables_header clearfix">
-			
-			<div class="input-group col-md-6">
-				<select id="" class="select2">
-					<option value="volC" selected>Keyword</option>
-				</select>
-				<span class="input-group-addon "><i class="icon-search"></i></span> <input type="text"
-					class="form-control" placeholder="Search" id="_set_dictionary_search" value="${keyword}">
+			<div class="form-inline col-md-6">
+				<div class="form-group " style="width:240px">
+			        <div class="input-group" >
+			            <span class="input-group-addon"><i class="icon-search"></i></span>
+			            <input type="text" class="form-control" placeholder="Search" id="search_input_<%=dictionaryId%>" value="${keyword}">
+			        </div>
+			    </div>
+			     <div class="form-group">
+			    	&nbsp;
+			    	<div class="checkbox">
+			    	<label>
+			    		<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Exact Match
+			    	</label>
+			    	</div>
+			    </div>
 			</div>
-			
+				
 			<div class="col-md-6">
 				<div class="pull-right">
+					<a href="javascript:void(0);"  class="btn btn-default btn-sm">
+						<span class="icon icon-download"></span> Download
+					</a>
+					&nbsp;
 					<div class="btn-group">
-						<a href="javascript:goDictionaryPage('', '${pageNo}');" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
+						<a href="javascript:go<%=dictionaryId%>DictionaryPage('', '${pageNo}');" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
 					</div>
 					&nbsp;
-					<a href="javascript:goEditablePage('${pageNo}');"  class="btn btn-default btn-sm">
+					<a href="javascript:go<%=dictionaryId%>EditablePage('${pageNo}');"  class="btn btn-default btn-sm">
 						<span class="glyphicon glyphicon-edit"></span> Edit
 					</a>
 				</div>
@@ -137,10 +161,10 @@ function goEditablePage(pageNo){
 			
 			<jsp:include page="../../inc/pagenation.jsp" >
 			 	<jsp:param name="pageNo" value="${pageNo }"/>
-			 	<jsp:param name="totalSize" value="<%=totalSize %>" />
+			 	<jsp:param name="totalSize" value="<%=filteredSize %>" />
 				<jsp:param name="pageSize" value="${pageSize }" />
 				<jsp:param name="width" value="5" />
-				<jsp:param name="callback" value="goDictionaryPage" />
+				<jsp:param name="callback" value="go${dictionaryId }DictionaryPage" />
 				<jsp:param name="requestURI" value="" />
 			 </jsp:include>
 			</div>

@@ -78,11 +78,6 @@
 											<a href="javascript:void(0);" class="btn btn-sm">
 												<span class="glyphicon glyphicon-edit"></span> Edit
 											</a>
-											<div class="pull-right">
-											<a href="javascript:void(0);" class="btn btn-danger btn-sm">
-													<span class="glyphicon glyphicon-trash"></span> Clean Data
-												</a>
-												</div>
 										</div>
 									</div>
 									<table class="table table-hover table-bordered table-checkable">

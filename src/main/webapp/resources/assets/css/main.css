@@ -2301,10 +2301,10 @@ textarea[readonly] {
   background-color: #f9f9f9;
   color: #adadad;
 }
-.help-block,
+/*.help-block,
 .help-inline {
   color: #adadad;
-}
+}*/
 /* * * * * * * * * * * *
  * Icons
  * * * * * * * * * * * */

@@ -35,7 +35,7 @@ function submitForm(url, data, method){
 }
 
 function loadToTab(url, data, id){
-	console.log(url, data, id);
+	//console.log(url, data, id);
 	$.ajax({
 		url : url,
 		data : data,
@@ -253,11 +253,61 @@ function stopPollingAllTaskStateForTaskBar(){
 
 
 /////////////////// dictionary
-function loadDictionaryTab(dictionaryType, dictionaryId, pageNo, keyword, isEditable, targetId, deleteIdList){
-	console.log("loadDictionaryTab", dictionaryType, dictionaryId, pageNo, keyword, isEditable, targetId, deleteIdList);
-	loadToTab(dictionaryType + '/list.html', {dictionaryId: dictionaryId, pageNo: pageNo, keyword: keyword, isEditable: isEditable, targetId: targetId, deleteIdList: deleteIdList}, targetId);
+function loadDictionaryTab(dictionaryType, dictionaryId, pageNo, keyword, searchColumn, exactMatch, isEditable, targetId, deleteIdList){
+	console.log("loadDictionaryTab", dictionaryType, dictionaryId, pageNo, keyword, searchColumn, exactMatch, isEditable, targetId, deleteIdList);
+	loadToTab(dictionaryType + '/list.html', {dictionaryId: dictionaryId, pageNo: pageNo, keyword: keyword, searchColumn: searchColumn, exactMatch: exactMatch, isEditable: isEditable, targetId: targetId, deleteIdList: deleteIdList}, targetId);
 }
 
 
+function truncateDictionary(analysisId, dictionaryId, callback){
+	requestProxy("POST", { 
+		uri: '/management/dictionary/truncate.json',
+		pluginId: analysisId,
+		dictionaryId: dictionaryId
+	},
+	"json",
+	function(response) {
+		if(response.success){
+			alert("Clean data success.");
+			callback();
+		}else{
+			var message = "Clean data error.";
+			if(response.errorMessage){
+				message = message + " Reason = "+response.errorMessage;
+			}
+			alert(message);
+		}
+	},
+	function(response){
+		alert("Clean data error.");
+	});	
+}
+
+
+
+function checkableTable(tableId) {
+	console.log("checkabel ", $(tableId).find( 'thead th.checkbox-column :checkbox' ));
+	$(tableId).find(':checkbox').each(function(j, cb_self) {
+		$(cb_self).uniform();
+		$.uniform.update($(cb_self));
+	});
+	$(tableId).find( 'thead th.checkbox-column :checkbox' ).on('change', function() {
+		var checked = $( this ).prop( 'checked' );
+		$( this ).parents('table').children('tbody').each(function(i, tbody) {
+			$(tbody).find('.checkbox-column').each(function(j, cb) {
+				var cb_self = $( ':checkbox', $(cb) ).prop( "checked", checked ).trigger('change');
+				if (cb_self.hasClass('uniform')) {
+					$.uniform.update(cb_self);
+				}
+
+				$(cb).closest('tr').toggleClass( 'checked', checked );
+			});
+		});
+	});
+	$(tableId).find( 'tbody tr td.checkbox-column :checkbox' ).on('change', function() {
+		var checked = $( this ).prop( 'checked' );
+		$( this ).closest('tr').toggleClass( 'checked', checked );
+	});
+}
 
 
