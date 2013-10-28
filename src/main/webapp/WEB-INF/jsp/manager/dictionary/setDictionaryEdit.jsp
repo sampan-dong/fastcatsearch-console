@@ -27,9 +27,11 @@ $(document).ready(function(){
 	searchInputObj = $("#search_input_${dictionaryId}");
 	exactMatchObj = $("#${dictionaryId}ExactMatch");
 	
+	$("#<%=dictionaryId %>ExactMatch").uniform();
+	
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
-			var keyword = $(this).val();
+			var keyword = toSafeString($(this).val());
 			console.log("search > ",keyword);
 			loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, null, exactMatchObj.is(":checked"), true, '<%=targetId%>');
 			return;
@@ -38,7 +40,10 @@ $(document).ready(function(){
 	searchInputObj.focus();
 	
 	exactMatchObj.on("change", function(){
-		loadDictionaryTab("set", '<%=dictionaryId %>', 1, searchInputObj.val(), null, exactMatchObj.is(":checked"), true, '<%=targetId%>');
+		var keyword = toSafeString(searchInputObj.val());
+		if(keyword != ""){
+			loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, null, exactMatchObj.is(":checked"), true, '<%=targetId%>');
+		}
 	});
 	
 	//단어추가상자PUT버튼.
@@ -70,11 +75,11 @@ function <%=dictionaryId%>Truncate(){
 	}
 }
 function <%=dictionaryId%>LoadList(){
-	var keyword = $.trim(searchInputObj.val());
+	var keyword = toSafeString(searchInputObj.val());
 	loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, null, exactMatchObj.is(":checked"), true, '<%=targetId%>');
 }
 function <%=dictionaryId%>SetInsert(){
-	var keyword = $.trim(wordInputObj.val());
+	var keyword = toSafeString(wordInputObj.val());
 	wordInputObj.val(keyword);
 	
 	if(keyword == ""){
@@ -153,7 +158,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 			    	&nbsp;
 			    	<div class="checkbox">
 			    	<label>
-			    		<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Exact Match
+			    		<input type="checkbox" class="uniform" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Exact Match
 			    	</label>
 			    	</div>
 			    </div>

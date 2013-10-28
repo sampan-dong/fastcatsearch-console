@@ -26,9 +26,11 @@ $(document).ready(function(){
 	searchColumnObj = $("#${dictionaryId}SearchColumn");
 	exactMatchObj = $("#${dictionaryId}ExactMatch");
 	
+	$("#<%=dictionaryId %>ExactMatch").uniform();
+	
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
-			var keyword = $(this).val();
+			var keyword = toSafeString($(this).val());
 			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
 			return;
 		}
@@ -36,10 +38,16 @@ $(document).ready(function(){
 	searchInputObj.focus();
 	
 	searchColumnObj.on("change", function(){
-		loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, searchInputObj.val(), searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
+		var keyword = toSafeString(searchInputObj.val());
+		if(keyword != ""){
+			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
+		}
 	});
 	exactMatchObj.on("change", function(){
-		loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, searchInputObj.val(), searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
+		var keyword = toSafeString(searchInputObj.val());
+		if(keyword != ""){
+			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
+		}
 	});
 });
 

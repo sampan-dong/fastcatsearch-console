@@ -23,9 +23,11 @@ $(document).ready(function(){
 	searchInputObj = $("#search_input_${dictionaryId}");
 	exactMatchObj = $("#${dictionaryId}ExactMatch");
 	
+	$("#<%=dictionaryId %>ExactMatch").uniform();
+	
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
-			var keyword = $(this).val();
+			var keyword = toSafeString($(this).val());
 			loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, null, exactMatchObj.is(":checked"), false, '<%=targetId%>');
 			return;
 		}
@@ -33,7 +35,10 @@ $(document).ready(function(){
 	searchInputObj.focus();
 	
 	exactMatchObj.on("change", function(){
-		loadDictionaryTab("set", '<%=dictionaryId %>', 1, searchInputObj.val(), null, exactMatchObj.is(":checked"), false, '<%=targetId%>');
+		var keyword = toSafeString(searchInputObj.val());
+		if(keyword != ""){
+			loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, null, exactMatchObj.is(":checked"), false, '<%=targetId%>');
+		}
 	});
 });
 

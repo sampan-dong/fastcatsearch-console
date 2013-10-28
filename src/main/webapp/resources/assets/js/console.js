@@ -8,6 +8,10 @@ function br2nl(str){
 	return str.replace(/(<br>)|(<br \/>)|(<p>)|(<\/p>)/g,"\n");
 }
 
+function toSafeString(str){
+	return $.trim(str).replace(/'/gi, "").replace(/"/gi, "").replace(/\\/gi, "");
+}
+
 function submitGet(url, data){
 	submitForm(url, data, "GET");
 }
@@ -254,7 +258,7 @@ function stopPollingAllTaskStateForTaskBar(){
 
 /////////////////// dictionary
 function loadDictionaryTab(dictionaryType, dictionaryId, pageNo, keyword, searchColumn, exactMatch, isEditable, targetId, deleteIdList){
-	console.log("loadDictionaryTab", dictionaryType, dictionaryId, pageNo, keyword, searchColumn, exactMatch, isEditable, targetId, deleteIdList);
+	console.log("loadDictionaryTab", dictionaryType, dictionaryId, pageNo, escape(keyword), searchColumn, exactMatch, isEditable, targetId, deleteIdList);
 	loadToTab(dictionaryType + '/list.html', {dictionaryId: dictionaryId, pageNo: pageNo, keyword: keyword, searchColumn: searchColumn, exactMatch: exactMatch, isEditable: isEditable, targetId: targetId, deleteIdList: deleteIdList}, targetId);
 }
 

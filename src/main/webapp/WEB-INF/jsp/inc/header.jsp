@@ -104,6 +104,7 @@
 <!-- Noty -->
 <script type="text/javascript" src="${contextPath}/resources/plugins/noty/jquery.noty.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/plugins/noty/layouts/top.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/noty/layouts/topRight.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/plugins/noty/themes/default.js"></script>
 
 <!-- Forms -->

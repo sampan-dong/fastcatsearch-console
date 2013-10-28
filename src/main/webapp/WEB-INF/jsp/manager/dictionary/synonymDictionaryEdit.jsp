@@ -32,10 +32,11 @@ $(document).ready(function(){
 	searchColumnObj = $("#${dictionaryId}SearchColumn");
 	exactMatchObj = $("#${dictionaryId}ExactMatch");
 	
+	$("#<%=dictionaryId %>ExactMatch").uniform();
 	
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
-			var keyword = $(this).val();
+			var keyword = toSafeString($(this).val());
 			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 			return;
 		}
@@ -43,10 +44,16 @@ $(document).ready(function(){
 	searchInputObj.focus();
 	
 	searchColumnObj.on("change", function(){
-		loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, searchInputObj.val(), searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+		var keyword = toSafeString(searchInputObj.val());
+		if(keyword != ""){
+			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+		}
 	});
 	exactMatchObj.on("change", function(){
-		loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, searchInputObj.val(), searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+		var keyword = toSafeString(searchInputObj.val());
+		if(keyword != ""){
+			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+		}
 	});
 	
 	//단어추가상자PUT버튼.
@@ -84,13 +91,13 @@ function <%=dictionaryId%>Truncate(){
 	}
 }
 function <%=dictionaryId%>LoadList(){
-	var keyword = $.trim(searchInputObj.val());
+	var keyword = toSafeString(searchInputObj.val());
 	loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 }
 function <%=dictionaryId%>SynonymInsert(){
-	var keyword = $.trim(wordInputObj.val());
+	var keyword = toSafeString(wordInputObj.val());
 	wordInputObj.val(keyword);
-	var synonym = $.trim(synonymInputObj.val());
+	var synonym = toSafeString(synonymInputObj.val());
 	synonymInputObj.val(synonym);
 	
 	if(synonym == ""){
@@ -111,7 +118,11 @@ function <%=dictionaryId%>SynonymInsert(){
 			if(response.success){
 				wordInputObj.val("");
 				synonymInputObj.val("");
-				wordInputResultObj.text("\""+keyword+" "+synonym+"\" Inserted.");
+				if(keyword != ""){
+					wordInputResultObj.text("\""+keyword+" > "+synonym+"\" Inserted.");
+				}else{
+					wordInputResultObj.text("\"" + synonym+"\" Inserted.");
+				}
 				wordInputResultObj.removeClass("text-danger-imp");
 				wordInputResultObj.addClass("text-success-imp");
 				wordInputObj.focus();
@@ -132,49 +143,44 @@ function <%=dictionaryId%>SynonymInsert(){
 		}
 	);
 }
-//TODO
-function <%=dictionaryId%>SynonymUpdate(obj){
-	var keyword = $.trim(wordInputObj.val());
-	wordInputObj.val(keyword);
-	var synonym = $.trim(synonymInputObj.val());
-	synonymInputObj.val(synonym);
+
+function <%=dictionaryId%>WordUpdate(id){
 	
-	if(synonym == ""){
-		wordInputResultObj.text("Synonym is required.");
+	var trObj = $("#_${dictionaryId}_"+id);
+	console.log("update", id, trObj);
+	
+	var data = { 
+		uri: '/management/dictionary/update.json',
+		pluginId: '${analysisId}',
+		dictionaryId: '${dictionaryId}',
+	};
+	
+	trObj.find("input[type=text],input[type=hidden]").each(function() {
+		var name = $(this).attr("name");
+		var value = toSafeString($(this).val());
+		if(name != ""){
+			data[name] = value;
+		}
+	});
+	console.log("data ",data);
+	if(data.SYNONYM == ""){
+		alert("Synonym is required.");
 		return;
 	}
 	
-	requestProxy("POST", { 
-			uri: '/management/dictionary/update.json',
-			pluginId: '${analysisId}',
-			dictionaryId: '${dictionaryId}',
-			keyword: keyword,
-			synonym: synonym
-		},
+	requestProxy("POST", 
+		data,
 		"json",
 		function(response) {
 			
 			if(response.success){
-				wordInputObj.val("");
-				synonymInputObj.val("");
-				wordInputResultObj.text("\""+keyword+" "+synonym+"\" Inserted.");
-				wordInputResultObj.removeClass("text-danger-imp");
-				wordInputResultObj.addClass("text-success-imp");
-				wordInputObj.focus();
+				noty({text: "Update Success", type: "success", layout:"topRight", timeout: 1000});
 			}else{
-				var message = "\""+keyword+" "+synonym+"\" Insert failed.";
-				if(response.errorMessage){
-					message = message + " Reason = "+response.errorMessage;
-				}
-				wordInputResultObj.text(message);
-				wordInputResultObj.addClass("text-danger-imp");
-				wordInputResultObj.removeClass("text-success-imp");
+				noty({text: "Update Fail", type: "error", layout:"topRight", timeout: 2000});
 			}
 		},
 		function(response){
-			wordInputResultObj.text("\""+keyword+"\" Insert error.");
-			wordInputResultObj.addClass("text-danger-imp");
-			wordInputResultObj.removeClass("text-success-imp");
+			noty({text: "Update Error", type: "error", layout:"topRight", timeout: 2000});
 		}
 	);
 }
@@ -290,9 +296,11 @@ function <%=dictionaryId%>deleteSelectWord(){
 						<td class="checkbox-column">
 							<input type="checkbox" class="uniform">
 						</td>
-						<td class="col-md-2"><input type="text" value="<%=obj.getString("KEYWORD") %>" class="form-control"/></td>
-						<td><input type="text" value="<%=obj.getString("SYNONYM") %>" class="form-control"/></td>
-						<td class="col-md-2"><a href="javascript:<%=dictionaryId%>SynonymUpdate(this);" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
+						<td class="col-md-2">
+						<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>"/>
+						<input type="text" name="KEYWORD" value="<%=obj.getString("KEYWORD") %>" class="form-control"/></td>
+						<td><input type="text" name="SYNONYM" value="<%=obj.getString("SYNONYM") %>" class="form-control"/></td>
+						<td class="col-md-2"><a href="javascript:<%=dictionaryId%>WordUpdate(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
 						<a href="javascript:<%=dictionaryId%>deleteOneWord(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
 					</tr>
 				<%
