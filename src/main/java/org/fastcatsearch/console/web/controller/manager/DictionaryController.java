@@ -57,6 +57,34 @@ public class DictionaryController {
 		return mav;
 	}
 	
+	@RequestMapping("/system/list")
+	public ModelAndView listSystemDictionary(HttpSession session, @PathVariable String analysisId,
+			@RequestParam String keyword
+			, @RequestParam String targetId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		
+		JSONObject jsonObj = null;
+		String requestUrl = "/management/dictionary/system.json";
+		
+		try {
+			jsonObj = httpClient.httpPost(requestUrl)
+					.addParameter("pluginId", analysisId)
+					.addParameter("search", keyword)
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/dictionary/systemDictionary");
+		mav.addObject("analysisId", analysisId);
+		mav.addObject("list", jsonObj);
+		mav.addObject("keyword", keyword);
+		mav.addObject("targetId", targetId);
+		
+		return mav;
+	}
+	
 	
 	@RequestMapping("/{dictionaryType}/list")
 	public ModelAndView listDictionary(HttpSession session, @PathVariable String analysisId, @PathVariable String dictionaryType

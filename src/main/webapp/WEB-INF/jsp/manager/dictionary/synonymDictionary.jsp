@@ -135,13 +135,6 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 				<%
 				}
 				%>
-				<%
-				if(entryList.length() == 0){
-				%>
-					<tr><td colspan="2">There's no word.</td></tr>
-				<%
-				}
-				%>
 				</tbody>
 			</table>
 		</div>
