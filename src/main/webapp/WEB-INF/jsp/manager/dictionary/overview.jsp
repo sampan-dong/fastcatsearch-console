@@ -14,6 +14,8 @@ $(document).ready(function() {
 	$.uniform.update();
 });
 </script>
+
+<div class="col-md-12">
 <div class="widget box">
 	<div class="widget-content no-padding">
 		<div class="dataTables_header clearfix">
@@ -31,6 +33,7 @@ $(document).ready(function() {
 					<th>Name</th>
 					<th>Entry Size</th>
 					<th>Apply Time</th>
+					<th>For Tokening</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -45,6 +48,7 @@ $(document).ready(function() {
 					<td><strong><%=dictionary.getString("name") %></strong></td>
 					<td><%=dictionary.getInt("entrySize") %></td>
 					<td><%=dictionary.getString("syncTime") %></td>
+					<td>No</td>
 				</tr>
 				<%
 				}
@@ -53,4 +57,4 @@ $(document).ready(function() {
 		</table>
 	</div>
 </div>
-				
+</div>			

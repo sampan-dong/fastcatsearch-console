@@ -15,11 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/manager/analysis")
 public class AnalysisController {
 	private static Logger logger = LoggerFactory.getLogger(AnalysisController.class);
-	
+
 	@RequestMapping("/plugin")
 	public ModelAndView plugin(HttpSession session) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session
-				.getAttribute("httpclient");
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String getAnalysisPluginListURL = "/management/analysis/plugin-list";
 		JSONObject jsonObj = null;
 		try {
@@ -34,8 +33,7 @@ public class AnalysisController {
 	}
 
 	@RequestMapping("/{analysisId}/index")
-	public ModelAndView view(HttpSession session,
-			@PathVariable String analysisId) {
+	public ModelAndView view(HttpSession session, @PathVariable String analysisId) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/index");
 		mav.addObject("analysisId", analysisId);

@@ -1,8 +1,14 @@
 package org.fastcatsearch.console.web.controller.manager;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,5 +178,153 @@ public class DictionaryController {
 		mav.addObject("deletedSize", deletedSize);
 		
 		return mav;
+	}
+	
+	
+	
+	@RequestMapping("/{dictionaryType}/download")
+	public void downloadDictionary(HttpSession session, HttpServletResponse response, @PathVariable String analysisId, @PathVariable String dictionaryType
+			, @RequestParam String dictionaryId, @RequestParam(required = false) Boolean forView) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		
+		JSONObject jsonObj = null;
+		
+		String requestUrl = "/management/dictionary/list.json";
+		
+		int totalReadSize = 0;
+		int PAGE_SIZE = 100;
+		
+		response.setContentType("text/plain");
+		response.setCharacterEncoding("utf-8");
+		if(forView != null && forView.booleanValue()){
+			//다운로드 하지 않고 웹페이지에서 보여준다.
+		}else{
+			logger.debug("dictionaryId > {}", dictionaryId);
+			response.setHeader("Content-disposition", "attachment; filename=\""+dictionaryId+".txt\"");
+		}
+		PrintWriter writer = null;
+		try{
+			writer = response.getWriter();
+			int pageNo = 1;
+			while(true){
+				int start = 0;
+				if(pageNo > 0){
+					start = (pageNo - 1) * PAGE_SIZE + 1;
+				}
+				
+				try {
+					jsonObj = httpClient.httpPost(requestUrl)
+							.addParameter("pluginId", analysisId)
+							.addParameter("dictionaryId", dictionaryId)
+							.addParameter("start", String.valueOf(start))
+							.addParameter("length", String.valueOf(PAGE_SIZE))
+							.requestJSON();
+				} catch (Exception e) {
+					logger.error("", e);
+					throw new IOException(e);
+				}
+			
+				JSONArray columnList = jsonObj.getJSONArray("columnList");
+				JSONArray array = jsonObj.getJSONArray(dictionaryId);
+				int readSize = array.length();
+				totalReadSize += readSize;
+				
+				for(int i =0; i<array.length(); i++){
+					JSONObject obj = array.getJSONObject(i);
+					for(int j =0; j<columnList.length(); j++){
+						String columnName = columnList.getString(j);
+						String value = obj.getString(columnName);
+						writer.append(value);
+						if(j<columnList.length() - 1){
+							//컬럼끼리 구분자는 탭이다.
+							writer.append("\t");
+						}
+					}
+					writer.append("\n");
+					
+				}
+			
+				int totalSize = jsonObj.getInt("totalSize");
+				if(totalReadSize >= totalSize){
+					break;
+				}
+				pageNo++;
+			}
+		}catch(IOException e){
+			logger.error("download error", e);
+		} finally {
+			if(writer != null){
+				writer.close();
+			}
+		}
+	}
+	
+	@RequestMapping("/{dictionaryType}/upload")
+	public void uploadDictionary(HttpSession session, HttpServletResponse response, @PathVariable String analysisId, @PathVariable String dictionaryType
+			, @RequestParam String dictionaryId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		
+		JSONObject jsonObj = null;
+		
+		String requestUrl = "/management/dictionary/list.json";
+		
+		int totalReadSize = 0;
+		int PAGE_SIZE = 100;
+		
+		PrintWriter writer = null;
+		try{
+			writer = response.getWriter();
+			int pageNo = 1;
+			while(true){
+				int start = 0;
+				if(pageNo > 0){
+					start = (pageNo - 1) * PAGE_SIZE + 1;
+				}
+				
+				try {
+					jsonObj = httpClient.httpPost(requestUrl)
+							.addParameter("pluginId", analysisId)
+							.addParameter("dictionaryId", dictionaryId)
+							.addParameter("start", String.valueOf(start))
+							.addParameter("length", String.valueOf(PAGE_SIZE))
+							.requestJSON();
+				} catch (Exception e) {
+					logger.error("", e);
+					throw new IOException(e);
+				}
+			
+				JSONArray columnList = jsonObj.getJSONArray("columnList");
+				JSONArray array = jsonObj.getJSONArray(dictionaryId);
+				int readSize = array.length();
+				totalReadSize += readSize;
+				
+				for(int i =0; i<array.length(); i++){
+					JSONObject obj = array.getJSONObject(i);
+					for(int j =0; j<columnList.length(); j++){
+						String columnName = columnList.getString(j);
+						String value = obj.getString(columnName);
+						writer.append(value);
+						if(j<columnList.length() - 1){
+							//컬럼끼리 구분자는 탭이다.
+							writer.append("\t");
+						}
+					}
+					writer.append("\n");
+					
+				}
+			
+				int totalSize = jsonObj.getInt("totalSize");
+				if(totalReadSize >= totalSize){
+					break;
+				}
+				pageNo++;
+			}
+		}catch(IOException e){
+			logger.error("download error", e);
+		} finally {
+			if(writer != null){
+				writer.close();
+			}
+		}
 	}
 }

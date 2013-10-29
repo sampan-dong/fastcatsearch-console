@@ -142,7 +142,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 }
 </script>
 
-
+<div class="col-md-12">
 <div class="widget box">
 	<div class="widget-content no-padding">
 		<div class="dataTables_header clearfix">
@@ -284,7 +284,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 		</div>	
 	</div>
 </div>
-
+</div>
 
 <div class="modal" id="<%=dictionaryId%>WordInsertModal" role="dialog">
 	<div class="modal-dialog">

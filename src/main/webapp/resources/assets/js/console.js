@@ -20,13 +20,15 @@ function submitPost(url, data){
 }
 //가상의 폼을 만들어서 sumit한다.
 function submitForm(url, data, method){
-	
-    $('body').append($('<form/>', {
+	if($("#jQueryPostItForm")){
+		$("#jQueryPostItForm").remove();
+	}
+	$('body').append($('<form/>', {
 		id : 'jQueryPostItForm',
 		method : method,
 		action : url
 	}));
-
+    
 	for ( var i in data) {
 		$('#jQueryPostItForm').append($('<input/>', {
 			type : 'hidden',
@@ -36,6 +38,7 @@ function submitForm(url, data, method){
 	}
 
 	$('#jQueryPostItForm').submit();
+	
 }
 
 function loadToTab(url, data, id){
@@ -314,4 +317,10 @@ function checkableTable(tableId) {
 	});
 }
 
+
+function downloadDictionary(dictionaryType, dictionaryId){
+	//location.href = dictionaryType+"/download.html?dictionaryId="+dictionaryId;
+	console.log("dictionaryId" , dictionaryId);
+	submitGet(dictionaryType+"/download.html", {dictionaryId : dictionaryId});
+}
 

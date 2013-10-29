@@ -50,7 +50,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 }
 </script>
 
-
+<div class="col-md-12">
 <div class="widget box">
 	<div class="widget-content no-padding">
 		<div class="dataTables_header clearfix">
@@ -73,7 +73,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 				
 			<div class="col-md-6">
 				<div class="pull-right">
-					<a href="javascript:void(0);"  class="btn btn-default btn-sm">
+					<a href="javascript:downloadDictionary('set', '<%=dictionaryId%>')"  class="btn btn-default btn-sm">
 						<span class="icon icon-download"></span> Download
 					</a>
 					&nbsp;
@@ -176,4 +176,4 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 		</div>	
 	</div>
 </div>
-				
+</div>				

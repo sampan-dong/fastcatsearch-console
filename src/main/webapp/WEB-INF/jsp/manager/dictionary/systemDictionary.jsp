@@ -30,7 +30,7 @@ $(document).ready(function(){
 
 </script>
 
-
+<div class="col-md-12">
 <div class="widget box">
 	<div class="widget-content no-padding">
 		<div class="dataTables_header clearfix">
@@ -80,4 +80,4 @@ $(document).ready(function(){
 		%>
 	</div>
 </div>
-				
+</div>			

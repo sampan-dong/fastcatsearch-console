@@ -17,7 +17,7 @@
 <script>
 
 var wordInputObj;
-var synonymInputObj;
+var valueInputObj;
 var wordInputResultObj;
 var searchInputObj;
 var searchColumnObj;
@@ -26,7 +26,7 @@ var exactMatchObj;
 $(document).ready(function(){
 	
 	wordInputObj = $("#word_input_${dictionaryId}");
-	synonymInputObj = $("#synonym_input_${dictionaryId}");
+	valueInputObj = $("#value_input_${dictionaryId}");
 	wordInputResultObj = $("#word_input_result_${dictionaryId}");
 	searchInputObj = $("#search_input_${dictionaryId}");
 	searchColumnObj = $("#${dictionaryId}SearchColumn");
@@ -37,7 +37,7 @@ $(document).ready(function(){
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = toSafeString($(this).val());
-			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+			loadDictionaryTab("map", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 			return;
 		}
 	});
@@ -46,29 +46,29 @@ $(document).ready(function(){
 	searchColumnObj.on("change", function(){
 		var keyword = toSafeString(searchInputObj.val());
 		if(keyword != ""){
-			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+			loadDictionaryTab("map", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 		}
 	});
 	exactMatchObj.on("change", function(){
 		var keyword = toSafeString(searchInputObj.val());
 		if(keyword != ""){
-			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+			loadDictionaryTab("map", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 		}
 	});
 	
 	//단어추가상자PUT버튼.
 	$("#word_input_button_${dictionaryId}").on("click", function(e){
-		<%=dictionaryId%>SynonymInsert();
+		<%=dictionaryId%>ValueInsert();
 	});
 	//단어추가상자 엔터키. 
 	wordInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
-			<%=dictionaryId%>SynonymInsert();
+			<%=dictionaryId%>ValueInsert();
 		}
 	});
-	synonymInputObj.keydown(function (e) {
+	valueInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
-			<%=dictionaryId%>SynonymInsert();
+			<%=dictionaryId%>ValueInsert();
 		}
 	});
 	
@@ -92,42 +92,46 @@ function <%=dictionaryId%>Truncate(){
 }
 function <%=dictionaryId%>LoadList(){
 	var keyword = toSafeString(searchInputObj.val());
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+	loadDictionaryTab("map", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 }
-function <%=dictionaryId%>SynonymInsert(){
+function <%=dictionaryId%>ValueInsert(){
 	var keyword = toSafeString(wordInputObj.val());
 	wordInputObj.val(keyword);
-	var synonym = toSafeString(synonymInputObj.val());
-	synonymInputObj.val(synonym);
+	var value = toSafeString(valueInputObj.val());
+	valueInputObj.val(value);
 	
-	if(synonym == ""){
-		wordInputResultObj.text("Synonym is required.");
+	if(keyword == ""){
+		wordInputResultObj.text("Keyword is required.");
+		return;
+	}
+	if(value == ""){
+		wordInputResultObj.text("Value is required.");
 		return;
 	}
 	
-	requestProxy("POST", { 
+	requestProxy("POST", {
 			uri: '/management/dictionary/put.json',
 			pluginId: '${analysisId}',
 			dictionaryId: '${dictionaryId}',
 			keyword: keyword,
-			synonym: synonym
+			value: value
 		},
 		"json",
 		function(response) {
 			
 			if(response.success){
 				wordInputObj.val("");
-				synonymInputObj.val("");
+				valueInputObj.val("");
 				if(keyword != ""){
-					wordInputResultObj.text("\""+keyword+" > "+synonym+"\" Inserted.");
+					wordInputResultObj.text("\""+keyword+" > "+value+"\" Inserted.");
 				}else{
-					wordInputResultObj.text("\"" + synonym+"\" Inserted.");
+					wordInputResultObj.text("\"" + value+"\" Inserted.");
 				}
 				wordInputResultObj.removeClass("text-danger-imp");
 				wordInputResultObj.addClass("text-success-imp");
 				wordInputObj.focus();
 			}else{
-				var message = "\""+keyword+" "+synonym+"\" Insert failed.";
+				var message = "\""+keyword+" > "+value+"\" Insert failed.";
 				if(response.errorMessage){
 					message = message + " Reason = "+response.errorMessage;
 				}
@@ -147,7 +151,7 @@ function <%=dictionaryId%>SynonymInsert(){
 function <%=dictionaryId%>WordUpdate(id){
 	
 	var trObj = $("#_${dictionaryId}_"+id);
-	console.log("update", id, trObj);
+	//console.log("update", id, trObj);
 	
 	var data = { 
 		uri: '/management/dictionary/update.json',
@@ -162,9 +166,15 @@ function <%=dictionaryId%>WordUpdate(id){
 			data[name] = value;
 		}
 	});
-	console.log("data ",data);
-	if(data.SYNONYM == ""){
-		alert("Synonym is required.");
+	//console.log("data ",data);
+	
+	if(data.KEYWORD == ""){
+		noty({text: "Keyword is required.", type: "warning", layout:"topRight", timeout: 2000});
+		return;
+	}
+	
+	if(data.VALUE == ""){
+		noty({text: "Value is required.", type: "warning", layout:"topRight", timeout: 2000});
 		return;
 	}
 	
@@ -185,14 +195,14 @@ function <%=dictionaryId%>WordUpdate(id){
 	);
 }
 function go<%=dictionaryId%>DictionaryPage(uri, pageNo){
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+	loadDictionaryTab("map", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 }
 function go<%=dictionaryId%>ViewablePage(pageNo){
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');	
+	loadDictionaryTab("map", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');	
 }
 function <%=dictionaryId%>deleteOneWord(deleteId){
-	if(confirm("Are you sure?")){
-		loadDictionaryTab("synonym", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteId);
+	if(confirm("Are you sure to delete?")){
+		loadDictionaryTab("map", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteId);
 	}
 }
 function <%=dictionaryId%>deleteSelectWord(){
@@ -209,7 +219,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 		return;
 	}
 	var deleteIdList = idList.join(",");
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteIdList);	
+	loadDictionaryTab("map", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteIdList);	
 }
 </script>
 
@@ -283,7 +293,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 							<input type="checkbox" class="uniform">
 						</th>
 						<th>Keyword</th>
-						<th>Synonym words</th>
+						<th>Value</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -299,7 +309,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 						<td class="col-md-2">
 						<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>"/>
 						<input type="text" name="KEYWORD" value="<%=obj.getString("KEYWORD") %>" class="form-control"/></td>
-						<td><input type="text" name="SYNONYM" value="<%=obj.getString("SYNONYM") %>" class="form-control"/></td>
+						<td><input type="text" name="VALUE" value="<%=obj.getString("VALUE") %>" class="form-control"/></td>
 						<td class="col-md-2"><a href="javascript:<%=dictionaryId%>WordUpdate(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
 						<a href="javascript:<%=dictionaryId%>deleteOneWord(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
 					</tr>
@@ -349,7 +359,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 					</div>
 					<div class="form-group" style="width:370px">
 						<div class="input-group" >
-							<input type="text" id="synonym_input_${dictionaryId}" class="form-control" placeholder="Synonym">
+							<input type="text" id="value_input_${dictionaryId}" class="form-control" placeholder="Value">
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button" id="word_input_button_${dictionaryId}">Put</button>
 				            </span>
