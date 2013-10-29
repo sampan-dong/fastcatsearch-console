@@ -1,8 +1,11 @@
 package org.fastcatsearch.console.web.controller.manager;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
+import java.io.Writer;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -10,12 +13,15 @@ import javax.servlet.http.HttpSession;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -218,6 +224,7 @@ public class DictionaryController {
 							.addParameter("dictionaryId", dictionaryId)
 							.addParameter("start", String.valueOf(start))
 							.addParameter("length", String.valueOf(PAGE_SIZE))
+							.addParameter("sortAsc", "true") //다운로드시에는 역순이 아닌 id 1번 부터 순서대로 파일에 기록해준다.
 							.requestJSON();
 				} catch (Exception e) {
 					logger.error("", e);
@@ -260,71 +267,128 @@ public class DictionaryController {
 	}
 	
 	@RequestMapping("/{dictionaryType}/upload")
-	public void uploadDictionary(HttpSession session, HttpServletResponse response, @PathVariable String analysisId, @PathVariable String dictionaryType
+	public void uploadDictionary(HttpSession session, MultipartHttpServletRequest request, HttpServletResponse response, @PathVariable String analysisId, @PathVariable String dictionaryType
 			, @RequestParam String dictionaryId) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
-		JSONObject jsonObj = null;
-		
-		String requestUrl = "/management/dictionary/list.json";
-		
-		int totalReadSize = 0;
-		int PAGE_SIZE = 100;
-		
-		PrintWriter writer = null;
+		Iterator<String> itr = request.getFileNames();
+		String fileName = null;
 		try{
-			writer = response.getWriter();
-			int pageNo = 1;
-			while(true){
-				int start = 0;
-				if(pageNo > 0){
-					start = (pageNo - 1) * PAGE_SIZE + 1;
-				}
-				
-				try {
-					jsonObj = httpClient.httpPost(requestUrl)
-							.addParameter("pluginId", analysisId)
-							.addParameter("dictionaryId", dictionaryId)
-							.addParameter("start", String.valueOf(start))
-							.addParameter("length", String.valueOf(PAGE_SIZE))
-							.requestJSON();
-				} catch (Exception e) {
-					logger.error("", e);
-					throw new IOException(e);
-				}
+			fileName = itr.next();
+		}catch(Exception ignore){
+		}
+		logger.debug("fileName {}", fileName);
+		
+		boolean isSuccess = false;
+		String errorMessage = null;
+		int totalCount = 0;
+		
+		if(fileName != null){
 			
-				JSONArray columnList = jsonObj.getJSONArray("columnList");
-				JSONArray array = jsonObj.getJSONArray(dictionaryId);
-				int readSize = array.length();
-				totalReadSize += readSize;
+			MultipartFile multipartFile = request.getFile(fileName);
+			logger.debug("uploaded {}", multipartFile.getOriginalFilename());
+			
+			BufferedReader reader = null;
+			
+			try {
+				// just temporary save file info into ufile
+				logger.debug("len {}", multipartFile.getBytes().length);
+				logger.debug("getBytes {}", new String(multipartFile.getBytes()));
+				logger.debug("getContentType {}", multipartFile.getContentType());
+				logger.debug("getOriginalFilename {}", multipartFile.getOriginalFilename());
+	
+				String contentType = multipartFile.getContentType();
 				
-				for(int i =0; i<array.length(); i++){
-					JSONObject obj = array.getJSONObject(i);
-					for(int j =0; j<columnList.length(); j++){
-						String columnName = columnList.getString(j);
-						String value = obj.getString(columnName);
-						writer.append(value);
-						if(j<columnList.length() - 1){
-							//컬럼끼리 구분자는 탭이다.
-							writer.append("\t");
+				if(!contentType.contains("text")){
+					
+					isSuccess = false;
+					errorMessage = "File must be plain text.";
+				}else{
+			
+					ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+					
+					String requestUrl = "/management/dictionary/bulkPut.json";
+				
+					
+					int bulkSize = 100;
+					
+					reader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
+					
+					StringBuilder list = new StringBuilder();
+					int count = 0;
+					
+					String line = null;
+					do {
+						while((line = reader.readLine()) != null){
+							if(list.length() > 0){
+								list.append("\n");
+							}
+							list.append(line);
+							count++;
+							if(count == bulkSize){
+								break;
+							}
 						}
-					}
-					writer.append("\n");
+						
+						if(count > 0){
+							try {
+								JSONObject jsonObj = httpClient.httpPost(requestUrl)
+										.addParameter("pluginId", analysisId)
+										.addParameter("dictionaryId", dictionaryId)
+										.addParameter("entryList", list.toString())
+										.requestJSON();
+								
+								list = new StringBuilder();
+								
+								if(!jsonObj.getBoolean("success")){
+									throw new IOException(jsonObj.getString("errorMessage"));
+								}
+								
+								totalCount += jsonObj.getInt("count");
+								//초기화.
+								count = 0;
+							} catch (Exception e) {
+								throw new IOException(e);
+							}
+						}
+						
+					} while(line != null);
 					
 				}
-			
-				int totalSize = jsonObj.getInt("totalSize");
-				if(totalReadSize >= totalSize){
-					break;
+				
+				isSuccess = true;
+				
+			} catch (IOException e) {
+				isSuccess = false;
+				errorMessage = e.getMessage();
+			} finally {
+				if(reader != null){
+					try {
+						reader.close();
+					} catch (IOException ignore) {
+					}
 				}
-				pageNo++;
 			}
-		}catch(IOException e){
-			logger.error("download error", e);
-		} finally {
-			if(writer != null){
-				writer.close();
-			}
+			
+		}else{
+			isSuccess = false;
+			errorMessage = "Filename is empty.";
 		}
+		
+		try{
+			Writer writer = response.getWriter();
+			JSONWriter jsonWriter = new JSONWriter(writer);
+			jsonWriter.object()
+				.key("success").value(isSuccess)
+				.key("count").value(totalCount);
+			
+			if(errorMessage != null){
+				jsonWriter.key("errorMessage").value(errorMessage);
+			}
+			jsonWriter.endObject();
+			writer.close();
+		}catch(Exception e){
+			logger.error("", e);
+		}
+	
 	}
 }

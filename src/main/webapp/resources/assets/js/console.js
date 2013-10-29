@@ -275,18 +275,18 @@ function truncateDictionary(analysisId, dictionaryId, callback){
 	"json",
 	function(response) {
 		if(response.success){
-			alert("Clean data success.");
+			noty({text: "Clean data success.", type: "success", layout:"topRight", timeout: 3000});
 			callback();
 		}else{
 			var message = "Clean data error.";
 			if(response.errorMessage){
 				message = message + " Reason = "+response.errorMessage;
 			}
-			alert(message);
+			noty({text: message, type: "error", layout:"topRight", timeout: 3000});
 		}
 	},
 	function(response){
-		alert("Clean data error.");
+		noty({text: "Clean data error.", type: "error", layout:"topRight", timeout: 3000});
 	});	
 }
 

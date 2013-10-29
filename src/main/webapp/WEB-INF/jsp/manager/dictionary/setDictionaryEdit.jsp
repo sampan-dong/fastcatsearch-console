@@ -68,6 +68,36 @@ $(document).ready(function(){
 	if($("._table_<%=dictionaryId %>")){
 		checkableTable("._table_<%=dictionaryId %>");
 	}
+	
+	//사전 업로드.
+	var fileInputObj = $("#<%=dictionaryId %>_file_upload");
+	
+	fileInputObj.on("change", function(){
+		console.log("val=","["+$(this).val()+"]");
+		if($(this).val() != ""){
+			fileInputObj.parents("form:first").ajaxSubmit({
+				dataType:  "json", 
+				success: function(resp){
+					console.log("upload response ", resp);
+					if(resp.success){
+						noty({text: "File upload success", type: "success", layout:"topRight", timeout: 3000});
+						$("#<%=dictionaryId%>WordInsertModal").modal("hide");
+					}else{
+						noty({text: "File upload fail. "+resp.errorMessage, type: "error", layout:"topRight", timeout: 5000});
+					}
+				}
+				, error: function(a){
+					noty({text: "File upload error!", type: "error", layout:"topRight", timeout: 5000});
+				}
+				, complete: function(){
+					//지워준다.
+					$("#<%=dictionaryId %>_file_upload").val("");
+				}
+			});
+		}
+	});
+	
+	
 });
 function <%=dictionaryId%>Truncate(){
 	if(confirm("Clean all data including invisible entries.")){
@@ -168,10 +198,6 @@ function <%=dictionaryId%>deleteSelectWord(){
 				<div class="pull-right">
 					<a href="javascript:<%=dictionaryId%>Truncate();"  class="btn btn-danger btn-sm">
 						<span class="glyphicon glyphicon-ban-circle"></span> Clean
-					</a>
-					&nbsp;
-					<a href="javascript:void(0);"  class="btn btn-default btn-sm">
-						<span class="icon icon-upload"></span> Upload
 					</a>
 					&nbsp;
 					<div class="btn-group">
@@ -305,6 +331,10 @@ function <%=dictionaryId%>deleteSelectWord(){
 				<label id="word_input_result_${dictionaryId}" for="word_input" class="help-block" style="word-wrap: break-word;"></label>
 			</div>
 			<div class="modal-footer">
+				<form action="set/upload.html" method="POST" enctype="multipart/form-data" style="display: inline;">
+					<input type="hidden" name="dictionaryId" value="${dictionaryId}"/>
+					<span class="fileContainer btn btn-primary"><span class="icon icon-upload"></span> File Upload ...<input type="file" name="filename" id="${dictionaryId}_file_upload"></span>
+				</form>
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	      	</div>
 		</div><!-- /.modal-content -->

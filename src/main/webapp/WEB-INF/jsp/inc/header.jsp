@@ -111,11 +111,14 @@
 <script type="text/javascript" src="${contextPath}/resources/plugins/uniform/jquery.uniform.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/plugins/validation/jquery.validate.min.js"></script>
 
+
+<script type="text/javascript" src="${contextPath}/resources/assets/js/jquery.form.js"></script>
+
+
 <!-- App -->
 <script type="text/javascript" src="${contextPath}/resources/assets/js/app.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/assets/js/plugins.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/assets/js/plugins.form-components.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/assets/js/plugins.form-components.js"></script>
 
 
 
