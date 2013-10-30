@@ -324,3 +324,39 @@ function downloadDictionary(dictionaryType, dictionaryId){
 	submitGet(dictionaryType+"/download.html", {dictionaryId : dictionaryId});
 }
 
+
+function applySelectDictionary(analysisId){
+	var idList = new Array();
+	$("._table_dictionary_list").find('tr.checked').each(function() {
+		var domId = $(this).attr("id");
+		idList.push(domId.split("_")[1]);
+	});
+	if(idList.length == 0){
+		alert("Please select dictionary.");
+		return;
+	}
+	
+	if(!confirm("Apply selected "+idList.length+" dictionary?")){
+		return;	
+	}
+	var dictionaryIdList = idList.join(",");
+	//applyDictionary("${analysisId }", dictionaryIdList);
+	console.log("apply dict ", analysisId, dictionaryIdList);
+	
+	$.ajax({
+		url : PROXY_REQUEST_URI,
+		type : "POST",
+		data : {
+			uri : "/management/dictionary/apply.json",
+			pluginId : analysisId,
+			dictionaryId: dictionaryIdList
+		},
+		dataType : "json"
+
+	}).success(function(msg) {
+		console.log(msg);
+		noty({text: "Dictionary apply success", type: "success", layout:"topRight", timeout: 3000});
+	}).fail(function(jqXHR, textStatus, error) {
+		noty({text: "Dictionary apply error.", type: "error", layout:"topRight", timeout: 3000});
+	});
+}

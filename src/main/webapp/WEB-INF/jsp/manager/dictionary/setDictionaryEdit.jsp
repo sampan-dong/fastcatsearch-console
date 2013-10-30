@@ -156,7 +156,7 @@ function go<%=dictionaryId%>ViewablePage(pageNo){
 }
 function <%=dictionaryId%>deleteSelectWord(){
 	var idList = new Array();
-	$('tr.checked').each(function() {
+	$("._table_${dictionaryId}").find('tr.checked').each(function() {
 		var domId = $(this).attr("id");
 		idList.push(domId.split("_")[2]);
 	});
