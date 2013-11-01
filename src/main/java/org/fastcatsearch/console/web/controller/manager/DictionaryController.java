@@ -69,7 +69,7 @@ public class DictionaryController {
 		return mav;
 	}
 	
-	@RequestMapping("/system/list")
+	@RequestMapping({"/system/list", "SYSTEM/list"})
 	public ModelAndView listSystemDictionary(HttpSession session, @PathVariable String analysisId,
 			@RequestParam String keyword
 			, @RequestParam String targetId) {
@@ -132,7 +132,7 @@ public class DictionaryController {
 		String requestUrl = "/management/dictionary/list.json";
 		
 		int PAGE_SIZE = 10;
-		if(dictionaryType.equals("set")){
+		if(dictionaryType.equalsIgnoreCase("set")){
 			PAGE_SIZE = 40;
 		}
 		int start = 0;
@@ -167,9 +167,9 @@ public class DictionaryController {
 		
 		ModelAndView mav = new ModelAndView();
 		if(isEditable != null && isEditable.booleanValue()){
-			mav.setViewName("manager/dictionary/" + dictionaryType + "DictionaryEdit");
+			mav.setViewName("manager/dictionary/" + dictionaryType.toLowerCase() + "DictionaryEdit");
 		}else{
-			mav.setViewName("manager/dictionary/" + dictionaryType + "Dictionary");
+			mav.setViewName("manager/dictionary/" + dictionaryType.toLowerCase() + "Dictionary");
 		}
 		mav.addObject("analysisId", analysisId);
 		mav.addObject("dictionaryId", dictionaryId);

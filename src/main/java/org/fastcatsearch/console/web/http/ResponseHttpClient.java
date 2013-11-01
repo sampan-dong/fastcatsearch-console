@@ -110,6 +110,8 @@ public class ResponseHttpClient {
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
+			}catch(ClientProtocolException e){
+				logger.debug("httpclient error! >> {}", e.getMessage());
 			}
 			return null;
 		}
@@ -121,6 +123,8 @@ public class ResponseHttpClient {
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
+			}catch(ClientProtocolException e){
+				logger.debug("httpclient error! >> {}", e.getMessage());
 			}
 			return null;
 		}
@@ -164,6 +168,8 @@ public class ResponseHttpClient {
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
+			}catch(ClientProtocolException e){
+				logger.debug("httpclient error! >> {}", e.getMessage());
 			}
 			return null;
 		}
@@ -175,6 +181,8 @@ public class ResponseHttpClient {
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
+			}catch(ClientProtocolException e){
+				logger.debug("httpclient error! >> {}", e.getMessage());
 			}
 			return null;
 		}
