@@ -157,8 +157,8 @@ function go<%=dictionaryId%>ViewablePage(pageNo){
 function <%=dictionaryId%>deleteSelectWord(){
 	var idList = new Array();
 	$("._table_${dictionaryId}").find('tr.checked').each(function() {
-		var domId = $(this).attr("id");
-		idList.push(domId.split("_")[2]);
+		var id = $(this).find("td input[name=ID]").val();
+		idList.push(id);
 	});
 	if(idList.length == 0){
 		alert("Please select words.");
@@ -268,8 +268,9 @@ function <%=dictionaryId%>deleteSelectWord(){
 			<%
 				}
 			%>
-						<tr id="_<%=dictionaryId %>_<%=obj.getInt("ID") %>">
+						<tr>
 							<td class="checkbox-column">
+								<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>">
 								<input type="checkbox" class="uniform">
 							</td>
 							<td><%=obj.getString("KEYWORD") %></td>

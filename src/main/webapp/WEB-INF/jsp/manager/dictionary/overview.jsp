@@ -11,7 +11,6 @@ $(document).ready(function() {
 });
 
 </script>
-
 <div class="col-md-12">
 <div class="widget box">
 	<div class="widget-content no-padding">
@@ -21,6 +20,7 @@ $(document).ready(function() {
 					class="glyphicon glyphicon-time"></span> Apply Dictionary</a>
 			</div>
 		</div>
+
 		<table class="table table-hover table-bordered table-checkable _table_dictionary_list">
 			<thead>
 				<tr>
@@ -29,11 +29,11 @@ $(document).ready(function() {
 					</th>
 					<th>Name</th>
 					<th>Type</th>
-					<th>Entry Size</th>
+					<th>Working Entry Size</th>
 					<th>Modified Time</th>
 					<th>Applied Entry Size</th>
 					<th>Applied Time</th>
-					<th>TokenWord</th>
+					<th>Token Type</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -42,7 +42,7 @@ $(document).ready(function() {
 					JSONObject dictionary = dictionaryList.getJSONObject(i);
 					String dictionaryId = dictionary.getString("id");
 				%>
-				<tr id="dictionary_<%=dictionaryId%>">
+				<tr>
 				<%
 				if(dictionary.getString("type").equalsIgnoreCase("system")){
 				%>
@@ -52,6 +52,7 @@ $(document).ready(function() {
 				%>
 					<td class="checkbox-column">
 						<input type="checkbox" class="uniform">
+						<input type="hidden" name="ID" value="<%=dictionaryId%>"/>
 					</td>
 				<%
 				}
@@ -62,7 +63,7 @@ $(document).ready(function() {
 					<td><%=dictionary.getString("updateTime") %></td>
 					<td><%=dictionary.getInt("applyEntrySize") %></td>
 					<td><%=dictionary.getString("applyTime") %></td>
-					<td>No</td>
+					<td><%=dictionary.getString("tokenType") %></td>
 				</tr>
 				<%
 				}
@@ -71,4 +72,6 @@ $(document).ready(function() {
 		</table>
 	</div>
 </div>
-</div>			
+</div>
+
+                

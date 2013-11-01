@@ -86,3 +86,14 @@ z-index: 2;
     cursor: pointer;
 }
 
+
+#modal_spinner {
+  color: #fff;
+  float: left;
+  width: 268px;
+  height: 268px;
+  margin: 0 20px 20px 0;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}

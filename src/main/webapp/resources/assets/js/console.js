@@ -328,20 +328,23 @@ function downloadDictionary(dictionaryType, dictionaryId){
 function applySelectDictionary(analysisId){
 	var idList = new Array();
 	$("._table_dictionary_list").find('tr.checked').each(function() {
-		var domId = $(this).attr("id");
-		idList.push(domId.split("_")[1]);
+		var id = $(this).find("td input[name=ID]").val();
+		idList.push(id);
 	});
 	if(idList.length == 0){
 		alert("Please select dictionary.");
 		return;
 	}
 	
-	if(!confirm("Apply selected "+idList.length+" dictionary?")){
+	var dictionaryIdList = idList.join(",");
+	
+	if(!confirm("Apply selected ["+dictionaryIdList+"] "+idList.length+" dictionary?")){
 		return;	
 	}
-	var dictionaryIdList = idList.join(",");
 	//applyDictionary("${analysisId }", dictionaryIdList);
 	console.log("apply dict ", analysisId, dictionaryIdList);
+	
+	showModalSpinner();
 	
 	$.ajax({
 		url : PROXY_REQUEST_URI,
@@ -358,5 +361,42 @@ function applySelectDictionary(analysisId){
 		noty({text: "Dictionary apply success", type: "success", layout:"topRight", timeout: 3000});
 	}).fail(function(jqXHR, textStatus, error) {
 		noty({text: "Dictionary apply error.", type: "error", layout:"topRight", timeout: 3000});
+	}).done(function(){
+		loadToTab("overview.html", null, "#tab_dictionary_overview");
+		hideModalSpinner();
 	});
+}
+
+
+
+///////////////////spinner
+
+function showModalSpinner(){
+	var spinner_opts = {
+		lines: 11, // The number of lines to draw
+		length: 21, // The length of each line
+		width : 10, // The line thickness
+		radius : 32, // The radius of the inner circle
+		corners : 1, // Corner roundness (0..1)
+		rotate : 0, // The rotation offset
+		direction : 1, // 1: clockwise, -1: counterclockwise
+		color : '#fff', // #rgb or #rrggbb or array of colors
+		speed : 1, // Rounds per second
+		trail : 60, // Afterglow percentage
+		shadow : false, // Whether to render a shadow
+		hwaccel : false, // Whether to use hardware acceleration
+		className : 'spinner', // The CSS class to assign to the spinner
+		zIndex : 2e9, // The z-index (defaults to 2000000000)
+		top : 'auto', // Top position relative to parent in px
+		left : 'auto' // Left position relative to parent in px
+	};
+	var spinObj = $('<div id="spin_modal_overlay" style="background-color: rgba(0, 0, 0, 0.6); width:100%; height:100%; position:fixed; top:0px; left:0px; z-index:10000"/>');
+	$('body').append(spinObj);
+	var spinner = new Spinner(spinner_opts).spin(spinObj[0]);
+}
+
+function hideModalSpinner(){
+	if($('#spin_modal_overlay')){
+		$('#spin_modal_overlay').remove();
+	}
 }

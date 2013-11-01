@@ -172,7 +172,11 @@ public class MainController {
 
 		logger.debug("request result >> {}", result);
 
-		return result.toString();
+		if(result == null){
+			return "";
+		}else{
+			return result.toString();
+		}
 	}
 
 }

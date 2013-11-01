@@ -113,6 +113,7 @@
 
 
 <script type="text/javascript" src="${contextPath}/resources/assets/js/jquery.form.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/assets/js/spin.min.js"></script>
 
 
 <!-- App -->

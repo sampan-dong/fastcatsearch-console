@@ -236,8 +236,8 @@ function <%=dictionaryId%>deleteOneWord(deleteId){
 function <%=dictionaryId%>deleteSelectWord(){
 	var idList = new Array();
 	$("._table_${dictionaryId}").find('tr.checked').each(function() {
-		var domId = $(this).attr("id");
-		idList.push(domId.split("_")[2]);
+		var id = $(this).find("td input[name=ID]").val();
+		idList.push(id);
 	});
 	if(idList.length == 0){
 		alert("Please select words.");
@@ -326,13 +326,14 @@ function <%=dictionaryId%>deleteSelectWord(){
 				for(int i=0; i < entryList.length(); i++){
 					JSONObject obj = entryList.getJSONObject(i);
 				%>
-					<tr id="_<%=dictionaryId %>_<%=obj.getInt("ID") %>">
+					<tr id="_<%=dictionaryId %>-<%=obj.getInt("ID") %>">
 						<td class="checkbox-column">
 							<input type="checkbox" class="uniform">
 						</td>
 						<td class="col-md-2">
-						<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>"/>
-						<input type="text" name="KEYWORD" value="<%=obj.getString("KEYWORD") %>" class="form-control"/></td>
+							<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>"/>
+							<input type="text" name="KEYWORD" value="<%=obj.getString("KEYWORD") %>" class="form-control"/>
+						</td>
 						<td><input type="text" name="VALUE" value="<%=obj.getString("VALUE") %>" class="form-control"/></td>
 						<td class="col-md-2"><a href="javascript:<%=dictionaryId%>WordUpdate(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
 						<a href="javascript:<%=dictionaryId%>deleteOneWord(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
