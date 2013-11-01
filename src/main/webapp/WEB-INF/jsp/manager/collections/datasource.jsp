@@ -173,25 +173,27 @@
 														<h4>Properties</h4>
 													</div>
 													<div class="widget-content">
-														<div class="row form-horizontal">
-														<%
-														Element properties = sourceConfig.getChild("properties");
-														if(properties != null){
-															List<Element> propertyList = properties.getChildren("property");
-															for(int j=0; propertyList != null && j<propertyList.size(); j++){
-																Element property = propertyList.get(j);
-																String key = property.getAttributeValue("key");
-																String value = property.getValue();
-														%>
-															
-																<div class="form-group">
-																<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>"></div>
-																<div class="col-md-8"><input type="text" name="regular" class="form-control" value="<%=value %>"></div>
-																</div>
-														<%
+														<div class="row">
+															<div class="col-md-12 form-horizontal">
+															<%
+															Element properties = sourceConfig.getChild("properties");
+															if(properties != null){
+																List<Element> propertyList = properties.getChildren("property");
+																for(int j=0; propertyList != null && j<propertyList.size(); j++){
+																	Element property = propertyList.get(j);
+																	String key = property.getAttributeValue("key");
+																	String value = property.getValue();
+															%>
+																
+																	<div class="form-group">
+																	<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>"></div>
+																	<div class="col-md-8"><input type="text" name="regular" class="form-control" value="<%=value %>"></div>
+																	</div>
+															<%
+																}
 															}
-														}
-														%>
+															%>
+															</div>
 														</div>
 													</div>
 												</div> <!-- /.widget -->

@@ -45,9 +45,13 @@ JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginO
 							<div class="input-group col-md-12">
 								<a href="javascript:void(0);" class="btn btn-sm"><span
 									class="glyphicon glyphicon-plus-sign"></span> Add Plugin</a>
-									&nbsp;
+								&nbsp;
 								<a href="javascript:void(0);" class="btn btn-sm">
 									<span class="glyphicon glyphicon-minus-sign"></span> Remove Plugin
+								</a>
+								&nbsp;
+								<a href="javascript:void(0);" class="btn btn-sm">
+									<span class="glyphicon glyphicon-saved"></span> Apply Plugin
 								</a>
 							</div>
 							

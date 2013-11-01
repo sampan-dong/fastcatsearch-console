@@ -17,7 +17,7 @@ $(document).ready(function() {
 		<div class="dataTables_header clearfix">
 			<div class="input-group col-md-12">
 				<a href="javascript:applySelectDictionary('${analysisId}');" class="btn btn-sm"><span
-					class="glyphicon glyphicon-time"></span> Apply Dictionary</a>
+					class="glyphicon glyphicon-saved"></span> Apply Dictionary</a>
 			</div>
 		</div>
 

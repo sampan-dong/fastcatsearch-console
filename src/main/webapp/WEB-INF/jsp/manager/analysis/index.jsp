@@ -64,6 +64,7 @@
 						
 						<!-- === Dictionary -->
 						<div class="tab-pane " id="tab_analysis_dictionary">
+							<div class="col-md-12">
 							<div class="widget box">
 								<div class="widget-content no-padding">
 									<div class="dataTables_header clearfix">
@@ -123,10 +124,12 @@
 									</table>
 								</div>
 							</div>
+							</div>
 						</div>
 						
 						<!-- tab_analysis_analyzer -->
 						<div class="tab-pane" id="tab_analysis_analyzer">
+							<div class="col-md-12">
 							<div class="widget box">
 								<div class="widget-content no-padding">
 									<div class="dataTables_header clearfix">
@@ -168,12 +171,13 @@
 									</table>
 								</div>
 							</div>
-
+							</div>
 						</div>
 						<!-- //tab_analysis_analyzer -->
 						
 						<!-- tab_analysis_action -->
 						<div class="tab-pane" id="tab_analysis_action">
+							<div class="col-md-12">
 							<div class="widget box">
 								<div class="widget-content no-padding">
 									<div class="dataTables_header clearfix">
@@ -215,21 +219,11 @@
 									</table>
 								</div>
 							</div>
+							</div>
 						</div>
 						<!-- //tab_analysis_action -->
 						<!-- //tab field -->
-						<!-- search indexes -->
-						<div class="tab-pane" id="tab_search_indexes">
-							<div class="col-md-12">
-							
-							dddd
-							</div>
-							
-						</div>
-						<!-- //search indexes -->
-						<!--=== Edit Account ===-->
-						<div class="tab-pane active" id="tab_edit_account"></div>
-						<!-- /Edit Account -->
+						
 					</div>
 					<!-- /.tab-content -->
 				</div>

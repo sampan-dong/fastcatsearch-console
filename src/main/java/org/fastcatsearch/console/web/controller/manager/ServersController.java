@@ -15,8 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class ServersController {
 	private static Logger logger = LoggerFactory.getLogger(ServersController.class);
 	
-	@RequestMapping("/index")
-	public ModelAndView index(HttpSession session) {
+	@RequestMapping("/overview")
+	public ModelAndView overview(HttpSession session) {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/servers/list.json";
 		JSONObject jsonObj = null;
@@ -27,8 +27,25 @@ public class ServersController {
 		}
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/servers/index");
+		mav.setViewName("manager/servers/overview");
 		mav.addObject("nodeList", jsonObj.getJSONArray("nodeList"));
+		return mav;
+	}
+	
+	@RequestMapping("/server")
+	public ModelAndView server(HttpSession session) {
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		String requestUrl = "/management/servers/list.json";
+//		JSONObject jsonObj = null;
+//		try {
+//			jsonObj = httpClient.httpPost(requestUrl).requestJSON();
+//		} catch (Exception e) {
+//			logger.error("", e);
+//		}
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/servers/server");
+		//mav.addObject("nodeList", jsonObj.getJSONArray("nodeList"));
 		return mav;
 	}
 	

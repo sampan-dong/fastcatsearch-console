@@ -40,8 +40,36 @@ public class CollectionsController {
 	}
 	
 	@RequestMapping("/data")
-	public ModelAndView data(HttpSession session, @PathVariable String collectionId, @RequestParam(value="shardId", required=false) String shardId
-			, @RequestParam(defaultValue = "1") Integer pageNo) {
+	public ModelAndView data(HttpSession session, @PathVariable String collectionId){
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		
+		String requestUrl = "/management/collections/index-data-status.json";
+		JSONObject indexDataStatus = null;
+		try {
+			indexDataStatus = httpClient.httpGet(requestUrl)
+					.addParameter("collectionId", collectionId)
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		logger.debug("indexDataStatus >> {}", indexDataStatus);
+		String shardId = null;
+		JSONArray arr = indexDataStatus.getJSONArray("indexDataStatus");
+		if(arr.length() > 0){
+			JSONObject obj = arr.getJSONObject(0);
+			shardId = obj.getString("shardId");
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/data");
+		mav.addObject("collectionId", collectionId);
+		mav.addObject("shardId", shardId);
+		return mav;
+	}
+			
+	@RequestMapping("/dataRaw")
+	public ModelAndView dataRaw(HttpSession session, @PathVariable String collectionId, @RequestParam(value="shardId", required=false) String shardId
+			, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId) {
 		
 		int PAGE_SIZE = 10;
 		int start = 0;
@@ -64,7 +92,7 @@ public class CollectionsController {
 			logger.error("", e);
 		}
 		logger.debug("indexDataStatus >> {}", indexDataStatus);
-		if(shardId == null){
+		if(shardId == null || shardId.length() == 0){
 			JSONArray arr = indexDataStatus.getJSONArray("indexDataStatus");
 			if(arr.length() > 0){
 				JSONObject obj = arr.getJSONObject(0);
@@ -89,7 +117,7 @@ public class CollectionsController {
 		int realSize = list.length();
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/collections/data");
+		mav.setViewName("manager/collections/dataRaw");
 		mav.addObject("collectionId", collectionId);
 		mav.addObject("shardId", shardId);
 		mav.addObject("start", start + 1);
@@ -98,6 +126,7 @@ public class CollectionsController {
 		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("indexDataResult", indexData);
 		mav.addObject("indexDataStatus", indexDataStatus);
+		mav.addObject("targetId", targetId);
 		return mav;
 	}
 	

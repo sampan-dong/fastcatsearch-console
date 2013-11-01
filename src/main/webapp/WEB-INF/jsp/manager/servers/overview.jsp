@@ -11,14 +11,7 @@
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
-<style>
-.task .percent {
-float: right;
-display: inline-block;
-color: #adadad;
-font-size: 11px;
-}
-</style>
+
 </head>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
@@ -32,7 +25,8 @@ font-size: 11px;
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
 						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Servers</li>
+						<li> Servers</li>
+						<li class="current"> Overview</li>
 					</ul>
 
 				</div>
@@ -41,7 +35,7 @@ font-size: 11px;
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Servers</h3>
+						<h3>Overview</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->

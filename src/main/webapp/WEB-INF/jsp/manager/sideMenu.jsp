@@ -82,9 +82,10 @@
 			<%
 				lcatCurrent = "analysis".equals(lcat);
 			%>
-			<li class="<%=lcatCurrent ? "current" :"" %>"><a href="javascript:void(0);"> <i class="icon-edit"></i>
+			<li class="<%=lcatCurrent ? "current" :"" %>">
+				<a href="javascript:void(0);"> <i class="icon-edit"></i>
 					Analysis <span class="label label-info pull-right"><%=analysisPluginList.length() %></span>
-			</a>
+				</a>
 				<ul class="sub-menu">
 					<li class="<%=(lcatCurrent && "plugin".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/analysis/plugin.html"/>"> <i
 							class="icon-cogs"></i> Plugin
@@ -99,11 +100,26 @@
 					<%
 					}
 					%>
-				</ul></li>
+				</ul>
+			</li>
 			
-			<li class="<%="servers".equals(lcat) ? "current" :"" %>"><a href="<c:url value="/manager/servers/index.html"/>"> <i class="icon-globe"></i>
-					Servers
-			</a>
+			<li class="<%="servers".equals(lcat) ? "current" :"" %>">
+				<a href="javascript:void(0);"> <i class="icon-globe"></i>Servers <span class="label label-info pull-right">3</span>
+				</a>
+				<ul class="sub-menu">
+					<li class="current"><a href="<c:url value="/manager/servers/overview.html"/>"> <i
+							class="icon-cogs"></i> Overview
+					</a></li>
+					<li><a href="<c:url value="/manager/servers/server.html"/>"> <i
+							class="icon-angle-right"></i> Node1
+					</a></li>
+					<li><a href="<c:url value="/manager/servers/server.html"/>"> <i
+							class="icon-angle-right"></i> Node2
+					</a></li>
+					<li><a href="<c:url value="/manager/servers/server.html"/>"> <i
+							class="icon-angle-right"></i> Node3
+					</a></li>
+				</ul>
 			</li>
 			
 			<%
