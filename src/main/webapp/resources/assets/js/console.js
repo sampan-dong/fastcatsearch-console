@@ -413,3 +413,8 @@ function loadDataRawTab(collectionId, shardId, pageNo, targetId){
 	console.log("loadDataRawTab", collectionId, shardId, pageNo, targetId);
 	loadToTab('dataRaw.html', {collectionId: collectionId, shardId: shardId, pageNo: pageNo, targetId: targetId}, targetId);
 }
+
+function loadDataSearchTab(collectionId, shardId, pageNo, targetId){
+	console.log("loadDataRawTab", collectionId, shardId, pageNo, targetId);
+	loadToTab('dataRaw.html', {collectionId: collectionId, shardId: shardId, pageNo: pageNo, targetId: targetId}, targetId);
+}

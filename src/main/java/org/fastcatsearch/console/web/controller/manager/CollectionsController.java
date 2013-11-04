@@ -130,6 +130,62 @@ public class CollectionsController {
 		return mav;
 	}
 	
+	@RequestMapping("/dataSearch")
+	public ModelAndView dataSearch(HttpSession session, @PathVariable String collectionId, @RequestParam(value="shardId", required=false) String shardId,
+			@RequestParam(value="se", required=false) String se, @RequestParam(value="ft", required=false) String ft, @RequestParam(value="gr", required=false) String gr,
+			@RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId) {
+		
+		int PAGE_SIZE = 10;
+		int start = (pageNo - 1) * PAGE_SIZE + 1;
+			
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		
+		String requestUrl = "/management/collections/index-data-status.json";
+		JSONObject indexDataStatus = null;
+		try {
+			indexDataStatus = httpClient.httpGet(requestUrl)
+					.addParameter("collectionId", collectionId)
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		logger.debug("indexDataStatus >> {}", indexDataStatus);
+		
+		requestUrl = "/service/search.json";
+		JSONObject searchResult = null;
+		try {
+			searchResult = httpClient.httpGet(requestUrl)
+					.addParameter("cn", collectionId)
+					.addParameter("sd", shardId)
+					.addParameter("fl", "Title") //FIXME
+					.addParameter("se", se)
+					.addParameter("ft", ft)
+					.addParameter("gr", gr)
+					.addParameter("sn", String.valueOf(start))
+					.addParameter("ln", String.valueOf(PAGE_SIZE))
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		logger.debug("searchResult >> {}",searchResult);
+		JSONArray list = searchResult.getJSONArray("result");
+		int realSize = list.length();
+		//TODO group_result.group_list
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/dataSearch");
+		mav.addObject("collectionId", collectionId);
+		mav.addObject("shardId", shardId);
+		mav.addObject("start", start);
+		mav.addObject("end", start + realSize - 1);
+		mav.addObject("pageNo", pageNo);
+		mav.addObject("pageSize", PAGE_SIZE);
+		mav.addObject("searchResult", searchResult);
+		mav.addObject("indexDataStatus", indexDataStatus);
+		mav.addObject("targetId", targetId);
+		return mav;
+	}
+	
 	@RequestMapping("/datasource")
 	public ModelAndView datasource(HttpSession session, @PathVariable String collectionId) {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");

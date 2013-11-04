@@ -132,6 +132,10 @@ public class ResponseHttpClient {
 		@Override
 		public GetMethod addParameter(String key, String value) {
 			try {
+				if(value == null){
+					value = "";
+				}
+				
 				if(queryString == null){
 					queryString = "";
 				}else{
