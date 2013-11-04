@@ -53,8 +53,9 @@ function loadToTab(url, data, id){
 	});
 } 
 
+var CONTEXT = /(\/[^\/]+)\//.exec(window.location.pathname)[1];
 var PROXY_REQUEST_URI = window.location.protocol + "//" + window.location.host
-		+ "/console/main/request.html";
+		+ CONTEXT+"/main/request.html";
 
 function requestProxy(methodType, data, resultType, successCallback, failCallback){
 	
