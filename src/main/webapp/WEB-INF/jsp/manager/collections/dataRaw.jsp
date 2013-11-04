@@ -107,8 +107,9 @@ function selectRawFieldValue(value){
 							
 							for( int j = 0 ; j < fieldList.length() ; j++ ){
 								String fieldName = fieldList.getString(j);
+								String value = row.getString(fieldName).replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 							%>
-							<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())"><%=row.getString(fieldName) %></td>
+							<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())"><%=value %></td>
 							<%
 							}
 							%>
