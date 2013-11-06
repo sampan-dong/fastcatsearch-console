@@ -137,8 +137,8 @@ function <%=dictionaryId%>SynonymInsert(){
 			uri: '/management/dictionary/put.json',
 			pluginId: '${analysisId}',
 			dictionaryId: '${dictionaryId}',
-			keyword: keyword,
-			synonym: synonym
+			KEYWORD: keyword,
+			SYNONYM: synonym
 		},
 		"json",
 		function(response) {
@@ -180,8 +180,7 @@ function <%=dictionaryId%>WordUpdate(id){
 	var data = { 
 		uri: '/management/dictionary/update.json',
 		pluginId: '${analysisId}',
-		dictionaryId: '${dictionaryId}',
-		id: id
+		dictionaryId: '${dictionaryId}'
 	};
 	
 	trObj.find("input[type=text],input[type=hidden]").each(function() {

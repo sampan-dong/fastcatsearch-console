@@ -32,7 +32,6 @@ $(document).ready(function(){
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = toSafeString($(this).val());
-			console.log("search > ",keyword);
 			loadDictionaryTab("set", '<%=dictionaryId %>', 1, keyword, null, exactMatchObj.is(":checked"), true, '<%=targetId%>');
 			return;
 		}
@@ -121,7 +120,7 @@ function <%=dictionaryId%>SetInsert(){
 			uri: '/management/dictionary/put.json',
 			pluginId: '${analysisId}',
 			dictionaryId: '${dictionaryId}',
-			keyword: keyword
+			KEYWORD: keyword
 		},
 		"json",
 		function(response) {

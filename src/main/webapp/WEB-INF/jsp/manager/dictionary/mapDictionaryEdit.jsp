@@ -141,8 +141,8 @@ function <%=dictionaryId%>ValueInsert(){
 			uri: '/management/dictionary/put.json',
 			pluginId: '${analysisId}',
 			dictionaryId: '${dictionaryId}',
-			keyword: keyword,
-			value: value
+			KEYWORD: keyword,
+			VALUE: value
 		},
 		"json",
 		function(response) {
@@ -184,7 +184,7 @@ function <%=dictionaryId%>WordUpdate(id){
 	var data = { 
 		uri: '/management/dictionary/update.json',
 		pluginId: '${analysisId}',
-		dictionaryId: '${dictionaryId}',
+		dictionaryId: '${dictionaryId}'
 	};
 	
 	trObj.find("input[type=text],input[type=hidden]").each(function() {
