@@ -174,13 +174,14 @@ function <%=dictionaryId%>SynonymInsert(){
 
 function <%=dictionaryId%>WordUpdate(id){
 	
-	var trObj = $("#_${dictionaryId}_"+id);
+	var trObj = $("#_${dictionaryId}-"+id);
 	console.log("update", id, trObj);
 	
 	var data = { 
 		uri: '/management/dictionary/update.json',
 		pluginId: '${analysisId}',
 		dictionaryId: '${dictionaryId}',
+		id: id
 	};
 	
 	trObj.find("input[type=text],input[type=hidden]").each(function() {
@@ -316,7 +317,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 				for(int i=0; i < entryList.length(); i++){
 					JSONObject obj = entryList.getJSONObject(i);
 				%>
-					<tr>
+					<tr id="_<%=dictionaryId %>-<%=obj.getInt("ID") %>">
 						<td class="checkbox-column">
 							<input type="checkbox" class="uniform">
 						</td>

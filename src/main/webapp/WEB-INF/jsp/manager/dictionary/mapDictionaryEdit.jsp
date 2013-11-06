@@ -178,7 +178,7 @@ function <%=dictionaryId%>ValueInsert(){
 
 function <%=dictionaryId%>WordUpdate(id){
 	
-	var trObj = $("#_${dictionaryId}_"+id);
+	var trObj = $("#_${dictionaryId}-"+id);
 	//console.log("update", id, trObj);
 	
 	var data = { 
