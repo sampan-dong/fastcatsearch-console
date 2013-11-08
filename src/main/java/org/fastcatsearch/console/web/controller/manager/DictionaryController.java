@@ -240,7 +240,7 @@ public class DictionaryController {
 					JSONObject obj = array.getJSONObject(i);
 					for(int j =0; j<columnList.length(); j++){
 						String columnName = columnList.getString(j);
-						String value = obj.getString(columnName);
+						String value = String.valueOf(obj.get(columnName));
 						writer.append(value);
 						if(j<columnList.length() - 1){
 							//컬럼끼리 구분자는 탭이다.
