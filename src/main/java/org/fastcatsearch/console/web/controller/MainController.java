@@ -57,7 +57,7 @@ public class MainController {
 
 		ResponseHttpClient httpClient = new ResponseHttpClient(host);
 		try {
-			JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("username", username).addParameter("password", password)
+			JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("id", username).addParameter("password", password)
 					.requestJSON();
 			logger.debug("loginResult > {}", loginResult);
 			if (loginResult != null && loginResult.getInt("status") == 0) {
