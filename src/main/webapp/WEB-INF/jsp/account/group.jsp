@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="
+org.json.JSONObject,
+org.json.JSONArray
+" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%
+JSONObject jsonObj = (JSONObject)request.getAttribute("groupAuthorityList");
+%>
 
 <c:import url="../inc/common.jsp" />
 <html>
@@ -9,6 +17,7 @@
 </head>
 <body>
 <c:import url="../inc/mainMenu.jsp" />
+
 <div id="container" class="sidebar-closed">
 
 		<div id="content">
@@ -50,8 +59,14 @@
 									<div class="widget-content no-padding">
 										<div>
 											<ul class="feeds">
-											
-											<% for (int groupInx=0;groupInx<4;groupInx++) { %>
+											<%
+											JSONArray array = jsonObj.getJSONArray("groupList");
+											for(int authorityInx=0;authorityInx < array.length(); authorityInx++) { 
+											%>
+												<%
+												JSONObject record = array.optJSONObject(authorityInx);
+												int groupId = record.optInt("groupId", -1);
+												%>
 												<li>
 													<div> <strong>Group Name</strong> </div>
 													<p>
@@ -80,7 +95,9 @@
 													</form>
 													</p>
 												</li>
-											<% } %>
+											<%
+											}
+											%>
 											</ul>
 										</div>
 									</div> <!-- /.widget -->
