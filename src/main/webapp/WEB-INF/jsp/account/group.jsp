@@ -59,61 +59,98 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 									</div>
 									<div class="widget-content no-padding">
 										<div>
+											<form name="update-authority-form" class="form-horizontal">
+											<input type="hidden" name="mode" value="update"/>
 											<ul class="feeds">
 											<%
-											{
 											JSONArray groupArray = jGroupAuthorityList.optJSONArray("groupList");
+											if(groupArray!=null && groupArray.length() > 0) {
 											for(int groupInx=0;groupInx < groupArray.length(); groupInx++) {
 											%>
 												<%
-												JSONObject record = groupArray.optJSONObject(groupInx);
-												int groupId = record.optInt("groupId", -1);
+												JSONObject groupRecord = groupArray.optJSONObject(groupInx);
+												int groupId = groupRecord.optInt("groupId", 0);
+												String groupName = groupRecord.optString("groupName");
 												%>
 												<li>
-													<div> <strong>Group Name</strong> </div>
 													<p>
-													<form class="form-horizontal">
-														<% for (int authorityInx=0;authorityInx<10;authorityInx++) { %>
-														<div class="col-md-6">
-															<div class="col-md-3">
-																테스트
+														<input type="hidden" name="groupId_<%=groupInx %>" value="<%=groupId%>"/>
+														<div class="clearfix"> 
+															<label class="control-label" class="col-md-1">
+															<input type="checkbox" name="check_group_<%=groupInx %>" value="<%=groupId %>" class="form-control"/>
+															</label>
+															<div class="col-md-2 control">
+															<input type="text" name="groupName_<%=groupInx %>" value="<%=groupName %>" class="form-control"/>
 															</div>
-															<div class="form-group">
+														</div>
+														<% 
+														JSONArray groupList = jGroupAuthorityList.optJSONArray("groupList");
+														JSONObject groupAccount = groupList.optJSONObject(groupInx);
+														JSONArray authorities = groupAccount.optJSONArray("authorities");
+														for (int authorityInx=0;authorityInx<authorities.length();authorityInx++) {
+														%>
+															<% 
+															JSONObject record = authorities.optJSONObject(authorityInx);
+															String authorityCode = record.optString("authorityCode");
+															String authorityName = record.optString("authorityName");
+															String authorityLevel = record.optString("authorityLevel");
+															if(!"R".equals(authorityLevel) && !"W".equals(authorityLevel)) {
+																authorityLevel = "";
+															}
+															%>
+															<div class="col-md-6">
+																<div class="col-md-3">
+																<%=authorityName%> 
+																</div>
+																<div class="form-group">
 																	<label class="col-md-2 radio">
-																		<input type="radio" name="group_<%=authorityInx %>" class="form-control"/>
+																		<input type="radio" name="authorityLevel_<%=groupInx %>_<%=authorityCode %>" <%="".equals(authorityLevel)?"checked":"" %> class="form-control" value=""/>
 																		None
 																	</label>
 																	<label class="col-md-2 radio">
-																		<input type="radio" name="group_<%=authorityInx %>" class="form-control"/>
+																		<input type="radio" name="authorityLevel_<%=groupInx %>_<%=authorityCode %>" <%="R".equals(authorityLevel)?"checked":"" %> class="form-control" value="R"/>
 																		Read
 																	</label>
 																	<label class="col-md-2 radio">
-																		<input type="radio" name="group_<%=authorityInx %>" class="form-control"/>
+																		<input type="radio" name="authorityLevel_<%=groupInx %>_<%=authorityCode %>" <%="W".equals(authorityLevel)?"checked":"" %> class="form-control" value="W"/>
 																		Write
 																	</label>
+																</div>
 															</div>
-														</div>
 														<% } %>
-													</form>
 													</p>
 												</li>
 											<%
 											}
 											}
 											%>
+											</ul>
+											<div class="dataTables_header clearfix">
+													<div class="input-group col-md-12">
+													<a href="javascript:updateGroupAuthority('update-authority-form');" class="btn btn-sm"><span
+														class="glyphicon glyphicon-ok-sign"></span> Apply All</a>
+														&nbsp;
+													<a href="javascript:updateGroupAuthority('update-authority-form','delete');" class="btn btn-sm"><span
+														class="glyphicon glyphicon-minus-sign"></span> Remove Checked</a>
+														&nbsp;
+												</div>
+											</div>
+											</form>
+											<ul class="feeds">
 												<li>
 													<p>
-													<div class="clearfix"> 
-														<label class="col-md-1 control-label">
-														Group Name
-														</label>
-														<div class="col-md-9 control">
-														<input type="text" name="groupName" class="form-control"/>
+													<form name="new-authority-form" class="form-horizontal">
+														<input type="hidden" name="mode" value="update"/>
+														<input type="hidden" name="groupId_0" value="-1"/>
+														<div class="clearfix"> 
+															<label class="col-md-1 control-label">
+															Group Name
+															</label>
+															<div class="col-md-2 control">
+															<input type="text" name="groupName_0" class="form-control"/>
+															</div>
 														</div>
-													</div>
-													<form class="form-horizontal">
 														<% 
-														{
 														JSONArray groupList = jAuthorityList.optJSONArray("groupList");
 														JSONObject groupAccount = groupList.optJSONObject(0);
 														JSONArray authorities = groupAccount.optJSONArray("authorities");
@@ -121,10 +158,11 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 														%>
 															<% 
 															JSONObject record = authorities.optJSONObject(authorityInx);
+															String authorityCode = record.optString("authorityCode");
 															String authorityName = record.optString("authorityName");
 															String authorityLevel = record.optString("authorityLevel");
 															if(!"R".equals(authorityLevel) && !"W".equals(authorityLevel)) {
-																authorityLevel = "N";
+																authorityLevel = "";
 															}
 															%>
 															<div class="col-md-6">
@@ -132,31 +170,30 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 																<%=authorityName%>
 																</div>
 																<div class="form-group">
-																		<label class="col-md-2 radio">
-																			<input type="radio" name="group_<%=-1%>_<%=authorityName %>_N" <%="N".equals(authorityLevel)?"checked":"" %> class="form-control"/>
-																			None
-																		</label>
-																		<label class="col-md-2 radio">
-																			<input type="radio" name="group_<%=-1%>_<%=authorityName %>_R" <%="R".equals(authorityLevel)?"checked":"" %> class="form-control"/>
-																			Read
-																		</label>
-																		<label class="col-md-2 radio">
-																			<input type="radio" name="group_<%=-1%>_<%=authorityName %>_W" <%="W".equals(authorityLevel)?"checked":"" %> class="form-control"/>
-																			Write
-																		</label>
+																	<label class="col-md-2 radio">
+																		<input type="radio" name="authorityLevel_0_<%=authorityCode %>" <%="".equals(authorityLevel)?"checked":"" %> class="form-control" value=""/>
+																		None
+																	</label>
+																	<label class="col-md-2 radio">
+																		<input type="radio" name="authorityLevel_0_<%=authorityCode %>" <%="R".equals(authorityLevel)?"checked":"" %> class="form-control" value="R"/>
+																		Read
+																	</label>
+																	<label class="col-md-2 radio">
+																		<input type="radio" name="authorityLevel_0_<%=authorityCode %>" <%="W".equals(authorityLevel)?"checked":"" %> class="form-control" value="W"/>
+																		Write
+																	</label>
 																</div>
 															</div>
 														<% 
 														}
-														}
 														%>
-													</form>
-													<div class="dataTables_header clearfix">
-															<div class="input-group col-md-12">
-															<a href="javascript:void(0);" class="btn btn-sm"><span
-																class="glyphicon glyphicon-plus-sign"></span> Add Group</a>
+														<div class="dataTables_header clearfix">
+																<div class="input-group col-md-12">
+																<a href="javascript:updateGroupAuthority('new-authority-form');" class="btn btn-sm"><span
+																	class="glyphicon glyphicon-plus-sign"></span> Add Group</a>
+															</div>
 														</div>
-													</div>
+													</form>
 													</p>
 												</li>
 											</ul>

@@ -404,10 +404,6 @@ function hideModalSpinner(){
 
 
 
-
-
-
-
 /////////////////////////// collection data 
 function loadDataRawTab(collectionId, shardId, pageNo, targetId){
 	console.log("loadDataRawTab", collectionId, shardId, pageNo, targetId);
@@ -417,4 +413,39 @@ function loadDataRawTab(collectionId, shardId, pageNo, targetId){
 function loadDataSearchTab(collectionId, shardId, pageNo, targetId){
 	console.log("loadDataRawTab", collectionId, shardId, pageNo, targetId);
 	loadToTab('dataRaw.html', {collectionId: collectionId, shardId: shardId, pageNo: pageNo, targetId: targetId}, targetId);
+}
+
+/////////////////////////// account setting
+
+function updateGroupAuthority(formName, mode) {
+	var form = $("form[name|="+formName+"]");
+	
+	if(mode) {
+		form[0].mode.value=mode;
+	}
+	
+	form.submit(function(e) {
+		var postData = $(this).serializeArray();
+		var formURL = "group-authority-update.html";
+		$.ajax({
+				url : formURL,
+				type: "POST",
+				data : postData,
+				dataType : "json",
+				success:function(data, textStatus, jqXHR) {
+					try {
+						if(data["success"]=="true") {
+							alert("updated");
+							location.href = location.href;
+						}
+					} catch (e) { 
+						alert("error occured for update");
+					}
+				}, error: function(jqXHR, textStatus, errorThrown) {
+					alert("ERROR" + textStatus + " : " + errorThrown);
+				}
+		});
+		e.preventDefault(); //STOP default action
+	});
+	form.submit();
 }
