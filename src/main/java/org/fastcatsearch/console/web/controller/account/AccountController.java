@@ -44,17 +44,25 @@ public class AccountController {
 	@RequestMapping("/account/group")
 	public ModelAndView group(HttpSession session) {
 		init(session);
-		String requestUrl = "/setting/authority/group-authority-list.json";
+		modelAndView.setViewName("/account/group");
+		String requestUrl;
+		requestUrl = "/setting/authority/group-authority-list.json";
 		try {
 			jsonObj = httpClient.httpGet(requestUrl)
-					.addParameter("mode", "all")
-					.requestJSON();
+					.addParameter("mode", "all").requestJSON();
+			modelAndView.addObject("groupAuthorityList",jsonObj);
+		} catch (Exception e) {
+			logger.error("",e);
+		}
+		requestUrl = "/setting/authority/group-authority-list.json";
+		try {
+			jsonObj = httpClient.httpGet(requestUrl)
+					.addParameter("groupId", "-1").requestJSON();
+			modelAndView.addObject("authorityList",jsonObj);
 		} catch (Exception e) {
 			logger.error("",e);
 		}
 		
-		modelAndView.setViewName("/account/group");
-		modelAndView.addObject("groupAuthorityList",jsonObj);
 		return modelAndView;
 	}
 	

@@ -7,7 +7,8 @@ org.json.JSONArray
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
-JSONObject jsonObj = (JSONObject)request.getAttribute("groupAuthorityList");
+JSONObject jGroupAuthorityList = (JSONObject)request.getAttribute("groupAuthorityList");
+JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 %>
 
 <c:import url="../inc/common.jsp" />
@@ -60,11 +61,12 @@ JSONObject jsonObj = (JSONObject)request.getAttribute("groupAuthorityList");
 										<div>
 											<ul class="feeds">
 											<%
-											JSONArray array = jsonObj.getJSONArray("groupList");
-											for(int authorityInx=0;authorityInx < array.length(); authorityInx++) { 
+											{
+											JSONArray groupArray = jGroupAuthorityList.optJSONArray("groupList");
+											for(int groupInx=0;groupInx < groupArray.length(); groupInx++) {
 											%>
 												<%
-												JSONObject record = array.optJSONObject(authorityInx);
+												JSONObject record = groupArray.optJSONObject(groupInx);
 												int groupId = record.optInt("groupId", -1);
 												%>
 												<li>
@@ -97,7 +99,66 @@ JSONObject jsonObj = (JSONObject)request.getAttribute("groupAuthorityList");
 												</li>
 											<%
 											}
+											}
 											%>
+												<li>
+													<p>
+													<div class="clearfix"> 
+														<label class="col-md-1 control-label">
+														Group Name
+														</label>
+														<div class="col-md-9 control">
+														<input type="text" name="groupName" class="form-control"/>
+														</div>
+													</div>
+													<form class="form-horizontal">
+														<% 
+														{
+														JSONArray groupList = jAuthorityList.optJSONArray("groupList");
+														JSONObject groupAccount = groupList.optJSONObject(0);
+														JSONArray authorities = groupAccount.optJSONArray("authorities");
+														for (int authorityInx=0;authorityInx<authorities.length();authorityInx++) {
+														%>
+															<% 
+															JSONObject record = authorities.optJSONObject(authorityInx);
+															String authorityName = record.optString("authorityName");
+															String authorityLevel = record.optString("authorityLevel");
+															if(!"R".equals(authorityLevel) && !"W".equals(authorityLevel)) {
+																authorityLevel = "N";
+															}
+															%>
+															<div class="col-md-6">
+																<div class="col-md-3">
+																<%=authorityName%>
+																</div>
+																<div class="form-group">
+																		<label class="col-md-2 radio">
+																			<input type="radio" name="group_<%=-1%>_<%=authorityName %>_N" <%="N".equals(authorityLevel)?"checked":"" %> class="form-control"/>
+																			None
+																		</label>
+																		<label class="col-md-2 radio">
+																			<input type="radio" name="group_<%=-1%>_<%=authorityName %>_R" <%="R".equals(authorityLevel)?"checked":"" %> class="form-control"/>
+																			Read
+																		</label>
+																		<label class="col-md-2 radio">
+																			<input type="radio" name="group_<%=-1%>_<%=authorityName %>_W" <%="W".equals(authorityLevel)?"checked":"" %> class="form-control"/>
+																			Write
+																		</label>
+																</div>
+															</div>
+														<% 
+														}
+														}
+														%>
+													</form>
+													<div class="dataTables_header clearfix">
+															<div class="input-group col-md-12">
+															<a href="javascript:void(0);" class="btn btn-sm"><span
+																class="glyphicon glyphicon-plus-sign"></span> Add Group</a>
+														</div>
+													</div>
+													</p>
+												</li>
 											</ul>
 										</div>
 									</div> <!-- /.widget -->
