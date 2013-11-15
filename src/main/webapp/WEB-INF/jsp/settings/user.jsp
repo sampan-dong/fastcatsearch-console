@@ -1,25 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="
+java.util.Map,
+java.util.HashMap,
 org.json.JSONObject,
 org.json.JSONArray
 " %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
+String menuId = "user";
 JSONObject jGroupList = (JSONObject)request.getAttribute("groupList");
 JSONObject jUserList = (JSONObject)request.getAttribute("userList");
+JSONArray userList = jUserList.optJSONArray("userList"); 
+JSONArray groupList = jGroupList.optJSONArray("groupList");
+Map<Integer,String> groupMap = new HashMap<Integer,String>();
+groupMap.put(0,"NONE");
+for(int inx=0;inx<groupList.length();inx++) {
+	JSONObject groupRecord = groupList.optJSONObject(inx);
+	groupMap.put(
+		groupRecord.optInt("id", 0),
+		groupRecord.optString("groupName"));
+}
 %>
-
+<c:set var="ROOT_PATH" value="../.." scope="request"/>
 <c:import url="../inc/common.jsp" />
 <html>
 <head>
 <c:import url="../inc/header.jsp" />
+
+<script type="text/javascript">
+function showUpdateUserModal(id){
+	requestProxy("POST", {
+		"uri":"/setting/authority/user-list.json",
+		"id":id,
+		"time":new Date()
+		}, "json", 
+		function(data,stat,jqxhr) {
+			var userInfo = data["userList"][0];
+			var id = userInfo["id"];
+			var groupId = userInfo["groupId"];
+			var userName = userInfo["name"];
+			var userId = userInfo["userId"];
+			var email = userInfo["email"];
+			var sms = userInfo["sms"];
+			
+ 			$("div#userEdit input[name|=name]").val(userName);
+ 			$("div#userEdit input[name|=id]").val(id);
+ 			
+ 			$("div#userEdit input[name|=userId]").val(userId);
+ 			$("div#userEdit select[name|=groupId]").val(groupId);
+ 			$("div#userEdit input[name|=email]").val(email);
+ 			$("div#userEdit input[name|=sms]").val(sms);
+			
+			$("#userEdit").modal("show");
+		}, 
+		function(jqxhr,status,err) {
+			alert(status+":"+err);
+		}
+	);
+}
+
+</script>
 </head>
 <body>
 <c:import url="../inc/mainMenu.jsp" />
 <div id="container" class="sidebar-closed">
-<%=jGroupList %>
+
 		<div id="content">
 
 			<div class="container">
@@ -40,127 +87,64 @@ JSONObject jUserList = (JSONObject)request.getAttribute("userList");
 				<!-- /Page Header -->
 				<!--=== Page Content ===-->
 				<div class="tabbable tabbable-custom tabs-left">
-					<ul class="nav nav-tabs tabs-left">
-						<li class="active"><a><strong>user</strong></a>
-						<li><a href="group.html"><strong>group</strong></a>
-					</ul>
+					<c:import url="${ROOT_PATH}/settings/sideMenu.jsp" >
+					 	<c:param name="menuId" value="<%=menuId %>"/>
+					 </c:import>
+					 
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab_3_1">
 							<div class="col-md-12">
-								<div class="widget">
-									<div class="widget-header">
-										<h4>User</h4>
-									</div>
+								<div class="widget box">
 									<div class="widget-content no-padding">
-									
-										<div>
-											<ul class="feeds">
-												<% 
-												for (int inx=0;inx<4;inx++) {
-												%>
-												<li>
-													<form class="form-horizontal">
-														<div class="form-group">
-															<label class="col-md-1 control-label">User Name</label>
-															<div class="col-md-9 controls">
-																<input type="text" class="form-control"/>
-															</div>
-														</div>
-														<div class="form-group">
-															<label class="col-md-1 control-label">User ID</label>
-															<div class="col-md-4 controls">
-																<input type="text" class="form-control"/>
-															</div>
-															
-															<label class="col-md-1 control-label">User Group</label>
-															<div class="col-md-4 control">
-																<select class="form-control">
-																	<option value="">NONE</option>
-																	<% 
-																	if(jGroupList!=null) { 
-																	%>
-																		<%
-																		JSONArray groupArray = jGroupList.optJSONArray("groupList");
-																		for(int groupInx=0;groupInx < groupArray.length(); groupInx++) {
-																		%>
-																			<%
-																			JSONObject groupRecord = groupArray.optJSONObject(groupInx);
-																			int groupId = groupRecord.optInt("id", 0);
-																			String groupName = groupRecord.optString("groupName");
-																			%>
-																			<option value="<%=groupId%>"><%=groupName %></option>
-																		<% 
-																		}
-																		%>
-																	<%
-																	} 
-																	%>
-																</select>
-															</div>
-														</div>
-														<div class="form-group">
-															<label class="col-md-1 control-label">Password</label>
-															<div class="col-md-4 controls">
-																<input type="text" class="form-control"/>
-															</div>
-															<label class="col-md-1 control-label">Confirm</label>
-															<div class="col-md-4 controls">
-																<input type="text" class="form-control"/>
-															</div>
-														</div>
-														<div class="form-group">
-															<label class="col-md-1 control-label">E-mail</label>
-															<div class="col-md-4 controls">
-																<input type="text" class="form-control"/>
-															</div>
-															<label class="col-md-1 control-label">SMS</label>
-															<div class="col-md-4 controls">
-																<input type="text" class="form-control"/>
-															</div>
-														</div>
-													</form>
-													<div class="dataTables_header clearfix">
-															<div class="input-group col-md-12">
-															<a href="javascript:void(0);" class="btn btn-sm"><span
-																class="glyphicon glyphicon-ok-sign"></span> Apply User</a>
-																&nbsp;
-															<a href="javascript:void(0);" class="btn btn-sm"><span
-																class="glyphicon glyphicon-minus-sign"></span> Remove User</a>
-																&nbsp;
-														</div>
-													</div>
-												</li>
-												<% 
-												} 
-												%>
-											</ul>
+										<div class="dataTables_header clearfix">
+											<div class="input-group col-md-12">
+												<button class="btn btn-sm" data-toggle="modal" data-target="#userNew">
+												 <span class="icon-group"></span> New User
+												 </button>
+											</div>
 										</div>
-										
-										<!--
-										<table class="table table-hover table-bordered table-checkable">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th>User Name</th>
+													<th>User Id</th>
+													<th>Group</th>
+													<th>Email</th>
+													<th>Sms</th>
+													<th></th>
+												</tr>
+											</thead>	
 											<tbody>
+											<%
+											for(int userInx=0;userInx<userList.length();userInx++) {
+												JSONObject userRecord = userList.optJSONObject(userInx);
+												int id = userRecord.optInt("id", 0);
+												int groupId = userRecord.optInt("groupId",0);
+												String userId = userRecord.optString("userId");
+												String userName = userRecord.optString("name");
+												String email = userRecord.optString("email");
+												String sms = userRecord.optString("sms");
+												String groupName="";
+												
+												if(groupMap.containsKey(groupId)) {
+													groupName = groupMap.get(groupId);
+												}
+											%>
 												<tr>
-													<td rowspan="3">1</td>
-													<td colspan="2">a</td>
-													<td rowspan="3">1</td>
+													<th><%=userName %></th>
+													<td><%=userId %></td>
+													<td><%=groupName %></td>
+													<td><%=email %></td>
+													<td><%=sms %></td>
+													<td><a href="javascript:showUpdateUserModal('<%=id%>')">Edit</a></td>
 												</tr>
-												<tr>
-													<td><strong>Name</strong></td>
-													<td><input type="text" class="form-control"/></td>
-												</tr>
-												<tr>
-													<td><strong>UserId</strong></td>
-													<td><input type="text" class="form-control"/></td>
-												</tr>
+											<%
+											}
+											%>
 											</tbody>
 										</table>
-										  -->
-									</div> <!-- /.widget-content -->
-									</div> <!-- /.widget -->
-								<!-- <div class="form-actions">
-									<input type="submit" value="Update Settings" class="btn btn-primary pull-right">
-								</div> -->
-									
+									</div>
+								</div>
 								
 							</div>
 						</div>
@@ -170,6 +154,179 @@ JSONObject jUserList = (JSONObject)request.getAttribute("userList");
 			</div>
 			<!-- /.container -->
 		</div>
-</div>
+	</div>
+
+	<div class="modal" id="userNew">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">New User</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form" id="new-user-form">
+						<input type="hidden" name="uri" value="/setting/authority/user-update"/> 
+						<input type="hidden" name="mode" value=""/>
+						<input type="hidden" name="id" value="-1"/>
+						<div class="form-group">
+							<label for="name" class="col-sm-3 control-label">Name</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="name" name="name" placeholder="Name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="userId" class="col-sm-3 control-label">User Id</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="userId" name="userId" placeholder="User Id">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-sm-3 control-label">Password</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="password" name="password">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="confirmPassword" class="col-sm-3 control-label">Confirm-password</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="groupId" class="col-sm-3 control-label">Group</label>
+							<div class="col-sm-9">
+								<select class="form-control" id="groupId" name="groupId">
+									<option value="">NONE</option>
+									<% 
+									if(jGroupList!=null) { 
+										JSONArray groupArray = jGroupList.optJSONArray("groupList");
+									%>
+										<%
+										for(int groupInx=0;groupInx < groupArray.length(); groupInx++) {
+											JSONObject groupRecord = groupArray.optJSONObject(groupInx);
+											int groupId = groupRecord.optInt("id", 0);
+											String groupName = groupRecord.optString("groupName");
+										%>
+										<option value="<%=groupId%>"><%=groupName %></option>
+										<%
+										}
+										%>
+									<%
+									}
+									%>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email" class="col-sm-3 control-label">E-mail</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="email" name="email" placeholder="E-mail">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="sms" class="col-sm-3 control-label">SMS</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="sms" name="sms" placeholder="SMS">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('new-user-form','update')">Create User</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
+	<div class="modal" id="userEdit">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Edit User</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form" id="update-user-form">
+						<input type="hidden" name="uri" value="/setting/authority/user-update"/> 
+						<input type="hidden" name="mode" value=""/>
+						<input type="hidden" name="id" value="-1"/>
+						<div class="form-group">
+							<label for="name" class="col-sm-3 control-label">Name</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="name" name="name" placeholder="Name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="userId" class="col-sm-3 control-label">User Id</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="userId" name="userId" placeholder="User Id">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="groupId" class="col-sm-3 control-label">Group</label>
+							<div class="col-sm-9">
+								<select class="form-control" id="groupId" name="groupId">
+									<option value="">NONE</option>
+									<% 
+									if(jGroupList!=null) { 
+										JSONArray groupArray = jGroupList.optJSONArray("groupList");
+									%>
+										<%
+										for(int groupInx=0;groupInx < groupArray.length(); groupInx++) {
+											JSONObject groupRecord = groupArray.optJSONObject(groupInx);
+											int groupId = groupRecord.optInt("id", 0);
+											String groupName = groupRecord.optString("groupName");
+										%>
+										<option value="<%=groupId%>"><%=groupName %></option>
+										<%
+										}
+										%>
+									<%
+									}
+									%>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email" class="col-sm-3 control-label">E-mail</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="email" name="email" placeholder="E-mail">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="sms" class="col-sm-3 control-label">SMS</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="sms" name="sms" placeholder="SMS">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-sm-3 control-label">Password</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="password" name="password">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="confirmPassword" class="col-sm-3 control-label">Confirm-password</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger pull-left" onclick="updateUsingProxy('update-user-form','delete')">Remove</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('update-user-form','update')">Save changes</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
+
 </body>
 </html>

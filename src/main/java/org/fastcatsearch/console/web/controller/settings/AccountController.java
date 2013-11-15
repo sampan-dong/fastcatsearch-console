@@ -79,155 +79,155 @@ public class AccountController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/settings/user-list")
-	@ResponseBody
-	public String userList(HttpSession session) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/setting/authority/user-list.json";
-		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpPost(requestUrl)
-					.requestJSON();
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		return jsonObj.toString();
-	}
-	
-	@RequestMapping("/settings/group-list")
-	@ResponseBody
-	public String groupList(HttpSession session) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/setting/authority/group-list.json";
-		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpPost(requestUrl)
-					.requestJSON();
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		
-		return jsonObj.toString();
-	}
-	
-	@RequestMapping("/settings/group-authority-list")
-	@ResponseBody
-	public String groupAuthorityList(HttpSession session, @RequestParam String groupId ) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/setting/authority/group-list.json";
-		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpPost(requestUrl)
-					.addParameter("groupId", groupId)
-					.requestJSON();
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		return jsonObj.toString();
-	}
-	
-	@RequestMapping("/settings/group-authority-update")
-	@ResponseBody
-	public String groupAuthorityUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
-		String requestUrl = "/setting/authority/group-authority-update.json";
-		JSONObject jsonObj = null;
-		try {
-			PostMethod post = httpClient.httpPost(requestUrl);
-			
-			for(String key : params.keySet()) {
-				post.addParameter(key, (String)params.get(key));
-			}
-			
-			jsonObj = post.requestJSON();
-			
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		
-		return jsonObj.toString();
-	}
-	
-	@RequestMapping("/settings/group-update")
-	@ResponseBody
-	public String groupUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
-		String requestUrl = "/setting/authority/group-update.json";
-		JSONObject jsonObj = null;
-		try {
-			PostMethod post = httpClient.httpPost(requestUrl);
-			
-			for(String key : params.keySet()) {
-				post.addParameter(key, (String)params.get(key));
-			}
-			
-			jsonObj = post.requestJSON();
-			
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		
-		return jsonObj.toString();
-	}
-	
-	@RequestMapping("/settings/user-update") 
-	@ResponseBody
-	public String userUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
-		String requestUrl = "/setting/authority/user-update.json";
-		JSONObject jsonObj = null;
-		try {
-			PostMethod post = httpClient.httpPost(requestUrl);
-			for(String key : params.keySet()) {
-				post.addParameter(key, (String)params.get(key));
-			}
-			
-			jsonObj = post.requestJSON();
-			
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		
-		return jsonObj.toString();
-	}
-
-	@RequestMapping("/settings/user-delete")
-	@ResponseBody
-	public String userDelete(HttpSession session, @RequestParam String userId) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
-		String requestUrl = "/setting/authority/user-delete.json";
-		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpPost(requestUrl).
-				addParameter("userId", userId)
-				.requestJSON();
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		
-		return jsonObj.toString();
-		
-	}
-	
-	@RequestMapping("/settings/group-delete")
-	@ResponseBody
-	public String groupDelete(HttpSession session, @RequestParam String groupId) {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
-		String requestUrl = "/setting/authority/group-delete.json";
-		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpPost(requestUrl).
-				addParameter("group", groupId)
-				.requestJSON();
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		
-		return jsonObj.toString();
-	}
+//	@RequestMapping("/settings/user-list")
+//	@ResponseBody
+//	public String userList(HttpSession session) {
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		String requestUrl = "/setting/authority/user-list.json";
+//		JSONObject jsonObj = null;
+//		try {
+//			jsonObj = httpClient.httpPost(requestUrl)
+//					.requestJSON();
+//		} catch (Exception e) {
+//			logger.error("",e);
+//		}
+//		return jsonObj.toString();
+//	}
+//	
+//	@RequestMapping("/settings/group-list")
+//	@ResponseBody
+//	public String groupList(HttpSession session) {
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		String requestUrl = "/setting/authority/group-list.json";
+//		JSONObject jsonObj = null;
+//		try {
+//			jsonObj = httpClient.httpPost(requestUrl)
+//					.requestJSON();
+//		} catch (Exception e) {
+//			logger.error("",e);
+//		}
+//		
+//		return jsonObj.toString();
+//	}
+//	
+//	@RequestMapping("/settings/group-authority-list")
+//	@ResponseBody
+//	public String groupAuthorityList(HttpSession session, @RequestParam String groupId ) {
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		String requestUrl = "/setting/authority/group-list.json";
+//		JSONObject jsonObj = null;
+//		try {
+//			jsonObj = httpClient.httpPost(requestUrl)
+//					.addParameter("groupId", groupId)
+//					.requestJSON();
+//		} catch (Exception e) {
+//			logger.error("",e);
+//		}
+//		return jsonObj.toString();
+//	}
+//	
+//	@RequestMapping("/settings/group-authority-update")
+//	@ResponseBody
+//	public String groupAuthorityUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		
+//		String requestUrl = "/setting/authority/group-authority-update.json";
+//		JSONObject jsonObj = null;
+//		try {
+//			PostMethod post = httpClient.httpPost(requestUrl);
+//			
+//			for(String key : params.keySet()) {
+//				post.addParameter(key, (String)params.get(key));
+//			}
+//			
+//			jsonObj = post.requestJSON();
+//			
+//		} catch (Exception e) {
+//			logger.error("",e);
+//		}
+//		
+//		return jsonObj.toString();
+//	}
+//	
+//	@RequestMapping("/settings/group-update")
+//	@ResponseBody
+//	public String groupUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		
+//		String requestUrl = "/setting/authority/group-update.json";
+//		JSONObject jsonObj = null;
+//		try {
+//			PostMethod post = httpClient.httpPost(requestUrl);
+//			
+//			for(String key : params.keySet()) {
+//				post.addParameter(key, (String)params.get(key));
+//			}
+//			
+//			jsonObj = post.requestJSON();
+//			
+//		} catch (Exception e) {
+//			logger.error("",e);
+//		}
+//		
+//		return jsonObj.toString();
+//	}
+//	
+//	@RequestMapping("/settings/user-update") 
+//	@ResponseBody
+//	public String userUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		
+//		String requestUrl = "/setting/authority/user-update.json";
+//		JSONObject jsonObj = null;
+//		try {
+//			PostMethod post = httpClient.httpPost(requestUrl);
+//			for(String key : params.keySet()) {
+//				post.addParameter(key, (String)params.get(key));
+//			}
+//			
+//			jsonObj = post.requestJSON();
+//			
+//		} catch (Exception e) {
+//			logger.error("",e);
+//		}
+//		
+//		return jsonObj.toString();
+//	}
+//
+//	@RequestMapping("/settings/user-delete")
+//	@ResponseBody
+//	public String userDelete(HttpSession session, @RequestParam String userId) {
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		
+//		String requestUrl = "/setting/authority/user-delete.json";
+//		JSONObject jsonObj = null;
+//		try {
+//			jsonObj = httpClient.httpPost(requestUrl).
+//				addParameter("userId", userId)
+//				.requestJSON();
+//		} catch (Exception e) {
+//			logger.error("",e);
+//		}
+//		
+//		return jsonObj.toString();
+//		
+//	}
+//	
+//	@RequestMapping("/settings/group-delete")
+//	@ResponseBody
+//	public String groupDelete(HttpSession session, @RequestParam String groupId) {
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		
+//		String requestUrl = "/setting/authority/group-delete.json";
+//		JSONObject jsonObj = null;
+//		try {
+//			jsonObj = httpClient.httpPost(requestUrl).
+//				addParameter("group", groupId)
+//				.requestJSON();
+//		} catch (Exception e) {
+//			logger.error("",e);
+//		}
+//		
+//		return jsonObj.toString();
+//	}
 }

@@ -8,13 +8,11 @@ org.json.JSONArray
 
 <%
 String menuId = "group";
-
 JSONObject jGroupAuthorityList = (JSONObject)request.getAttribute("groupAuthorityList");
 JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 JSONArray jAuthorityLevels = jAuthorityList.optJSONArray("authorityLevel");
 JSONArray jAuthorities = jAuthorityList.optJSONArray("groupAuthorities");
 JSONArray jGroupList = jGroupAuthorityList.optJSONArray("groupList");
-
 %>
 <c:set var="ROOT_PATH" value="../.." scope="request"/>
 <c:import url="../inc/common.jsp" />
@@ -24,8 +22,6 @@ JSONArray jGroupList = jGroupAuthorityList.optJSONArray("groupList");
 
 <script type="text/javascript">
 function showUpdateGroupModal(groupId){
-	//1. 성공하면 현재 페이지 reload
-	//2. 실패하면 그대로...
 	requestProxy("POST", {
 		"uri":"/setting/authority/group-authority-list.json",
 		"groupId":groupId,
@@ -100,7 +96,7 @@ $(document).ready(function() {
 			
 				<div class="tabbable tabbable-custom tabs-left">
 					<c:import url="${ROOT_PATH}/settings/sideMenu.jsp" >
-					 	<c:param name="menu" value="<%=menuId %>"/>
+					 	<c:param name="menuId" value="<%=menuId %>"/>
 					 </c:import>
 					 
 					<div class="tab-content">
@@ -162,7 +158,6 @@ $(document).ready(function() {
 										</table>
 									</div>
 								</div>
-								<input type="hidden" name="mode" value="update"/>
 						</div>
 					</div>
 				</div>
@@ -183,12 +178,12 @@ $(document).ready(function() {
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="new-group-form">
-						<input type="hidden" name="uri" value="/settings/group-authority-update"/> 
+						<input type="hidden" name="uri" value="/setting/authority/group-authority-update.json"/> 
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value="-1"/>
 						<div class="form-group">
-							<label for="groupName" class="col-sm-4 control-label">Group Name</label>
-							<div class="col-sm-8">
+							<label for="groupName" class="col-sm-3 control-label">Group Name</label>
+							<div class="col-sm-9">
 								<input type="text" class="form-control" id="groupName" name="groupName" placeholder="Group name">
 							</div>
 						</div>
@@ -199,13 +194,13 @@ $(document).ready(function() {
 							String authorityName = authorityRecord.optString("authorityName");
 						%>
 						<div class="form-group">
-							<label class="col-sm-4 control-label"><%=authorityName %></label>
-							<div class="col-sm-12">
+							<label class="col-sm-3 control-label"><%=authorityName %></label>
+							<div class="col-sm-9">
 									<%
 									for(int levelInx=0;levelInx < jAuthorityLevels.length();levelInx++) {
 										String levelName = jAuthorityLevels.optString(levelInx);
 									%>
-									<label class="col-md-4 radio">
+									<label class="col-md-3 radio">
 										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>"/>
 										<%=levelName %>
 									</label>
@@ -238,12 +233,12 @@ $(document).ready(function() {
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="update-group-form">
-						<input type="hidden" name="uri" value="/settings/group-authority-update"/> 
+						<input type="hidden" name="uri" value="/setting/authority/group-authority-update.json"/> 
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value=""/>
 						<div class="form-group">
-							<label for="groupName" class="col-sm-4 control-label">Group Name</label>
-							<div class="col-sm-8">
+							<label for="groupName" class="col-sm-3 control-label">Group Name</label>
+							<div class="col-sm-9">
 								<input type="text" class="form-control" name="groupName" placeholder="Group name">
 							</div>
 						</div>
@@ -254,13 +249,13 @@ $(document).ready(function() {
 							String authorityName = authorityRecord.optString("authorityName");
 						%>
 						<div class="form-group">
-							<label class="col-sm-4 control-label"><%=authorityName %></label>
-							<div class="col-sm-12">
+							<label class="col-sm-3 control-label"><%=authorityName %></label>
+							<div class="col-sm-9">
 									<%
 									for(int levelInx=0;levelInx < jAuthorityLevels.length();levelInx++) {
 										String levelName = jAuthorityLevels.optString(levelInx);
 									%>
-									<label class="col-md-4 radio">
+									<label class="col-md-3 radio">
 										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>"/>
 										<%=levelName %>
 									</label>
