@@ -648,7 +648,7 @@ textarea.input-lg {
   .form-inline .radio input[type="radio"],
   .form-inline .checkbox input[type="checkbox"] {
     float: none;
-    margin-bottom: -2px;
+    margin-bottom: 5px;/*-2px;*/
     margin-left: 0;
   }
 }
