@@ -27,7 +27,7 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/settings/user");
 		String requestUrl = null;
-		requestUrl = "/setting/authority/group-list.json";
+		requestUrl = "/settings/authority/get-group-list.json";
 		JSONObject jsonObj = null;
 		try {
 			jsonObj = httpClient.httpGet(requestUrl).requestJSON();
@@ -36,7 +36,7 @@ public class AccountController {
 			logger.error("",e);
 		}
 		
-		requestUrl = "/setting/authority/user-list.json";
+		requestUrl = "/settings/authority/get-user-list.json";
 		try {
 			jsonObj = httpClient.httpGet(requestUrl).requestJSON();
 			modelAndView.addObject("userList",jsonObj);
@@ -53,7 +53,7 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/settings/group");
 		String requestUrl;
-		requestUrl = "/setting/authority/group-authority-list.json";
+		requestUrl = "/settings/authority/get-group-authority-list.json";
 		JSONObject jsonObj = null;
 		try {
 			jsonObj = httpClient.httpGet(requestUrl)
@@ -62,7 +62,7 @@ public class AccountController {
 		} catch (Exception e) {
 			logger.error("",e);
 		}
-		requestUrl = "/setting/authority/group-authority-list.json";
+		requestUrl = "/settings/authority/get-group-authority-list.json";
 		try {
 			jsonObj = httpClient.httpGet(requestUrl)
 					.addParameter("groupId", "-1").requestJSON();

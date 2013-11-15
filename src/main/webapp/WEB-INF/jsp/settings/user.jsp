@@ -32,7 +32,7 @@ for(int inx=0;inx<groupList.length();inx++) {
 <script type="text/javascript">
 function showUpdateUserModal(id){
 	requestProxy("POST", {
-		"uri":"/setting/authority/user-list.json",
+		"uri":"/settings/authority/get-user-list.json",
 		"id":id,
 		"time":new Date()
 		}, "json", 
@@ -165,7 +165,7 @@ function showUpdateUserModal(id){
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="new-user-form">
-						<input type="hidden" name="uri" value="/setting/authority/user-update"/> 
+						<input type="hidden" name="uri" value="/settings/authority/update-user"/> 
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="id" value="-1"/>
 						<div class="form-group">
@@ -250,7 +250,7 @@ function showUpdateUserModal(id){
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="update-user-form">
-						<input type="hidden" name="uri" value="/setting/authority/user-update"/> 
+						<input type="hidden" name="uri" value="/settings/authority/update-user"/> 
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="id" value="-1"/>
 						<div class="form-group">

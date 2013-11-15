@@ -23,7 +23,7 @@ JSONArray jGroupList = jGroupAuthorityList.optJSONArray("groupList");
 <script type="text/javascript">
 function showUpdateGroupModal(groupId){
 	requestProxy("POST", {
-		"uri":"/setting/authority/group-authority-list.json",
+		"uri":"/settings/authority/get-group-authority-list.json",
 		"groupId":groupId,
 		"time":new Date()
 		}, "json", 
@@ -186,7 +186,7 @@ $(document).ready(function() {
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="new-group-form">
-						<input type="hidden" name="uri" value="/setting/authority/group-authority-update.json"/> 
+						<input type="hidden" name="uri" value="/settings/authority/update-group-authority.json"/> 
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value="-1"/>
 						<div class="form-group">
@@ -242,7 +242,7 @@ $(document).ready(function() {
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="update-group-form">
-						<input type="hidden" name="uri" value="/setting/authority/group-authority-update.json"/> 
+						<input type="hidden" name="uri" value="/settings/authority/update-group-authority.json"/> 
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value=""/>
 						<div class="form-group">
