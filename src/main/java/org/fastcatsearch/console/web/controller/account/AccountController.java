@@ -38,6 +38,23 @@ public class AccountController {
 	public ModelAndView user(HttpSession session) {
 		init(session);
 		modelAndView.setViewName("/account/user");
+		String requestUrl;
+		requestUrl = "/setting/authority/group-list.json";
+		try {
+			jsonObj = httpClient.httpGet(requestUrl).requestJSON();
+			modelAndView.addObject("groupList",jsonObj);
+		} catch (Exception e) {
+			logger.error("",e);
+		}
+		
+		requestUrl = "/setting/authority/user-list.json";
+		try {
+			jsonObj = httpClient.httpGet(requestUrl).requestJSON();
+			modelAndView.addObject("userList",jsonObj);
+		} catch (Exception e) {
+			logger.error("",e);
+		}
+		
 		return modelAndView;
 	}
 	

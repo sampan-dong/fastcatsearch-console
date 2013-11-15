@@ -1,6 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="
+org.json.JSONObject,
+org.json.JSONArray
+" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%
+JSONObject jGroupList = (JSONObject)request.getAttribute("groupList");
+JSONObject jUserList = (JSONObject)request.getAttribute("userList");
+%>
 
 <c:import url="../inc/common.jsp" />
 <html>
@@ -10,7 +19,7 @@
 <body>
 <c:import url="../inc/mainMenu.jsp" />
 <div id="container" class="sidebar-closed">
-
+<%=jGroupList %>
 		<div id="content">
 
 			<div class="container">
@@ -20,10 +29,8 @@
 						<li><i class="icon-home"></i> <a href="javascript:void(0);">Settings</a>
 						</li>
 					</ul>
-
 				</div>
 				<!-- /Breadcrumbs line -->
-
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
@@ -31,17 +38,14 @@
 					</div>
 				</div>
 				<!-- /Page Header -->
-
 				<!--=== Page Content ===-->
-			
 				<div class="tabbable tabbable-custom tabs-left">
 					<ul class="nav nav-tabs tabs-left">
 						<li class="active"><a><strong>user</strong></a>
-						<li><a><strong>group</strong></a>
+						<li><a href="group.html"><strong>group</strong></a>
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab_3_1">
-
 							<div class="col-md-12">
 								<div class="widget">
 									<div class="widget-header">
@@ -51,20 +55,47 @@
 									
 										<div>
 											<ul class="feeds">
-											
-											<% for (int inx=0;inx<4;inx++) { %>
+												<% 
+												for (int inx=0;inx<4;inx++) {
+												%>
 												<li>
 													<form class="form-horizontal">
 														<div class="form-group">
-															<label class="col-md-1 control-label">Name</label>
+															<label class="col-md-1 control-label">User Name</label>
 															<div class="col-md-9 controls">
 																<input type="text" class="form-control"/>
 															</div>
 														</div>
 														<div class="form-group">
 															<label class="col-md-1 control-label">User ID</label>
-															<div class="col-md-9 controls">
+															<div class="col-md-4 controls">
 																<input type="text" class="form-control"/>
+															</div>
+															
+															<label class="col-md-1 control-label">User Group</label>
+															<div class="col-md-4 control">
+																<select class="form-control">
+																	<option value="">NONE</option>
+																	<% 
+																	if(jGroupList!=null) { 
+																	%>
+																		<%
+																		JSONArray groupArray = jGroupList.optJSONArray("groupList");
+																		for(int groupInx=0;groupInx < groupArray.length(); groupInx++) {
+																		%>
+																			<%
+																			JSONObject groupRecord = groupArray.optJSONObject(groupInx);
+																			int groupId = groupRecord.optInt("id", 0);
+																			String groupName = groupRecord.optString("groupName");
+																			%>
+																			<option value="<%=groupId%>"><%=groupName %></option>
+																		<% 
+																		}
+																		%>
+																	<%
+																	} 
+																	%>
+																</select>
 															</div>
 														</div>
 														<div class="form-group">
@@ -79,21 +110,12 @@
 														</div>
 														<div class="form-group">
 															<label class="col-md-1 control-label">E-mail</label>
-															<div class="col-md-9 controls">
+															<div class="col-md-4 controls">
 																<input type="text" class="form-control"/>
 															</div>
-														</div>
-														<div class="form-group">
 															<label class="col-md-1 control-label">SMS</label>
-															<div class="col-md-9 controls">
+															<div class="col-md-4 controls">
 																<input type="text" class="form-control"/>
-															</div>
-														</div>
-														<div class="form-group">
-															<label class="col-md-1 control-label">User Group</label>
-															<div class="col-md-9 control">
-																<select class="form-control">
-																</select>
 															</div>
 														</div>
 													</form>
@@ -108,7 +130,9 @@
 														</div>
 													</div>
 												</li>
-											<% } %>
+												<% 
+												} 
+												%>
 											</ul>
 										</div>
 										
@@ -142,12 +166,9 @@
 						</div>
 					</div>
 				</div>
-				
-
 				<!-- /Page Content -->
 			</div>
 			<!-- /.container -->
-
 		</div>
 </div>
 </body>

@@ -46,7 +46,7 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 			
 				<div class="tabbable tabbable-custom tabs-left">
 					<ul class="nav nav-tabs tabs-left">
-						<li><a><strong>user</strong></a>
+						<li><a href="user.html"><strong>user</strong></a>
 						<li class="active"><a><strong>group</strong></a>
 					</ul>
 					<div class="tab-content">
