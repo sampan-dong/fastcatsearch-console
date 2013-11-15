@@ -39,7 +39,8 @@
 	
 <link rel="stylesheet"
 	href="${contextPath}/resources/assets/css/console.css">
-	
+<link rel="stylesheet"
+	href="${contextPath}/resources/assets/css/todc-bootstrap.css">	
 <!--=== JavaScript ===-->
 
 <script type="text/javascript" src="${contextPath}/resources/assets/js/libs/jquery-1.10.2.min.js"></script>

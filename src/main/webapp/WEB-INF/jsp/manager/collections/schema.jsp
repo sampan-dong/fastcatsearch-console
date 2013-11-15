@@ -32,7 +32,6 @@
 			}
 			$('#_footer_fields').find("._field_multivalue_delimiter").val(multivalueDelimiter);
 			//console.log($('#_footer_fields').find("._field_store").prop("nodeName"), store, multivalue, multivalueDelimiter);
-			$.uniform.update();
 		});
 		$('#schema_table_search_indexes').on('click', 'tbody tr', function(event) {
 			$(this).addClass('checked').siblings().removeClass('checked');
@@ -53,7 +52,6 @@
 			}
 			$('#_footer_search_indexes').find("._search_indexes_positionIncrementGap").val(positionIncrementGap);
 			//console.log($('#_footer_search_indexes').find("._field_store").prop("nodeName"), store, multivalue, multivalueDelimiter);
-			$.uniform.update();
 		});
 	});
 	
@@ -141,15 +139,15 @@
 				%>
 				<div class="tabbable tabbable-custom tabbable-full-width" id="schema_tabs">
 					<ul class="nav nav-tabs">
-						<li class="${tab == 'fields' ? 'active' : '' }"><a href="#tab_fields" data-toggle="tab">Fields <span class="badge badge-sm"><%=fieldListSize %></span></a></li>
-						<li class="${tab == 'constraints' ? 'active' : '' }"><a href="#tab_constraints" data-toggle="tab">Primary Key <span class="badge badge-sm"><%=primaryKeySize %></span></a></li>
-						<li class="${tab == 'analyzers' ? 'active' : '' }"><a href="#tab_analyzers" data-toggle="tab">Analyzers <span class="badge badge-sm"><%=analyzerSize %></span></a></li>
+						<li class="${tab == 'fields' ? 'active' : '' }"><a href="#tab_fields" data-toggle="tab">Fields <%-- <span class="badge badge-sm"><%=fieldListSize %></span> --%></a></li>
+						<li class="${tab == 'constraints' ? 'active' : '' }"><a href="#tab_constraints" data-toggle="tab">Primary Key <%-- <span class="badge badge-sm"><%=primaryKeySize %></span> --%></a></li>
+						<li class="${tab == 'analyzers' ? 'active' : '' }"><a href="#tab_analyzers" data-toggle="tab">Analyzers <%-- <span class="badge badge-sm"><%=analyzerSize %></span> --%></a></li>
 						<li class="${tab == 'search_indexes' ? 'active' : '' }"><a href="#tab_search_indexes" data-toggle="tab">Search
-								Indexes <span class="badge badge-sm"><%=searchIndexesSize %></span></a></li>
+								Indexes <%-- <span class="badge badge-sm"><%=searchIndexesSize %></span> --%></a></li>
 						<li class="${tab == 'field_indexes' ? 'active' : '' }"><a href="#tab_field_indexes" data-toggle="tab">Field
-								Indexes <span class="badge badge-sm"><%=fieldIndexesSize %></span></a></li>
+								Indexes <%-- <span class="badge badge-sm"><%=fieldIndexesSize %></span> --%></a></li>
 						<li class="${tab == 'group_indexes' ? 'active' : '' }"><a href="#tab_group_indexes" data-toggle="tab">Group
-								Indexes <span class="badge badge-sm"><%=groupIndexesSize %></span></a></li>
+								Indexes <%-- <span class="badge badge-sm"><%=groupIndexesSize %></span> --%></a></li>
 					</ul>
 					<div class="tab-content row">
 
@@ -281,7 +279,7 @@
 															</select>
 															</td>
 															<td class="fcol4"><div class="col-md-10 input-width-small"><input type="text" class="form-control" ></input></div></td>
-															<td class="fcol5"><input type="checkbox" class="uniform"></input></td>
+															<td class="fcol5"><input type="checkbox"></input></td>
 														</tr>
 													</tbody>
 												</table>
@@ -297,7 +295,7 @@
 														<label class="col-md-3 control-label">Store:</label>
 														<div class="col-md-9">
 															<label class="checkbox"> <input type="checkbox"
-																class="uniform _field_store" readonly> Yes
+																class="_field_store" readonly> Yes
 															</label>
 														</div>
 													</div>
@@ -307,7 +305,7 @@
 														<label class="col-md-3 control-label">Multi Value:</label>
 														<div class="col-md-9">
 															<label class="checkbox"> <input type="checkbox"
-																class="uniform _field_multivalue" readonly> Yes
+																class="_field_multivalue" readonly> Yes
 															</label>
 														</div>
 													</div>
@@ -537,7 +535,7 @@
 														<label class="col-md-3 control-label">Ignore Case:</label>
 														<div class="col-md-9">
 															<label class="checkbox"> <input type="checkbox"
-																class="uniform _search_indexes_ignorecase" readonly> Yes
+																class="_search_indexes_ignorecase" readonly> Yes
 															</label>
 														</div>
 													</div>
@@ -547,7 +545,7 @@
 														<label class="col-md-3 control-label">Store Position:</label>
 														<div class="col-md-9">
 															<label class="checkbox"> <input type="checkbox"
-																class="uniform _search_indexes_store_position" readonly> Yes
+																class="_search_indexes_store_position" readonly> Yes
 															</label>
 														</div>
 													</div>

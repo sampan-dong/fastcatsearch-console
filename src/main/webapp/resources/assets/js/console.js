@@ -295,18 +295,18 @@ function truncateDictionary(analysisId, dictionaryId, callback){
 
 function checkableTable(tableId) {
 	console.log("checkabel ", $(tableId).find( 'thead th.checkbox-column :checkbox' ));
-	$(tableId).find(':checkbox').each(function(j, cb_self) {
-		$(cb_self).uniform();
-		$.uniform.update($(cb_self));
-	});
+//	$(tableId).find(':checkbox').each(function(j, cb_self) {
+//		$(cb_self).uniform();
+//		$.uniform.update($(cb_self));
+//	});
 	$(tableId).find( 'thead th.checkbox-column :checkbox' ).on('change', function() {
 		var checked = $( this ).prop( 'checked' );
 		$( this ).parents('table').children('tbody').each(function(i, tbody) {
 			$(tbody).find('.checkbox-column').each(function(j, cb) {
 				var cb_self = $( ':checkbox', $(cb) ).prop( "checked", checked ).trigger('change');
-				if (cb_self.hasClass('uniform')) {
-					$.uniform.update(cb_self);
-				}
+//				if (cb_self.hasClass('uniform')) {
+//					$.uniform.update(cb_self);
+//				}
 
 				$(cb).closest('tr').toggleClass( 'checked', checked );
 			});

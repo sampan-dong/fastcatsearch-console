@@ -23,8 +23,6 @@ $(document).ready(function(){
 	searchInputObj = $("#search_input_${dictionaryId}");
 	exactMatchObj = $("#${dictionaryId}ExactMatch");
 	
-	$("#<%=dictionaryId %>ExactMatch").uniform();
-	
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = toSafeString($(this).val());

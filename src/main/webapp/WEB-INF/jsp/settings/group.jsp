@@ -37,7 +37,7 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Account Settings</h3>
+						<h3>Settings</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -45,6 +45,10 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 				<!--=== Page Content ===-->
 			
 				<div class="tabbable tabbable-custom tabs-left">
+					<c:import url="${ROOT_PATH}/manager/sideMenu.jsp" >
+					 	<c:param name="menu" value="{menuId}"/>
+					 </c:import>
+	 
 					<ul class="nav nav-tabs tabs-left">
 						<li><a href="user.html"><strong>user</strong></a>
 						<li class="active"><a><strong>group</strong></a>
@@ -210,6 +214,7 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 			<!-- /.container -->
 
 		</div>
+	</div>
 </div>
 </body>
 </html>

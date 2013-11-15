@@ -25,7 +25,7 @@ $(document).ready(function() {
 			<thead>
 				<tr>
 					<th class="checkbox-column">
-						<input type="checkbox" class="uniform">
+						<input type="checkbox">
 					</th>
 					<th>Name</th>
 					<th>Type</th>
@@ -51,7 +51,7 @@ $(document).ready(function() {
 				} else {
 				%>
 					<td class="checkbox-column">
-						<input type="checkbox" class="uniform">
+						<input type="checkbox">
 						<input type="hidden" name="ID" value="<%=dictionaryId%>"/>
 					</td>
 				<%

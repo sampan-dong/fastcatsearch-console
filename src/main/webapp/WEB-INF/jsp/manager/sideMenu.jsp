@@ -21,7 +21,7 @@
 				boolean lcatCurrent = "dictionary".equals(lcat);
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>"><a href="javascript:void(0);"> <i class="icon-edit"></i>
-					Dictionary <span class="label label-info pull-right"><%=analysisPluginList.length() %></span>
+					Dictionary <%-- <span class="label label-info pull-right"><%=analysisPluginList.length() %></span> --%>
 			</a>
 				<ul class="sub-menu">
 					<%
@@ -42,7 +42,7 @@
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>">
 				<a href="javascript:void(0);"> <i class="icon-desktop"></i> Collections 
-					<span class="label label-info pull-right"><%=collectionList.length() %></span>
+					<%-- <span class="label label-info pull-right"><%=collectionList.length() %></span> --%>
 				</a>
 				<ul class="sub-menu">
 					<%
@@ -84,7 +84,7 @@
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>">
 				<a href="javascript:void(0);"> <i class="icon-edit"></i>
-					Analysis <span class="label label-info pull-right"><%=analysisPluginList.length() %></span>
+					Analysis <%-- <span class="label label-info pull-right"><%=analysisPluginList.length() %></span> --%>
 				</a>
 				<ul class="sub-menu">
 					<li class="<%=(lcatCurrent && "plugin".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/analysis/plugin.html"/>"> <i
@@ -104,7 +104,7 @@
 			</li>
 			
 			<li class="<%="servers".equals(lcat) ? "current" :"" %>">
-				<a href="javascript:void(0);"> <i class="icon-globe"></i>Servers <span class="label label-info pull-right">3</span>
+				<a href="javascript:void(0);"> <i class="icon-globe"></i>Servers <!-- <span class="label label-info pull-right">3</span> -->
 				</a>
 				<ul class="sub-menu">
 					<li class="current"><a href="<c:url value="/manager/servers/overview.html"/>"> <i
@@ -142,13 +142,13 @@
 		</ul>
 	
 		<!-- /Navigation -->
-		<div class="sidebar-title">
+		<!-- <div class="sidebar-title">
 			<span>Notifications</span>
 		</div>
 		<ul class="notifications demo-slide-in">
-			<!-- .demo-slide-in is just for demonstration purposes. You can remove this. -->
+			.demo-slide-in is just for demonstration purposes. You can remove this.
 			<li style="display: none;">
-				<!-- style-attr is here only for fading in this notification after a specific time. Remove this. -->
+				style-attr is here only for fading in this notification after a specific time. Remove this.
 				<div class="col-left">
 					<span class="label label-danger"><i
 						class="icon-warning-sign"></i></span>
@@ -160,7 +160,7 @@
 				</div>
 			</li>
 			
-			</ul>
+			</ul> -->
 	
 		</div>
 	<div id="divider" class="resizeable_del"></div>

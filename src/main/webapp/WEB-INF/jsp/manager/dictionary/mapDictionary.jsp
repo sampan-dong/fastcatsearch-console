@@ -26,8 +26,6 @@ $(document).ready(function(){
 	searchColumnObj = $("#${dictionaryId}SearchColumn");
 	exactMatchObj = $("#${dictionaryId}ExactMatch");
 	
-	$("#<%=dictionaryId %>ExactMatch").uniform();
-	
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = toSafeString($(this).val());

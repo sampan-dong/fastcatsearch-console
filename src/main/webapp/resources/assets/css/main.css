@@ -302,7 +302,7 @@ span.red {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  border-bottom: 4px solid #2a4053;
+  border-bottom: 1px solid #2a4053;
 }
 .navbar > .container {
   padding-left: 20px;
@@ -712,9 +712,9 @@ span.red {
   position: absolute;
   margin-left: 250px;
   right: -1px;
-  width: 8px;
+  /* width: 8px; */
   border-left: 1px solid #d1d1d1;
-  border-right: 1px solid #d1d1d1;
+  /* border-right: 1px solid #d1d1d1; */
 }
 #sidebar .resizeable {
   cursor: col-resize;
@@ -816,7 +816,8 @@ span.red {
   /* * * * * * * * * * * *
 		 * Mainmenu and submenus
 		 * * * * * * * * * * * */
-
+  border-bottom: 1px solid #ebebeb;
+  border-top: 1px solid #ebebeb;
 }
 #sidebar ul#nav > li.current > a {
   border-right: 10px solid #668eb0;
@@ -866,7 +867,7 @@ span.red {
   position: relative;
   margin: 0;
   border: 0;
-  padding: 15px 15px;
+  padding: 12px 12px;
   padding-left: 20px;
   color: #555555;
   text-decoration: none;
@@ -909,7 +910,7 @@ span.red {
 }
 #sidebar ul#nav ul.sub-menu a {
   font-weight: normal;
-  padding: 12px 15px 12px 20px;
+  padding: 10px 15px 10px 20px;
   text-transform: none;
 }
 #sidebar ul#nav ul.sub-menu a:hover {
@@ -1011,7 +1012,7 @@ span.red {
 }
 .sidebar-fixed {
   position: fixed !important;
-  top: 52px;
+  top: 49px;
 }
 .fill-nav-space {
   height: 52px;

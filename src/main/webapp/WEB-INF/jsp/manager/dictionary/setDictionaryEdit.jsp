@@ -27,8 +27,6 @@ $(document).ready(function(){
 	searchInputObj = $("#search_input_${dictionaryId}");
 	exactMatchObj = $("#${dictionaryId}ExactMatch");
 	
-	$("#<%=dictionaryId %>ExactMatch").uniform();
-	
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = toSafeString($(this).val());
@@ -187,7 +185,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 			    	&nbsp;
 			    	<div class="checkbox">
 			    	<label>
-			    		<input type="checkbox" class="uniform" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Exact Match
+			    		<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Exact Match
 			    	</label>
 			    	</div>
 			    </div>
@@ -223,7 +221,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 					<thead>
 						<tr>
 							<th class="checkbox-column">
-								<input type="checkbox" class="uniform">
+								<input type="checkbox">
 							</th>
 							<th>Word</th>
 						</tr>
@@ -258,7 +256,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 					<thead>
 						<tr>
 							<th class="checkbox-column">
-								<input type="checkbox" class="uniform">
+								<input type="checkbox">
 							</th>
 							<th>Word</th>
 						</tr>
@@ -270,7 +268,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 						<tr>
 							<td class="checkbox-column">
 								<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>">
-								<input type="checkbox" class="uniform">
+								<input type="checkbox">
 							</td>
 							<td><%=obj.getString("KEYWORD") %></td>
 						</tr>

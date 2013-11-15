@@ -32,8 +32,6 @@ $(document).ready(function(){
 	searchColumnObj = $("#${dictionaryId}SearchColumn");
 	exactMatchObj = $("#${dictionaryId}ExactMatch");
 	
-	$("#<%=dictionaryId %>ExactMatch").uniform();
-	
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = toSafeString($(this).val());
@@ -314,7 +312,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 				<thead>
 					<tr>
 						<th class="checkbox-column">
-							<input type="checkbox" class="uniform">
+							<input type="checkbox">
 						</th>
 						<th>Keyword</th>
 						<th>Value</th>
@@ -328,7 +326,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 				%>
 					<tr id="_<%=dictionaryId %>-<%=obj.getInt("ID") %>">
 						<td class="checkbox-column">
-							<input type="checkbox" class="uniform">
+							<input type="checkbox">
 						</td>
 						<td class="col-md-2">
 							<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>"/>
