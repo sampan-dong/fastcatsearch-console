@@ -203,7 +203,7 @@ $(document).ready(function() {
 						%>
 						<div class="form-group">
 							<label class="col-sm-3 control-label"><%=authorityName %></label>
-							<div class="col-sm-9 from-inline">
+							<div class="col-sm-9 form-inline">
 									<%
 									for(int levelInx=0;levelInx < jAuthorityLevels.length();levelInx++) {
 										String levelName = jAuthorityLevels.optString(levelInx);
