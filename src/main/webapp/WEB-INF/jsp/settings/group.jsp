@@ -17,6 +17,19 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 <html>
 <head>
 <c:import url="../inc/header.jsp" />
+
+<script>
+function showUpdateGroupModal(groupId){
+	//1. 성공하면 현재 페이지 reload
+	//2. 실패하면 그대로...
+	//requestProxy(methodType, data, resultType, successCallback, failCallback);
+	$("#groupEdit").modal("show");
+	
+	//$("#groupEdit").modal("hide");
+	
+}
+
+</script>
 </head>
 <body>
 <c:import url="../inc/mainMenu.jsp" />
@@ -50,10 +63,65 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 					<c:import url="${ROOT_PATH}/settings/sideMenu.jsp" >
 					 	<c:param name="menu" value="<%=menuId %>"/>
 					 </c:import>
+					 
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab_3_1">
 
 							<div class="col-md-12">
+							
+								<div class="widget box">
+									<div class="widget-content no-padding">
+										<div class="dataTables_header clearfix">
+											<div class="input-group col-md-12">
+												<button class="btn btn-sm" data-toggle="modal" data-target="#groupNew">
+												 <span class="icon-group"></span> New Group
+												 </button>
+											</div>
+										</div>
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th>Group Name</th>
+													<th>Dictionary</th>
+													<th>Collections</th>
+													<th>Analysis</th>
+													<th>Servers</th>
+													<th>Logs</th>
+													<th>&nbsp;</th>
+												</tr>
+											</thead>	
+											<tbody>
+												<tr>
+													<th>Administrator</th>
+													<td><span class="text-danger">WRITE</span></td>
+													<td><span class="text-danger">WRITE</span></td>
+													<td><span class="text-danger">WRITE</span></td>
+													<td><span class="text-danger">WRITE</span></td>
+													<td><span class="text-danger">WRITE</span></td>
+													<th> </th>
+												</tr>
+												<tr>
+													<th>Opeartor</th>
+													<td><span class="text-success">READ</span></td>
+													<td><span class="text-danger">WRITE</span></td>
+													<td><span class="text-success">READ</span></td>
+													<td><span class="text-success">READ</span></td>
+													<td><span class="text-success">READ</span></td>
+													<td><a href="javascript:showUpdateGroupModal(0)">Edit</a></td>
+												</tr>
+												<tr>
+													<th>User</th>
+													<td><span class="text-success">READ</span></td>
+													<td><span class="text-muted">NONE</span></td>
+													<td><span class="text-success">READ</span></td>
+													<td><span class="text-muted">NONE</span></td>
+													<td><span class="text-success">READ</span></td>
+													<td><a href="javascript:showUpdateGroupModal(0)">Edit</a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
 								<form name="update-authority-form" class="form-horizontal">
 								<input type="hidden" name="mode" value="update"/>
 								<ul class="feeds">
@@ -204,5 +272,129 @@ JSONObject jAuthorityList = (JSONObject)request.getAttribute("authorityList");
 		</div>
 	</div>
 </div>
+
+
+	<div class="modal" id="groupNew">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">New Group</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="groupName" class="col-sm-4 control-label">Group Name</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="groupName" placeholder="Group name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Dictionary</label>
+							<div class="col-sm-8">
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value=""/>
+										None
+									</label>
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value="R"/>
+										Read
+									</label>
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value="W"/>
+										Write
+									</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Collections</label>
+							<div class="col-sm-8">
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value=""/>
+										None
+									</label>
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value="R"/>
+										Read
+									</label>
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value="W"/>
+										Write
+									</label>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary">Create group</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
+	<div class="modal" id="groupEdit">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Edit Group</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="groupName" class="col-sm-4 control-label">Group Name</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="groupName" placeholder="Group name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Dictionary</label>
+							<div class="col-sm-8">
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value=""/>
+										None
+									</label>
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value="R"/>
+										Read
+									</label>
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value="W"/>
+										Write
+									</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Collections</label>
+							<div class="col-sm-8">
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value=""/>
+										None
+									</label>
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value="R"/>
+										Read
+									</label>
+									<label class="col-md-2 radio">
+										<input type="radio" name="authorityLevel_" class="form-control" value="W"/>
+										Write
+									</label>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger pull-left">Remove</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary">Save chages</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
 </body>
 </html>
