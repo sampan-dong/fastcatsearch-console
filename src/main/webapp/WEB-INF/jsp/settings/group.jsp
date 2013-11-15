@@ -187,9 +187,9 @@ $(document).ready(function() {
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value="-1"/>
 						<div class="form-group">
-							<label for="groupName" class="col-sm-4 control-label">Group Name</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" id="groupName" name="groupName" placeholder="Group name">
+							<label for="groupName" class="col-md-4 control-label">Group Name</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control fcol2" id="groupName" name="groupName" placeholder="Group name">
 							</div>
 						</div>
 						<% 
@@ -199,16 +199,17 @@ $(document).ready(function() {
 							String authorityName = authorityRecord.optString("authorityName");
 						%>
 						<div class="form-group">
-							<label class="col-sm-4 control-label"><%=authorityName %></label>
-							<div class="col-sm-12">
+							<label class="col-md-4 control-label"><%=authorityName %></label>
+							<div class="col-md-8 form-inline">
 									<%
 									for(int levelInx=0;levelInx < jAuthorityLevels.length();levelInx++) {
 										String levelName = jAuthorityLevels.optString(levelInx);
 									%>
-									<label class="col-md-4 radio">
-										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>"/>
+									<label class="radio">
+										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>" <%=(levelInx == 0) ? "checked" : "" %>/>
 										<%=levelName %>
 									</label>
+									&nbsp;
 									<%
 									}
 									%>
@@ -242,9 +243,9 @@ $(document).ready(function() {
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value=""/>
 						<div class="form-group">
-							<label for="groupName" class="col-sm-4 control-label">Group Name</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="groupName" placeholder="Group name">
+							<label for="groupName" class="col-md-4 control-label">Group Name</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control fcol2" name="groupName" placeholder="Group name">
 							</div>
 						</div>
 						<% 
@@ -254,16 +255,17 @@ $(document).ready(function() {
 							String authorityName = authorityRecord.optString("authorityName");
 						%>
 						<div class="form-group">
-							<label class="col-sm-4 control-label"><%=authorityName %></label>
-							<div class="col-sm-12">
+							<label class="col-md-4 control-label"><%=authorityName %></label>
+							<div class="col-md-8 form-inline">
 									<%
 									for(int levelInx=0;levelInx < jAuthorityLevels.length();levelInx++) {
 										String levelName = jAuthorityLevels.optString(levelInx);
 									%>
-									<label class="col-md-4 radio">
+									<label class="radio">
 										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>"/>
 										<%=levelName %>
 									</label>
+									&nbsp;
 									<%
 									}
 									%>
