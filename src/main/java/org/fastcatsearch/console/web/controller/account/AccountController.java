@@ -20,16 +20,15 @@ public class AccountController {
 	
 	private ResponseHttpClient httpClient;
 	private JSONObject jsonObj;
-	ModelAndView modelAndView;
 	
 	private void init(HttpSession session) {
 		httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		modelAndView = new ModelAndView();
 	}
 	
 	@RequestMapping("/account/index")
 	public ModelAndView index(HttpSession session) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("redirect:/account/user.html");
 		return modelAndView;
 	}
@@ -37,6 +36,7 @@ public class AccountController {
 	@RequestMapping("/account/user")
 	public ModelAndView user(HttpSession session) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/account/user");
 		String requestUrl;
 		requestUrl = "/setting/authority/group-list.json";
@@ -61,6 +61,7 @@ public class AccountController {
 	@RequestMapping("/account/group")
 	public ModelAndView group(HttpSession session) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/account/group");
 		String requestUrl;
 		requestUrl = "/setting/authority/group-authority-list.json";
@@ -86,6 +87,7 @@ public class AccountController {
 	@RequestMapping("/account/user-list")
 	public ModelAndView userList(HttpSession session) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
 		String requestUrl = "/setting/authority/user-list.json";
 		try {
 			jsonObj = httpClient.httpPost(requestUrl)
@@ -102,6 +104,7 @@ public class AccountController {
 	@RequestMapping("/account/group-list")
 	public ModelAndView groupList(HttpSession session) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
 		String requestUrl = "/setting/authority/group-list.json";
 		try {
 			jsonObj = httpClient.httpPost(requestUrl)
@@ -118,6 +121,7 @@ public class AccountController {
 	@RequestMapping("/account/group-authority-list")
 	public ModelAndView groupAuthorityList(HttpSession session, @RequestParam String groupId ) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
 		String requestUrl = "/setting/authority/group-list.json";
 		try {
 			jsonObj = httpClient.httpPost(requestUrl)
@@ -134,6 +138,7 @@ public class AccountController {
 	@RequestMapping("/account/group-authority-update")
 	public ModelAndView groupAuthorityUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
 		
 		String requestUrl = "/setting/authority/group-authority-update.json";
 		try {
@@ -157,6 +162,7 @@ public class AccountController {
 	@RequestMapping("/account/group-update")
 	public ModelAndView groupUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
 		
 		String requestUrl = "/setting/authority/group-update.json";
 		try {
@@ -180,6 +186,7 @@ public class AccountController {
 	@RequestMapping("/account/user-update") 
 	public ModelAndView userUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
 		
 		String requestUrl = "/setting/authority/user-update.json";
 		try {
@@ -202,6 +209,8 @@ public class AccountController {
 	@RequestMapping("/account/user-delete")
 	public ModelAndView userDelete(HttpSession session, @RequestParam String userId) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
+		
 		String requestUrl = "/setting/authority/user-delete.json";
 		try {
 			jsonObj = httpClient.httpPost(requestUrl).
@@ -220,6 +229,8 @@ public class AccountController {
 	@RequestMapping("/account/group-delete")
 	public ModelAndView groupDelete(HttpSession session, @RequestParam String groupId) {
 		init(session);
+		ModelAndView modelAndView = new ModelAndView();
+		
 		String requestUrl = "/setting/authority/group-delete.json";
 		try {
 			jsonObj = httpClient.httpPost(requestUrl).
