@@ -22,16 +22,51 @@ JSONArray jGroupList = jGroupAuthorityList.optJSONArray("groupList");
 <head>
 <c:import url="../inc/header.jsp" />
 
-<script>
+<script type="text/javascript">
 function showUpdateGroupModal(groupId){
 	//1. 성공하면 현재 페이지 reload
 	//2. 실패하면 그대로...
-	//requestProxy(methodType, data, resultType, successCallback, failCallback);
-	$("#groupEdit").modal("show");
-	
-	//$("#groupEdit").modal("hide");
-	
+	requestProxy("POST", {
+		"uri":"/setting/authority/group-authority-list.json",
+		"groupId":groupId,
+		"time":new Date()
+		}, "json", 
+		function(data,stat,jqxhr) {
+			var groupAuthorities = data["groupAuthorities"];
+			var groupInfo = data["groupList"][0];
+			var groupId = groupInfo["groupId"];
+			var groupName = groupInfo["groupName"];
+			var authorities = groupInfo["authorities"];
+			$("div#groupEdit input[name|=groupName]").val(groupName);
+			$("div#groupEdit input[name|=groupId]").val(groupId);
+			for(var levelInx=0;levelInx < groupAuthorities.length; levelInx++) {
+				var authorityCode = groupAuthorities[levelInx]["authorityCode"];
+				var checkboxes = $("div#groupEdit input[name|=authorityLevel_"+authorityCode+"]");
+				for(var chkInx=0;chkInx<checkboxes.length;chkInx++) {
+					checkboxes[chkInx].checked = checkboxes[chkInx].value==authorities[levelInx]
+				}
+			}
+			
+			$("#groupEdit").modal("show");
+		}, 
+		function(jqxhr,status,err) {
+		}
+	);
 }
+
+//색상관련
+$(document).ready(function() {
+	$("span.attribute-auth-level").each(function() {
+		var element = $(this);
+		if(element.text()=="NONE") {
+			$(this).addClass("text-muted");
+		} else if(element.text()=="READABLE") {
+			$(this).addClass("text-success");
+		} else if(element.text()=="WRITABLE") {
+			$(this).addClass("text-danger");
+		}
+	});
+})
 
 </script>
 </head>
@@ -112,13 +147,13 @@ function showUpdateGroupModal(groupId){
 												<tr>
 													<th><%=groupName %></th>
 													<%
-													for(int attributeInx=0;attributeInx < authorities.length(); attributeInx++) {
+													for(int levelInx=0;levelInx < authorities.length(); levelInx++) {
 													%>
-													<td><span class="text-danger"><%=authorities.get(attributeInx) %></span></td>
+													<td><span class="attribute-auth-level"><%=authorities.get(levelInx) %></span></td>
 													<%
 													}
 													%>
-													<td><a href="javascript:showUpdateGroupModal(0)">Edit</a></td>
+													<td><a href="javascript:showUpdateGroupModal('<%=groupId%>')">Edit</a></td>
 												</tr>
 											<% 
 											} 
@@ -127,7 +162,6 @@ function showUpdateGroupModal(groupId){
 										</table>
 									</div>
 								</div>
-								<form name="update-authority-form" class="form-horizontal">
 								<input type="hidden" name="mode" value="update"/>
 						</div>
 					</div>
@@ -148,7 +182,10 @@ function showUpdateGroupModal(groupId){
 					<h4 class="modal-title">New Group</h4>
 				</div>
 				<div class="modal-body">
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" id="new-group-form">
+						<input type="hidden" name="uri" value="/settings/group-authority-update"/> 
+						<input type="hidden" name="mode" value=""/>
+						<input type="hidden" name="groupId" value="-1"/>
 						<div class="form-group">
 							<label for="groupName" class="col-sm-4 control-label">Group Name</label>
 							<div class="col-sm-8">
@@ -169,7 +206,7 @@ function showUpdateGroupModal(groupId){
 										String levelName = jAuthorityLevels.optString(levelInx);
 									%>
 									<label class="col-md-4 radio">
-										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value=""/>
+										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>"/>
 										<%=levelName %>
 									</label>
 									<%
@@ -184,7 +221,7 @@ function showUpdateGroupModal(groupId){
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary">Create group</button>
+					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('new-group-form','update')">Create group</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -200,11 +237,14 @@ function showUpdateGroupModal(groupId){
 					<h4 class="modal-title">Edit Group</h4>
 				</div>
 				<div class="modal-body">
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" id="update-group-form">
+						<input type="hidden" name="uri" value="/settings/group-authority-update"/> 
+						<input type="hidden" name="mode" value=""/>
+						<input type="hidden" name="groupId" value=""/>
 						<div class="form-group">
 							<label for="groupName" class="col-sm-4 control-label">Group Name</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" id="groupName" placeholder="Group name">
+								<input type="text" class="form-control" name="groupName" placeholder="Group name">
 							</div>
 						</div>
 						<% 
@@ -221,7 +261,7 @@ function showUpdateGroupModal(groupId){
 										String levelName = jAuthorityLevels.optString(levelInx);
 									%>
 									<label class="col-md-4 radio">
-										<input type="radio" name="authorityLevel_" class="form-control" value=""/>
+										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>"/>
 										<%=levelName %>
 									</label>
 									<%
@@ -235,9 +275,9 @@ function showUpdateGroupModal(groupId){
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger pull-left">Remove</button>
+					<button type="button" class="btn btn-danger pull-left" onclick="updateUsingProxy('update-group-form','delete')">Remove</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary">Save chages</button>
+					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('update-group-form','update')">Save chages</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->

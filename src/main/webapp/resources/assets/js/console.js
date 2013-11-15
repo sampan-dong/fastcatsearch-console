@@ -417,12 +417,10 @@ function loadDataSearchTab(collectionId, shardId, pageNo, targetId){
 
 /////////////////////////// account setting
 
-function updateGroupAuthority(formName, mode) {
-	var form = $("form[name|="+formName+"]");
-	
-	if(mode) {
-		form[0].mode.value=mode;
-	}
+function updateUsingProxy(formName, mode) {
+	var form = $("form#"+formName+"");
+	form[0].action=PROXY_REQUEST_URI;
+	form[0].mode.value=mode;
 	
 	form.submit(function(e) {
 		var postData = $(this).serializeArray();
