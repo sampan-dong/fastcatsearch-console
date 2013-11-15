@@ -1,4 +1,4 @@
-package org.fastcatsearch.console.web.controller.account;
+package org.fastcatsearch.console.web.controller.settings;
 
 import java.util.Map;
 
@@ -12,34 +12,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AccountController {
 	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 	
-	private ResponseHttpClient httpClient;
-	private JSONObject jsonObj;
-	
-	private void init(HttpSession session) {
-		httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-	}
-	
-	@RequestMapping("/account/index")
+	@RequestMapping("/settings/index")
 	public ModelAndView index(HttpSession session) {
-		init(session);
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("redirect:/account/user.html");
+		modelAndView.setViewName("redirect:/settings/user.html");
 		return modelAndView;
 	}
 
-	@RequestMapping("/account/user")
+	@RequestMapping("/settings/user")
 	public ModelAndView user(HttpSession session) {
-		init(session);
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/account/user");
-		String requestUrl;
+		modelAndView.setViewName("/settings/user");
+		String requestUrl = null;
 		requestUrl = "/setting/authority/group-list.json";
+		JSONObject jsonObj = null;
 		try {
 			jsonObj = httpClient.httpGet(requestUrl).requestJSON();
 			modelAndView.addObject("groupList",jsonObj);
@@ -58,13 +52,14 @@ public class AccountController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/account/group")
+	@RequestMapping("/settings/group")
 	public ModelAndView group(HttpSession session) {
-		init(session);
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/account/group");
+		modelAndView.setViewName("/settings/group");
 		String requestUrl;
 		requestUrl = "/setting/authority/group-authority-list.json";
+		JSONObject jsonObj = null;
 		try {
 			jsonObj = httpClient.httpGet(requestUrl)
 					.addParameter("mode", "all").requestJSON();
@@ -84,11 +79,27 @@ public class AccountController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/account/user-list")
-	public ModelAndView userList(HttpSession session) {
-		init(session);
-		ModelAndView modelAndView = new ModelAndView();
+	@RequestMapping("/settings/user-list")
+	@ResponseBody
+	public String userList(HttpSession session) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/setting/authority/user-list.json";
+		JSONObject jsonObj = null;
+		try {
+			jsonObj = httpClient.httpPost(requestUrl)
+					.requestJSON();
+		} catch (Exception e) {
+			logger.error("",e);
+		}
+		return jsonObj.toString();
+	}
+	
+	@RequestMapping("/settings/group-list")
+	@ResponseBody
+	public String groupList(HttpSession session) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/setting/authority/group-list.json";
+		JSONObject jsonObj = null;
 		try {
 			jsonObj = httpClient.httpPost(requestUrl)
 					.requestJSON();
@@ -96,33 +107,15 @@ public class AccountController {
 			logger.error("",e);
 		}
 		
-		modelAndView.setViewName("/account/jsonList");
-		modelAndView.addObject("list", jsonObj);
-		return modelAndView;
+		return jsonObj.toString();
 	}
 	
-	@RequestMapping("/account/group-list")
-	public ModelAndView groupList(HttpSession session) {
-		init(session);
-		ModelAndView modelAndView = new ModelAndView();
+	@RequestMapping("/settings/group-authority-list")
+	@ResponseBody
+	public String groupAuthorityList(HttpSession session, @RequestParam String groupId ) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/setting/authority/group-list.json";
-		try {
-			jsonObj = httpClient.httpPost(requestUrl)
-					.requestJSON();
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		
-		modelAndView.setViewName("/account/jsonList");
-		modelAndView.addObject("list", jsonObj);
-		return modelAndView;
-	}
-	
-	@RequestMapping("/account/group-authority-list")
-	public ModelAndView groupAuthorityList(HttpSession session, @RequestParam String groupId ) {
-		init(session);
-		ModelAndView modelAndView = new ModelAndView();
-		String requestUrl = "/setting/authority/group-list.json";
+		JSONObject jsonObj = null;
 		try {
 			jsonObj = httpClient.httpPost(requestUrl)
 					.addParameter("groupId", groupId)
@@ -130,17 +123,16 @@ public class AccountController {
 		} catch (Exception e) {
 			logger.error("",e);
 		}
-		modelAndView.setViewName("/account/jsonList");
-		modelAndView.addObject("list", jsonObj);
-		return modelAndView;
+		return jsonObj.toString();
 	}
 	
-	@RequestMapping("/account/group-authority-update")
-	public ModelAndView groupAuthorityUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
-		init(session);
-		ModelAndView modelAndView = new ModelAndView();
+	@RequestMapping("/settings/group-authority-update")
+	@ResponseBody
+	public String groupAuthorityUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		String requestUrl = "/setting/authority/group-authority-update.json";
+		JSONObject jsonObj = null;
 		try {
 			PostMethod post = httpClient.httpPost(requestUrl);
 			
@@ -154,17 +146,16 @@ public class AccountController {
 			logger.error("",e);
 		}
 		
-		modelAndView.setViewName("/account/updateResult");
-		modelAndView.addObject("result", jsonObj);
-		return modelAndView;
+		return jsonObj.toString();
 	}
 	
-	@RequestMapping("/account/group-update")
-	public ModelAndView groupUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
-		init(session);
-		ModelAndView modelAndView = new ModelAndView();
+	@RequestMapping("/settings/group-update")
+	@ResponseBody
+	public String groupUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		String requestUrl = "/setting/authority/group-update.json";
+		JSONObject jsonObj = null;
 		try {
 			PostMethod post = httpClient.httpPost(requestUrl);
 			
@@ -178,17 +169,16 @@ public class AccountController {
 			logger.error("",e);
 		}
 		
-		modelAndView.setViewName("/account/updateResult");
-		modelAndView.addObject("result", jsonObj);
-		return modelAndView;
+		return jsonObj.toString();
 	}
 	
-	@RequestMapping("/account/user-update") 
-	public ModelAndView userUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
-		init(session);
-		ModelAndView modelAndView = new ModelAndView();
+	@RequestMapping("/settings/user-update") 
+	@ResponseBody
+	public String userUpdate(HttpSession session, @RequestParam Map<String,Object> params ) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		String requestUrl = "/setting/authority/user-update.json";
+		JSONObject jsonObj = null;
 		try {
 			PostMethod post = httpClient.httpPost(requestUrl);
 			for(String key : params.keySet()) {
@@ -201,17 +191,16 @@ public class AccountController {
 			logger.error("",e);
 		}
 		
-		modelAndView.setViewName("/account/updateResult");
-		modelAndView.addObject("result", jsonObj);
-		return modelAndView;
+		return jsonObj.toString();
 	}
 
-	@RequestMapping("/account/user-delete")
-	public ModelAndView userDelete(HttpSession session, @RequestParam String userId) {
-		init(session);
-		ModelAndView modelAndView = new ModelAndView();
+	@RequestMapping("/settings/user-delete")
+	@ResponseBody
+	public String userDelete(HttpSession session, @RequestParam String userId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		String requestUrl = "/setting/authority/user-delete.json";
+		JSONObject jsonObj = null;
 		try {
 			jsonObj = httpClient.httpPost(requestUrl).
 				addParameter("userId", userId)
@@ -220,18 +209,17 @@ public class AccountController {
 			logger.error("",e);
 		}
 		
-		modelAndView.setViewName("/account/updateResult");
-		modelAndView.addObject("result", jsonObj);
-		return modelAndView;
+		return jsonObj.toString();
 		
 	}
 	
-	@RequestMapping("/account/group-delete")
-	public ModelAndView groupDelete(HttpSession session, @RequestParam String groupId) {
-		init(session);
-		ModelAndView modelAndView = new ModelAndView();
+	@RequestMapping("/settings/group-delete")
+	@ResponseBody
+	public String groupDelete(HttpSession session, @RequestParam String groupId) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		String requestUrl = "/setting/authority/group-delete.json";
+		JSONObject jsonObj = null;
 		try {
 			jsonObj = httpClient.httpPost(requestUrl).
 				addParameter("group", groupId)
@@ -240,8 +228,6 @@ public class AccountController {
 			logger.error("",e);
 		}
 		
-		modelAndView.setViewName("/account/updateResult");
-		modelAndView.addObject("result", jsonObj);
-		return modelAndView;
+		return jsonObj.toString();
 	}
 }

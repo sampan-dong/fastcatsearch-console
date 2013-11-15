@@ -109,7 +109,7 @@ $(document).ready(function(){
 				</ul></li> -->
 
 			<!-- .row .row-bg Toggler -->
-			<li><a href="<c:url value="/account/index.html"/>" class="dropdown-toggle"> <i class="icon-cog"></i>
+			<li><a href="<c:url value="/settings/index.html"/>" class="dropdown-toggle"> <i class="icon-cog"></i>
 			</a></li>
 
 			<!-- User Login Dropdown -->
