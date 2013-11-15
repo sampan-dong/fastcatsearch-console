@@ -22,7 +22,7 @@ public class AccountController {
 	@RequestMapping("/settings/index")
 	public ModelAndView index(HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("redirect:/settings/user.html");
+		modelAndView.setViewName("redirect:/settings/group.html");
 		return modelAndView;
 	}
 

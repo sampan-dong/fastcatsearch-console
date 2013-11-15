@@ -145,7 +145,7 @@ $(document).ready(function() {
 												JSONArray authorities = groupRecord.optJSONArray("authorities");
 												%>
 												<tr>
-													<th><%=groupName %></th>
+													<td><strong><%=groupName %></strong></td>
 													<%
 													for(int levelInx=0;levelInx < authorities.length(); levelInx++) {
 													%>
@@ -153,7 +153,15 @@ $(document).ready(function() {
 													<%
 													}
 													%>
-													<td><a href="javascript:showUpdateGroupModal('<%=groupId%>')">Edit</a></td>
+													<td>
+													<%
+													if(!groupName.equalsIgnoreCase("Administrator")){
+													%>
+													<a href="javascript:showUpdateGroupModal('<%=groupId%>')">Edit</a>
+													<%
+													}
+													%>
+													</td>
 												</tr>
 											<% 
 											} 
