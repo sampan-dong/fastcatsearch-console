@@ -190,15 +190,9 @@ $(document).ready(function() {
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value="-1"/>
 						<div class="form-group">
-<<<<<<< HEAD
 							<label for="groupName" class="col-sm-3 control-label">Group Name</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="groupName" name="groupName" placeholder="Group name">
-=======
-							<label for="groupName" class="col-md-4 control-label">Group Name</label>
-							<div class="col-md-8">
 								<input type="text" class="form-control fcol2" id="groupName" name="groupName" placeholder="Group name">
->>>>>>> branch 'master' of https://github.com/fastcatgroup/fastcatsearch-console.git
 							</div>
 						</div>
 						<% 
@@ -208,24 +202,14 @@ $(document).ready(function() {
 							String authorityName = authorityRecord.optString("authorityName");
 						%>
 						<div class="form-group">
-<<<<<<< HEAD
 							<label class="col-sm-3 control-label"><%=authorityName %></label>
-							<div class="col-sm-9">
-=======
-							<label class="col-md-4 control-label"><%=authorityName %></label>
-							<div class="col-md-8 form-inline">
->>>>>>> branch 'master' of https://github.com/fastcatgroup/fastcatsearch-console.git
+							<div class="col-sm-9 from-inline">
 									<%
 									for(int levelInx=0;levelInx < jAuthorityLevels.length();levelInx++) {
 										String levelName = jAuthorityLevels.optString(levelInx);
 									%>
-<<<<<<< HEAD
-									<label class="col-md-3 radio">
-										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>"/>
-=======
 									<label class="radio">
 										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>" <%=(levelInx == 0) ? "checked" : "" %>/>
->>>>>>> branch 'master' of https://github.com/fastcatgroup/fastcatsearch-console.git
 										<%=levelName %>
 									</label>
 									&nbsp;
@@ -262,15 +246,9 @@ $(document).ready(function() {
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value=""/>
 						<div class="form-group">
-<<<<<<< HEAD
 							<label for="groupName" class="col-sm-3 control-label">Group Name</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" name="groupName" placeholder="Group name">
-=======
-							<label for="groupName" class="col-md-4 control-label">Group Name</label>
-							<div class="col-md-8">
 								<input type="text" class="form-control fcol2" name="groupName" placeholder="Group name">
->>>>>>> branch 'master' of https://github.com/fastcatgroup/fastcatsearch-console.git
 							</div>
 						</div>
 						<% 
@@ -280,22 +258,13 @@ $(document).ready(function() {
 							String authorityName = authorityRecord.optString("authorityName");
 						%>
 						<div class="form-group">
-<<<<<<< HEAD
 							<label class="col-sm-3 control-label"><%=authorityName %></label>
-							<div class="col-sm-9">
-=======
-							<label class="col-md-4 control-label"><%=authorityName %></label>
-							<div class="col-md-8 form-inline">
->>>>>>> branch 'master' of https://github.com/fastcatgroup/fastcatsearch-console.git
+							<div class="col-sm-9 form-inline">
 									<%
 									for(int levelInx=0;levelInx < jAuthorityLevels.length();levelInx++) {
 										String levelName = jAuthorityLevels.optString(levelInx);
 									%>
-<<<<<<< HEAD
-									<label class="col-md-3 radio">
-=======
 									<label class="radio">
->>>>>>> branch 'master' of https://github.com/fastcatgroup/fastcatsearch-console.git
 										<input type="radio" name="authorityLevel_<%=authorityCode %>" class="form-control" value="<%=levelName%>"/>
 										<%=levelName %>
 									</label>
