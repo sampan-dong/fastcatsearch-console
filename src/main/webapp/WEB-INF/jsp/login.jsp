@@ -33,7 +33,7 @@
 				<div class="form-group">
 					<div class="input-icon">
 						<i class="icon-user"></i>
-						<input type="text" name="username" class="form-control" placeholder="Username" />
+						<input type="text" name="userId" class="form-control" placeholder="Username" />
 					</div>
 				</div>
 				<div class="form-group">

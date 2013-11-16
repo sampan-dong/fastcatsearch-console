@@ -43,7 +43,7 @@ function showUpdateGroupModal(groupId){
 				}
 			}
 			
-			$("#groupEdit").modal("show");
+			$("#groupEdit").modal({show: true, backdrop: 'static'});
 		}, 
 		function(jqxhr,status,err) {
 		}
@@ -108,7 +108,7 @@ $(document).ready(function() {
 									<div class="widget-content no-padding">
 										<div class="dataTables_header clearfix">
 											<div class="input-group col-md-12">
-												<button class="btn btn-sm" data-toggle="modal" data-target="#groupNew">
+												<button class="btn btn-sm" data-toggle="modal" data-target="#groupNew" data-backdrop="static">
 												 <span class="icon-group"></span> New Group
 												 </button>
 											</div>
@@ -151,7 +151,11 @@ $(document).ready(function() {
 													%>
 													<td>
 													<%
-													if(!groupName.equalsIgnoreCase("Administrator")){
+													if(groupName.contains("Administrator")){
+													%>
+													<span class="text-muted">Edit</span>
+													<%
+													}else{
 													%>
 													<a href="javascript:showUpdateGroupModal('<%=groupId%>')">Edit</a>
 													<%

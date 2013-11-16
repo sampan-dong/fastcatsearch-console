@@ -42,12 +42,12 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/doLogin", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView doLogin(HttpSession session, @RequestParam("host") String host, @RequestParam("username") String username,
+	public ModelAndView doLogin(HttpSession session, @RequestParam("host") String host, @RequestParam("userId") String userId,
 			@RequestParam("password") String password) {
 
-		logger.debug("login {} : {}:{}", host, username, password);
+		logger.debug("login {} : {}:{}", host, userId, password);
 
-		if (host == null || host.length() == 0 || username.length() == 0 || password.length() == 0) {
+		if (host == null || host.length() == 0 || userId.length() == 0 || password.length() == 0) {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("redirect:login.html");
 			return mav;
@@ -57,14 +57,15 @@ public class MainController {
 
 		ResponseHttpClient httpClient = new ResponseHttpClient(host);
 		try {
-			JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("id", username).addParameter("password", password)
+			JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("id", userId).addParameter("password", password)
 					.requestJSON();
 			logger.debug("loginResult > {}", loginResult);
 			if (loginResult != null && loginResult.getInt("status") == 0) {
 				// 로그인이 올바를 경우 메인 화면으로 이동한다.
 				ModelAndView mav = new ModelAndView();
 				mav.setViewName("redirect:main/start.html");
-
+				String userName = loginResult.getString("name");
+				session.setAttribute("userName", userName);
 				session.setAttribute("httpclient", httpClient);
 				return mav;
 			}

@@ -33,7 +33,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="input-group">
-							<input type="text" class="form-control" value="Research" style="border: 3px solid #4d7496;"> 
+							<input type="text" class="form-control" value="Research" style="border: 3px solid #416cb6;"> 
 							<span class="input-group-btn">
 								<button class="btn btn-primary" type="button">Search <i class="icon-search"></i></button>
 							</span>

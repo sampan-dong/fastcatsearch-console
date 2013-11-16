@@ -420,7 +420,7 @@ function loadDataSearchTab(collectionId, shardId, pageNo, targetId){
 function updateUsingProxy(formName, mode) {
 	var form = $("form#"+formName+"");
 	form[0].mode.value=mode;
-	
+	console.log("updateUsingProxy > ", form);
 	form.submit(function(e) {
 		var postData = $(this).serializeArray();
 		$.ajax({
@@ -431,12 +431,12 @@ function updateUsingProxy(formName, mode) {
 				success:function(data, textStatus, jqXHR) {
 					try {
 						if(data["success"]=="true") {
-							alert("updated");
 							location.href = location.href;
 						}
 					} catch (e) { 
 						alert("error occured for update");
 					}
+					
 				}, error: function(jqXHR, textStatus, errorThrown) {
 					alert("ERROR" + textStatus + " : " + errorThrown);
 				}

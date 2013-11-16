@@ -9,19 +9,19 @@ org.json.JSONArray
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
-String menuId = "user";
-JSONObject jGroupList = (JSONObject)request.getAttribute("groupList");
-JSONObject jUserList = (JSONObject)request.getAttribute("userList");
-JSONArray userList = jUserList.optJSONArray("userList"); 
-JSONArray groupList = jGroupList.optJSONArray("groupList");
-Map<Integer,String> groupMap = new HashMap<Integer,String>();
-groupMap.put(0,"NONE");
-for(int inx=0;inx<groupList.length();inx++) {
-	JSONObject groupRecord = groupList.optJSONObject(inx);
-	groupMap.put(
-		groupRecord.optInt("id", 0),
-		groupRecord.optString("groupName"));
-}
+	String menuId = "user";
+	JSONObject jGroupList = (JSONObject)request.getAttribute("groupList");
+	JSONObject jUserList = (JSONObject)request.getAttribute("userList");
+	JSONArray userList = jUserList.optJSONArray("userList"); 
+	JSONArray groupList = jGroupList.optJSONArray("groupList");
+	Map<Integer,String> groupMap = new HashMap<Integer,String>();
+	groupMap.put(0,"NONE");
+	for(int inx=0;inx<groupList.length();inx++) {
+		JSONObject groupRecord = groupList.optJSONObject(inx);
+		groupMap.put(
+			groupRecord.optInt("id", 0),
+			groupRecord.optString("groupName"));
+	}
 %>
 <c:set var="ROOT_PATH" value="../.." scope="request"/>
 <c:import url="../inc/common.jsp" />
@@ -33,8 +33,7 @@ for(int inx=0;inx<groupList.length();inx++) {
 function showUpdateUserModal(id){
 	requestProxy("POST", {
 		"uri":"/settings/authority/get-user-list.json",
-		"id":id,
-		"time":new Date()
+		"id":id
 		}, "json", 
 		function(data,stat,jqxhr) {
 			var userInfo = data["userList"][0];
@@ -44,7 +43,7 @@ function showUpdateUserModal(id){
 			var userId = userInfo["userId"];
 			var email = userInfo["email"];
 			var sms = userInfo["sms"];
-			
+			console.log("userInfo>", userInfo);
  			$("div#userEdit input[name|=name]").val(userName);
  			$("div#userEdit input[name|=id]").val(id);
  			
@@ -53,7 +52,7 @@ function showUpdateUserModal(id){
  			$("div#userEdit input[name|=email]").val(email);
  			$("div#userEdit input[name|=sms]").val(sms);
 			
-			$("#userEdit").modal("show");
+			$("#userEdit").modal({show: true, backdrop: 'static'});
 		}, 
 		function(jqxhr,status,err) {
 			alert(status+":"+err);
@@ -98,8 +97,8 @@ function showUpdateUserModal(id){
 									<div class="widget-content no-padding">
 										<div class="dataTables_header clearfix">
 											<div class="input-group col-md-12">
-												<button class="btn btn-sm" data-toggle="modal" data-target="#userNew">
-												 <span class="icon-group"></span> New User
+												<button class="btn btn-sm" data-toggle="modal" data-target="#userNew" data-backdrop="static">
+												 <span class="icon-user"></span> New User
 												 </button>
 											</div>
 										</div>
@@ -131,12 +130,24 @@ function showUpdateUserModal(id){
 												}
 											%>
 												<tr>
-													<th><%=userName %></th>
+													<td><strong><%=userName %></strong></td>
 													<td><%=userId %></td>
 													<td><%=groupName %></td>
 													<td><%=email %></td>
 													<td><%=sms %></td>
-													<td><a href="javascript:showUpdateUserModal('<%=id%>')">Edit</a></td>
+													<td>
+													<%
+													if(userName.contains("Built-In")){
+													%>
+													<span class="text-muted">Edit</span>
+													<%
+													}else{
+													%>
+													<a href="javascript:showUpdateUserModal('<%=id%>')">Edit</a>
+													<%
+													}
+													%>
+													</td>
 												</tr>
 											<%
 											}
@@ -182,16 +193,14 @@ function showUpdateUserModal(id){
 						</div>
 						<div class="form-group">
 							<label for="password" class="col-sm-3 control-label">Password</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" id="password" name="password">
+							<div class="col-sm-4">
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+							</div>
+							<div class=" col-sm-4">
+								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
 							</div>
 						</div>
-						<div class="form-group">
-							<label for="confirmPassword" class="col-sm-3 control-label">Confirm-password</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
-							</div>
-						</div>
+						
 						<div class="form-group">
 							<label for="groupId" class="col-sm-3 control-label">Group</label>
 							<div class="col-sm-9">
@@ -304,14 +313,11 @@ function showUpdateUserModal(id){
 						</div>
 						<div class="form-group">
 							<label for="password" class="col-sm-3 control-label">Password</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" id="password" name="password">
+							<div class="col-sm-4">
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password">
 							</div>
-						</div>
-						<div class="form-group">
-							<label for="confirmPassword" class="col-sm-3 control-label">Confirm-password</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+							<div class="col-sm-4">
+								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
 							</div>
 						</div>
 					</form>
