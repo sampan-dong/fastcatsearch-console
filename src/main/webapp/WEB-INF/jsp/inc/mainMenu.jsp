@@ -115,7 +115,7 @@ $(document).ready(function(){
 			<!-- User Login Dropdown -->
 			<li class="dropdown user"><a href="#" class="dropdown-toggle"
 				data-toggle="dropdown"> <!--<img alt="" src="assets/img/avatar1_small.jpg" />-->
-					<i class="icon-male"></i> <span class="username">Sang Song</span> <i
+					<i class="icon-male"></i> <span class="username">${_userName}</span> <i
 					class="icon-caret-down small"></i>
 			</a>
 				<ul class="dropdown-menu">

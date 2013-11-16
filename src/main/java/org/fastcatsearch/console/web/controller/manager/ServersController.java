@@ -2,6 +2,7 @@ package org.fastcatsearch.console.web.controller.manager;
 
 import javax.servlet.http.HttpSession;
 
+import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -12,11 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/manager/servers")
-public class ServersController {
+public class ServersController extends AbstractController {
 	private static Logger logger = LoggerFactory.getLogger(ServersController.class);
 	
 	@RequestMapping("/overview")
-	public ModelAndView overview(HttpSession session) {
+	public ModelAndView overview(HttpSession session) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/servers/list.json";
 		JSONObject jsonObj = null;
@@ -33,7 +34,7 @@ public class ServersController {
 	}
 	
 	@RequestMapping("/server")
-	public ModelAndView server(HttpSession session) {
+	public ModelAndView server(HttpSession session) throws Exception {
 //		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 //		String requestUrl = "/management/servers/list.json";
 //		JSONObject jsonObj = null;

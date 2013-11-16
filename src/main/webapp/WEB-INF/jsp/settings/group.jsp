@@ -151,7 +151,7 @@ $(document).ready(function() {
 													%>
 													<td>
 													<%
-													if(groupName.contains("Administrator")){
+													if(groupName.contains("Built-In")){
 													%>
 													<span class="text-muted">Edit</span>
 													<%

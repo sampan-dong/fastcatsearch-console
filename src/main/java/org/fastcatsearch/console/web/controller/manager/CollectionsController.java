@@ -2,6 +2,7 @@ package org.fastcatsearch.console.web.controller.manager;
 
 import javax.servlet.http.HttpSession;
 
+import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.jdom2.Document;
 import org.json.JSONArray;
@@ -16,12 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/manager/collections/{collectionId}")
-public class CollectionsController {
+public class CollectionsController extends AbstractController {
 	
 	private static Logger logger = LoggerFactory.getLogger(CollectionsController.class);
 	
 	@RequestMapping("/schema")
-	public ModelAndView schema(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue="fields", required=false) String tab) {
+	public ModelAndView schema(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue="fields", required=false) String tab) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/schema.xml";
 		Document document = null;
@@ -40,7 +41,7 @@ public class CollectionsController {
 	}
 	
 	@RequestMapping("/data")
-	public ModelAndView data(HttpSession session, @PathVariable String collectionId){
+	public ModelAndView data(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		String requestUrl = "/management/collections/index-data-status.json";
@@ -69,7 +70,7 @@ public class CollectionsController {
 			
 	@RequestMapping("/dataRaw")
 	public ModelAndView dataRaw(HttpSession session, @PathVariable String collectionId, @RequestParam(value="shardId", required=false) String shardId
-			, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId) {
+			, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId) throws Exception {
 		
 		int PAGE_SIZE = 10;
 		int start = 0;
@@ -133,7 +134,7 @@ public class CollectionsController {
 	@RequestMapping("/dataSearch")
 	public ModelAndView dataSearch(HttpSession session, @PathVariable String collectionId, @RequestParam(value="shardId", required=false) String shardId,
 			@RequestParam(value="se", required=false) String se, @RequestParam(value="ft", required=false) String ft, @RequestParam(value="gr", required=false) String gr,
-			@RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId) {
+			@RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId) throws Exception {
 		
 		int PAGE_SIZE = 10;
 		int start = (pageNo - 1) * PAGE_SIZE + 1;
@@ -187,7 +188,7 @@ public class CollectionsController {
 	}
 	
 	@RequestMapping("/datasource")
-	public ModelAndView datasource(HttpSession session, @PathVariable String collectionId) {
+	public ModelAndView datasource(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/datasource.xml";
 		Document document = null;
@@ -205,7 +206,7 @@ public class CollectionsController {
 	}
 	
 	@RequestMapping("/shard")
-	public ModelAndView shard(HttpSession session, @PathVariable String collectionId) {
+	public ModelAndView shard(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/shardList.xml";
 		Document document = null;
@@ -223,7 +224,7 @@ public class CollectionsController {
 	}
 	
 	@RequestMapping("/indexing")
-	public ModelAndView indexing(HttpSession session, @PathVariable String collectionId) {
+	public ModelAndView indexing(HttpSession session, @PathVariable String collectionId) throws Exception {
 		
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/indexing-status.json";
@@ -264,7 +265,7 @@ public class CollectionsController {
 	
 	@RequestMapping("/indexing/history")
 	public ModelAndView setDictionary(HttpSession session, @PathVariable String collectionId
-			, @RequestParam(defaultValue = "1") Integer pageNo) {
+			, @RequestParam(defaultValue = "1") Integer pageNo) throws Exception {
 		
 		int PAGE_SIZE = 10;
 		int start = 0;
@@ -300,7 +301,7 @@ public class CollectionsController {
 	
 	
 	@RequestMapping("/config")
-	public ModelAndView settings(HttpSession session, @PathVariable String collectionId) {
+	public ModelAndView settings(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/config.xml";
 		Document document = null;

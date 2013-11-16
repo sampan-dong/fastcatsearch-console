@@ -18,6 +18,8 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
 		
 		if(httpClient == null || !httpClient.isActive()){
 			//연결에러..
+			
+			response.sendRedirect(request.getContextPath() + "/login.html");
 			return false;
 		}
 		

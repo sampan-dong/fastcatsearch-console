@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class MainController {
+public class MainController extends AbstractController {
 	private static Logger logger = LoggerFactory.getLogger(MainController.class);
 
 	@RequestMapping("/index")
-	public ModelAndView index() {
+	public ModelAndView index() throws Exception {
 
 		// TODO 로긴여부 확인.
 		// 로긴되어있으면 start로, 아니면 login페이지로.
@@ -33,7 +33,7 @@ public class MainController {
 		// mav.setViewName("start");
 		return mav;
 	}
-
+	
 	@RequestMapping("/login")
 	public ModelAndView login() {
 		ModelAndView mav = new ModelAndView();
@@ -43,7 +43,7 @@ public class MainController {
 
 	@RequestMapping(value = "/doLogin", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView doLogin(HttpSession session, @RequestParam("host") String host, @RequestParam("userId") String userId,
-			@RequestParam("password") String password) {
+			@RequestParam("password") String password) throws Exception {
 
 		logger.debug("login {} : {}:{}", host, userId, password);
 
@@ -65,7 +65,7 @@ public class MainController {
 				ModelAndView mav = new ModelAndView();
 				mav.setViewName("redirect:main/start.html");
 				String userName = loginResult.getString("name");
-				session.setAttribute("userName", userName);
+				session.setAttribute("_userName", userName);
 				session.setAttribute("httpclient", httpClient);
 				return mav;
 			}
@@ -80,10 +80,14 @@ public class MainController {
 	}
 
 	@RequestMapping("/main/logout")
-	public ModelAndView logout() {
+	public ModelAndView logout(HttpSession session) throws Exception {
 
-		// TODO 세션삭제를 처리한다.
-
+		//세션삭제를 처리한다.
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		if(httpClient != null){
+			httpClient.close();
+		}
+		session.invalidate();
 		// 로긴 화면으로 이동한다.
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("login");
@@ -131,7 +135,7 @@ public class MainController {
 	 * */
 	@RequestMapping("/main/request")
 	@ResponseBody
-	public String request(HttpServletRequest request) {
+	public String request(HttpServletRequest request) throws Exception {
 
 		String uri = request.getParameter("uri");
 		

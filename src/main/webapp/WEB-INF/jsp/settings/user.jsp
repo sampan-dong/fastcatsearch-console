@@ -80,7 +80,7 @@ function showUpdateUserModal(id){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Account Settings</h3>
+						<h3>Settings</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -135,19 +135,7 @@ function showUpdateUserModal(id){
 													<td><%=groupName %></td>
 													<td><%=email %></td>
 													<td><%=sms %></td>
-													<td>
-													<%
-													if(userName.contains("Built-In")){
-													%>
-													<span class="text-muted">Edit</span>
-													<%
-													}else{
-													%>
-													<a href="javascript:showUpdateUserModal('<%=id%>')">Edit</a>
-													<%
-													}
-													%>
-													</td>
+													<td><a href="javascript:showUpdateUserModal('<%=id%>')">Edit</a></td>
 												</tr>
 											<%
 											}

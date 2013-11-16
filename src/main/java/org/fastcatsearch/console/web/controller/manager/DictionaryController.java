@@ -10,6 +10,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,11 +27,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/manager/dictionary/{analysisId}")
-public class DictionaryController {
+public class DictionaryController extends AbstractController {
 	private static Logger logger = LoggerFactory.getLogger(DictionaryController.class);
 	
 	@RequestMapping("/index")
-	public ModelAndView index(HttpSession session, @PathVariable String analysisId) {
+	public ModelAndView index(HttpSession session, @PathVariable String analysisId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/dictionary/overview.json";
 		JSONObject jsonObj = null;
@@ -50,7 +51,7 @@ public class DictionaryController {
 	}
 	
 	@RequestMapping("/overview")
-	public ModelAndView overview(HttpSession session, @PathVariable String analysisId) {
+	public ModelAndView overview(HttpSession session, @PathVariable String analysisId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/dictionary/overview.json";
 		JSONObject jsonObj = null;
@@ -71,8 +72,7 @@ public class DictionaryController {
 	
 	@RequestMapping({"/system/list", "SYSTEM/list"})
 	public ModelAndView listSystemDictionary(HttpSession session, @PathVariable String analysisId,
-			@RequestParam String keyword
-			, @RequestParam String targetId) {
+			@RequestParam String keyword, @RequestParam String targetId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		JSONObject jsonObj = null;
@@ -106,7 +106,7 @@ public class DictionaryController {
 			, @RequestParam(required = false) String searchColumn
 			, @RequestParam(required = false) Boolean exactMatch
 			, @RequestParam(required = false) Boolean isEditable
-			, @RequestParam String targetId, @RequestParam(required = false) String deleteIdList) {
+			, @RequestParam String targetId, @RequestParam(required = false) String deleteIdList) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		JSONObject jsonObj = null;
@@ -190,7 +190,7 @@ public class DictionaryController {
 	
 	@RequestMapping("/{dictionaryType}/download")
 	public void downloadDictionary(HttpSession session, HttpServletResponse response, @PathVariable String analysisId, @PathVariable String dictionaryType
-			, @RequestParam String dictionaryId, @RequestParam(required = false) Boolean forView) {
+			, @RequestParam String dictionaryId, @RequestParam(required = false) Boolean forView) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		JSONObject jsonObj = null;
@@ -268,7 +268,7 @@ public class DictionaryController {
 	
 	@RequestMapping("/{dictionaryType}/upload")
 	public void uploadDictionary(HttpSession session, MultipartHttpServletRequest request, HttpServletResponse response, @PathVariable String analysisId, @PathVariable String dictionaryType
-			, @RequestParam String dictionaryId) {
+			, @RequestParam String dictionaryId) throws Exception {
 		
 		Iterator<String> itr = request.getFileNames();
 		String fileName = null;

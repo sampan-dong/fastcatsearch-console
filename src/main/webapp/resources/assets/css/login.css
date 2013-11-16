@@ -22,7 +22,7 @@
   clear: both;
 }
 .login {
-  background-color: #f9f9f9;
+  background: #416cb6;
   padding-top: 60px;
   /* Helper */
 
@@ -32,29 +32,30 @@
 .login .footer {
   margin: 0 auto;
   text-align: center;
+  color: #fff;
 }
 .login .logo {
   padding: 15px;
-  font-size: 23px;
+  font-size: 48px;;
 }
 .login .box {
   background-color: #fff;
-  width: 350px;
+  width: 500px;
   margin: 0 auto;
   border: 1px solid #d9d9d9;
-  border-top: 5px solid #4d7496;
-  /* * * * * * * * * * * *
-		 * Inner Box
-		 * * * * * * * * * * * */
-
+  padding-top: 20px;
 }
 .login .box .content {
   padding: 30px;
   padding-top: 10px;
   padding-bottom: 15px;
+  margin:0 auto;
 }
+.login .box .content table td.left {width: 200px; background: url(../img/fastcat-cat.png) 0px 100% no-repeat; background-position: left top;}
+.login .box .content table td.right {width: 300px; }
+
 .login .box form {
-  padding: 0;
+  padding: 10px 0;
   margin: 0;
 }
 .login .box .form-title {
@@ -73,9 +74,9 @@
   padding: 10px 0;
   margin: 0;
 }
-.login .box .input-icon input {
+/* .login .box .input-icon input {
   border-left: 2px solid #4d7496;
-}
+} */
 .login .box .checkbox {
   margin-top: 7px;
 }
@@ -160,7 +161,7 @@
 }
 .login .footer {
   width: 350px;
-  padding-top: 30px;
+  padding-top: 50px;
 }
 .login .footer a {
   font-size: 13px;

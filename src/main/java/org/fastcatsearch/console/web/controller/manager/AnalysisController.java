@@ -2,6 +2,7 @@ package org.fastcatsearch.console.web.controller.manager;
 
 import javax.servlet.http.HttpSession;
 
+import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -13,11 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/manager/analysis")
-public class AnalysisController {
+public class AnalysisController extends AbstractController {
 	private static Logger logger = LoggerFactory.getLogger(AnalysisController.class);
 
 	@RequestMapping("/plugin")
-	public ModelAndView plugin(HttpSession session) {
+	public ModelAndView plugin(HttpSession session) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String getAnalysisPluginListURL = "/management/analysis/plugin-list";
 		JSONObject jsonObj = null;
@@ -33,7 +34,7 @@ public class AnalysisController {
 	}
 
 	@RequestMapping("/{analysisId}/index")
-	public ModelAndView view(HttpSession session, @PathVariable String analysisId) {
+	public ModelAndView view(HttpSession session, @PathVariable String analysisId) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/index");
 		mav.addObject("analysisId", analysisId);

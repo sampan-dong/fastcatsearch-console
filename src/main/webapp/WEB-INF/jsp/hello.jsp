@@ -8,9 +8,15 @@
 </head>
 <body>
  넘겨받은 값 : <strong>${call}</strong>
+ <%
+ String a = null;
  
+ if(a.equals("a")){
+	 
+ }
+ %>
 <c:forEach begin="0" end="9" step="2" var="i">
-    <c:out value="${i}"/>
+    <c:out value="${j}"/>
 </c:forEach>
  
 </body>

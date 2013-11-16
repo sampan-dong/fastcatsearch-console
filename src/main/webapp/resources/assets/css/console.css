@@ -99,3 +99,27 @@ z-index: 2;
   -moz-border-radius: 10px;
   border-radius: 10px;
 }
+
+
+/*error page */
+body.error {
+background: #416cb6;
+}
+body.error .main {
+width:100%; padding-top: 90px;
+}
+body.error .wrapper {
+width: 600px;top: 90px;text-align: center;margin: 0 auto;
+}
+body.error .wrapper .code {
+color: #fff;
+font-size: 90px;
+/* text-align: center; */
+}
+body.error .wrapper .code span {
+margin-right: 15px;
+}
+body.error .buttons { text-align: center; margin-top:30px;}
+body.error .trace {
+	height:200px; border: 1px solid #fff; overflow: scroll; text-align: left; color: #fff;
+}
