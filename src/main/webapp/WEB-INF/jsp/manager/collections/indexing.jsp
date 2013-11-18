@@ -24,16 +24,31 @@ $(document).ready(function(){
 	
 	$('#indexing_tab a[href!="#tab_indexing_run"]').on('show.bs.tab', function (e) {
 		stopPollingIndexTaskState();
+		$('#autoUpdate').attr('checked', false);
 	});
 	$('#indexing_tab a[href="#tab_indexing_run"]').on('show.bs.tab', function (e) {
-		startPollingIndexTaskState('${collectionId}');
+		startPollingIndexTaskState('${collectionId}', false); //한번만 보여준다.
 	});
 	
 	//load history tab contents
 	$('#indexing_tab a[href="#tab_indexing_history"]').on('shown.bs.tab', function (e) {
 		loadToTab('indexing/history.html', {}, '#tab_indexing_history');
 	});
+	
+	
+	$('#autoUpdate').on("change", function(){
+		if($(this).is(':checked')){
+			console.log("start!");
+			startPollingIndexTaskState('${collectionId}', true);
+		}else{
+			console.log("stop!");
+			stopPollingIndexTaskState();
+		}
+	});
 });
+
+
+
 
 </script>
 
@@ -350,6 +365,7 @@ $(document).ready(function(){
 										<h4>Running Indexing Tasks</h4>
 									</div>
 									<div class="widget-content">
+										<span class="checkbox"><input type="checkbox" id="autoUpdate"> Auto Update <i class="icon-refresh"></i></span>
 										<table class="table table-hover table-bordered">
 											<thead>
 												<tr>

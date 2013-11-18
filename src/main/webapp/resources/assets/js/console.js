@@ -103,9 +103,11 @@ function stopIndexing(collectionId) {
 
 
 var indexingStatePollingFlag = false;
-
 function startPollingIndexTaskState(collectionId){
-	indexingStatePollingFlag = true;
+	startPollingIndexTaskState(collectionId, true);
+}
+function startPollingIndexTaskState(collectionId, keepPollingFlag){
+	indexingStatePollingFlag = keepPollingFlag;
 	(function poll() {
 	    $.ajax({
 	        url: PROXY_REQUEST_URI,
