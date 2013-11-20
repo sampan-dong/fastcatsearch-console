@@ -70,15 +70,11 @@ $(document).ready(function(){
 					<ul id="data_tab" class="nav nav-tabs">
 						<li class="active"><a href="#tab_raw_data" data-toggle="tab">Raw</a></li>
 						<!-- <li class=""><a href="#tab_analyzed_data" data-toggle="tab">Analyzed Raw</a></li> -->
-						<li class=""><a href="#tab_search_data" data-toggle="tab">Search</a></li>
-						<li class=""><a href="#tab_advanced_search_data" data-toggle="tab">Advanced Search</a></li>
 					</ul>
 					<div class="tab-content row">
 
 						<!--=== Overview ===-->
 						<div class="tab-pane active" id="tab_raw_data"></div>
-						<div class="tab-pane active" id="tab_search_data"></div>
-						<div class="tab-pane active" id="tab_advanced_search_data"></div>
 						<!-- //tab field -->
 					</div>
 					<!-- /.tab-content -->

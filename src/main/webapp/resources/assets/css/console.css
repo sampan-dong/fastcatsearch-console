@@ -1,26 +1,11 @@
-.fcol1 {
-	width: 30px;
-}
-
-.fcol1-2 {
-	width: 100px;
-}
-
-.fcol2 {
-	width: 150px;
-}
-
-.fcol3 {
-	width: 300px;
-}
-
-.fcol4 {
-	width: 400px;
-}
-
-.fcol5 {
-	width: 500px;
-}
+.fcol1 {width: 30px;}
+.fcol1-2 {width: 100px;}
+.fcol2 {width: 150px;}
+.fcol2-1 {width: 200px;}
+.fcol2-2 {width: 250px;}
+.fcol3 {width: 300px;}
+.fcol4 {width: 400px;}
+.fcol5 {width: 500px;}
 
 .dataWidth { width: 150px; }
 
@@ -123,3 +108,9 @@ body.error .buttons { text-align: center; margin-top:30px;}
 body.error .trace {
 	height:200px; border: 1px solid #fff; overflow: scroll; text-align: left; color: #fff;
 }
+
+form.searchTest input, textarea {font-size: 18px !important;}
+
+textarea.long6 {height:600px;}
+
+#searchResultModal .modal-dialog {width: 90%;}

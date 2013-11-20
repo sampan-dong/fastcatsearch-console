@@ -4,12 +4,12 @@
 <%@page import="org.json.*"%>
 <%@page import="java.util.*"%>
 <%
-JSONObject indexDataStatusResult = (JSONObject) request.getAttribute("indexDataStatus");
+/* JSONObject indexDataStatusResult = (JSONObject) request.getAttribute("indexDataStatus");
 JSONObject indexDataResult = (JSONObject) request.getAttribute("indexDataResult");
 JSONArray indexDataStatusList = indexDataStatusResult.getJSONArray("indexDataStatus");
 
 String selectedShardId = (String) request.getAttribute("shardId");
-
+ */
 %>
 <script>
 $(document).ready(function(){
@@ -35,7 +35,7 @@ function selectRawFieldValue(value){
 			<div class="dataTables_header clearfix">
 				<div class="col-md-7 form-inline">
 					<select id="shardSelect" class="select_flat fcol2-2">
-						<%
+						<%-- <%
 						int totalSize = 0;
 						for( int i = 0 ; i < indexDataStatusList.length() ; i++ ){
 							JSONObject indexDataStatus = indexDataStatusList.getJSONObject(i);
@@ -48,12 +48,12 @@ function selectRawFieldValue(value){
 						<option value="<%=shardId %>" <%=shardId.equals(selectedShardId) ? "selected" : "" %>><%=shardId %> : <%=documentSize %> documents</option>
 						<%
 						}
-						%>
+						%> --%>
 					</select>
 					
 					<input type="text" class="form-control fcol2-1" name="se" placeholder="ID">
 					
-					&nbsp;
+					<%-- &nbsp;
 					<%
 					JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
 					JSONArray fieldList = indexDataResult.getJSONArray("fieldList");
@@ -66,10 +66,10 @@ function selectRawFieldValue(value){
 						<span>Rows 0</span>
 					<%
 					}
-					%>
+					%> --%>
 				</div>
 				
-				<div class="col-md-5">
+				<%-- <div class="col-md-5">
 					<div class="pull-right">
 						<jsp:include page="../../inc/pagenationTop.jsp" >
 						 	<jsp:param name="pageNo" value="${pageNo }"/>
@@ -80,11 +80,11 @@ function selectRawFieldValue(value){
 							<jsp:param name="requestURI" value="" />
 						 </jsp:include>
 					 </div>
-				</div>
+				</div> --%>
 			</div>
 			<div style="overflow: scroll; height: 400px;">
 
-				<%
+				<%-- <%
 				if(indexDataList.length() > 0){
 				%>
 				<table class="table table-hover table-bordered" style="white-space:nowrap;table-layout:fixed; ">
@@ -125,7 +125,7 @@ function selectRawFieldValue(value){
 				</table>
 				<%
 				}
-				%>
+				%> --%>
 			</div>
 
 			<div class="table-footer">

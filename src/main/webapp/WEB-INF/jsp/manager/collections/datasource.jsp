@@ -251,7 +251,7 @@
 													<td class="._sourceId"><strong><%=sourceId %></strong></td>
 													<td class="._name"><%=name %></td>
 													<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
-													<td class="._reader"><%=reader %><%=modifier != null ? "<p/>("+modifier+")" : "" %></td>
+													<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
 													<td class=""><button type="button" class="btn btn-sm" data-toggle="modal" data-target="#addSourceModal_<%=sourceId %>">View</button></td>
 												</tr>
 												<%

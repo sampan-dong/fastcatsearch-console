@@ -447,3 +447,14 @@ function updateUsingProxy(formName, mode) {
 	});
 	form.submit();
 }
+
+
+
+/////////////////////// test > search
+
+function loadSearchTestTab(queryString, targetId){
+	console.log("loadSearchTestTab", queryString, targetId);
+	loadToTab('searchResult.html', {queryString: queryString, targetId: targetId}, targetId);
+}
+
+

@@ -139,6 +139,18 @@
 							<i class="icon-angle-right"></i> Tasks <span class="arrow"></span>
 					</a></li>
 				</ul></li>
+				
+			<%
+				lcatCurrent = "test".equals(lcat);
+			%>
+			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-fire"></i>
+							Test
+			</a>
+				<ul class="sub-menu">
+					<li class="<%=(lcatCurrent && "search".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/test/search.html"/>">
+							<i class="icon-search"></i> Search <span class="arrow"></span>
+					</a></li>
+				</ul></li>
 		</ul>
 	
 		<!-- /Navigation -->
