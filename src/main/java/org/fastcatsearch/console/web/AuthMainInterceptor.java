@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -21,6 +22,13 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
 			
 			response.sendRedirect(request.getContextPath() + "/login.html");
 			return false;
+		}else{
+			// /service/isAlive
+			String getCollectionListURL = "/service/isAlive";
+			JSONObject isAlive = httpClient.httpGet(getCollectionListURL).requestJSON();
+			if(isAlive == null){
+				response.sendRedirect(request.getContextPath() + "/login.html");
+			}
 		}
 		
 		return true;
