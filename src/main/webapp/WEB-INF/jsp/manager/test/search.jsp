@@ -40,6 +40,13 @@ $(document).ready(function(){
 		});
 	});
 	
+	$("#clearStructuredButton").on("click", function(){
+		$(this).closest('form').find("input[type=text], textarea").val("");
+	});
+	$("#clearQueryButton").on("click", function(){
+		$(this).closest('form').find("input[type=text], textarea").val("");
+	});
+	
 	$("#structuredSearchTest").submit(function(e) {
 		var queryString = $(this).serialize();
 		console.log("queryString > ", queryString);
@@ -150,19 +157,19 @@ $(document).ready(function(){
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">START</label>
 										<div class="col-sm-2">
-											<input class="form-control" name="sn" placeholder="SN" value="1">
+											<input type="text" class="form-control" name="sn" placeholder="SN" value="1">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">LENGTH</label>
 										<div class="col-sm-2">
-											<input class="form-control" name="ln" placeholder="LN" value="100">
+											<input type="text" class="form-control" name="ln" placeholder="LN" value="100">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">SEARCH OPTION</label>
 										<div class="col-sm-10">
-											<input class="form-control" name="so" placeholder="SO" value="nocache">
+											<input type="text" class="form-control" name="so" placeholder="SO" value="nocache">
 										</div>
 									</div>
 									<div class="form-group">
@@ -172,16 +179,15 @@ $(document).ready(function(){
 										</div>
 									</div>
 									<div class="form-group">
-										<div class="col-sm-offset-2 col-sm-3">
-											<select id="requestUri1" class="form-control select_flat" >
+										<div class="col-sm-offset-2 col-sm-10 form-inline">
+											<select id="requestUri1" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>
 												<option value="/service/search-single.json">Search (Single)</option>
 												<option value="/service/search-single/group.json">Grouping (Single)</option>
 											</select>
-										</div>
-										<div class="col-sm-4">
-											<a href="javascript:void(0);" id="searchStructuredButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
+											&nbsp;<a href="javascript:void(0);" id="searchStructuredButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
+											&nbsp;<a href="javascript:void(0);" id="clearStructuredButton" class="btn btn-default">Clear</a>
 										</div>
 									</div>
 		
@@ -199,16 +205,15 @@ $(document).ready(function(){
 										<textarea class="form-control long6" id="searchQueryText" placeholder="Query"></textarea>
 									</div>
 									<div class="form-group">
-										<div class="col-sm-3">
-											<select id="requestUri2" class="form-control select_flat" >
+										<div class="col-sm-12 form-inline">
+											<select id="requestUri2" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>
 												<option value="/service/search-single.json">Search (Single)</option>
 												<option value="/service/search-single/group.json">Grouping (Single)</option>
 											</select>
-										</div>
-										<div class="col-sm-4">
-											<a href="javascript:void(0);" id="searchQueryButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
+											&nbsp;<a href="javascript:void(0);" id="searchQueryButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
+											&nbsp;<a href="javascript:void(0);" id="clearQueryButton" class="btn btn-default">Clear</a>
 										</div>
 									</div>
 								</form>

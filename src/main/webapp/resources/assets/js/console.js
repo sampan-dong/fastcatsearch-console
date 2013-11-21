@@ -458,3 +458,48 @@ function loadSearchTestTab(queryString, targetId){
 }
 
 
+/////////////////// cookie
+
+function setCookie(cookieName, value, expireDays) {
+	var expireDate = new Date();
+	expireDate.setDate(expireDate.getDate() + expireDays);
+	var cookieValue = escape(value)
+			+ ((expireDays == null) ? "" : "; expires=" + expireDate.toUTCString());
+	document.cookie = cookieName + "=" + cookieValue;
+}
+
+function getCookie(cookieName) {
+	var cookieValue = document.cookie;
+	var startIndex = cookieValue.indexOf(" " + cookieName + "=");
+	if (startIndex == -1) {
+		startIndex = cookieValue.indexOf(cookieName + "=");
+	}
+	if (startIndex == -1) {
+		cookieValue = null;
+	} else {
+		startIndex = cookieValue.indexOf("=", startIndex) + 1;
+		var endIndex = cookieValue.indexOf(";", startIndex);
+		if (endIndex == -1) {
+			endIndex = cookieValue.length;
+		}
+		cookieValue = unescape(cookieValue.substring(startIndex, endIndex));
+	}
+	return cookieValue;
+}
+
+function deleteCookie(cookieName) {
+	var expireDate = new Date();
+
+	// 어제 날짜를 쿠키 소멸 날짜로 설정한다.
+	expireDate.setDate(expireDate.getDate() - 1);
+	document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+}
+
+function storeQueryHistory(host, queryString){
+	
+	
+}
+
+function getQueryHistory(host){
+	
+}

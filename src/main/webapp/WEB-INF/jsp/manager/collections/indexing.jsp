@@ -365,7 +365,7 @@ $(document).ready(function(){
 										<h4>Running Indexing Tasks</h4>
 									</div>
 									<div class="widget-content">
-										<span class="checkbox"><input type="checkbox" id="autoUpdate"> Auto Update <i class="icon-refresh"></i></span>
+										<span class="checkbox"><label><input type="checkbox" id="autoUpdate"> Auto Update <i class="icon-refresh"></i></label></span>
 										<table class="table table-hover table-bordered">
 											<thead>
 												<tr>
