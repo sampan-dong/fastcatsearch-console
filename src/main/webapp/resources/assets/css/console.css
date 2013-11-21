@@ -114,3 +114,7 @@ form.searchTest input, textarea {font-size: 18px !important;}
 textarea.long6 {height:600px;}
 
 #searchResultModal .modal-dialog {width: 90%;}
+
+.group-panel-title a {font-size: 12px; font-weight: bold;}
+
+.result-queryString {overflow-wrap: break-word;}

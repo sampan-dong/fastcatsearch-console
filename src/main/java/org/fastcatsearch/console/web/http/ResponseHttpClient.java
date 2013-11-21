@@ -85,6 +85,21 @@ public class ResponseHttpClient {
 		public abstract JSONObject requestJSON() throws ClientProtocolException, IOException;
 		public abstract Document requestXML() throws ClientProtocolException, IOException;
 		public abstract AbstractMethod addParameter(String key, String value);
+		
+		public AbstractMethod addParameterString(String parameterString){
+			String[] keyValues = parameterString.split("&");
+			for(String keyValue : keyValues){
+				keyValue = keyValue.trim();
+				if(keyValue.length() > 0){
+					String[] list = keyValue.split("=");
+					if(list.length == 2){
+						addParameter(list[0], list[1]);
+					}
+				}
+			}
+			
+			return this;
+		}
 	}
 	
 	public static class GetMethod extends AbstractMethod {
@@ -200,6 +215,18 @@ public class ResponseHttpClient {
 			nvps.add(new BasicNameValuePair(key, value));
 
 			return this;
+		}
+		
+		public String getParameter(String key){
+			if(nvps != null){
+				for(NameValuePair pair : nvps){
+					if(pair.getName().equalsIgnoreCase(key)){
+						return pair.getValue();
+					}
+				}
+			}
+			
+			return null;
 		}
 
 	}

@@ -4,137 +4,204 @@
 <%@page import="org.json.*"%>
 <%@page import="java.util.*"%>
 <%
-/* JSONObject indexDataStatusResult = (JSONObject) request.getAttribute("indexDataStatus");
-JSONObject indexDataResult = (JSONObject) request.getAttribute("indexDataResult");
-JSONArray indexDataStatusList = indexDataStatusResult.getJSONArray("indexDataStatus");
+	JSONObject searchResult = (JSONObject) request.getAttribute("searchResult");
+	String queryString = (String) request.getAttribute("queryString");
 
-String selectedShardId = (String) request.getAttribute("shardId");
- */
+	JSONArray resultList = null;
+	JSONArray fieldNameList = null;
+	JSONArray groupResultList = null;
+	int status = -1;
+	int resultCount = 0;
+	int totalCount = 0;
+	int fieldCount = 0;
+	int start = 0;
+	String time = "";
+	String errorMessage = null;
+	if (searchResult != null){
+		status = searchResult.getInt("status");
+		time = searchResult.getString("time");
+		
+		if(status == 0) {
+			start = searchResult.getInt("start");
+			resultList = searchResult.getJSONArray("result");
+			resultCount = searchResult.getInt("count");
+			totalCount = searchResult.getInt("total_count");
+			fieldCount = searchResult.getInt("field_count");
+			fieldNameList = searchResult.getJSONArray("fieldname_list");
+			groupResultList = searchResult.getJSONArray("group_result");
+		}else{
+			errorMessage = searchResult.getString("error_msg");
+		}
+	}
+	/* JSONObject indexDataResult = (JSONObject) request.getAttribute("indexDataResult");
+	 JSONArray indexDataStatusList = searchResult.getJSONArray("indexDataStatus");
+
+	 String selectedShardId = (String) request.getAttribute("shardId");
+	 */
 %>
 <script>
-$(document).ready(function(){
-	$("#shardSelect").on("change", function(e) { 
-		loadDataRawTab("${collectionId}", e.val, 1, "#tab_raw_data");
-	});
-});
-
-function goIndexDataRawPage(url, pageNo){
-	loadDataRawTab("${collectionId}", "${shardId}", pageNo, "#tab_raw_data");
-}
 
 function selectRawFieldValue(value){
 	$("#selectedDataRawPanel").text(value);
 }
-
 </script>
 <div class="col-md-12">
-	
+	<%-- <%=searchResult %> --%>
+	<%
+	if(errorMessage != null){
+	%>
+	<div class="alert alert-danger alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		<%=errorMessage %>
+	</div>
+	<% } %>
+	<div class="well well-sm result-queryString">
+		<b>QueryString:</b><br> <%=queryString%>
+	</div>
 	<div class="widget box">
 
 		<div class="widget-content no-padding">
 			<div class="dataTables_header clearfix">
-				<div class="col-md-7 form-inline">
-					<select id="shardSelect" class="select_flat fcol2-2">
-						<%-- <%
-						int totalSize = 0;
-						for( int i = 0 ; i < indexDataStatusList.length() ; i++ ){
-							JSONObject indexDataStatus = indexDataStatusList.getJSONObject(i);
-							String shardId = indexDataStatus.getString("shardId");
-							int documentSize = indexDataStatus.getInt("documentSize");
-							if(shardId.equals(selectedShardId)){
-								totalSize = documentSize;
-							}
-						%>
-						<option value="<%=shardId %>" <%=shardId.equals(selectedShardId) ? "selected" : "" %>><%=shardId %> : <%=documentSize %> documents</option>
-						<%
+				<div class="col-md-12">
+				<%
+					if (totalCount > 0) {
+						if (resultCount > 0) {
+				%>
+						<span>Rows <%=resultCount%> of <%=totalCount%>. Time: <%=time%></span>
+					<%
+						} else {
+					%>
+						<span>Rows 0 of <%=totalCount%> (<%=time%>)</span>
+					<%
 						}
-						%> --%>
-					</select>
-					
-					<input type="text" class="form-control fcol2-1" name="se" placeholder="ID">
-					
-					<%-- &nbsp;
-					<%
-					JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
-					JSONArray fieldList = indexDataResult.getJSONArray("fieldList");
-					if(indexDataList.length() > 0){
+						} else {
 					%>
-						<span>Rows ${start} - ${end} of <%=totalSize %></span>
+						<span>Rows 0 (<%=time%>)</span>
 					<%
-					}else{
+						}
 					%>
-						<span>Rows 0</span>
-					<%
-					}
-					%> --%>
 				</div>
-				
-				<%-- <div class="col-md-5">
-					<div class="pull-right">
-						<jsp:include page="../../inc/pagenationTop.jsp" >
-						 	<jsp:param name="pageNo" value="${pageNo }"/>
-						 	<jsp:param name="totalSize" value="<%=totalSize %>" />
-							<jsp:param name="pageSize" value="${pageSize }" />
-							<jsp:param name="width" value="5" />
-							<jsp:param name="callback" value="goIndexDataRawPage" />
-							<jsp:param name="requestURI" value="" />
-						 </jsp:include>
-					 </div>
-				</div> --%>
 			</div>
+			
 			<div style="overflow: scroll; height: 400px;">
 
-				<%-- <%
-				if(indexDataList.length() > 0){
+				<%
+					if (resultCount > 0) {
 				%>
 				<table class="table table-hover table-bordered" style="white-space:nowrap;table-layout:fixed; ">
 					<thead>
 						<tr>
+							<th class="fcol1">#</th>
 							<%
-							for( int i = 0 ; i < fieldList.length() ; i++ ){
+								for (int i = 0; i < fieldNameList.length(); i++) {
 							%>
-							<th class="dataWidth"><%=fieldList.getString(i) %></th>
+							<th class="dataWidth"><%=fieldNameList.getString(i)%></th>
 							<%
-							}
+								}
 							%>
 						</tr>
 					</thead>
 					<tbody>
 					<%
-					for( int i = 0 ; i < indexDataList.length() ; i++ ){
-						JSONObject indexData = indexDataList.getJSONObject(i);
+						for (int i = 0; i < resultList.length(); i++) {
+								JSONObject row = resultList.getJSONObject(i);
 					%>
 						<tr>
+							<td class="fcol1"><%=i + start%></td>
 							<%
-							JSONObject row = indexData.getJSONObject("row");
-							
-							for( int j = 0 ; j < fieldList.length() ; j++ ){
-								String fieldName = fieldList.getString(j);
-								String value = row.getString(fieldName).replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+								for (int j = 0; j < fieldNameList.length(); j++) {
+									String fieldName = fieldNameList.getString(j);
+									String value = row.getString(fieldName).replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 							%>
-							<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())"><%=value %></td>
+							<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())"><%=value%></td>
 							<%
-							}
+								}
 							%>
 						</tr>
 					<%
-					}
+						}
 					%>
 						
 					</tbody>
 				</table>
 				<%
-				}
-				%> --%>
+					}
+				%>
 			</div>
-
 			<div class="table-footer">
 				<label class="col-md-2 control-label">Selected Column Data:</label>
 				<div class="col-md-10">
 					<div id="selectedDataRawPanel" class="panel"></div>
 				</div>
 			</div>
+			
 		</div>
 	</div>
+	<!-- //wiget -->
+	<%
+		if (groupResultList.length() > 0) {
+	%>
+	<div class="panel-group" id="accordion">
+		<%
+			for (int k = 0; k < groupResultList.length(); k++) {
+				JSONObject groupObject = groupResultList.getJSONObject(k);
+				String label = groupObject.getString("label");
+				JSONArray dataList = groupObject.getJSONArray("result");
+				JSONArray functionNameList = groupObject.getJSONArray("functionNameList");
+		%>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title group-panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href="#_group_<%=label%>"> [Group] <%=label%></a>
+				</h4>
+			</div>
+			<div id="_group_<%=label%>" class="panel-collapse collapse in">
+				<div class="panel-body">
+				<table class="table table-hover table-bordered" style="white-space:nowrap;table-layout:fixed; ">
+					<thead>
+						<tr>
+							<th>KEY</th>
+							<%
+								for (int m = 0; m < functionNameList.length(); m++) {
+							%>
+							<th><%=functionNameList.getString(m)%></th>
+							<%
+								}
+							%>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+						for (int d = 0; d < dataList.length(); d++) {
+							JSONObject obj = dataList.getJSONObject(d);
+						%>
+						<tr>
+							<td><%=obj.getString("_KEY") %></td>
+						<%
+							for (int m = 0; m < functionNameList.length(); m++) {
+								String fieldName = functionNameList.getString(m);
+								Object value = obj.get(fieldName);
+						%>
+							<td><%=value %></td>
+						<%
+							}
+						%>
+						</tr>
+						<%
+						}
+						%>
+					</tbody>
+				</table>
+				
+				</div>
+			</div>
+		</div>
+		<%
+			}
+		%>
+	</div>
+	<%
+		}
+	%>
 </div>
 

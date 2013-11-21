@@ -10,33 +10,59 @@
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 <script>
 $(document).ready(function(){
-	$("#searchStructured").on("click", function(){
+	$("#searchStructuredButton").on("click", function(){
+		$(this).button('loading');
 		$("#structuredSearchTest").submit();
 	});
-	$("#searchQuery").on("click", function(){
-		
+	$("#searchQueryButton").on("click", function(){
+		$(this).button('loading');
+		$.ajax({
+			url : "searchResult.html",
+			type: "POST",
+			data : {
+				requestUri: $("#requestUri2").val(),
+				queryString: $("#searchQueryText").val()
+			},
+			dataType : "html",
+			success:function(data, textStatus, jqXHR) {
+				try {
+					//console.log("search success.", data);
+					$("#searchResultModalBody").html(data);
+					$("#searchResultModal").modal({show:true, backdrop:'static'});
+				} catch (e) { 
+					alert("Abnormal result "+data);
+				}
+			}, error: function(jqXHR, textStatus, errorThrown) {
+				alert("ERROR" + textStatus + " : " + errorThrown);
+			}, complete: function(){
+				$("#searchQueryButton").button("reset");
+			}
+		});
 	});
 	
 	$("#structuredSearchTest").submit(function(e) {
-		var postData = $(this).serializeArray();
+		var queryString = $(this).serialize();
+		console.log("queryString > ", queryString);
 		$.ajax({
-				url : PROXY_REQUEST_URI,
+				url : "searchResult.html",
 				type: "POST",
-				data : postData,
-				dataType : "json",
+				data : {
+					requestUri: $("#requestUri1").val(),
+					queryString: queryString
+				},
+				dataType : "html",
 				success:function(data, textStatus, jqXHR) {
 					try {
-						if(data.status == 0) {
-							console.log("search success.", data);
-							$("#searchResultModal").modal({show:true, backdrop:'static'});
-						}else{
-							alert("search failed. " + data);	
-						}
+						//console.log("search success.", data);
+						$("#searchResultModalBody").html(data);
+						$("#searchResultModal").modal({show:true, backdrop:'static'});
 					} catch (e) { 
 						alert("Abnormal result "+data);
 					}
 				}, error: function(jqXHR, textStatus, errorThrown) {
 					alert("ERROR" + textStatus + " : " + errorThrown);
+				}, complete: function(){
+					$("#searchStructuredButton").button("reset");
 				}
 		});
 		e.preventDefault(); //STOP default page load submit
@@ -79,7 +105,6 @@ $(document).ready(function(){
 					<ul id="data_tab" class="nav nav-tabs">
 						<li class="active"><a href="#tab_structured_search" data-toggle="tab">Structured Search</a></li>
 						<li class=""><a href="#tab_query_search" data-toggle="tab">Query Search</a></li>
-						<li class=""><a href="#tab_search_result" data-toggle="tab">Search Result</a></li>
 					</ul>
 					<div class="tab-content row">
 						<div class="tab-pane active" id="tab_structured_search">
@@ -101,13 +126,13 @@ $(document).ready(function(){
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">FIELD LIST</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" name="fl" placeholder="FL">code,title</textarea>
+											<textarea class="form-control" name="fl" placeholder="FL">code,title,content</textarea>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">SEARCH</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" name="se" placeholder="SE">{title:김규리}</textarea>
+											<textarea class="form-control" name="se" placeholder="SE"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
@@ -119,7 +144,7 @@ $(document).ready(function(){
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">GROUP</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" name="gr" placeholder="GR"></textarea>
+											<textarea class="form-control" name="gr" placeholder="GR">category:count</textarea>
 										</div>
 									</div>
 									<div class="form-group">
@@ -131,7 +156,7 @@ $(document).ready(function(){
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">LENGTH</label>
 										<div class="col-sm-2">
-											<input class="form-control" name="ln" placeholder="LN" value="10">
+											<input class="form-control" name="ln" placeholder="LN" value="100">
 										</div>
 									</div>
 									<div class="form-group">
@@ -148,7 +173,7 @@ $(document).ready(function(){
 									</div>
 									<div class="form-group">
 										<div class="col-sm-offset-2 col-sm-3">
-											<select name="uri" class="form-control select_flat" >
+											<select id="requestUri1" class="form-control select_flat" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>
 												<option value="/service/search-single.json">Search (Single)</option>
@@ -156,7 +181,7 @@ $(document).ready(function(){
 											</select>
 										</div>
 										<div class="col-sm-4">
-											<a href="javascript:void(0);" id="searchStructured" class="btn btn-primary" >Search</a>
+											<a href="javascript:void(0);" id="searchStructuredButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
 										</div>
 									</div>
 		
@@ -171,11 +196,11 @@ $(document).ready(function(){
 							<div class="col-md-12">
 								<form role="form" id="querySearchTest">
 									<div class="form-group">
-										<textarea class="form-control long6" id="query_raw" placeholder="Query"></textarea>
+										<textarea class="form-control long6" id="searchQueryText" placeholder="Query"></textarea>
 									</div>
 									<div class="form-group">
 										<div class="col-sm-3">
-											<select name="uri" class="form-control select_flat" >
+											<select id="requestUri2" class="form-control select_flat" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>
 												<option value="/service/search-single.json">Search (Single)</option>
@@ -183,16 +208,12 @@ $(document).ready(function(){
 											</select>
 										</div>
 										<div class="col-sm-4">
-											<button id="searchStructured" class="btn btn-primary">Search</button>
+											<a href="javascript:void(0);" id="searchQueryButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
 										</div>
 									</div>
 								</form>
 							</div>
 						</div>
-						
-						
-						<div class="tab-pane" id="tab_search_result"></div>
-						
 						
 						
 					</div>
