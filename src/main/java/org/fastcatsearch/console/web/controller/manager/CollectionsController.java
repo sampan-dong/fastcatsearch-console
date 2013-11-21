@@ -122,7 +122,7 @@ public class CollectionsController extends AbstractController {
 		mav.addObject("collectionId", collectionId);
 		mav.addObject("shardId", shardId);
 		mav.addObject("start", start + 1);
-		mav.addObject("end", start + realSize - 1);
+		mav.addObject("end", start + realSize);
 		mav.addObject("pageNo", pageNo);
 		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("indexDataResult", indexData);
