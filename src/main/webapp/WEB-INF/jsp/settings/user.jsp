@@ -30,6 +30,11 @@ org.json.JSONArray
 <c:import url="../inc/header.jsp" />
 
 <script type="text/javascript">
+$(document).ready(function(){
+	$("#new-user-form").validate();
+	$("#update-user-form").validate();
+});
+
 function showUpdateUserModal(id){
 	requestProxy("POST", {
 		"uri":"/settings/authority/get-user-list.json",
@@ -170,29 +175,29 @@ function showUpdateUserModal(id){
 						<div class="form-group">
 							<label for="name" class="col-sm-3 control-label">Name</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Name">
+								<input type="text" class="form-control required" id="name" name="name" placeholder="Name" minlength="3">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="userId" class="col-sm-3 control-label">User Id</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="userId" name="userId" placeholder="User Id">
+								<input type="text" class="form-control required" id="userId" name="userId" placeholder="User Id" minlength="4">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="password" class="col-sm-3 control-label">Password</label>
 							<div class="col-sm-4">
-								<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+								<input type="password" class="form-control required" id="password" name="password" placeholder="Password" minlength="4">
 							</div>
 							<div class=" col-sm-4">
-								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+								<input type="password" class="form-control required" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" minlength="4" equalTo="[name='password']">
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<label for="groupId" class="col-sm-3 control-label">Group</label>
 							<div class="col-sm-9">
-								<select class="form-control" id="groupId" name="groupId">
+								<select class="form-control select_flat required" id="groupId" name="groupId">
 									<option value="">NONE</option>
 									<% 
 									if(jGroupList!=null) { 
@@ -217,13 +222,13 @@ function showUpdateUserModal(id){
 						<div class="form-group">
 							<label for="email" class="col-sm-3 control-label">E-mail</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="email" name="email" placeholder="E-mail">
+								<input type="text" class="form-control email" id="email" name="email" placeholder="E-mail">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="sms" class="col-sm-3 control-label">SMS</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="sms" name="sms" placeholder="SMS">
+								<input type="text" class="form-control number" id="sms" name="sms" placeholder="SMS">
 							</div>
 						</div>
 					</form>
@@ -253,19 +258,19 @@ function showUpdateUserModal(id){
 						<div class="form-group">
 							<label for="name" class="col-sm-3 control-label">Name</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Name">
+								<input type="text" class="form-control required" id="name" name="name" placeholder="Name" minlength="3">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="userId" class="col-sm-3 control-label">User Id</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="userId" name="userId" placeholder="User Id">
+								<input type="text" class="form-control required" id="userId" name="userId" placeholder="User Id" minlength="4">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="groupId" class="col-sm-3 control-label">Group</label>
 							<div class="col-sm-9">
-								<select class="form-control" id="groupId" name="groupId">
+								<select class="form-control select_flat required" id="groupId" name="groupId">
 									<option value="">NONE</option>
 									<% 
 									if(jGroupList!=null) { 
@@ -290,22 +295,22 @@ function showUpdateUserModal(id){
 						<div class="form-group">
 							<label for="email" class="col-sm-3 control-label">E-mail</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="email" name="email" placeholder="E-mail">
+								<input type="text" class="form-control email" id="email" name="email" placeholder="E-mail">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="sms" class="col-sm-3 control-label">SMS</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="sms" name="sms" placeholder="SMS">
+								<input type="text" class="form-control number" id="sms" name="sms" placeholder="SMS">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="password" class="col-sm-3 control-label">Password</label>
 							<div class="col-sm-4">
-								<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+								<input type="password" class="form-control" id="password2" name="password" placeholder="Password" minlength="4">
 							</div>
 							<div class="col-sm-4">
-								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+								<input type="password" class="form-control" id="confirmPassword2" name="confirmPassword" placeholder="Confirm Password" equalTo="[id='password2']" minlength="4">
 							</div>
 						</div>
 					</form>

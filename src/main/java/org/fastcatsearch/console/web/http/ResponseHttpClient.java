@@ -14,7 +14,9 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -33,7 +35,8 @@ public class ResponseHttpClient {
 
 	private static final ResponseHandler<JSONObject> jsonResponseHandler = new JSONResponseHandler();
 	private static final ResponseHandler<Document> xmlResponseHandler = new XMLResponseHandler();
-
+	private static final ResponseHandler<String> textResponseHandler = new BasicResponseHandler();
+	
 	public ResponseHttpClient(String host) {
 
 		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
@@ -82,9 +85,10 @@ public class ResponseHttpClient {
 			this.responseHttpClient = responseHttpClient;
 			this.url = url;
 		}
-		public abstract JSONObject requestJSON() throws ClientProtocolException, IOException;
-		public abstract Document requestXML() throws ClientProtocolException, IOException;
+//		public abstract JSONObject requestJSON() throws ClientProtocolException, IOException;
+//		public abstract Document requestXML() throws ClientProtocolException, IOException;
 		public abstract AbstractMethod addParameter(String key, String value);
+		protected abstract HttpUriRequest getHttpRequest();
 		
 		public AbstractMethod addParameterString(String parameterString){
 			String[] keyValues = parameterString.split("&");
@@ -100,6 +104,45 @@ public class ResponseHttpClient {
 			
 			return this;
 		}
+		
+		public JSONObject requestJSON() throws ClientProtocolException, IOException {
+			try {
+				return responseHttpClient.httpclient.execute(getHttpRequest(), jsonResponseHandler);
+			}catch(SocketException e){
+				logger.debug("httpclient socket error! >> {}", e.getMessage());
+				responseHttpClient.close();
+			}catch(ClientProtocolException e){
+				logger.debug("httpclient error! >> {}", e.getMessage());
+				throw new IOException("Request fail. " + url);
+			}
+			return null;
+		}
+		
+		public Document requestXML() throws ClientProtocolException, IOException {
+			try {
+				return responseHttpClient.httpclient.execute(getHttpRequest(), xmlResponseHandler);
+			}catch(SocketException e){
+				logger.debug("httpclient socket error! >> {}", e.getMessage());
+				responseHttpClient.close();
+			}catch(ClientProtocolException e){
+				logger.debug("httpclient error! >> {}", e.getMessage());
+				throw new IOException("Request fail. " + url);
+			}
+			return null;
+		}
+		
+		public String requestText() throws ClientProtocolException, IOException {
+			try {
+				return responseHttpClient.httpclient.execute(getHttpRequest(), textResponseHandler);
+			}catch(SocketException e){
+				logger.debug("httpclient socket error! >> {}", e.getMessage());
+				responseHttpClient.close();
+			}catch(ClientProtocolException e){
+				logger.debug("httpclient error! >> {}", e.getMessage());
+				throw new IOException("Request fail. " + url);
+			}
+			return null;
+		}
 	}
 	
 	public static class GetMethod extends AbstractMethod {
@@ -110,38 +153,12 @@ public class ResponseHttpClient {
 			super(responseHttpClient, url);
 		}
 
-		private HttpGet getHttpGet(){
+		protected HttpGet getHttpRequest(){
 			if(queryString != null){
 				return new HttpGet(url + "?" + queryString);
 			}else{
 				return new HttpGet(url);
 			}
-		}
-		@Override
-		public JSONObject requestJSON() throws ClientProtocolException, IOException {
-			try {
-				logger.debug("{}, {}, {}, {}, {}", responseHttpClient, responseHttpClient.httpclient,getHttpGet(),jsonResponseHandler) ;
-				return responseHttpClient.httpclient.execute(getHttpGet(), jsonResponseHandler);
-			}catch(SocketException e){
-				logger.debug("httpclient socket error! >> {}", e.getMessage());
-				responseHttpClient.close();
-			}catch(ClientProtocolException e){
-				logger.debug("httpclient error! >> {}", e.getMessage());
-			}
-			return null;
-		}
-		
-		@Override
-		public Document requestXML() throws ClientProtocolException, IOException {
-			try {
-				return responseHttpClient.httpclient.execute(getHttpGet(), xmlResponseHandler);
-			}catch(SocketException e){
-				logger.debug("httpclient socket error! >> {}", e.getMessage());
-				responseHttpClient.close();
-			}catch(ClientProtocolException e){
-				logger.debug("httpclient error! >> {}", e.getMessage());
-			}
-			return null;
 		}
 		
 		@Override
@@ -173,37 +190,12 @@ public class ResponseHttpClient {
 			super(responseHttpClient, url);
 		}
 
-		private HttpPost getHttpPost(){
+		protected HttpPost getHttpRequest(){
 			HttpPost httpost = new HttpPost(url);
 			if (nvps != null) {
 				httpost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 			}
 			return httpost;
-		}
-		@Override
-		public JSONObject requestJSON() throws ClientProtocolException, IOException {
-			try {
-				return responseHttpClient.httpclient.execute(getHttpPost(), jsonResponseHandler);
-			}catch(SocketException e){
-				logger.debug("httpclient socket error! >> {}", e.getMessage());
-				responseHttpClient.close();
-			}catch(ClientProtocolException e){
-				logger.debug("httpclient error! >> {}", e.getMessage());
-			}
-			return null;
-		}
-		
-		@Override
-		public Document requestXML() throws ClientProtocolException, IOException {
-			try {
-				return responseHttpClient.httpclient.execute(getHttpPost(), xmlResponseHandler);
-			}catch(SocketException e){
-				logger.debug("httpclient socket error! >> {}", e.getMessage());
-				responseHttpClient.close();
-			}catch(ClientProtocolException e){
-				logger.debug("httpclient error! >> {}", e.getMessage());
-			}
-			return null;
 		}
 
 		@Override

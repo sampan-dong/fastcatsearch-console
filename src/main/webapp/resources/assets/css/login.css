@@ -22,10 +22,19 @@
   clear: both;
 }
 .login {
-  background: #416cb6;
-  padding-top: 60px;
-  /* Helper */
-
+  	padding-top: 60px;
+	/* fallback */
+	background-color: #416cb6;
+	/* Safari 4-5, Chrome 1-9 */
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1B2D4D), to(#416cb6));
+	/* Safari 5.1, Chrome 10+ */
+	background: -webkit-linear-gradient(top, #416cb6, #1B2D4D);
+	/* Firefox 3.6+ */
+	background: -moz-linear-gradient(top, #416cb6, #1B2D4D);
+	/* IE 10 */
+	background: -ms-linear-gradient(top, #416cb6, #1B2D4D);
+	/* Opera 11.10+ */
+	background: -o-linear-gradient(top, #416cb6, #1B2D4D);
 }
 .login .logo,
 .login .single-sign-on,

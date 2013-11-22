@@ -20,12 +20,7 @@ public class ServersController extends AbstractController {
 	public ModelAndView overview(HttpSession session) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/servers/list.json";
-		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpPost(requestUrl).requestJSON();
-		} catch (Exception e) {
-			logger.error("", e);
-		}
+		JSONObject jsonObj = httpClient.httpPost(requestUrl).requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/servers/overview");

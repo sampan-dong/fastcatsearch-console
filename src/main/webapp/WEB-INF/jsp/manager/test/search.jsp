@@ -10,11 +10,18 @@
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 <script>
 $(document).ready(function(){
+	
+	$("#querySearchTest").validate();
+	
 	$("#searchStructuredButton").on("click", function(){
-		$(this).button('loading');
 		$("#structuredSearchTest").submit();
 	});
 	$("#searchQueryButton").on("click", function(){
+		
+		if(! $("#querySearchTest").valid()){
+			return;
+		}
+		
 		$(this).button('loading');
 		$.ajax({
 			url : "searchResult.html",
@@ -47,7 +54,12 @@ $(document).ready(function(){
 		$(this).closest('form').find("input[type=text], textarea").val("");
 	});
 	
+	$("#structuredSearchTest").validate();
 	$("#structuredSearchTest").submit(function(e) {
+		if(! $(this).valid()){
+			return;
+		}
+		$("#searchStructuredButton").button('loading');
 		var queryString = $(this).serialize();
 		console.log("queryString > ", queryString);
 		$.ajax({
@@ -121,19 +133,19 @@ $(document).ready(function(){
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">COLLECTION NAME</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" name="cn" placeholder="CN">news_kor</textarea>
+											<textarea class="form-control required" name="cn" placeholder="CN">news_kor</textarea>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">SHARD NAME</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" name="sd" placeholder="SD">news_kor</textarea>
+											<textarea class="form-control" name="sd" placeholder="SD"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">FIELD LIST</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" name="fl" placeholder="FL">code,title,content</textarea>
+											<textarea class="form-control required" name="fl" placeholder="FL">code,title,content</textarea>
 										</div>
 									</div>
 									<div class="form-group">
@@ -157,13 +169,13 @@ $(document).ready(function(){
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">START</label>
 										<div class="col-sm-2">
-											<input type="text" class="form-control" name="sn" placeholder="SN" value="1">
+											<input type="text" class="form-control required digits" name="sn" placeholder="SN" value="1">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">LENGTH</label>
 										<div class="col-sm-2">
-											<input type="text" class="form-control" name="ln" placeholder="LN" value="100">
+											<input type="text" class="form-control required digits" name="ln" placeholder="LN" value="100">
 										</div>
 									</div>
 									<div class="form-group">
@@ -202,10 +214,10 @@ $(document).ready(function(){
 							<div class="col-md-12">
 								<form role="form" id="querySearchTest">
 									<div class="form-group">
-										<textarea class="form-control long6" id="searchQueryText" placeholder="Query"></textarea>
+										<textarea class="form-control long6 required" id="searchQueryText" placeholder="Query"></textarea>
 									</div>
 									<div class="form-group">
-										<div class="col-sm-12 form-inline">
+										<div class="form-inline">
 											<select id="requestUri2" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>

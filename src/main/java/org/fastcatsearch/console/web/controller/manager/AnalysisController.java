@@ -21,12 +21,7 @@ public class AnalysisController extends AbstractController {
 	public ModelAndView plugin(HttpSession session) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String getAnalysisPluginListURL = "/management/analysis/plugin-list";
-		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
-		} catch (Exception e) {
-			logger.error("", e);
-		}
+		JSONObject jsonObj = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/plugin");
 		mav.addObject("analysisPluginOverview", jsonObj.getJSONArray("pluginList"));

@@ -640,10 +640,14 @@ textarea.input-lg {
     margin-top: 0;
     margin-bottom: 0;
   }
-  .form-inline .radio input[type="radio"],
+  .form-inline .radio input[type="radio"] {
+    float: none;
+    margin-bottom: 5px;
+    margin-left: 0;
+  }
   .form-inline .checkbox input[type="checkbox"] {
     float: none;
-    margin-bottom: 5px;/*-2px;*/
+    margin-bottom: -2px;
     margin-left: 0;
   }
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
+import org.jdom2.Document;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,21 +57,17 @@ public class MainController extends AbstractController {
 		// TODO 로그인되었다면 바로 start.html로 간다.
 
 		ResponseHttpClient httpClient = new ResponseHttpClient(host);
-		try {
-			JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("id", userId).addParameter("password", password)
-					.requestJSON();
-			logger.debug("loginResult > {}", loginResult);
-			if (loginResult != null && loginResult.getInt("status") == 0) {
-				// 로그인이 올바를 경우 메인 화면으로 이동한다.
-				ModelAndView mav = new ModelAndView();
-				mav.setViewName("redirect:main/start.html");
-				String userName = loginResult.getString("name");
-				session.setAttribute("_userName", userName);
-				session.setAttribute("httpclient", httpClient);
-				return mav;
-			}
-		} catch (Exception e) {
-			logger.error("", e);
+		JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("id", userId).addParameter("password", password)
+				.requestJSON();
+		logger.debug("loginResult > {}", loginResult);
+		if (loginResult != null && loginResult.getInt("status") == 0) {
+			// 로그인이 올바를 경우 메인 화면으로 이동한다.
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("redirect:main/start.html");
+			String userName = loginResult.getString("name");
+			session.setAttribute("_userName", userName);
+			session.setAttribute("httpclient", httpClient);
+			return mav;
 		}
 
 		ModelAndView mav = new ModelAndView();
@@ -138,6 +135,7 @@ public class MainController extends AbstractController {
 	public String request(HttpServletRequest request) throws Exception {
 
 		String uri = request.getParameter("uri");
+		String dataType = request.getParameter("dataType");
 		
 		//만약 ? 가 붙어있다면 제거한다.
 		int parameterStart = uri.indexOf('?');
@@ -167,21 +165,39 @@ public class MainController extends AbstractController {
 				abstractMethod.addParameter(key, value);
 			}
 		}
+		
+		if(dataType != null){
+			if(dataType.equalsIgnoreCase("text")){
+				return abstractMethod.requestText();
+			}else if(dataType.equalsIgnoreCase("xml")){ 
+				try {
+					Document document = abstractMethod.requestXML();
+					if(document == null){
+						return "";
+					}else{
+						return document.toString();
+					}
+				} catch (Exception e) {
+					logger.error("", e);
+					return "";
+				}
+			}
+		}
+		
+		//default json
 		JSONObject result = null;
 		try {
 			result = abstractMethod.requestJSON();
+			if(result == null){
+				return "";
+			}else{
+				return result.toString();
+			}
 		} catch (Exception e) {
 			logger.error("", e);
 			return "";
 		}
-
-		logger.debug("request result >> {}", result);
-
-		if(result == null){
-			return "";
-		}else{
-			return result.toString();
-		}
+		
 	}
 
 }

@@ -28,12 +28,8 @@ public class TestController extends AbstractController {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		JSONObject jsonObj = null;
-		try {
-			PostMethod postMethod = (PostMethod) httpClient.httpPost(requestUri).addParameterString(queryString);
-			jsonObj = postMethod.requestJSON();
-		} catch (Exception e) {
-			logger.error("", e);
-		}
+		PostMethod postMethod = (PostMethod) httpClient.httpPost(requestUri).addParameterString(queryString);
+		jsonObj = postMethod.requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -62,4 +58,13 @@ public class TestController extends AbstractController {
 		mav.setViewName("manager/test/searchResult");
 		return mav;
 	}
+	
+	
+	@RequestMapping("db")
+	public ModelAndView db() throws Exception {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/test/db");
+		return mav;
+	}
+	
 }

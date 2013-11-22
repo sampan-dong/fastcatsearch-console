@@ -57,7 +57,7 @@ var CONTEXT = /(\/[^\/]+)\//.exec(window.location.pathname)[1];
 var PROXY_REQUEST_URI = window.location.protocol + "//" + window.location.host
 		+ CONTEXT+"/main/request.html";
 
-function requestProxy(methodType, data, resultType, successCallback, failCallback){
+function requestProxy(methodType, data, resultType, successCallback, failCallback, completeCallback){
 	
 	$.ajax({
 		url : PROXY_REQUEST_URI,
@@ -65,7 +65,8 @@ function requestProxy(methodType, data, resultType, successCallback, failCallbac
 		data : data,
 		dataType : resultType,
 		success: successCallback,
-		fail: failCallback
+		fail: failCallback,
+		complete: completeCallback 
 	});
 }
 
@@ -421,6 +422,10 @@ function loadDataSearchTab(collectionId, shardId, pageNo, targetId){
 
 function updateUsingProxy(formName, mode) {
 	var form = $("form#"+formName+"");
+	if(!form.valid()){
+		return;
+	}
+	
 	form[0].mode.value=mode;
 	console.log("updateUsingProxy > ", form);
 	form.submit(function(e) {

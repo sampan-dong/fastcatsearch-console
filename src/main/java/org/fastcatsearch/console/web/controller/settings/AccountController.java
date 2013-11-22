@@ -30,12 +30,8 @@ public class AccountController extends AbstractController {
 		String requestUrl = null;
 		requestUrl = "/settings/authority/get-group-list.json";
 		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpGet(requestUrl).requestJSON();
-			modelAndView.addObject("groupList",jsonObj);
-		} catch (Exception e) {
-			logger.error("",e);
-		}
+		jsonObj = httpClient.httpGet(requestUrl).requestJSON();
+		modelAndView.addObject("groupList",jsonObj);
 		
 		requestUrl = "/settings/authority/get-user-list.json";
 		try {
@@ -56,21 +52,14 @@ public class AccountController extends AbstractController {
 		String requestUrl;
 		requestUrl = "/settings/authority/get-group-authority-list.json";
 		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpGet(requestUrl)
-					.addParameter("mode", "all").requestJSON();
-			modelAndView.addObject("groupAuthorityList",jsonObj);
-		} catch (Exception e) {
-			logger.error("",e);
-		}
+		jsonObj = httpClient.httpGet(requestUrl)
+				.addParameter("mode", "all").requestJSON();
+		modelAndView.addObject("groupAuthorityList",jsonObj);
+		
 		requestUrl = "/settings/authority/get-group-authority-list.json";
-		try {
-			jsonObj = httpClient.httpGet(requestUrl)
-					.addParameter("groupId", "-1").requestJSON();
-			modelAndView.addObject("authorityList",jsonObj);
-		} catch (Exception e) {
-			logger.error("",e);
-		}
+		jsonObj = httpClient.httpGet(requestUrl)
+				.addParameter("groupId", "-1").requestJSON();
+		modelAndView.addObject("authorityList",jsonObj);
 		
 		return modelAndView;
 	}

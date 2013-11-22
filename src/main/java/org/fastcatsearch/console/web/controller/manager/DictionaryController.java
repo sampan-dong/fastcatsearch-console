@@ -34,14 +34,9 @@ public class DictionaryController extends AbstractController {
 	public ModelAndView index(HttpSession session, @PathVariable String analysisId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/dictionary/overview.json";
-		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpPost(requestUrl)
+		JSONObject jsonObj = httpClient.httpPost(requestUrl)
 					.addParameter("pluginId", analysisId)
 					.requestJSON();
-		} catch (Exception e) {
-			logger.error("", e);
-		}
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/dictionary/index");
@@ -54,14 +49,9 @@ public class DictionaryController extends AbstractController {
 	public ModelAndView overview(HttpSession session, @PathVariable String analysisId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/dictionary/overview.json";
-		JSONObject jsonObj = null;
-		try {
-			jsonObj = httpClient.httpPost(requestUrl)
+		JSONObject jsonObj = httpClient.httpPost(requestUrl)
 					.addParameter("pluginId", analysisId)
 					.requestJSON();
-		} catch (Exception e) {
-			logger.error("", e);
-		}
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/dictionary/overview");
@@ -75,17 +65,12 @@ public class DictionaryController extends AbstractController {
 			@RequestParam String keyword, @RequestParam String targetId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
-		JSONObject jsonObj = null;
 		String requestUrl = "/management/dictionary/system.json";
 		
-		try {
-			jsonObj = httpClient.httpPost(requestUrl)
-					.addParameter("pluginId", analysisId)
-					.addParameter("search", keyword)
-					.requestJSON();
-		} catch (Exception e) {
-			logger.error("", e);
-		}
+		JSONObject jsonObj = httpClient.httpPost(requestUrl)
+				.addParameter("pluginId", analysisId)
+				.addParameter("search", keyword)
+				.requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/dictionary/systemDictionary");
@@ -114,19 +99,14 @@ public class DictionaryController extends AbstractController {
 		logger.debug("deleteIdList >> {}", deleteIdList);
 		if(deleteIdList != null && deleteIdList.length() > 0){
 			String requestUrl = "/management/dictionary/delete.json";
-			try {
-				jsonObj = httpClient.httpPost(requestUrl)
-						.addParameter("pluginId", analysisId)
-						.addParameter("dictionaryId", dictionaryId)
-						.addParameter("deleteIdList", deleteIdList)
-						.requestJSON();
-				
-				deletedSize = jsonObj.getInt("result");
-			} catch (Exception e) {
-				logger.error("", e);
-			}
+			jsonObj = httpClient.httpPost(requestUrl)
+					.addParameter("pluginId", analysisId)
+					.addParameter("dictionaryId", dictionaryId)
+					.addParameter("deleteIdList", deleteIdList)
+					.requestJSON();
+			
+			deletedSize = jsonObj.getInt("result");
 		}
-		
 		
 		
 		String requestUrl = "/management/dictionary/list.json";
@@ -141,29 +121,25 @@ public class DictionaryController extends AbstractController {
 			start = (pageNo - 1) * PAGE_SIZE + 1;
 		}
 		
-		try {
-			String searchKeyword = null;
-			if(exactMatch){
-				searchKeyword = keyword;
-			}else{
-				if(keyword != null && keyword.length() > 0){
-					searchKeyword = "%25" + keyword + "%25";
-				}
+		String searchKeyword = null;
+		if(exactMatch){
+			searchKeyword = keyword;
+		}else{
+			if(keyword != null && keyword.length() > 0){
+				searchKeyword = "%25" + keyword + "%25";
 			}
-			if(searchColumn.equals("_ALL")){
-				searchColumn = null;
-			}
-			jsonObj = httpClient.httpPost(requestUrl)
-					.addParameter("pluginId", analysisId)
-					.addParameter("dictionaryId", dictionaryId)
-					.addParameter("start", String.valueOf(start))
-					.addParameter("length", String.valueOf(PAGE_SIZE))
-					.addParameter("search", searchKeyword)
-					.addParameter("searchColumns", searchColumn)
-					.requestJSON();
-		} catch (Exception e) {
-			logger.error("", e);
 		}
+		if(searchColumn.equals("_ALL")){
+			searchColumn = null;
+		}
+		jsonObj = httpClient.httpPost(requestUrl)
+				.addParameter("pluginId", analysisId)
+				.addParameter("dictionaryId", dictionaryId)
+				.addParameter("start", String.valueOf(start))
+				.addParameter("length", String.valueOf(PAGE_SIZE))
+				.addParameter("search", searchKeyword)
+				.addParameter("searchColumns", searchColumn)
+				.requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
 		if(isEditable != null && isEditable.booleanValue()){

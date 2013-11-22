@@ -6,9 +6,14 @@
 <html>
 <head>
 <c:import url="inc/header.jsp" />
-<link
-	href="${pageContext.request.contextPath}/resources/assets/css/login.css"
-	rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/assets/css/login.css" rel="stylesheet" type="text/css" />
+<script>
+
+$(document).ready(function(){
+	$("#login-form").validate();
+});
+
+</script>
 </head>
 <body class="login">
 	<!-- Logo -->
@@ -26,26 +31,26 @@
 				<tr>
 					<td class="left"></td>
 					<td class="right">
-						<form class="form-vertical login-form"
+						<form class="form-vertical login-form" id="login-form"
 							action="<c:url value="/doLogin.html"/>" method="post">
 							<!-- Input Fields -->
 							<div class="form-group">
 								<div class="input-icon">
 									<i class="icon-globe"></i> <input type="text" name="host"
-										class="form-control" placeholder="Address:Port"
+										class="form-control required" placeholder="Address:Port"
 										autofocus="autofocus" />
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="input-icon">
 									<i class="icon-user"></i> <input type="text" name="userId"
-										class="form-control" placeholder="Username" />
+										class="form-control required" placeholder="Username" />
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="input-icon">
 									<i class="icon-lock"></i> <input type="password"
-										name="password" class="form-control" placeholder="Password" />
+										name="password" class="form-control required" placeholder="Password" />
 								</div>
 							</div>
 							<!-- /Input Fields -->

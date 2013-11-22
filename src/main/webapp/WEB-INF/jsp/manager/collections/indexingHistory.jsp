@@ -13,7 +13,7 @@
 %>
 <script>
 
-function goIndexingHistoryPage(pageNo){
+function goIndexingHistoryPage(ignore, pageNo){
 	var data = {collectionId: '${collectionId}', pageNo: pageNo};
 	loadToTab("indexing/history.html", data, '#tab_indexing_history');
 }

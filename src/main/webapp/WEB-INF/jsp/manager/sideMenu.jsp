@@ -150,6 +150,9 @@
 					<li class="<%=(lcatCurrent && "search".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/test/search.html"/>">
 							<i class="icon-search"></i> Search <span class="arrow"></span>
 					</a></li>
+					<li class="<%=(lcatCurrent && "db".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/test/db.html"/>">
+							<i class="icon-angle-right"></i> SYSTEM DB <span class="arrow"></span>
+					</a></li>
 				</ul></li>
 		</ul>
 	

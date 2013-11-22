@@ -88,7 +88,7 @@ z-index: 2;
 
 /*error page */
 body.error {
-background: #416cb6;
+background: #416cb6;height: 100%;
 }
 body.error .main {
 width:100%; padding-top: 90px;
@@ -111,7 +111,11 @@ body.error .trace {
 
 form.searchTest input, textarea {font-size: 18px !important;}
 
-textarea.long6 {height:600px;}
+.long2 {height:200px;}
+.long3 {height:300px;}
+.long4 {height:400px;}
+.long5 {height:500px;}
+.long6 {height:600px;}
 
 #searchResultModal .modal-dialog {width: 90%;}
 

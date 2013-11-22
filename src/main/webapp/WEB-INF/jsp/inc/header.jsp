@@ -109,7 +109,6 @@
 <script type="text/javascript" src="${contextPath}/resources/plugins/noty/themes/default.js"></script>
 
 <!-- Forms -->
-<script type="text/javascript" src="${contextPath}/resources/plugins/uniform/jquery.uniform.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/plugins/validation/jquery.validate.min.js"></script>
 
 

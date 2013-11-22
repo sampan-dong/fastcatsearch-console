@@ -14,7 +14,7 @@ String selectedShardId = (String) request.getAttribute("shardId");
 <script>
 $(document).ready(function(){
 	$("#shardSelect").on("change", function(e) { 
-		loadDataRawTab("${collectionId}", e.val, 1, "#tab_raw_data");
+		loadDataRawTab("${collectionId}", $(this).val(), 1, "#tab_raw_data");
 	});
 });
 
