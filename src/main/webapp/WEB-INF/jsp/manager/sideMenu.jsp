@@ -63,9 +63,6 @@
 							<li class="<%=(maybeCurrent && "datasource".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/datasource.html"> <i
 									class="icon-angle-right"></i> DataSource
 							</a></li>
-							<li class="<%=(maybeCurrent && "shard".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/shard.html"> <i
-									class="icon-angle-right"></i> Shard
-							</a></li>
 							<li class="<%=(maybeCurrent && "indexing".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/indexing.html"> <i
 									class="icon-angle-right"></i> Indexing
 							</a></li>

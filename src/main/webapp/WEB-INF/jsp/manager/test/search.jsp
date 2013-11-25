@@ -137,12 +137,6 @@ $(document).ready(function(){
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">SHARD NAME</label>
-										<div class="col-sm-10">
-											<textarea class="form-control" name="sd" placeholder="SD"></textarea>
-										</div>
-									</div>
-									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">FIELD LIST</label>
 										<div class="col-sm-10">
 											<textarea class="form-control required" name="fl" placeholder="FL">code,title,content</textarea>

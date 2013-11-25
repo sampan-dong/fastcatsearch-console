@@ -1,0 +1,104 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@page import="org.json.*"%>
+<%@page import="org.fastcatsearch.console.web.util.*"%>
+
+<%
+	JSONObject indexingStatus = (JSONObject) request.getAttribute("indexingStatus");
+	JSONObject indexingResult = (JSONObject) request.getAttribute("indexingResult");
+
+	String collectionId = (String) request.getAttribute("collectionId");
+%>
+<div class="col-md-12">
+
+	<div class="widget ">
+		<div class="widget-header">
+			<h4>Index Data Status</h4>
+		</div>
+		<div class="widget-content">
+			<dl class="dl-horizontal">
+				<dt>Data Sequence : </dt>
+				<dd><%=indexingStatus.getInt("sequence") %></dd>
+				<dt>Total Document Size : </dt>
+				<dd><%=indexingStatus.getInt("documentSize") %></dd>
+				<dt>Total Disk Size : </dt>
+				<dd><%=indexingStatus.getString("diskSize") %></dd>
+				<dt>Create Time : </dt>
+				<dd><%=indexingStatus.getString("createTime") %></dd>
+			</dl>
+		</div>
+	</div>
+	
+	<div class="widget ">
+		<div class="widget-header">
+			<h4>Indexing Result</h4>
+		</div>
+		<div class="widget-content">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Result</th>
+						<th>Scheduled</th>
+						<th>Documents</th>
+						<th>Inserts</th>
+						<th>Updates</th>
+						<th>Deletes</th>
+						<th>Start</th>
+						<th>End</th>
+						<th>Duration</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%
+					if(indexingResult.has("FULL")){
+						JSONObject fullIndexingResult = indexingResult.getJSONObject("FULL");
+					%>
+					<tr>
+						<td><strong>FullIndexing</strong></td>
+						<% if(fullIndexingResult != null) { %> 
+						<td><%=fullIndexingResult.getString("status") %></td>
+						<td><%=fullIndexingResult.getString("isScheduled") %></td>
+						<td><%=fullIndexingResult.getInt("docSize") %></td>
+						<td><%=fullIndexingResult.getInt("insertSize") %></td>
+						<td><%=fullIndexingResult.getInt("updateSize") %></td>
+						<td><%=fullIndexingResult.getInt("deleteSize") %></td>
+						<td><%=fullIndexingResult.getString("startTime") %></td>
+						<td><%=fullIndexingResult.getString("endTime") %></td>
+						<td><%=fullIndexingResult.getString("duration") %></td>
+						<% } else { %>
+						<td colspan="9">No full indexing result.</td>
+						<% } %>
+					</tr>
+					<%
+					}
+					
+					if(indexingResult.has("ADD")){
+						JSONObject addIndexingResult = indexingResult.getJSONObject("ADD");
+					%>
+					<tr>
+						<td><strong>AddIndexing</strong></td>
+						<% if(addIndexingResult != null) { %> 
+						<td><%=addIndexingResult.getString("status") %></td>
+						<td><%=addIndexingResult.getString("isScheduled") %></td>
+						<td><%=addIndexingResult.getInt("docSize") %></td>
+						<td><%=addIndexingResult.getInt("insertSize") %></td>
+						<td><%=addIndexingResult.getInt("updateSize") %></td>
+						<td><%=addIndexingResult.getInt("deleteSize") %></td>
+						<td><%=addIndexingResult.getString("startTime") %></td>
+						<td><%=addIndexingResult.getString("endTime") %></td>
+						<td><%=addIndexingResult.getString("duration") %></td>
+						<% } else { %>
+						<td colspan="9">No add indexing result.</td>
+						<% } %>
+					</tr>
+					<%
+					}
+					%>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

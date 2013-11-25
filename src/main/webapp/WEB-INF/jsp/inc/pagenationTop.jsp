@@ -42,7 +42,7 @@ if(totalSize > 0){
 	for(int c = counterStart; c < counterEnd; c++){
 		if(c <= maxPage){
 			if(c == pageNo){
-				%><a class="btn btn-sm btn-console"><%=c %></a><%
+				%><a class="btn btn-sm btn-primary"><%=c %></a><%
 			}else{
 				%><a href="javascript:<%=callback%>('<%=requestURI%>', <%=c %>)" class="btn btn-sm"><%=c %></a><%
 			}

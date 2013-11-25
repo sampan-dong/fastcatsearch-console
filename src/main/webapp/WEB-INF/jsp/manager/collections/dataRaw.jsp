@@ -4,22 +4,14 @@
 <%@page import="org.json.*"%>
 <%@page import="java.util.*"%>
 <%
-JSONObject indexDataStatusResult = (JSONObject) request.getAttribute("indexDataStatus");
+//JSONObject indexDataStatusResult = (JSONObject) request.getAttribute("indexDataStatus");
 JSONObject indexDataResult = (JSONObject) request.getAttribute("indexDataResult");
-JSONArray indexDataStatusList = indexDataStatusResult.getJSONArray("indexDataStatus");
-
-String selectedShardId = (String) request.getAttribute("shardId");
-
+//JSONArray indexDataStatusList = indexDataStatusResult.getJSONArray("indexDataStatus");
 %>
 <script>
-$(document).ready(function(){
-	$("#shardSelect").on("change", function(e) { 
-		loadDataRawTab("${collectionId}", $(this).val(), 1, "#tab_raw_data");
-	});
-});
 
 function goIndexDataRawPage(url, pageNo){
-	loadDataRawTab("${collectionId}", "${shardId}", pageNo, "#tab_raw_data");
+	loadDataRawTab("${collectionId}", pageNo, "#tab_raw_data");
 }
 
 function selectRawFieldValue(value){
@@ -34,23 +26,6 @@ function selectRawFieldValue(value){
 		<div class="widget-content no-padding">
 			<div class="dataTables_header clearfix">
 				<div class="col-md-7 form-inline">
-					<select id="shardSelect" class="select_flat fcol2-2">
-						<%
-						int totalSize = 0;
-						for( int i = 0 ; i < indexDataStatusList.length() ; i++ ){
-							JSONObject indexDataStatus = indexDataStatusList.getJSONObject(i);
-							String shardId = indexDataStatus.getString("shardId");
-							int documentSize = indexDataStatus.getInt("documentSize");
-							if(shardId.equals(selectedShardId)){
-								totalSize = documentSize;
-							}
-						%>
-						<option value="<%=shardId %>" <%=shardId.equals(selectedShardId) ? "selected" : "" %>><%=shardId %> : <%=documentSize %> documents</option>
-						<%
-						}
-						%>
-					</select>
-					
 					<input type="text" class="form-control fcol2-1" name="se" placeholder="ID">
 					
 					&nbsp;
@@ -59,7 +34,7 @@ function selectRawFieldValue(value){
 					JSONArray fieldList = indexDataResult.getJSONArray("fieldList");
 					if(indexDataList.length() > 0){
 					%>
-						<span>Rows ${start} - ${end} of <%=totalSize %></span>
+						<span>Rows ${start} - ${end} of <%=indexDataResult.getInt("documentSize") %></span>
 					<%
 					}else{
 					%>
@@ -73,7 +48,7 @@ function selectRawFieldValue(value){
 					<div class="pull-right">
 						<jsp:include page="../../inc/pagenationTop.jsp" >
 						 	<jsp:param name="pageNo" value="${pageNo }"/>
-						 	<jsp:param name="totalSize" value="<%=totalSize %>" />
+						 	<jsp:param name="totalSize" value="<%=indexDataResult.getInt("documentSize") %>" />
 							<jsp:param name="pageSize" value="${pageSize }" />
 							<jsp:param name="width" value="5" />
 							<jsp:param name="callback" value="goIndexDataRawPage" />

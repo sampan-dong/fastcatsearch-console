@@ -92,12 +92,11 @@
 <script type="text/javascript"
 	src="${contextPath}/resources/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
 
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/daterangepicker/moment.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/daterangepicker/daterangepicker.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/blockui/jquery.blockUI.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/pickadate/picker.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/pickadate/picker.date.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/blockui/jquery.blockUI.min.js"></script>
 
 <script type="text/javascript"
 	src="${contextPath}/resources/plugins/fullcalendar/fullcalendar.min.js"></script>

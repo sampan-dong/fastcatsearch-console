@@ -28,17 +28,17 @@ public class WebUtils {
 		
 		int[] timeUnits = new int[4];
 		int remnant = seconds;
-		if(remnant > DAY){
+		if(remnant >= DAY){
 			timeUnits[0] = remnant / DAY;
 			remnant = remnant % DAY;
 		}
 		
-		if(remnant > HOUR){
+		if(remnant >= HOUR){
 			timeUnits[1] = remnant / HOUR;
 			remnant = remnant % HOUR;
 		}
 		
-		if(remnant > MINUTE){
+		if(remnant >= MINUTE){
 			timeUnits[2] = remnant / MINUTE;
 			remnant = remnant % MINUTE;
 		}

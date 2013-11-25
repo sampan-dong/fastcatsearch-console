@@ -96,7 +96,7 @@ body {
 }
 .page-title {
   float: left;
-  padding: 25px 0;
+  padding: 25px 0 10px 0;
 }
 .page-title h3 {
   margin: 0;
@@ -2624,8 +2624,8 @@ label > span.required {
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
 .pagination > .active > span:focus {
-  background-color: #416cb6;
-  border-color: #3c5a74;
+  background-color: #4d90fe;
+  border-color: #3079ed;
 }
 /* * * * * * * * * * * *
  * Checkable Table
@@ -3041,7 +3041,7 @@ ul.stats li.light strong {
 }
 .tabbable-custom.tabbable-full-width .nav-tabs > li > a {
   font-size: 15px;
-  padding: 8px 20px;
+  padding: 5px 12px;
   color: #555555;
 }
 .tabbable-custom.tabbable-full-width > .tab-content {

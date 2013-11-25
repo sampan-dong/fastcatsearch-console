@@ -37,29 +37,14 @@ public class CollectionsController extends AbstractController {
 	
 	@RequestMapping("/data")
 	public ModelAndView data(HttpSession session, @PathVariable String collectionId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
-		String requestUrl = "/management/collections/index-data-status.json";
-		JSONObject indexDataStatus = httpClient.httpGet(requestUrl)
-					.addParameter("collectionId", collectionId)
-					.requestJSON();
-		logger.debug("indexDataStatus >> {}", indexDataStatus);
-		String shardId = null;
-		JSONArray arr = indexDataStatus.getJSONArray("indexDataStatus");
-		if(arr.length() > 0){
-			JSONObject obj = arr.getJSONObject(0);
-			shardId = obj.getString("shardId");
-		}
-		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/data");
 		mav.addObject("collectionId", collectionId);
-		mav.addObject("shardId", shardId);
 		return mav;
 	}
 			
 	@RequestMapping("/dataRaw")
-	public ModelAndView dataRaw(HttpSession session, @PathVariable String collectionId, @RequestParam(value="shardId", required=false) String shardId
+	public ModelAndView dataRaw(HttpSession session, @PathVariable String collectionId
 			, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId) throws Exception {
 		
 		int PAGE_SIZE = 10;
@@ -73,23 +58,15 @@ public class CollectionsController extends AbstractController {
 		
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
-		String requestUrl = "/management/collections/index-data-status.json";
-		JSONObject indexDataStatus = httpClient.httpGet(requestUrl)
-					.addParameter("collectionId", collectionId)
-					.requestJSON();
-		logger.debug("indexDataStatus >> {}", indexDataStatus);
-		if(shardId == null || shardId.length() == 0){
-			JSONArray arr = indexDataStatus.getJSONArray("indexDataStatus");
-			if(arr.length() > 0){
-				JSONObject obj = arr.getJSONObject(0);
-				shardId = obj.getString("shardId");
-			}
-		}
+//		String requestUrl = "/management/collections/index-data-status.json";
+//		JSONObject indexDataStatus = httpClient.httpGet(requestUrl)
+//					.addParameter("collectionId", collectionId)
+//					.requestJSON();
+//		logger.debug("indexDataStatus >> {}", indexDataStatus);
 		
-		requestUrl = "/management/collections/index-data.json";
+		String requestUrl = "/management/collections/index-data.json";
 		JSONObject indexData = httpClient.httpGet(requestUrl)
 					.addParameter("collectionId", collectionId)
-					.addParameter("shardId", shardId)
 					.addParameter("start", String.valueOf(start))
 					.addParameter("end", String.valueOf(end))
 					.requestJSON();
@@ -100,19 +77,17 @@ public class CollectionsController extends AbstractController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/dataRaw");
 		mav.addObject("collectionId", collectionId);
-		mav.addObject("shardId", shardId);
 		mav.addObject("start", start + 1);
 		mav.addObject("end", start + realSize);
 		mav.addObject("pageNo", pageNo);
 		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("indexDataResult", indexData);
-		mav.addObject("indexDataStatus", indexDataStatus);
 		mav.addObject("targetId", targetId);
 		return mav;
 	}
 	
 	@RequestMapping("/dataSearch")
-	public ModelAndView dataSearch(HttpSession session, @PathVariable String collectionId, @RequestParam(value="shardId", required=false) String shardId,
+	public ModelAndView dataSearch(HttpSession session, @PathVariable String collectionId,
 			@RequestParam(value="se", required=false) String se, @RequestParam(value="ft", required=false) String ft, @RequestParam(value="gr", required=false) String gr,
 			@RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId) throws Exception {
 		
@@ -130,7 +105,6 @@ public class CollectionsController extends AbstractController {
 		requestUrl = "/service/search.json";
 		JSONObject searchResult = httpClient.httpGet(requestUrl)
 					.addParameter("cn", collectionId)
-					.addParameter("sd", shardId)
 					.addParameter("fl", "Title") //FIXME
 					.addParameter("se", se)
 					.addParameter("ft", ft)
@@ -146,7 +120,6 @@ public class CollectionsController extends AbstractController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/dataSearch");
 		mav.addObject("collectionId", collectionId);
-		mav.addObject("shardId", shardId);
 		mav.addObject("start", start);
 		mav.addObject("end", start + realSize - 1);
 		mav.addObject("pageNo", pageNo);
@@ -173,6 +146,15 @@ public class CollectionsController extends AbstractController {
 	@RequestMapping("/indexing")
 	public ModelAndView indexing(HttpSession session, @PathVariable String collectionId) throws Exception {
 		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/indexing");
+		mav.addObject("collectionId", collectionId);
+		return mav;
+	}
+	
+	@RequestMapping("/indexing/status")
+	public ModelAndView indexingStatus(HttpSession session, @PathVariable String collectionId) throws Exception {
+		
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/indexing-status.json";
 		JSONObject indexingStatus = null;
@@ -187,21 +169,31 @@ public class CollectionsController extends AbstractController {
 		JSONObject indexingResult = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestJSON();
 		logger.debug("indexingResult >> {}",indexingResult);
 		
-		requestUrl = "/management/collections/indexing-schedule.xml";
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/indexingStatus");
+		mav.addObject("collectionId", collectionId);
+		mav.addObject("indexingStatus", indexingStatus);
+		mav.addObject("indexingResult", indexingResult.getJSONObject("indexingResult"));
+		return mav;
+	}
+	
+	@RequestMapping("/indexing/schedule")
+	public ModelAndView indexingSchedule(HttpSession session, @PathVariable String collectionId) throws Exception {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/collections/indexing-schedule.xml";
 		Document indexingSchedule = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
 		logger.debug("indexingSchedule >> {}",indexingSchedule);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/collections/indexing");
+		mav.setViewName("manager/collections/indexingSchedule");
 		mav.addObject("collectionId", collectionId);
-		mav.addObject("indexingStatus", indexingStatus);
-		mav.addObject("indexingResult", indexingResult.getJSONObject("indexingResult"));
 		mav.addObject("indexingSchedule", indexingSchedule);
 		return mav;
 	}
 	
 	@RequestMapping("/indexing/history")
-	public ModelAndView setDictionary(HttpSession session, @PathVariable String collectionId
+	public ModelAndView indexingHistory(HttpSession session, @PathVariable String collectionId
 			, @RequestParam(defaultValue = "1") Integer pageNo) throws Exception {
 		
 		int PAGE_SIZE = 10;
@@ -235,7 +227,7 @@ public class CollectionsController extends AbstractController {
 	public ModelAndView settings(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/config.xml";
-		Document document = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		Document document = httpClient.httpPost(requestUrl).addParameter("collectionId", collectionId).requestXML();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/config");
@@ -244,77 +236,4 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 	
-	@RequestMapping("/shard")
-	public ModelAndView shard(HttpSession session, @PathVariable String collectionId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/collections/shardList.xml";
-		Document document = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
-		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/collections/shard");
-		mav.addObject("collectionId", collectionId);
-		mav.addObject("document", document);
-		return mav;
-	}
-	
-	@RequestMapping("/shard/add")
-	public ModelAndView shardAdd(HttpSession session, @PathVariable String collectionId, @RequestParam String shardId
-			, @RequestParam String shardName, @RequestParam String filter, @RequestParam String dataNodeList) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/collections/shardAdd.json";
-		JSONObject result = httpClient.httpPost(requestUrl)
-				.addParameter("collectionId", collectionId)
-				.addParameter("shardId", shardId)
-				.addParameter("shardName", shardName)
-				.addParameter("filter", filter)
-				.addParameter("dataNodeList", dataNodeList)
-				.requestJSON();
-		
-		if(result != null){
-			if(result.getBoolean("success")){
-				logger.debug("Shard Add Success > {} : {}", collectionId, shardId);
-			}
-		}
-		
-		return shard(session, collectionId);
-	}
-	
-	@RequestMapping("/shard/update")
-	public ModelAndView shardUpdate(HttpSession session, @PathVariable String collectionId, @RequestParam String shardId
-			, @RequestParam String shardName, @RequestParam String filter, @RequestParam String dataNodeList) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/collections/shardUpdate.json";
-		JSONObject result = httpClient.httpPost(requestUrl)
-				.addParameter("collectionId", collectionId)
-				.addParameter("shardId", shardId)
-				.addParameter("shardName", shardName)
-				.addParameter("filter", filter)
-				.addParameter("dataNodeList", dataNodeList)
-				.requestJSON();
-		
-		if(result != null){
-			if(result.getBoolean("success")){
-				logger.debug("Shard Update Success > {} : {}", collectionId, shardId);
-			}
-		}
-		return shard(session, collectionId);
-	}
-	
-	@RequestMapping("/shard/remove")
-	public ModelAndView shardRemove(HttpSession session, @PathVariable String collectionId, @RequestParam String shardId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/collections/shardAdd.json";
-		JSONObject result = httpClient.httpPost(requestUrl)
-				.addParameter("collectionId", collectionId)
-				.addParameter("shardId", shardId)
-				.requestJSON();
-		
-		if(result != null){
-			if(result.getBoolean("success")){
-				logger.debug("Shard Remove Success > {} : {}", collectionId, shardId);
-			}
-		}
-		
-		return shard(session, collectionId);
-	}
 }

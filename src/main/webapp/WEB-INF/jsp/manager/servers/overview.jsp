@@ -46,34 +46,26 @@
 							<div class="input-group col-md-12">
 								<a href="javascript:void(0);" class="btn btn-sm"><span
 									class="glyphicon glyphicon-plus-sign"></span> Add Server</a>
-									&nbsp;
-								<a href="javascript:void(0);" class="btn btn-sm">
-									<span class="glyphicon glyphicon-minus-sign"></span> Remove Server
-								</a>
-									&nbsp;
-								<a href="javascript:void(0);" class="btn btn-sm">
-									<span class="glyphicon glyphicon-edit"></span> Edit Server
-								</a>
-								<span class="pull-right">
+								
+								<!-- <span class="pull-right">
 								<a href="javascript:void(0);" class="btn btn-sm btn-primary">
 									<span class="glyphicon glyphicon-ok"></span> Save Changes
 								</a>
-								</span>
+								</span> -->
 							</div>
 							
 						</div>
-						<table class="table table-hover table-bordered table-checkable">
+						<table class="table table-hover table-bordered">
 							<thead>
 								<tr>
-									<th class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</th>
+									<th>#</th>
 									<th>ID</th>
 									<th>Name</th>
 									<th>IP Address</th>
 									<th>Port</th>
 									<th>Enabled</th>
 									<th>Active</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -90,15 +82,14 @@
 								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
 							%>
 								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
+									<td><%=i+1 %></td>
 									<td><strong><%=id %></strong></td>
 									<td><%=name %></td>
 									<td><%=host %></td>
 									<td><%=port %></td>
 									<td><%=enabledStatus %></td>
 									<td><%=activeStatus %></td>
+									<td><a href="javascript:void(0);" class="btn btn-sm">Edit</a></td>
 								</tr>
 							<%
 							}

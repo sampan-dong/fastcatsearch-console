@@ -1724,7 +1724,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   content: "/\00a0";
 } */
 
-.pagination {
+/* .pagination {
   margin: 18px 0;
   border-radius: 2px;
 }
@@ -1843,7 +1843,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .pagination-sm > li:last-child > span {
   border-top-right-radius: 1px;
   border-bottom-right-radius: 1px;
-}
+} */
 
 .pager {
   margin: 18px 0;

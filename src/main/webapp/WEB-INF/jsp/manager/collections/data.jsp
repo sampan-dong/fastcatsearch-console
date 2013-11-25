@@ -15,7 +15,7 @@ $(document).ready(function(){
 		var targetId = e.target.hash;
 		console.log("targetId > ",targetId);
 		if(targetId == "#tab_raw_data"){
-			loadDataRawTab("${collectionId}", "${shardId}", 1, "#tab_raw_data");
+			loadDataRawTab("${collectionId}", 1, "#tab_raw_data");
 		}else if(targetId == "#tab_search_data"){
 			//loadDataSearchTab("${collectionId}", "${shardId}", 1, "#tab_search_data");
 			loadToTab('dataSearch.html', {collectionId: "${collectionId}", targetId: "#tab_search_data"}, "#tab_search_data");
@@ -31,7 +31,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	loadDataRawTab("${collectionId}", "${shardId}", 1, "#tab_raw_data");
+	loadDataRawTab("${collectionId}", 1, "#tab_raw_data");
 });
 </script>
 </head>

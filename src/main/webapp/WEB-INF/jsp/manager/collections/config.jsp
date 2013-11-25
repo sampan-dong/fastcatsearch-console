@@ -12,6 +12,37 @@
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+<script>
+$(document).ready(function(){
+	$("#collection-config-form").validate();
+	
+	$("#collection-config-form").submit(function(e) {
+		var postData = $(this).serializeArray();
+		$.ajax({
+				url : PROXY_REQUEST_URI,
+				type: "POST",
+				data : postData,
+				dataType : "json",
+				success:function(data, textStatus, jqXHR) {
+					try {
+						if(data.success) {
+							location.href = location.href;
+						}else{
+							noty({text: "Update failed", type: "error", layout:"topRight", timeout: 5000});
+						}
+					} catch (e) {
+						noty({text: "Update error : "+e, type: "error", layout:"topRight", timeout: 5000});
+					}
+					
+				}, error: function(jqXHR, textStatus, errorThrown) {
+					noty({text: "Update error. status="+textStatus+" : "+errorThrown, type: "error", layout:"topRight", timeout: 5000});
+				}
+		});
+		e.preventDefault(); //STOP default action
+	});
+});
+
+</script>
 </head>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
@@ -47,117 +78,86 @@
 				Element root = document.getRootElement();
 				String collectionName = root.getChildText("name");
 				String indexNode = root.getChildText("index-node");
-				Element indexConfig = root.getChild("index");
+				Element dataNodeList = root.getChild("data-node-list");
 				Element dataPlanConfig = root.getChild("data-plan");
+				List<Element> nodeList = dataNodeList.getChildren("node");
+				
+				
+				String dataNodeListString = "";
+				for(int i=0;i<nodeList.size(); i++){
+					Element el = nodeList.get(i);
+					if(dataNodeListString.length() > 0){
+						dataNodeListString += ", ";
+					}
+					dataNodeListString += el.getText();
+				}
+				
 				%>
-				
-				<div class="col-md-12">
-					<div class="widget">
-						<div class="widget-header">
-							<h4>General Information</h4>
-						</div>
-						<div class="widget-content">
-							<div class="row">
-								<div class="col-md-12 form-horizontal">
-									<div class="form-group">
-										<label class="col-md-2 control-label">Collection Name:</label>
-										<div class="col-md-3"><input type="text" name="regular" class="form-control" value="<%=collectionName %>"></div>
+				<form id="collection-config-form">
+					<input type="hidden" name="uri" value="/management/collections/update-config"/>
+					<input type="hidden" name="collectionId" value="${collectionId}"/>
+					
+					<div class="col-md-12">
+						<div class="widget">
+							<div class="widget-header">
+								<h4>General Information</h4>
+							</div>
+							<div class="widget-content">
+								<div class="row">
+									<div class="col-md-12 form-horizontal">
+										<div class="form-group">
+											<label class="col-md-2 control-label">Collection Name:</label>
+											<div class="col-md-3"><input type="text" name="collectionName" class="form-control required" value="<%=collectionName %>"></div>
+										</div>
+									</div>
+									<div class="col-md-12 form-horizontal">
+										<div class="form-group">
+											<label class="col-md-2 control-label">Index Node:</label>
+											<div class="col-md-3"><input type="text" name="indexNode" class="form-control required fcol2" value="<%=indexNode %>"></div>
+										</div>
 									</div>
 								</div>
-								<div class="col-md-12 form-horizontal">
-									<div class="form-group">
-										<label class="col-md-2 control-label">Primary Node:</label>
-										<div class="col-md-3"><input type="text" name="regular" class="form-control" value="<%=indexNode %>"></div>
-									</div>
-								</div>
 							</div>
-						</div>
-					</div> <!-- /.widget -->
-				</div>
-				
-				<div class="col-md-12">
-					<div class="widget">
-						<div class="widget-header">
-							<h4>Index Config</h4>
-						</div>
-						<div class="widget-content">
-							<div class="row">
-								<div class="col-md-12">
-									<form class="form-horizontal" action="#">
-										<div class="col-md-5">
-											<div class="form-group">
-												<label class="col-md-8 control-label">term-interval :</label>
-												<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=indexConfig.getChildText("term-interval") %>"></div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-md-8 control-label">work-bucket-size :</label>
-												<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=indexConfig.getChildText("work-bucket-size") %>"></div>
-											</div>
-										</div>
-										<div class="col-md-5">
-											<div class="form-group">
-												<label class="col-md-8 control-label">work-memory-size :</label>
-												<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=indexConfig.getChildText("work-memory-size") %>"></div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-md-8 control-label">pk-bucket-size :</label>
-												<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=indexConfig.getChildText("pk-bucket-size") %>"></div>
-											</div>
-										</div>
-										<div class="col-md-5">
-											<div class="form-group">
-												<label class="col-md-8 control-label">pk-term-interval :</label>
-												<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=indexConfig.getChildText("pk-term-interval") %>"></div>
-											</div>
-
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-md-12">
-					<div class="widget">
-						<div class="widget-header">
-							<h4>Data Plan</h4>
-						</div>
-						<div class="widget-content">
-							<div class="row">
-								<div class="col-md-12">
-									<form class="form-horizontal" action="#">
-										<div class="col-md-5">
-											<div class="form-group">
-												<label class="col-md-8 control-label">Data-sequence-cycle :</label>
-												<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=dataPlanConfig.getChildText("data-sequence-cycle") %>"></div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-md-8 control-label">Segment-revision-backup-size :</label>
-												<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=dataPlanConfig.getChildText("segment-revision-backup-size") %>"></div>
-											</div>
-										</div>
-										<div class="col-md-5">
-											<div class="form-group">
-												<label class="col-md-8 control-label">Segment-document-limit :</label>
-												<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=dataPlanConfig.getChildText("segment-document-limit") %>"></div>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
+						</div> <!-- /.widget -->
 					</div>
 					
-					<div class="form-actions">
-						<input type="submit" value="Update Settings" class="btn btn-primary pull-right">
+					<div class="col-md-12">
+						<div class="widget">
+							<div class="widget-header">
+								<h4>Data Plan</h4>
+							</div>
+							<div class="widget-content">
+								<div class="row">
+									<div class="col-md-8 form-horizontal">
+										
+										<div class="form-group">
+											<label class="col-md-4 control-label">Data Node List :</label>
+											<div class="col-md-8"><input type="text" name="dataNodeList" class="form-control required" value="<%=dataNodeListString %>"></div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-4 control-label">Data-sequence-cycle :</label>
+											<div class="col-md-8"><input type="text" name="dataSequenceCycle" class="form-control required digits fcol1" value="<%=dataPlanConfig.getChildText("data-sequence-cycle") %>" maxlength="1" minlength="1"></div>
+										</div>
+	
+										<div class="form-group">
+											<label class="col-md-4 control-label">Segment-revision-backup-size :</label>
+											<div class="col-md-8"><input type="text" name="segmentRevisionBackupSize" class="form-control required digits fcol1" value="<%=dataPlanConfig.getChildText("segment-revision-backup-size") %>" maxlength="2" minlength="1"></div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-4 control-label">Segment-document-limit :</label>
+											<div class="col-md-8"><input type="text" name="segmentDocumentLimit" class="form-control required digits fcol2" value="<%=dataPlanConfig.getChildText("segment-document-limit") %>"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-actions">
+							<input type="submit" value="Update Settings" class="btn btn-primary pull-right">
+						</div>
 					</div>
-				</div>
 				
-				
+				</form>
 				
 				
 				
