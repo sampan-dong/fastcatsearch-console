@@ -4,6 +4,8 @@ import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.jdom2.Document;
+import org.jdom2.Element;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +32,15 @@ public class AnalysisController extends AbstractController {
 
 	@RequestMapping("/{analysisId}/index")
 	public ModelAndView view(HttpSession session, @PathVariable String analysisId) throws Exception {
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String getAnalysisPluginSettingURL = "/management/analysis/plugin-setting.xml?pluginId="+analysisId;
+		Document document = httpClient.httpGet(getAnalysisPluginSettingURL).requestXML();
+		Element rootElement = document.getRootElement();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/index");
 		mav.addObject("analysisId", analysisId);
+		mav.addObject("setting",rootElement);
 		return mav;
 	}
 }

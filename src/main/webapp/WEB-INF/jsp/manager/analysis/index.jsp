@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="org.jdom2.Element"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
@@ -12,6 +13,22 @@ function editPluginSchedule(id){
 }
 </script>
 </head>
+<%
+Element rootElement = (Element) request.getAttribute("setting");
+
+String analyzerName = rootElement.getChildText("name");
+
+String description = rootElement.getChildText("description");
+
+String namespace = rootElement.getAttributeValue("namespace");
+
+String analyzerClass = rootElement.getAttributeValue("class");
+
+String analyzerVersion = rootElement.getChildText("version");
+
+boolean usedb = "true".equals(rootElement.getChildText("use-db"));
+
+%>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 	<div id="container">
@@ -47,17 +64,17 @@ function editPluginSchedule(id){
 					<div class="widget-content">
 						<dl class="dl-horizontal">
 							<dt>ID</dt>
-							<dd>Korean analysis</dd>
+							<dd>${analysisId} analysis</dd>
 							<dt>Namespace</dt>
-							<dd>Analysis</dd>
+							<dd><%= namespace%></dd>
 							<dt>Class</dt>
-							<dd>org.fastcatsearch.plugin.analysis.ko.KoreanAnalysisPlugin</dd>
+							<dd><%= analyzerClass%></dd>
 							<dt>Name</dt>
-							<dd>한국어분석기</dd>
+							<dd><%= analyzerName%></dd>
 							<dt>Version</dt>
-							<dd>1.0</dd>
+							<dd><%= analyzerVersion%></dd>
 							<dt>Decription</dt>
-							<dd>한국어분석기 및 한국어분석사전을 제공한다.</dd>
+							<dd><%= description %></dd>
 						</dl>
 					</div>
 				</div>

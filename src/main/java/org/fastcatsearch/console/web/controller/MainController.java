@@ -171,11 +171,14 @@ public class MainController extends AbstractController {
 				return abstractMethod.requestText();
 			}else if(dataType.equalsIgnoreCase("xml")){ 
 				try {
-					Document document = abstractMethod.requestXML();
+					//if you using XML Document object you'll get message below
+					//"Document: No DOCTYPE declaration, Root is [Element: ]]"
+					//so. use requestText method
+					String document = abstractMethod.requestText();
 					if(document == null){
 						return "";
 					}else{
-						return document.toString();
+						return document;
 					}
 				} catch (Exception e) {
 					logger.error("", e);
