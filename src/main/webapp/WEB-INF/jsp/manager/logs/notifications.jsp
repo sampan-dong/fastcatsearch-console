@@ -16,19 +16,26 @@ int totalSize = 1;
 int totalPage = 1;
 int pageNum = 1;
 int rowSize = 15;
-int rowStarts = 0;
+int rowStarts = 1;
 int rowFinish = 15;
+int pageStarts = 1;
+int pageFinish = 1;
 JSONArray notificationList = null;
 
 try {
 	JSONObject notifications = (JSONObject)request.getAttribute("notifications");
 	totalSize = notifications.optInt("totalSize",totalSize);
 	pageNum = notifications.optInt("pageNum", pageNum);
-	totalPage = totalSize / pageNum;
 	rowSize = notifications.optInt("rowSize", rowSize);
+	totalPage = totalSize / rowSize + 1;
 	rowStarts = notifications.optInt("rowStarts", rowStarts);
 	rowFinish = notifications.optInt("rowFinish", rowFinish);
 	notificationList = notifications.optJSONArray("notifications");
+	pageStarts = pageNum - pageNum % 10 + 1;
+	pageFinish = pageNum + 10;
+	if(pageFinish > totalPage) {
+		pageFinish = totalPage;
+	}
 } catch (Exception e) {
 }
 
@@ -82,11 +89,9 @@ try {
 									<span>Rows <%=rowStarts %> - <%=rowFinish %> of <%=totalSize %></span>
 									<div class="btn-group pull-right">
 										<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&laquo;</a>
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" rel="tooltip">1</a>
-										<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">2</a>
-										<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">3</a>
-										<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">4</a>
-										<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">5</a>
+										<% for(int pageInx=pageStarts;pageInx <=pageFinish; pageInx++) { %>
+										<a href="javascript:void(0);" class="btn btn-sm <%=pageInx==pageNum?"btn-primary":"" %>" rel="tooltip"><%=pageInx %></a>
+										<% } %>
 										<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&raquo;</a>
 									</div>
 								</div>
@@ -103,114 +108,25 @@ try {
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>15</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>14</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>13</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>12</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>11</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>10</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>9</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>8</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>7</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>6</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>2013-09-10 12:35:00</td>
-										<td>node1</td>
-										<td>FC-100</td>
-										<td>Collection [sample] is not indexed.</td>
-									</tr>
+									<%
+									for(int inx=0;notificationList!=null && inx < notificationList.length(); inx++) {
+									%>
+										<%
+										JSONObject record = notificationList.optJSONObject(inx);
+										%>
+										<tr>
+											<td><%=record.optInt("id") %></td>
+											<td><%=record.optString("regtime") %></td>
+											<td><%=record.optString("node") %></td>
+											<td><%=record.optString("messageCode") %></td>
+											<td><%=record.optString("message") %></td>
+										</tr>
+									<%
+									}
+									%>
 								</tbody>
 							</table>
-							
+<!--
 							<div class="table-footer">
 								<dl class="dl-horizontal col-md-12">
 									<dt>Time</dt>
@@ -235,7 +151,7 @@ try {
 									</div></dd>
 								</dl>
 							</div>
-											
+-->
 						</div>
 					</div>
 					</div>
