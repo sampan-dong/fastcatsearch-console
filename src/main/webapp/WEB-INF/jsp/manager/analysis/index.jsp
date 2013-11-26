@@ -14,6 +14,10 @@ java.util.List
 function editPluginSchedule(id){
 	//table > tbody > tr > td의 값을 가져와서 modal에 뿌려준다. 
 }
+
+function viewDictionarySchema(inx) {
+	$("#schemaView"+inx).modal({show: true, backdrop: "static"});
+}
 </script>
 </head>
 <%
@@ -145,6 +149,7 @@ if(rootElement!=null) {
 									if(dictionaryType==null) {
 										dictionaryType="";
 									}
+									List<Element>schema = dictionary.getChildren();
 									%>
 									<tr>
 										<td><%=rowInx+1 %></td>
@@ -152,7 +157,11 @@ if(rootElement!=null) {
 										<td><%=dictionaryName %></td>
 										<td><i><%=dictionaryId.toLowerCase() %>.dict</i></td>
 										<td><span class="label label-default"><%=dictionaryType %></span></td>
-										<td><a href="javascript:alert('column을 보여주는 modal을 띄운다.')">View</a></td>
+										<td>
+										<% if(schema!=null && schema.size() > 0) { %>
+											<a href="javascript:viewDictionarySchema(<%=rowInx%>)">View</a>
+										<% } %>
+										</td>
 									</tr>
 								<%
 								}
@@ -273,5 +282,74 @@ if(rootElement!=null) {
 			</div>
 		</div>
 	</div>
+	<% 
+	for (int rowInx=0;dictionaryList!=null && rowInx < dictionaryList.size(); rowInx++) { 
+	%>
+		<%
+		Element dictionary = dictionaryList.get(rowInx);
+		String dictionaryId = dictionary.getAttributeValue("id");
+		String dictionaryName = dictionary.getAttributeValue("name");
+		List<Element>schema = dictionary.getChildren();
+		%>
+		<div class="modal" id="schemaView<%=rowInx%>">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Dictionary Schema ( <%=dictionaryName %> )</h4>
+					</div>
+					<div class="modal-body">
+						<table class="table table-hover table-bordered">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Index</th>
+								<th>Search</th>
+								<th>Compile</th>
+								<th>IgnoreCase</th>
+								<th>NullUnique</th>
+							</tr>
+						</thead>
+						<tbody>
+						<%
+						for(int colInx=0; colInx < schema.size(); colInx++) {
+						%>
+							<%
+							Element columns = schema.get(colInx);
+							String columnName = columns.getAttributeValue("name");
+							String columnType = columns.getAttributeValue("type");
+							String isIndex = columns.getAttributeValue("index");
+							String isSearchable = columns.getAttributeValue("searchable");
+							String isCompilable = columns.getAttributeValue("compilable");
+							String isIgnoreCase = columns.getAttributeValue("ignoreCase");
+							String isNullableUnique = columns.getAttributeValue("nullableUnique");
+							%>
+							<tr>
+								<td><%=colInx+1 %></td>
+								<td><%=columnName %></td>
+								<td><%=columnType %></td>
+								<td><%=isIndex %></td>
+								<td><%=isSearchable %></td>
+								<td><%=isCompilable %></td>
+								<td><%=isIgnoreCase %></td>
+								<td><%=isNullableUnique %></td>
+							</tr>
+						<%
+						}
+						%>
+						</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+	<%
+	}
+	%>
+						
 </body>
 </html>
