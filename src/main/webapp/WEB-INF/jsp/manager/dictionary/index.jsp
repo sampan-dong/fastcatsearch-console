@@ -52,7 +52,7 @@ $(document).ready(function(){
 					<ul id="breadcrumbs" class="breadcrumb">
 						<li><i class="icon-home"></i> Manager</li>
 						<li class="current"> Dictionary</li>
-						<li class="current"> Korean</li>
+						<li class="current"> ${analysisId}</li>
 					</ul>
 
 				</div>
