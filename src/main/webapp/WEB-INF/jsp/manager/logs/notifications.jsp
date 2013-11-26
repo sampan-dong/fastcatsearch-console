@@ -16,6 +16,7 @@ int totalSize = 1;
 int totalPage = 1;
 int pageNum = 1;
 int rowSize = 15;
+int pageSize = 10;
 int rowStarts = 1;
 int rowFinish = 15;
 int pageStarts = 1;
@@ -27,12 +28,13 @@ try {
 	totalSize = notifications.optInt("totalSize",totalSize);
 	pageNum = notifications.optInt("pageNum", pageNum);
 	rowSize = notifications.optInt("rowSize", rowSize);
+	pageSize = notifications.optInt("pageSize", pageSize);
 	totalPage = totalSize / rowSize + 1;
 	rowStarts = notifications.optInt("rowStarts", rowStarts);
 	rowFinish = notifications.optInt("rowFinish", rowFinish);
 	notificationList = notifications.optJSONArray("notifications");
-	pageStarts = pageNum - pageNum % 10 + 1;
-	pageFinish = pageNum + 10;
+	pageStarts = (pageNum-1) - ((pageNum-1) % pageSize)+1;
+	pageFinish = pageStarts + (pageSize-1);
 	if(pageFinish > totalPage) {
 		pageFinish = totalPage;
 	}
