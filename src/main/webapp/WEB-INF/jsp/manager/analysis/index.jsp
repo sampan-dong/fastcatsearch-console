@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="
+org.jdom2.Element,
+java.util.List
+"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
@@ -12,6 +16,55 @@ function editPluginSchedule(id){
 }
 </script>
 </head>
+<%
+Element element = null;
+Element rootElement = (Element) request.getAttribute("setting");
+
+String analyzerName = "";
+
+String description = "";
+
+String namespace = "";
+
+String analyzerClass = "";
+
+String analyzerVersion = "";
+
+boolean usedb = false;
+
+List<Element> dictionaryList = null;
+List<Element> scheduleList = null;
+List<Element> actionList = null;
+
+if(rootElement!=null) {
+
+	analyzerName = rootElement.getChildText("name");
+	
+	description = rootElement.getChildText("description");
+	
+	namespace = rootElement.getAttributeValue("namespace");
+	
+	analyzerClass = rootElement.getAttributeValue("class");
+	
+	analyzerVersion = rootElement.getChildText("version");
+	
+	usedb = "true".equals(rootElement.getChildText("use-db"));
+	
+
+	if((element = rootElement.getChild("dictionary-list"))!=null) {
+		dictionaryList = element.getChildren();
+	}
+	
+	if((element = rootElement.getChild("schedule-list"))!=null) {
+		scheduleList = element.getChildren();
+	}
+	
+	if((element = rootElement.getChild("action-list"))!=null) {
+		actionList = element.getChildren();
+	}
+}
+
+%>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 	<div id="container">
@@ -47,21 +100,23 @@ function editPluginSchedule(id){
 					<div class="widget-content">
 						<dl class="dl-horizontal">
 							<dt>ID</dt>
-							<dd>Korean analysis</dd>
+							<dd>${analysisId} analysis</dd>
 							<dt>Namespace</dt>
-							<dd>Analysis</dd>
+							<dd><%=namespace%></dd>
 							<dt>Class</dt>
-							<dd>org.fastcatsearch.plugin.analysis.ko.KoreanAnalysisPlugin</dd>
+							<dd><%=analyzerClass%></dd>
 							<dt>Name</dt>
-							<dd>한국어분석기</dd>
+							<dd><%=analyzerName%></dd>
 							<dt>Version</dt>
-							<dd>1.0</dd>
+							<dd><%=analyzerVersion%></dd>
 							<dt>Decription</dt>
-							<dd>한국어분석기 및 한국어분석사전을 제공한다.</dd>
+							<dd><%=description %></dd>
 						</dl>
 					</div>
 				</div>
-					
+				<% 
+				if (dictionaryList!=null) { 
+				%>
 				<div class="widget">
 					<div class="widget-header">
 						<h4>Dictionary</h4>
@@ -79,36 +134,41 @@ function editPluginSchedule(id){
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td><strong>User</strong></td>
-									<td>User Dictionary</td>
-									<td><i>user.dict</i></td>
-									<td><span class="label label-default">Set</span></td>
-									<td><a href="javascript:alert('column을 보여주는 modal을 띄운다.')">View</a></td>
-								</tr>
-								<tr><td>2</td>
-									<td><strong>Synonym</strong></td>
-									<td>Synonym Dictionary</td>
-									<td><i>synonym.dict</i></td>
-									<td><span class="label label-default">List</span></td>
-									<td><a href="javascript:alert('column을 보여주는 modal을 띄운다.')">View</a></td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td><strong>Stop</strong></td>
-									<td>Stop Dictionary</td>
-									<td><i>stop.dict</i></td>
-									<td><span class="label label-default">Set</span></td>
-									<td><a href="javascript:alert('column을 보여주는 modal을 띄운다.')">View</a></td>
-								</tr>
+								<%
+								for(int rowInx=0;rowInx<dictionaryList.size();rowInx++) {
+								%>
+									<%
+									Element dictionary = dictionaryList.get(rowInx);
+									String dictionaryId = dictionary.getAttributeValue("id");
+									String dictionaryName = dictionary.getAttributeValue("name");
+									String dictionaryType = dictionary.getAttributeValue("type");
+									if(dictionaryType==null) {
+										dictionaryType="";
+									}
+									%>
+									<tr>
+										<td><%=rowInx+1 %></td>
+										<td><strong><%=dictionaryId %></strong></td>
+										<td><%=dictionaryName %></td>
+										<td><i><%=dictionaryId.toLowerCase() %>.dict</i></td>
+										<td><span class="label label-default"><%=dictionaryType %></span></td>
+										<td><a href="javascript:alert('column을 보여주는 modal을 띄운다.')">View</a></td>
+									</tr>
+								<%
+								}
+								%>
 							</tbody>
 						</table>
 					</div>
 				</div>
+				<%
+				}
+				%>
 							
 						
-						
+				<%
+				if(actionList!=null) {
+				%>		
 				<div class="widget">
 					<div class="widget-header">
 						<h4>Action</h4>
@@ -124,18 +184,35 @@ function editPluginSchedule(id){
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td><strong>/analysis/product/synonym</strong></td>
-									<td>GET,POST</td>
-									<td><i>org.fastcatsearch.plugin.analysis.product.servlet.SynonymDictionaryAction</i></td>
-								</tr>
+								<%
+								for(int rowInx=0;rowInx<actionList.size();rowInx++) {
+								%>
+									<%
+									Element action = actionList.get(rowInx);
+									String actionClass = action.getAttributeValue("class");
+									String actionMethod = action.getAttributeValue("methods");
+									String actionUri = action.getAttributeValue("uri");
+									%>
+									<tr>
+										<td><%=rowInx+1 %></td>
+										<td><strong><%=actionUri %></strong></td>
+										<td><%=actionMethod %></td>
+										<td><i><%=actionClass %></i></td>
+									</tr>
+								<%
+								}
+								%>
 							</tbody>
 						</table>
 					</div>
 				</div>
+				<%
+				}
+				%>
 							
-						
+				<%
+				if(scheduleList!=null) {
+				%>
 				<div class="widget">
 					<div class="widget-header">
 						<h4>Schedule</h4>
@@ -151,22 +228,45 @@ function editPluginSchedule(id){
 								</tr>
 							</thead>
 							<tbody>
-								<tr id="schedule_1">
-									<td>1</td>
-									<td><strong>org.fastcatsearch.job.plugin.BackupDictionaryJob</strong></td>
-									<td>2011.11.26 09:00</td>
-									<td>1 Hour</td>
-								</tr>
-								<tr id="schedule_2">
-									<td>2</td>
-									<td><strong>org.fastcatsearch.job.plugin.BackupDictionaryJob</strong></td>
-									<td>2011.11.26 09:00</td>
-									<td>1 Hour</td>
-								</tr>
+								<%
+								for(int rowInx=0;rowInx<scheduleList.size();rowInx++) {
+								%>
+									<%
+									Element schedule = scheduleList.get(rowInx);
+									String scheduleClass = schedule.getAttributeValue("class");
+									String startTime = schedule.getAttributeValue("startTime");
+									int period = -1;
+									String unit = "Minute";
+									try {
+										period = Integer.parseInt(schedule.getAttributeValue("periodInMinute"));
+									} catch (Exception e) {
+									}
+									if(period > 60) {
+										period = period / 60;
+										unit = "Hour";
+									}
+									%>
+									
+									<tr id="schedule_<%=rowInx+1%>">
+										<td><%=rowInx+1 %></td>
+										<td><strong><%=scheduleClass %></strong></td>
+										<td><%=startTime %></td>
+										<td>
+										<% if(period != -1) { %>
+											<%=period %> <%=unit %>
+										<% } %>
+										</td>
+									</tr>
+								<%
+								}
+								%>
 							</tbody>
 						</table>
 					</div>
 				</div>
+				<%
+				}
+				%>
 
 						
 				<!-- /Page Content -->
