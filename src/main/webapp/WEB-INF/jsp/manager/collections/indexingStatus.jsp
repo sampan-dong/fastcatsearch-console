@@ -19,8 +19,8 @@
 		</div>
 		<div class="widget-content">
 			<dl class="dl-horizontal">
-				<dt>Data Sequence : </dt>
-				<dd><%=indexingStatus.getInt("sequence") %></dd>
+				<dt>Data Path : </dt>
+				<dd><%=indexingStatus.getString("dataPath") %></dd>
 				<dt>Total Document Size : </dt>
 				<dd><%=indexingStatus.getInt("documentSize") %></dd>
 				<dt>Total Disk Size : </dt>

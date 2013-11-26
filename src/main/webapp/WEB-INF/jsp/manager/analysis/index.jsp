@@ -10,15 +10,6 @@ java.util.List
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
-<script>
-function editPluginSchedule(id){
-	//table > tbody > tr > td의 값을 가져와서 modal에 뿌려준다. 
-}
-
-function viewDictionarySchema(inx) {
-	$("#schemaView"+inx).modal({show: true, backdrop: "static"});
-}
-</script>
 </head>
 <%
 Element element = null;
@@ -159,7 +150,7 @@ if(rootElement!=null) {
 										<td><span class="label label-default"><%=dictionaryType %></span></td>
 										<td>
 										<% if(schema!=null && schema.size() > 0) { %>
-											<a href="javascript:viewDictionarySchema(<%=rowInx%>)">View</a>
+											<a data-toggle="modal" href="#schemaView<%=rowInx%>" >View</a>
 										<% } %>
 										</td>
 									</tr>
@@ -199,7 +190,7 @@ if(rootElement!=null) {
 									<%
 									Element action = actionList.get(rowInx);
 									String actionClass = action.getAttributeValue("class");
-									String actionMethod = action.getAttributeValue("methods");
+									String actionMethod = action.getAttributeValue("methods").toUpperCase();
 									String actionUri = action.getAttributeValue("uri");
 									%>
 									<tr>
@@ -292,7 +283,7 @@ if(rootElement!=null) {
 		List<Element>schema = dictionary.getChildren();
 		%>
 		<div class="modal" id="schemaView<%=rowInx%>">
-			<div class="modal-dialog">
+			<div class="modal-dialog" style="width: 900px;">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -318,13 +309,13 @@ if(rootElement!=null) {
 						%>
 							<%
 							Element columns = schema.get(colInx);
-							String columnName = columns.getAttributeValue("name");
-							String columnType = columns.getAttributeValue("type");
-							String isIndex = columns.getAttributeValue("index");
-							String isSearchable = columns.getAttributeValue("searchable");
-							String isCompilable = columns.getAttributeValue("compilable");
-							String isIgnoreCase = columns.getAttributeValue("ignoreCase");
-							String isNullableUnique = columns.getAttributeValue("nullableUnique");
+							String columnName = columns.getAttributeValue("name").toUpperCase();
+							String columnType = columns.getAttributeValue("type").toUpperCase();
+							String isIndex = columns.getAttributeValue("index").toUpperCase();
+							String isSearchable = columns.getAttributeValue("searchable").toUpperCase();
+							String isCompilable = columns.getAttributeValue("compilable").toUpperCase();
+							String isIgnoreCase = columns.getAttributeValue("ignoreCase").toUpperCase();
+							String isNullableUnique = columns.getAttributeValue("nullableUnique").toUpperCase();
 							%>
 							<tr>
 								<td><%=colInx+1 %></td>
