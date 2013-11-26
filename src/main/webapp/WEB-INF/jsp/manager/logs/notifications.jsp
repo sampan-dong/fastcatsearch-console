@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="
+org.json.JSONObject,
+org.json.JSONArray
+"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ROOT_PATH" value="../.."/>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
@@ -7,6 +11,28 @@
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 </head>
+<%
+int totalSize = 1;
+int totalPage = 1;
+int pageNum = 1;
+int rowSize = 15;
+int rowStarts = 0;
+int rowFinish = 15;
+JSONArray notificationList = null;
+
+try {
+	JSONObject notifications = (JSONObject)request.getAttribute("notifications");
+	totalSize = notifications.optInt("totalSize",totalSize);
+	pageNum = notifications.optInt("pageNum", pageNum);
+	totalPage = totalSize / pageNum;
+	rowSize = notifications.optInt("rowSize", rowSize);
+	rowStarts = notifications.optInt("rowStarts", rowStarts);
+	rowFinish = notifications.optInt("rowFinish", rowFinish);
+	notificationList = notifications.optJSONArray("notifications");
+} catch (Exception e) {
+}
+
+%>
 <body>
 <c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 <div id="container">
@@ -53,7 +79,7 @@
 						<div class="widget-content no-padding">
 							<div class="dataTables_header clearfix">
 								<div class="col-md-12">
-									<span>Rows 1 - 15 of 2809</span>
+									<span>Rows <%=rowStarts %> - <%=rowFinish %> of <%=totalSize %></span>
 									<div class="btn-group pull-right">
 										<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&laquo;</a>
 										<a href="javascript:void(0);" class="btn btn-sm btn-primary" rel="tooltip">1</a>

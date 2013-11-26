@@ -1,8 +1,13 @@
 package org.fastcatsearch.console.web.controller.manager;
 
+import javax.servlet.http.HttpSession;
+
 import org.fastcatsearch.console.web.controller.AbstractController;
+import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -10,9 +15,18 @@ import org.springframework.web.servlet.ModelAndView;
 public class LogsController extends AbstractController {
 	
 	@RequestMapping("notifications")
-	public ModelAndView notifications() throws Exception {
+	public ModelAndView notifications(HttpSession session,
+			@RequestParam(required=false,defaultValue="1") String pageNum) throws Exception {
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		
+		String getAnalysisPluginListURL = "/management/logs/notification-history.json?pageNum="+pageNum;
+		JSONObject jsonObj = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/logs/notifications");
+		mav.addObject("notifications", jsonObj);
+		
 		return mav;
 	}
 	
