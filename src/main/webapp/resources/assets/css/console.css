@@ -118,6 +118,7 @@ form.searchTest input, textarea {font-size: 18px !important;}
 
 #searchResultModal .modal-dialog {width: 90%;}
 
-.group-panel-title a {font-size: 12px; font-weight: bold;}
+.group-panel-title {font-size: 12px !important; font-weight: bold;}
+.group-panel-title a {text-decoration:underline; font-weight:none; color:#1155cc;}
 
 .result-queryString {overflow-wrap: break-word;}

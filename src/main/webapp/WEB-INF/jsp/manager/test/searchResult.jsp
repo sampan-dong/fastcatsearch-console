@@ -152,7 +152,8 @@ function selectRawFieldValue(value){
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title group-panel-title">
-					<a data-toggle="collapse" data-parent="#accordion" href="#_group_<%=label%>"> [Group] <%=label%></a>
+					 [Group] <%=label%> 
+					&nbsp;<a data-toggle="collapse" data-parent="#accordion" href="#_group_<%=label%>">[toggle]</a>
 				</h4>
 			</div>
 			<div id="_group_<%=label%>" class="panel-collapse collapse in">
