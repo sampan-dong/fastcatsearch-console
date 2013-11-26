@@ -18,19 +18,19 @@
 	String time = "";
 	String errorMessage = null;
 	if (searchResult != null){
-		status = searchResult.getInt("status");
-		time = searchResult.getString("time");
+		status = searchResult.optInt("status");
+		time = searchResult.optString("time");
 		
 		if(status == 0) {
-			start = searchResult.getInt("start");
-			resultList = searchResult.getJSONArray("result");
-			resultCount = searchResult.getInt("count");
-			totalCount = searchResult.getInt("total_count");
-			fieldCount = searchResult.getInt("field_count");
-			fieldNameList = searchResult.getJSONArray("fieldname_list");
-			groupResultList = searchResult.getJSONArray("group_result");
+			start = searchResult.optInt("start");
+			resultList = searchResult.optJSONArray("result");
+			resultCount = searchResult.optInt("count");
+			totalCount = searchResult.optInt("total_count");
+			fieldCount = searchResult.optInt("field_count");
+			fieldNameList = searchResult.optJSONArray("fieldname_list");
+			groupResultList = searchResult.optJSONArray("group_result");
 		}else{
-			errorMessage = searchResult.getString("error_msg");
+			errorMessage = searchResult.optString("error_msg");
 		}
 	}
 	/* JSONObject indexDataResult = (JSONObject) request.getAttribute("indexDataResult");
@@ -139,7 +139,7 @@ function selectRawFieldValue(value){
 	</div>
 	<!-- //wiget -->
 	<%
-		if (groupResultList.length() > 0) {
+		if (groupResultList != null && groupResultList.length() > 0) {
 	%>
 	<div class="panel-group" id="accordion">
 		<%

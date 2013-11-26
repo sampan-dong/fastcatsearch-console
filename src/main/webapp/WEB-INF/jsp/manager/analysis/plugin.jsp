@@ -39,58 +39,37 @@ JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginO
 				</div>
 				<!-- /Page Header -->
 
-				<div class="widget box">
-					<div class="widget-content no-padding">
-						<div class="dataTables_header clearfix">
-							<div class="input-group col-md-12">
-								<a href="javascript:void(0);" class="btn btn-sm"><span
-									class="glyphicon glyphicon-plus-sign"></span> Add Plugin</a>
-								&nbsp;
-								<a href="javascript:void(0);" class="btn btn-sm">
-									<span class="glyphicon glyphicon-minus-sign"></span> Remove Plugin
-								</a>
-								&nbsp;
-								<a href="javascript:void(0);" class="btn btn-sm">
-									<span class="glyphicon glyphicon-saved"></span> Apply Plugin
-								</a>
-							</div>
-							
-						</div>
-						<table class="table table-hover table-bordered table-checkable">
-							<thead>
-								<tr>
-									<th class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</th>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Version</th>
-									<th>Decription</th>
-									<th>Class</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-								for(int i = 0; i< analysisPluginList.length(); i++){
-									JSONObject pluginInfo = analysisPluginList.getJSONObject(i);
-								%>
-								<tr>
-									<td class="checkbox-column">
-										<input type="checkbox" class="uniform">
-									</td>
-									<td><strong><%=pluginInfo.getString("id") %></strong></td>
-									<td><%=pluginInfo.getString("name") %></td>
-									<td><%=pluginInfo.getString("version") %></td>
-									<td><%=pluginInfo.getString("description") %></td>
-									<td><%=pluginInfo.getString("className") %></td>
-								</tr>
-								<%
-								}
-								%>
-							</tbody>
-						</table>
-					</div>
-				</div>
+				<table class="table table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Version</th>
+							<th>Decription</th>
+							<th>Class</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+						for(int i = 0; i< analysisPluginList.length(); i++){
+							JSONObject pluginInfo = analysisPluginList.getJSONObject(i);
+						%>
+						<tr>
+							<td><%=i+1 %></td>
+							<td><strong><%=pluginInfo.getString("id") %></strong></td>
+							<td><%=pluginInfo.getString("name") %></td>
+							<td><%=pluginInfo.getString("version") %></td>
+							<td><%=pluginInfo.getString("description") %></td>
+							<td><%=pluginInfo.getString("className") %></td>
+							<td><a href="javascript:reloadPlugin('<%=pluginInfo.getString("id") %>')">Reload</a></td>
+						</tr>
+						<%
+						}
+						%>
+					</tbody>
+				</table>
 
 						
 				<!-- /Page Content -->

@@ -131,7 +131,7 @@ $(document).ready(function(){
 							<div class="col-md-12">
 								<form class="col-md-12 form-horizontal searchTest" id="structuredSearchTest" role="form">
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">COLLECTION NAME</label>
+										<label for="query_se" class="col-sm-2 control-label">COLLECTION ID</label>
 										<div class="col-sm-10">
 											<textarea class="form-control required" name="cn" placeholder="CN">news_kor</textarea>
 										</div>

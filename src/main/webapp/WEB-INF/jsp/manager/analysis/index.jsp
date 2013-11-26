@@ -6,6 +6,11 @@
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+<script>
+function editPluginSchedule(id){
+	//table > tbody > tr > td의 값을 가져와서 modal에 뿌려준다. 
+}
+</script>
 </head>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
@@ -35,197 +40,132 @@
 				</div>
 				<!-- /Page Header -->
 
-				<div class="tabbable tabbable-custom tabbable-full-width">
-					<ul class="nav nav-tabs">
-						<li class="active"><a href="#tab_analysis_overview" data-toggle="tab">Overview</a></li>
-						<li class=""><a href="#tab_analysis_dictionary" data-toggle="tab">Dictionary</a></li>
-						<li class=""><a href="#tab_analysis_analyzer" data-toggle="tab">Analyzer</a></li>
-						<li class=""><a href="#tab_analysis_action" data-toggle="tab">Action</a></li>
-					</ul>
-					<div class="tab-content row">
-
-						<!--=== Overview ===-->
-						<div class="tab-pane active" id="tab_analysis_overview">
-							<dl class="dl-horizontal">
-								<dt>ID</dt>
-								<dd>Korean analysis</dd>
-								<dt>Namespace</dt>
-								<dd>Analysis</dd>
-								<dt>Class</dt>
-								<dd>org.fastcatsearch.plugin.analysis.ko.KoreanAnalysisPlugin</dd>
-								<dt>Name</dt>
-								<dd>한국어분석기</dd>
-								<dt>Version</dt>
-								<dd>1.0</dd>
-								<dt>Decription</dt>
-								<dd>한국어분석기 및 한국어분석사전을 제공한다.</dd>
-							</dl>
-						</div>
-						
-						<!-- === Dictionary -->
-						<div class="tab-pane " id="tab_analysis_dictionary">
-							<div class="col-md-12">
-							<div class="widget box">
-								<div class="widget-content no-padding">
-									<div class="dataTables_header clearfix">
-										<div class="input-group col-md-12">
-											<a href="javascript:void(0);" class="btn btn-sm"><span
-												class="glyphicon glyphicon-plus-sign"></span> Add</a>
-												&nbsp;
-											<a href="javascript:void(0);" class="btn btn-sm">
-												<span class="glyphicon glyphicon-minus-sign"></span> Remove
-											</a>
-												&nbsp;
-											<a href="javascript:void(0);" class="btn btn-sm">
-												<span class="glyphicon glyphicon-edit"></span> Edit
-											</a>
-										</div>
-									</div>
-									<table class="table table-hover table-bordered table-checkable">
-										<thead>
-											<tr>
-												<th class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</th>
-												<th>ID</th>
-												<th>Name</th>
-												<th>Dictionary File</th>
-												<th>Dictionary Type</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</td>
-												<td><strong>User</strong></td>
-												<td>User Dictionary</td>
-												<td><i>user.dict</i></td>
-												<td><span class="label label-default">Set</span></td>
-											</tr>
-											<tr><td class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</td>
-												<td><strong>Synonym</strong></td>
-												<td>Synonym Dictionary</td>
-												<td><i>synonym.dict</i></td>
-												<td><span class="label label-default">List</span></td>
-											</tr>
-											<tr>
-												<td class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</td>
-												<td><strong>Stop</strong></td>
-												<td>Stop Dictionary</td>
-												<td><i>stop.dict</i></td>
-												<td><span class="label label-default">Set</span></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							</div>
-						</div>
-						
-						<!-- tab_analysis_analyzer -->
-						<div class="tab-pane" id="tab_analysis_analyzer">
-							<div class="col-md-12">
-							<div class="widget box">
-								<div class="widget-content no-padding">
-									<div class="dataTables_header clearfix">
-										<div class="input-group col-md-12">
-											<a href="javascript:void(0);" class="btn btn-sm"><span
-												class="glyphicon glyphicon-plus-sign"></span> Add</a>
-												&nbsp;
-											<a href="javascript:void(0);" class="btn btn-sm">
-												<span class="glyphicon glyphicon-minus-sign"></span> Remove
-											</a>
-											&nbsp;
-											<a href="javascript:void(0);" class="btn btn-sm">
-												<span class="glyphicon glyphicon-edit"></span> Edit
-											</a>
-										</div>
-										
-									</div>
-									<table class="table table-hover table-bordered table-checkable">
-										<thead>
-											<tr>
-												<th class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</th>
-												<th>ID</th>
-												<th>Name</th>
-												<th>Class</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</td>
-												<td><strong>KoreanAnalyzer</strong></td>
-												<td>KoreanAnalyzer</td>
-												<td><i>com.fastcatsearch.plugin.analysis.ko.standard.StandardKoreanAnalyzer</i></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							</div>
-						</div>
-						<!-- //tab_analysis_analyzer -->
-						
-						<!-- tab_analysis_action -->
-						<div class="tab-pane" id="tab_analysis_action">
-							<div class="col-md-12">
-							<div class="widget box">
-								<div class="widget-content no-padding">
-									<div class="dataTables_header clearfix">
-										<div class="input-group col-md-12">
-											<a href="javascript:void(0);" class="btn btn-sm"><span
-												class="glyphicon glyphicon-plus-sign"></span> Add</a>
-												&nbsp;
-											<a href="javascript:void(0);" class="btn btn-sm">
-												<span class="glyphicon glyphicon-minus-sign"></span> Remove
-											</a>
-											&nbsp;
-											<a href="javascript:void(0);" class="btn btn-sm">
-												<span class="glyphicon glyphicon-edit"></span> Edit
-											</a>
-										</div>
-										
-									</div>
-									<table class="table table-hover table-bordered table-checkable">
-										<thead>
-											<tr>
-												<th class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</th>
-												<th>URI</th>
-												<th>Method</th>
-												<th>Class</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td class="checkbox-column">
-													<input type="checkbox" class="uniform">
-												</td>
-												<td><strong>/analysis/product/synonym</strong></td>
-												<td>GET,POST</td>
-												<td><i>org.fastcatsearch.plugin.analysis.product.servlet.SynonymDictionaryServlet</i></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							</div>
-						</div>
-						<!-- //tab_analysis_action -->
-						<!-- //tab field -->
-						
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Overview</h4>
 					</div>
-					<!-- /.tab-content -->
+					<div class="widget-content">
+						<dl class="dl-horizontal">
+							<dt>ID</dt>
+							<dd>Korean analysis</dd>
+							<dt>Namespace</dt>
+							<dd>Analysis</dd>
+							<dt>Class</dt>
+							<dd>org.fastcatsearch.plugin.analysis.ko.KoreanAnalysisPlugin</dd>
+							<dt>Name</dt>
+							<dd>한국어분석기</dd>
+							<dt>Version</dt>
+							<dd>1.0</dd>
+							<dt>Decription</dt>
+							<dd>한국어분석기 및 한국어분석사전을 제공한다.</dd>
+						</dl>
+					</div>
+				</div>
+					
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Dictionary</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Dictionary File</th>
+									<th>Dictionary Type</th>
+									<th>Columns</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td><strong>User</strong></td>
+									<td>User Dictionary</td>
+									<td><i>user.dict</i></td>
+									<td><span class="label label-default">Set</span></td>
+									<td><a href="javascript:alert('column을 보여주는 modal을 띄운다.')">View</a></td>
+								</tr>
+								<tr><td>2</td>
+									<td><strong>Synonym</strong></td>
+									<td>Synonym Dictionary</td>
+									<td><i>synonym.dict</i></td>
+									<td><span class="label label-default">List</span></td>
+									<td><a href="javascript:alert('column을 보여주는 modal을 띄운다.')">View</a></td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td><strong>Stop</strong></td>
+									<td>Stop Dictionary</td>
+									<td><i>stop.dict</i></td>
+									<td><span class="label label-default">Set</span></td>
+									<td><a href="javascript:alert('column을 보여주는 modal을 띄운다.')">View</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+							
+						
+						
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Action</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>URI</th>
+									<th>Method</th>
+									<th>Class</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td><strong>/analysis/product/synonym</strong></td>
+									<td>GET,POST</td>
+									<td><i>org.fastcatsearch.plugin.analysis.product.servlet.SynonymDictionaryAction</i></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+							
+						
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Schedule</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Task</th>
+									<th>Base Time</th>
+									<th>Period</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr id="schedule_1">
+									<td>1</td>
+									<td><strong>org.fastcatsearch.job.plugin.BackupDictionaryJob</strong></td>
+									<td>2011.11.26 09:00</td>
+									<td>1 Hour</td>
+								</tr>
+								<tr id="schedule_2">
+									<td>2</td>
+									<td><strong>org.fastcatsearch.job.plugin.BackupDictionaryJob</strong></td>
+									<td>2011.11.26 09:00</td>
+									<td>1 Hour</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 
 						
