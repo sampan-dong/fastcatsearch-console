@@ -74,7 +74,7 @@ if(rootElement!=null) {
 					<ul id="breadcrumbs" class="breadcrumb">
 						<li><i class="icon-home"></i> Manager</li>
 						<li class="current"> Analysis</li>
-						<li class="current"> Korean</li>
+						<li class="current"> ${analysisId} </li>
 					</ul>
 
 				</div>
@@ -83,7 +83,7 @@ if(rootElement!=null) {
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Korean</h3>
+						<h3>${analysisId}</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
