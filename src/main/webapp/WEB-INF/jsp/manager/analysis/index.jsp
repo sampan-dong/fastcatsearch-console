@@ -142,6 +142,9 @@ if(rootElement!=null) {
 									String dictionaryId = dictionary.getAttributeValue("id");
 									String dictionaryName = dictionary.getAttributeValue("name");
 									String dictionaryType = dictionary.getAttributeValue("type");
+									if(dictionaryType==null) {
+										dictionaryType="";
+									}
 									%>
 									<tr>
 										<td><%=rowInx+1 %></td>
@@ -187,11 +190,13 @@ if(rootElement!=null) {
 									<%
 									Element action = actionList.get(rowInx);
 									String actionClass = action.getAttributeValue("class");
+									String actionMethod = action.getAttributeValue("methods");
+									String actionUri = action.getAttributeValue("uri");
 									%>
 									<tr>
 										<td><%=rowInx+1 %></td>
-										<td><strong>/analysis/product/synonym</strong></td>
-										<td>GET,POST</td>
+										<td><strong><%=actionUri %></strong></td>
+										<td><%=actionMethod %></td>
 										<td><i><%=actionClass %></i></td>
 									</tr>
 								<%
@@ -230,14 +235,27 @@ if(rootElement!=null) {
 									Element schedule = scheduleList.get(rowInx);
 									String scheduleClass = schedule.getAttributeValue("class");
 									String startTime = schedule.getAttributeValue("startTime");
-									String period = schedule.getAttributeValue("periodInMinute");
+									int period = -1;
+									String unit = "Minute";
+									try {
+										period = Integer.parseInt(schedule.getAttributeValue("periodInMinute"));
+									} catch (Exception e) {
+									}
+									if(period > 60) {
+										period = period / 60;
+										unit = "Hour";
+									}
 									%>
 									
 									<tr id="schedule_<%=rowInx+1%>">
 										<td><%=rowInx+1 %></td>
 										<td><strong><%=scheduleClass %></strong></td>
 										<td><%=startTime %></td>
-										<td><%=period %> Hour</td>
+										<td>
+										<% if(period != -1) { %>
+											<%=period %> <%=unit %>
+										<% } %>
+										</td>
 									</tr>
 								<%
 								}
