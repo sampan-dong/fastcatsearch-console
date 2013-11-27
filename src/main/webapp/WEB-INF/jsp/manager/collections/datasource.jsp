@@ -19,6 +19,26 @@
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+<script>
+$(document).ready(function(){
+	$(".fullIndexingForm").each(function(){ $(this).validate(); });
+	$(".addIndexingForm").each(function(){ $(this).validate(); });
+	$(".jdbcForm").each(function(){ $(this).validate(); });
+	
+	//아래와 같이 ajax로 처리후 결과가 에러이면 에러를 말해주고, 성공이면 페이지를 리로드한다.
+	/* $(".fullIndexingForm").each(function(){ $(this).ajaxForm({
+			url: '',
+			type: 'POST',
+			dataType: 'json',
+			data: $(this).serializeData(),
+			success: function(responseText, statusText, xhr, $form){
+				
+				location.href = location.href;
+			}
+		});
+	}); */
+});
+</script>
 </head>
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
@@ -55,7 +75,7 @@
 						<h4>Full Indexing</h4>
 					</div>
 					<div class="widget-content">
-						<a href="javascript:void(0);"><span class="icon-plus-sign"></span> Add Datasource</a>
+						<a href="javascript:void(0);" data-toggle="modal" data-target="#newFullSourceModal" ><span class="icon-plus-sign"></span> Add Datasource</a>
 						<table class="table table-hover table-bordered table-checkable">
 							<thead>
 								<tr>
@@ -88,7 +108,7 @@
 						</table>
 					</div>
 				</div>
-						
+				
 				<%
 				sourceConfgiList = fullIndexingNode.getChildren("source");
 				for(int i = 0; i< sourceConfgiList.size(); i++){
@@ -98,100 +118,103 @@
 					String reader = sourceConfig.getChildText("reader");
 					String modifier = sourceConfig.getChildText("modifier");
 				%>
-					<div class="modal" id="fullSourceModal_<%=i %>" tabindex="-1" role="dialog"
-					aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal" id="fullSourceModal_<%=i %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-hidden="true">&times;</button>
-									<h4 class="modal-title"> Full Indexing Source</h4>
-								</div>
-								<div class="modal-body">
-									<div class="col-md-12">
-										<div class="widget">
-											<div class="widget-header">
-												<h4>Setting</h4>
-											</div>
-											<div class="widget-content">
-												<div class="row">
-													<div class="col-md-12 form-horizontal">
-														<div class="form-group">
-															<label class="col-md-3 control-label">Name:</label>
-															<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=name %>"></div>
-														</div>
-														
-														<div class="form-group">
-															<label class="col-md-3 control-label">Enabled:</label>
-															<div class="col-md-9"><input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>"></div>
-														</div>
-														
-														<div class="form-group">
-															<label class="col-md-3 control-label">Reader Class:</label>
-															<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=reader %>"></div>
-														</div>
-														
-														<div class="form-group">
-															<label class="col-md-3 control-label">Modifier Class:</label>
-															<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=modifier %>"></div>
-														</div>
-													</div>
-													
-												</div>
-											</div>
-										</div> <!-- /.widget -->
+								<form id="newFullSourceModalForm_<%=i %>" class="fullIndexingForm" method="POST">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 class="modal-title"> Full Indexing Source</h4>
 									</div>
-									<div class="col-md-12">
-										<div class="widget">
-											<div class="widget-header">
-												<h4>Properties</h4>
-											</div>
-											<div class="widget-content">
-												<div class="row">
-													<div class="col-md-12 form-horizontal">
-													<%
-													Element properties = sourceConfig.getChild("properties");
-													if(properties != null){
-														List<Element> propertyList = properties.getChildren("property");
-														for(int j=0; propertyList != null && j<propertyList.size(); j++){
-															Element property = propertyList.get(j);
-															String key = property.getAttributeValue("key");
-															String value = property.getValue();
-													%>
-														
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="widget">
+												<div class="widget-header">
+													<h4>Setting</h4>
+												</div>
+												<div class="widget-content">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
 															<div class="form-group">
-																<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>" placeholder="KEY"></div>
-																<div class="col-md-8">
-																	<div class="input-group">
-																		<input type="text" name="regular" class="form-control" value="<%=value %>" placeholder="VALUE">
-																		<span class="input-group-btn">
-																			<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
-																		</span>
+																<label class="col-md-3 control-label">Name:</label>
+																<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small required" value="<%=name %>"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Enabled:</label>
+																<div class="col-md-9">
+																	<label class="checkbox">
+																		<input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>">
+																		Yes
+																	</label>
+																</div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Reader Class:</label>
+																<div class="col-md-9"><input type="text" name="regular" class="form-control required" value="<%=reader %>"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Modifier Class:</label>
+																<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=modifier %>"></div>
+															</div>
+														</div>
+														
+													</div>
+												</div>
+											</div> <!-- /.widget -->
+										</div>
+										<div class="col-md-12">
+											<div class="widget">
+												<div class="widget-header">
+													<h4>Properties</h4>
+												</div>
+												<div class="widget-content">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+														<%
+														Element properties = sourceConfig.getChild("properties");
+														if(properties != null){
+															List<Element> propertyList = properties.getChildren("property");
+															for(int j=0; propertyList != null && j<propertyList.size(); j++){
+																Element property = propertyList.get(j);
+																String key = property.getAttributeValue("key");
+																String value = property.getValue();
+														%>
+															
+																<div class="form-group">
+																	<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>" placeholder="KEY"></div>
+																	<div class="col-md-8">
+																		<div class="input-group">
+																			<input type="text" name="regular" class="form-control" value="<%=value %>" placeholder="VALUE">
+																			<span class="input-group-btn">
+																				<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
+																			</span>
+																		</div>
 																	</div>
 																</div>
-															</div>
-													<%
+														<%
+															}
 														}
-													}
-													%>
-															<div class="form-group">
-																<div class="col-md-12">
-																	<a href="javascript:void(0)">Add Property</a>
+														%>
+																<div class="form-group">
+																	<div class="col-md-12">
+																		<a href="javascript:void(0)"><i class="icon-plus-sign"></i> Add Property</a>
+																	</div>
 																</div>
-															</div>
+														</div>
 													</div>
 												</div>
-											</div>
-										</div> <!-- /.widget -->
+											</div> <!-- /.widget -->
+										</div>
 									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">Close</button>
-									<button type="button" class="btn btn-primary">Save
-										changes</button>
-								</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Save changes</button>
+									</div>
+								</form>
 							</div>
 							<!-- /.modal-content -->
 						</div>
@@ -200,6 +223,85 @@
 					<%
 					}
 					%>
+					<div class="modal" id="newFullSourceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<form id="newFullSourceModalForm" class="fullIndexingForm" method="POST">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 class="modal-title"> Full Indexing Source</h4>
+									</div>
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="widget">
+												<div class="widget-header">
+													<h4>Setting</h4>
+												</div>
+												<div class="widget-content">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+															<div class="form-group">
+																<label class="col-md-3 control-label">Name:</label>
+																<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" ></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Enabled:</label>
+																<div class="col-md-9">
+																	<label class="checkbox">
+																		<input type="checkbox" name="active" class="form-control" checked>
+																		Yes
+																	</label>
+																</div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Reader Class:</label>
+																<div class="col-md-9"><input type="text" name="reader" class="form-control required"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Modifier Class:</label>
+																<div class="col-md-9"><input type="text" name="modifier" class="form-control"></div>
+															</div>
+														</div>
+														
+													</div>
+												</div>
+											</div> <!-- /.widget -->
+										</div>
+										<div class="col-md-12">
+											<div class="widget">
+												<div class="widget-header">
+													<h4>Properties</h4>
+												</div>
+												<div class="widget-content">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+															<div class="form-group">
+																<div class="col-md-12">
+																	<a href="javascript:void(0)"><i class="icon-plus-sign"></i> Add Property</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div> <!-- /.widget -->
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Save changes</button>
+									</div>
+								</form>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+						
+						
 						
 						
 					<div class="widget">
@@ -207,8 +309,7 @@
 							<h4>Add Indexing</h4>
 						</div>
 						<div class="widget-content">
-							<a href="javascript:void(0);"><span
-								class="icon-plus-sign"></span> Add Datasource</a>
+							<a href="javascript:void(0);" data-toggle="modal" data-target="#newAddSourceModal" ><span class="icon-plus-sign"></span> Add Datasource</a>
 							<table class="table table-hover table-bordered table-checkable">
 								<thead>
 									<tr>
@@ -253,13 +354,11 @@
 						String reader = sourceConfig.getChildText("reader");
 						String modifier = sourceConfig.getChildText("modifier");
 					%>
-						<div class="modal" id="addSourceModal_<%=i %>" tabindex="-1" role="dialog"
-						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal" id="addSourceModal_<%=i %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal"
-											aria-hidden="true">&times;</button>
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 										<h4 class="modal-title"> Add Indexing Source</h4>
 									</div>
 									<div class="modal-body">
@@ -278,7 +377,12 @@
 															
 															<div class="form-group">
 																<label class="col-md-3 control-label">Enabled:</label>
-																<div class="col-md-9"><input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>"></div>
+																<div class="col-md-9">
+																	<label class="checkbox">
+																		<input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>">
+																		Yes
+																	</label>
+																</div>
 															</div>
 															
 															<div class="form-group">
@@ -341,14 +445,20 @@
 						}
 						%>
 						
+						
+					
+					
+					
+					
+					
+					
 					
 						<div class="widget">
 						<div class="widget-header">
 							<h4>JDBC List</h4>
 						</div>
 						<div class="widget-content">
-								<a href="javascript:void(0);" ><span
-									class="icon-plus-sign"></span> Add JDBC</a>
+								<a href="javascript:void(0);" ><span class="icon-plus-sign"></span> Add JDBC</a>
 							<table class="table table-hover table-bordered">
 								<thead>
 									<tr>
