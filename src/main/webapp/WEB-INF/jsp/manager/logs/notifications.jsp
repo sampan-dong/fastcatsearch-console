@@ -1,44 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page import="
-org.json.JSONObject,
-org.json.JSONArray
-"%>
-<%
-try {
-%>
 <c:set var="ROOT_PATH" value="../.."/>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 <script>
-function goPage(pageNo) {
-	var uri = window.location.pathname+"?pageNo="+pageNo;
-	location.href=uri;
+$(document).ready(function(){
+	loadNotificationTab(1, "#tab_message_list");
+});
+
+function loadMessage(uid) {
+	$.ajax({
+		url : CONTEXT+"/manager/logs/notificationInfo.html",
+		data : {id:uid},
+		
+		dataType : "text",
+		success : function(response) {
+			$('#tab_message_detail').html(response);
+		}
+	});
 }
 </script>
 </head>
-<%
-int totalCount = (Integer)request.getAttribute("totalCount");
-int totalPage = (Integer)request.getAttribute("totalPage");
-int pageNo = (Integer)request.getAttribute("pageNo");
-int rowSize = (Integer)request.getAttribute("rowSize");
-int pageSize = (Integer)request.getAttribute("pageSize");
-int start = (Integer)request.getAttribute("start");
-int end = (Integer)request.getAttribute("end");
-int pageStart = (Integer)request.getAttribute("pageStart");
-int pageEnd = (Integer)request.getAttribute("pageEnd");
-JSONArray notificationList = null;
-
-try {
-	JSONObject notifications = (JSONObject)request.getAttribute("notifications");
-	notificationList = notifications.optJSONArray("notifications");
-} catch (Exception e) {
-}
-
-%>
 <body>
 <c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 <div id="container">
@@ -79,82 +64,7 @@ try {
 			<div class="tab-content row">
 
 				<!--=== Overview ===-->
-				<div class="tab-pane active" id="tab_message_list">
-					<div class="col-md-12">
-					<div class="widget box">
-						<div class="widget-content no-padding">
-							<div class="dataTables_header clearfix">
-								<div class="col-md-12">
-									<span>Rows <%=start %> - <%=end %> of <%=totalCount %></span>
-									<div class="btn-group pull-right">
-										<a href="javascript:goPage(<%=pageNo-1 %>);" class="btn btn-sm" rel="tooltip">&laquo;</a>
-										<% for(int pageInx=pageStart;pageInx <=pageEnd; pageInx++) { %>
-										<a href="javascript:goPage(<%=pageInx %>);" class="btn btn-sm <%=pageInx==pageNo?"btn-primary":"" %>" rel="tooltip"><%=pageInx %></a>
-										<% } %>
-										<a href="javascript:goPage(<%=pageNo+1 %>);" class="btn btn-sm" rel="tooltip">&raquo;</a>
-									</div>
-								</div>
-								
-							</div>
-							<table id="log_table" class="table table-hover table-bordered table-condensed table-checkable">
-								<thead>
-									<tr>
-										<th>#</th>
-										<th>Time</th>
-										<th>Node</th>
-										<th>Code</th>
-										<th>Message</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-									for(int inx=0;notificationList!=null && inx < notificationList.length(); inx++) {
-									%>
-										<%
-										JSONObject record = notificationList.optJSONObject(inx);
-										%>
-										<tr>
-											<td><%=record.optInt("id") %></td>
-											<td><%=record.optString("regtime") %></td>
-											<td><%=record.optString("node") %></td>
-											<td><%=record.optString("messageCode") %></td>
-											<td><%=record.optString("message") %></td>
-										</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-<!--
-							<div class="table-footer">
-								<dl class="dl-horizontal col-md-12">
-									<dt>Time</dt>
-									<dd>2013-09-10 12:35:00</dd>
-									<dt>Node</dt>
-									<dd>node1</dd>
-									<dt>Code</dt>
-									<dd>FC-100</dd>
-									<dt>Message</dt>
-									<dd><div class="panel">
-									Collection [sample] is not indexed.angwook-ui-MacBook-Air.local UserEventAgent[139] <Error>: cannot find fw daemon port 1102
-	Jun 27 08:51:58 sangwook-ui-MacBook-Air.local UserEventAgent[140] <Error>: cannot find fw daemon port 1102
-	Jun 27 09:05:31 sangwook-ui-MacBook-Air.local UserEventAgent[139] <Error>: cannot find fw daemon port 1102
-	Jul  1 09:45:45 sangwook-ui-MacBook-Air.local UserEventAgent[145] <Error>: cannot find fw daemon port 1102
-	Jul  8 08:01:55 sangwook-ui-MacBook-Air.local UserEventAgent[126] <Error>: cannot find useragent 1102
-	Jul  8 08:02:01 local UserEventAgent[139] <Error>: cannot find fw daemon port 1102
-	Jun 27 08:51:58 sangwook-ui-MacBook-Air.local UserEventAgent[140] <Error>: cannot find fw daemon port 1102
-	Jun 27 09:05:31 sangwook-ui-MacBook-Air.local UserEventAgent[139] <Error>: cannot find fw daemon port 1102
-	Jul  1 09:45:45 sangwook-ui-MacBook-Air.local UserEventAgent[145] <Error>: cannot find fw daemon port 1102
-	Jul  8 08:01:55 sangwook-ui-MacBook-Air.local UserEventAgent[126] <Error>: cannot find useragent 1102
-	Jul  8 08:02:01 
-									</div></dd>
-								</dl>
-							</div>
--->
-						</div>
-					</div>
-					</div>
-				</div>
+				<div class="tab-pane active" id="tab_message_list"></div>
 				
 				<div class="tab-pane " id="tab_message_alert_settings">
 					<div class="col-md-12">
@@ -222,11 +132,3 @@ try {
 </div>
 </body>
 </html>
-<%
-} catch (Exception e) {
-	StackTraceElement[] ste = e.getStackTrace();
-	for(int inx=0;inx<ste.length;inx++) {
-		out.println(ste[inx]);
-	}
-}
-%>

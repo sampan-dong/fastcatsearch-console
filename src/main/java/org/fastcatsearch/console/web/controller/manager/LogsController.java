@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,114 +16,122 @@ import org.springframework.web.servlet.ModelAndView;
 public class LogsController extends AbstractController {
 	
 	@RequestMapping("notifications")
-	public ModelAndView notifications(HttpSession session,
-			@RequestParam(required=false,defaultValue="1") String pageNo
-			) throws Exception {
-		
-		PageDivider divider = new PageDivider(15,10);
-		
-		int pageNoInt = Integer.parseInt(pageNo);
-		int start = (pageNoInt-1)*divider.rowSize();
-		int end = start+divider.rowSize();
-		int totalPage = 0;
-		int pageStart = 0;
-		int pageEnd = 0;
-		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
-		String getAnalysisPluginListURL = "/management/logs/notification-history.json?pageNo="+
-			pageNo+"&start="+start+"&end="+end;
-		JSONObject jsonObj = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
-		
-		divider.setTotalCount(jsonObj.optInt("totalCount",0));
-		
-		if(pageNoInt > divider.totalPage()) {
-			pageNoInt = divider.totalPage();
-		}
-		
-		totalPage = divider.totalPage();
-		start = divider.rowStart(pageNoInt);
-		end = divider.rowEnd(pageNoInt);
-		pageStart = divider.pageStart(pageNoInt);
-		pageEnd = divider.pageEnd(pageNoInt);
-		
+	public ModelAndView notifications() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/logs/notifications");
-		mav.addObject("notifications", jsonObj);
-		mav.addObject("pageStart",pageStart);
-		mav.addObject("pageEnd",pageEnd);
-		mav.addObject("totalPage",totalPage);
-		mav.addObject("start",start);
-		mav.addObject("end",end);
-		mav.addObject("rowSize",divider.rowSize());
-		mav.addObject("pageSize",divider.pageSize());
-		mav.addObject("totalCount",divider.totalCount());
-		mav.addObject("pageNo",pageNoInt);
+		return mav;
+	}
+	
+	@RequestMapping("notificationsDataRaw")
+	public ModelAndView notificationsDataRaw(HttpSession session, 
+			@RequestParam(defaultValue = "1") Integer pageNo ) throws Exception {
 		
+		int PAGE_SIZE = 10;
+		int start = 0;
+		int end = 0;
+		
+		if(pageNo > 0){
+			start = (pageNo - 1) * PAGE_SIZE;
+			end = start + PAGE_SIZE - 1;
+		}
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/logs/notification-history-list.json";
+		JSONObject notificationData = httpClient.httpGet(requestUrl)
+					.addParameter("start", String.valueOf(start))
+					.addParameter("end", String.valueOf(end))
+					.requestJSON();
+		logger.debug("notificationData >> {}",notificationData);
+		JSONArray list = notificationData.getJSONArray("notifications");
+		int realSize = list.length();
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/logs/notificationsDataRaw");
+		mav.addObject("start", start + 1);
+		mav.addObject("end", start + realSize);
+		mav.addObject("pageNo", pageNo);
+		mav.addObject("pageSize", PAGE_SIZE);
+		mav.addObject("notifications", notificationData);
+		return mav;
+	}
+	
+	@RequestMapping("notificationInfo")
+	public ModelAndView notificationInfo(HttpSession session, 
+			@RequestParam Integer id ) throws Exception {
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/logs/notification-info.json";
+		JSONObject notificationInfo = httpClient.httpGet(requestUrl)
+					.addParameter("id",String.valueOf(id) )
+					.requestJSON();
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/logs/notificationInfoRaw");
+		mav.addObject("notificationInfo",notificationInfo);
 		return mav;
 	}
 	
 	@RequestMapping("exceptions")
 	public ModelAndView exceptions(HttpSession session,
 			@RequestParam(required=false,defaultValue="1") String pageNo) throws Exception {
-		
-		PageDivider divider = new PageDivider(15,10);
-		
-		int pageNoInt = Integer.parseInt(pageNo);
-		int start = (pageNoInt-1)*divider.rowSize();
-		int end = start+divider.rowSize();
-		int totalPage = 0;
-		int pageStart = 0;
-		int pageEnd = 0;
-		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
-		String getAnalysisPluginListURL = "/management/logs/exception-history.json?pageNo="+
-			pageNo+"&start="+start+"&end="+end;
-		
-		JSONObject jsonObj = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
-		
-		divider.setTotalCount(jsonObj.optInt("totalCount",0));
-		
-		if(pageNoInt > divider.totalPage()) {
-			pageNoInt = divider.totalPage();
-		}
-		
-		totalPage = divider.totalPage();
-		start = divider.rowStart(pageNoInt);
-		end = divider.rowEnd(pageNoInt);
-		pageStart = divider.pageStart(pageNoInt);
-		pageEnd = divider.pageEnd(pageNoInt);
-		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/logs/exceptions");
-		mav.addObject("exceptions", jsonObj);
-		mav.addObject("pageStart",pageStart);
-		mav.addObject("pageEnd",pageEnd);
-		mav.addObject("totalPage",totalPage);
-		mav.addObject("start",start);
-		mav.addObject("end",end);
-		mav.addObject("rowSize",divider.rowSize());
-		mav.addObject("pageSize",divider.pageSize());
-		mav.addObject("totalCount",divider.totalCount());
-		mav.addObject("pageNo",pageNoInt);
+		return mav;
+	}
+	
+	@RequestMapping("exceptionsDataRaw")
+	public ModelAndView exceptionssDataRaw(HttpSession session, 
+			@RequestParam(defaultValue = "1") Integer pageNo ) throws Exception {
 		
+		int PAGE_SIZE = 10;
+		int start = 0;
+		int end = 0;
+		
+		if(pageNo > 0){
+			start = (pageNo - 1) * PAGE_SIZE;
+			end = start + PAGE_SIZE - 1;
+		}
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/logs/exception-history-list.json";
+		JSONObject exceptionData = httpClient.httpGet(requestUrl)
+					.addParameter("start", String.valueOf(start))
+					.addParameter("end", String.valueOf(end))
+					.requestJSON();
+		logger.debug("exceptionData >> {}",exceptionData);
+		JSONArray list = exceptionData.getJSONArray("exceptions");
+		int realSize = list.length();
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/logs/exceptionsDataRaw");
+		mav.addObject("start", start + 1);
+		mav.addObject("end", start + realSize);
+		mav.addObject("pageNo", pageNo);
+		mav.addObject("pageSize", PAGE_SIZE);
+		mav.addObject("exceptions", exceptionData);
+		return mav;
+	}
+	
+	@RequestMapping("exceptionInfo")
+	public ModelAndView exceptionInfo(HttpSession session, 
+			@RequestParam Integer id ) throws Exception {
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/logs/exception-info.json";
+		JSONObject exceptionInfo = httpClient.httpGet(requestUrl)
+					.addParameter("id",String.valueOf(id) )
+					.requestJSON();
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/logs/exceptionInfoRaw");
+		mav.addObject("exceptionInfo",exceptionInfo);
 		return mav;
 	}
 	
 	@RequestMapping("tasks")
-	public ModelAndView tasks(HttpSession session,
-			@RequestParam(required=false,defaultValue="1") String pageNo) throws Exception {
-		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
-		String getAnalysisPluginListURL = "/management/logs/task-history.json?pageNo="+pageNo;
-		JSONObject jsonObj = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
-		
+	public ModelAndView tasks() throws Exception {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/logs/tasks");
-		mav.addObject("tasks", jsonObj);
-		
 		return mav;
 	}
 }
