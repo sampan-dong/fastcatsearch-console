@@ -26,8 +26,10 @@ function selectRawFieldValue(value){
 		<div class="widget-content no-padding">
 			<div class="dataTables_header clearfix">
 				<div class="col-md-7 form-inline">
-					<input type="text" class="form-control fcol2-1" name="se" placeholder="ID">
-					
+					<div class="form-group">
+						<input type="text" class="form-control fcol2-1" name="se" placeholder="ID">
+					</div>
+					<div class="form-group">
 					&nbsp;
 					<%
 					JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
@@ -42,6 +44,7 @@ function selectRawFieldValue(value){
 					<%
 					}
 					%>
+					</div>
 				</div>
 				
 				<div class="col-md-5">
