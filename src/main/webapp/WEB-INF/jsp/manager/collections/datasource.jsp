@@ -73,7 +73,6 @@
 										<table class="table table-hover table-bordered table-checkable">
 											<thead>
 												<tr>
-													<th>ID</th>
 													<th>Name</th>
 													<th>Enable</th>
 													<th>Reader / Modifier</th>
@@ -85,18 +84,16 @@
 												List<Element> sourceConfgiList = fullIndexingNode.getChildren("source");
 												for(int i = 0; sourceConfgiList != null && i < sourceConfgiList.size(); i++){
 													Element sourceConfig = sourceConfgiList.get(i);
-													String sourceId = sourceConfig.getAttributeValue("id");
 													String name = sourceConfig.getAttributeValue("name");
 													String active = sourceConfig.getAttributeValue("active");
 													String reader = sourceConfig.getChildText("reader");
 													String modifier = sourceConfig.getChildText("modifier");
 												%>
-												<tr class="_full_<%=sourceId %>">
-													<td class="._sourceId"><strong><%=sourceId %></strong></td>
+												<tr class="_full_<%=i %>">
 													<td class="._name"><%=name %></td>
 													<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
 													<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
-													<td class=""><button type="button" class="btn btn-sm" data-toggle="modal" data-target="#fullSourceModal_<%=sourceId %>">View</button></td>
+													<td class=""><a href="javascript:void(0)" data-toggle="modal" data-target="#fullSourceModal_<%=i %>">Edit</a></td>
 												</tr>
 												<%
 												}
@@ -113,13 +110,12 @@
 						sourceConfgiList = fullIndexingNode.getChildren("source");
 						for(int i = 0; i< sourceConfgiList.size(); i++){
 							Element sourceConfig = sourceConfgiList.get(i);
-							String sourceId = sourceConfig.getAttributeValue("id");
 							String name = sourceConfig.getAttributeValue("name");
 							String active = sourceConfig.getAttributeValue("active");
 							String reader = sourceConfig.getChildText("reader");
 							String modifier = sourceConfig.getChildText("modifier");
 						%>
-							<div class="modal" id="fullSourceModal_<%=sourceId %>" tabindex="-1" role="dialog"
+							<div class="modal" id="fullSourceModal_<%=i %>" tabindex="-1" role="dialog"
 							aria-labelledby="myModalLabel" aria-hidden="true">
 								<div class="modal-dialog">
 									<div class="modal-content">
@@ -138,18 +134,13 @@
 														<div class="row">
 															<div class="col-md-12 form-horizontal">
 																<div class="form-group">
-																	<label class="col-md-3 control-label">ID:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=sourceId %>"></div>
-																</div>
-																
-																<div class="form-group">
 																	<label class="col-md-3 control-label">Name:</label>
 																	<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=name %>"></div>
 																</div>
 																
 																<div class="form-group">
 																	<label class="col-md-3 control-label">Enabled:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=active %>"></div>
+																	<div class="col-md-9"><input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>"></div>
 																</div>
 																
 																<div class="form-group">
@@ -186,13 +177,25 @@
 															%>
 																
 																	<div class="form-group">
-																	<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>"></div>
-																	<div class="col-md-8"><input type="text" name="regular" class="form-control" value="<%=value %>"></div>
+																		<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>" placeholder="KEY"></div>
+																		<div class="col-md-8">
+																			<div class="input-group">
+																				<input type="text" name="regular" class="form-control" value="<%=value %>" placeholder="VALUE">
+																				<span class="input-group-btn">
+																					<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
+																				</span>
+																			</div>
+																		</div>
 																	</div>
 															<%
 																}
 															}
 															%>
+																	<div class="form-group">
+																		<div class="col-md-12">
+																			<a href="javascript:void(0)">Add Property</a>
+																		</div>
+																	</div>
 															</div>
 														</div>
 													</div>
@@ -200,6 +203,7 @@
 											</div>
 										</div>
 										<div class="modal-footer">
+											<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
 											<button type="button" class="btn btn-default"
 												data-dismiss="modal">Close</button>
 											<button type="button" class="btn btn-primary">Save
@@ -229,7 +233,6 @@
 										<table class="table table-hover table-bordered table-checkable">
 											<thead>
 												<tr>
-													<th>ID</th>
 													<th>Name</th>
 													<th>Enable</th>
 													<th>Reader / Modifier</th>
@@ -241,18 +244,16 @@
 												sourceConfgiList = addIndexingNode.getChildren("source");
 												for(int i = 0; sourceConfgiList != null && i< sourceConfgiList.size(); i++){
 													Element sourceConfig = sourceConfgiList.get(i);
-													String sourceId = sourceConfig.getAttributeValue("id");
 													String name = sourceConfig.getAttributeValue("name");
 													String active = sourceConfig.getAttributeValue("active");
 													String reader = sourceConfig.getChildText("reader");
 													String modifier = sourceConfig.getChildText("modifier");
 												%>
-												<tr class="_add_<%=sourceId %>">
-													<td class="._sourceId"><strong><%=sourceId %></strong></td>
+												<tr class="_add_<%=i %>">
 													<td class="._name"><%=name %></td>
 													<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
 													<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
-													<td class=""><button type="button" class="btn btn-sm" data-toggle="modal" data-target="#addSourceModal_<%=sourceId %>">View</button></td>
+													<td class=""><a href="javascript:void(0)" data-toggle="modal" data-target="#addSourceModal_<%=i %>">Edit</a></td>
 												</tr>
 												<%
 												}
@@ -270,13 +271,12 @@
 						sourceConfgiList = addIndexingNode.getChildren("source");
 						for(int i = 0; i< sourceConfgiList.size(); i++){
 							Element sourceConfig = sourceConfgiList.get(i);
-							String sourceId = sourceConfig.getAttributeValue("id");
 							String name = sourceConfig.getAttributeValue("name");
 							String active = sourceConfig.getAttributeValue("active");
 							String reader = sourceConfig.getChildText("reader");
 							String modifier = sourceConfig.getChildText("modifier");
 						%>
-							<div class="modal" id="addSourceModal_<%=sourceId %>" tabindex="-1" role="dialog"
+							<div class="modal" id="addSourceModal_<%=i %>" tabindex="-1" role="dialog"
 							aria-labelledby="myModalLabel" aria-hidden="true">
 								<div class="modal-dialog">
 									<div class="modal-content">
@@ -295,18 +295,13 @@
 														<div class="row">
 															<div class="col-md-12 form-horizontal">
 																<div class="form-group">
-																	<label class="col-md-3 control-label">ID:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=sourceId %>"></div>
-																</div>
-																
-																<div class="form-group">
 																	<label class="col-md-3 control-label">Name:</label>
 																	<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=name %>"></div>
 																</div>
 																
 																<div class="form-group">
 																	<label class="col-md-3 control-label">Enabled:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=active %>"></div>
+																	<div class="col-md-9"><input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>"></div>
 																</div>
 																
 																<div class="form-group">
@@ -353,6 +348,7 @@
 											</div>
 										</div>
 										<div class="modal-footer">
+											<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
 											<button type="button" class="btn btn-default"
 												data-dismiss="modal">Close</button>
 											<button type="button" class="btn btn-primary">Save
@@ -378,29 +374,20 @@
 											<div class="input-group col-md-12">
 												<a href="javascript:void(0);" class="btn btn-sm"><span
 													class="glyphicon glyphicon-plus-sign"></span> Add JDBC</a>
-													&nbsp;
-												<a href="javascript:void(0);" class="btn btn-sm">
-													<span class="glyphicon glyphicon-minus-sign"></span> Remove JDBC
-												</a>
-													&nbsp;
-												<a href="javascript:void(0);" class="btn btn-sm">
-													<span class="glyphicon glyphicon-edit"></span> Edit JDBC
-												</a>
 											</div>
 											
 										</div>
-										<table class="table table-hover table-bordered table-checkable">
+										<table class="table table-hover table-bordered">
 											<thead>
 												<tr>
-													<th class="checkbox-column">
-														<input type="checkbox" class="uniform">
-													</th>
+													<th>#</th>
 													<th>ID</th>
 													<th>Name</th>
 													<th>Driver</th>
 													<th>URL</th>
 													<th>User</th>
 													<th>Password</th>
+													<th></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -416,15 +403,14 @@
 												String maskedPassword = WebUtils.getMaskedPassword(sourceNode.getAttributeValue("password"));
 											%>
 												<tr>
-													<td class="checkbox-column">
-														<input type="checkbox" class="uniform">
-													</td>
+													<td><%=i+1 %></td>
 													<td><%=id %></td>
 													<td><%=name %></td>
 													<td><%=driver %></td>
 													<td><%=url %></td>
 													<td><%=user %></td>
 													<td><%=maskedPassword %></td>
+													<td><a href="">Edit</a></td>
 												</tr>
 												
 											<%
