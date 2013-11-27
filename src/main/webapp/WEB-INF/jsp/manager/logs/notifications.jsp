@@ -5,43 +5,36 @@
 org.json.JSONObject,
 org.json.JSONArray
 "%>
+<%
+try {
+%>
 <c:set var="ROOT_PATH" value="../.."/>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 <script>
-function goPage(pageNum) {
-	var uri = window.location.pathname+"?pageNum="+pageNum;
+function goPage(pageNo) {
+	var uri = window.location.pathname+"?pageNo="+pageNo;
 	location.href=uri;
 }
 </script>
 </head>
 <%
-int totalSize = 1;
-int totalPage = 1;
-int pageNum = 1;
-int rowSize = 15;
-int pageSize = 10;
-int rowStarts = 1;
-int rowFinish = 15;
-int pageStarts = 1;
-int pageFinish = 1;
+int totalCount = (Integer)request.getAttribute("totalCount");
+int totalPage = (Integer)request.getAttribute("totalPage");
+int pageNo = (Integer)request.getAttribute("pageNo");
+int rowSize = (Integer)request.getAttribute("rowSize");
+int pageSize = (Integer)request.getAttribute("pageSize");
+int start = (Integer)request.getAttribute("start");
+int end = (Integer)request.getAttribute("end");
+int pageStart = (Integer)request.getAttribute("pageStart");
+int pageEnd = (Integer)request.getAttribute("pageEnd");
 JSONArray notificationList = null;
 
 try {
 	JSONObject notifications = (JSONObject)request.getAttribute("notifications");
-	totalSize = notifications.optInt("totalSize",totalSize);
-	pageNum = notifications.optInt("pageNum", pageNum);
-	rowSize = notifications.optInt("rowSize", rowSize);
-	pageSize = notifications.optInt("pageSize", pageSize);
-	rowStarts = notifications.optInt("rowStarts", rowStarts);
-	rowFinish = notifications.optInt("rowFinish", rowFinish);
-	totalPage = notifications.optInt("totalPage",totalPage);
-	pageStarts = notifications.optInt("pageStarts",pageStarts);
-	pageFinish = notifications.optInt("pageFinish",pageFinish);
 	notificationList = notifications.optJSONArray("notifications");
-	
 } catch (Exception e) {
 }
 
@@ -92,13 +85,13 @@ try {
 						<div class="widget-content no-padding">
 							<div class="dataTables_header clearfix">
 								<div class="col-md-12">
-									<span>Rows <%=rowStarts %> - <%=rowFinish %> of <%=totalSize %></span>
+									<span>Rows <%=start %> - <%=end %> of <%=totalCount %></span>
 									<div class="btn-group pull-right">
-										<a href="javascript:goPage(<%=pageNum-1 %>);" class="btn btn-sm" rel="tooltip">&laquo;</a>
-										<% for(int pageInx=pageStarts;pageInx <=pageFinish; pageInx++) { %>
-										<a href="javascript:goPage(<%=pageInx %>);" class="btn btn-sm <%=pageInx==pageNum?"btn-primary":"" %>" rel="tooltip"><%=pageInx %></a>
+										<a href="javascript:goPage(<%=pageNo-1 %>);" class="btn btn-sm" rel="tooltip">&laquo;</a>
+										<% for(int pageInx=pageStart;pageInx <=pageEnd; pageInx++) { %>
+										<a href="javascript:goPage(<%=pageInx %>);" class="btn btn-sm <%=pageInx==pageNo?"btn-primary":"" %>" rel="tooltip"><%=pageInx %></a>
 										<% } %>
-										<a href="javascript:goPage(<%=pageNum+1 %>);" class="btn btn-sm" rel="tooltip">&raquo;</a>
+										<a href="javascript:goPage(<%=pageNo+1 %>);" class="btn btn-sm" rel="tooltip">&raquo;</a>
 									</div>
 								</div>
 								
@@ -229,3 +222,11 @@ try {
 </div>
 </body>
 </html>
+<%
+} catch (Exception e) {
+	StackTraceElement[] ste = e.getStackTrace();
+	for(int inx=0;inx<ste.length;inx++) {
+		out.println(ste[inx]);
+	}
+}
+%>
