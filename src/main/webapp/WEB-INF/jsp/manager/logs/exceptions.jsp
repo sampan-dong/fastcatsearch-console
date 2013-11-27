@@ -1,12 +1,51 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="
+org.json.JSONObject,
+org.json.JSONArray
+"%>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+<script>
+function goPage(pageNum) {
+	var uri = window.location.pathname+"?pageNum="+pageNum;
+	location.href=uri;
+}
+</script>
 </head>
+<%
+int totalSize = 1;
+int totalPage = 1;
+int pageNum = 1;
+int rowSize = 15;
+int pageSize = 10;
+int rowStarts = 1;
+int rowFinish = 15;
+int pageStarts = 1;
+int pageFinish = 1;
+JSONArray exceptionList = null;
+
+try {
+	JSONObject exceptionHistory = (JSONObject)request.getAttribute("exceptions");
+	totalSize = exceptionHistory.optInt("totalSize",totalSize);
+	pageNum = exceptionHistory.optInt("pageNum", pageNum);
+	rowSize = exceptionHistory.optInt("rowSize", rowSize);
+	pageSize = exceptionHistory.optInt("pageSize", pageSize);
+	rowStarts = exceptionHistory.optInt("rowStarts", rowStarts);
+	rowFinish = exceptionHistory.optInt("rowFinish", rowFinish);
+	totalPage = exceptionHistory.optInt("totalPage",totalPage);
+	pageStarts = exceptionHistory.optInt("pageStarts",pageStarts);
+	pageFinish = exceptionHistory.optInt("pageFinish",pageFinish);
+	exceptionList = exceptionHistory.optJSONArray("exceptionHistory");
+} catch (Exception e) {
+}
+
+%>
+
 <body>
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 	<div id="container">
@@ -38,16 +77,13 @@
 					<div class="widget-content no-padding">
 						<div class="dataTables_header clearfix">
 							<div class="col-md-12">
-								<span>Rows 1 - 15 of 2809</span>
+								<span>Rows <%=rowStarts %> - <%=rowFinish %> of <%=totalSize %></span>
 								<div class="btn-group pull-right">
-									<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&laquo;</a>
-									<a href="javascript:void(0);" class="btn btn-sm btn-primary"
-										rel="tooltip">1</a> <a href="javascript:void(0);"
-										class="btn btn-sm" rel="tooltip">2</a> <a
-										href="javascript:void(0);" class="btn btn-sm" rel="tooltip">3</a>
-									<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">4</a>
-									<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">5</a>
-									<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&raquo;</a>
+									<a href="javascript:goPage(<%=pageNum-1 %>);" class="btn btn-sm" rel="tooltip">&laquo;</a>
+									<% for(int pageInx=pageStarts;pageInx <=pageFinish; pageInx++) { %>
+									<a href="javascript:goPage(<%=pageInx %>);" class="btn btn-sm <%=pageInx==pageNum?"btn-primary":"" %>" rel="tooltip"><%=pageInx %></a>
+									<% } %>
+									<a href="javascript:goPage(<%=pageNum+1 %>);" class="btn btn-sm" rel="tooltip">&raquo;</a>
 								</div>
 							</div>
 
@@ -63,114 +99,34 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>15</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>14</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>13</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>12</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>11</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>10</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>9</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>8</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>6</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>2013-09-10 12:35:00</td>
-									<td>node1</td>
-									<td>(IRService.java:99) 컬렉션context 로드실패 sample
-										org.fastcatsearch.ir.common.SettingException:</td>
-								</tr>
+								<%
+								if(exceptionList!=null && exceptionList.length() > 0) {
+								%>
+									<%
+									for(int inx=0;inx < exceptionList.length(); inx++) {
+									JSONObject record = exceptionList.optJSONObject(inx);
+									%>
+									<tr>
+										<td><%=record.optInt("id") %></td>
+										<td><%=record.optString("regtime") %></td>
+										<td><%=record.optString("node") %></td>
+										<td><%=record.optString("message") %></td>
+									</tr>
+									<%
+									}
+									%>
+								<%
+								} else {
+								%>
+									<tr>
+										<td colspan="4">No data</td>
+									</tr>
+								<%
+								}
+								%>
 							</tbody>
 						</table>
-
+<!--
 						<div class="table-footer">
 							<dl class="dl-horizontal col-md-12">
 								<dt>Time</dt>
@@ -200,6 +156,7 @@
 								</dd>
 							</dl>
 						</div>
+-->
 					</div>
 				</div>
 				<!-- /Page Content -->

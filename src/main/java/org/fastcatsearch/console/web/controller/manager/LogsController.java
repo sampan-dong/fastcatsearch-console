@@ -31,16 +31,34 @@ public class LogsController extends AbstractController {
 	}
 	
 	@RequestMapping("exceptions")
-	public ModelAndView exceptions() throws Exception {
+	public ModelAndView exceptions(HttpSession session,
+			@RequestParam(required=false,defaultValue="1") String pageNum) throws Exception {
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		
+		String getAnalysisPluginListURL = "/management/logs/exception-history.json?pageNum="+pageNum;
+		JSONObject jsonObj = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/logs/exceptions");
+		mav.addObject("exceptions", jsonObj);
+		
 		return mav;
 	}
 	
 	@RequestMapping("tasks")
-	public ModelAndView tasks() throws Exception {
+	public ModelAndView tasks(HttpSession session,
+			@RequestParam(required=false,defaultValue="1") String pageNum) throws Exception {
+		
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		
+		String getAnalysisPluginListURL = "/management/logs/task-history.json?pageNum="+pageNum;
+		JSONObject jsonObj = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/logs/tasks");
+		mav.addObject("tasks", jsonObj);
+		
 		return mav;
 	}
 }

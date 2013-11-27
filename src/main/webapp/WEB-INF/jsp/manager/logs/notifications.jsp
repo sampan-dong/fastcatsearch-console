@@ -1,15 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="
 org.json.JSONObject,
 org.json.JSONArray
 "%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ROOT_PATH" value="../.."/>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+<script>
+function goPage(pageNum) {
+	var uri = window.location.pathname+"?pageNum="+pageNum;
+	location.href=uri;
+}
+</script>
 </head>
 <%
 int totalSize = 1;
@@ -29,15 +35,13 @@ try {
 	pageNum = notifications.optInt("pageNum", pageNum);
 	rowSize = notifications.optInt("rowSize", rowSize);
 	pageSize = notifications.optInt("pageSize", pageSize);
-	totalPage = totalSize / rowSize + 1;
 	rowStarts = notifications.optInt("rowStarts", rowStarts);
 	rowFinish = notifications.optInt("rowFinish", rowFinish);
+	totalPage = notifications.optInt("totalPage",totalPage);
+	pageStarts = notifications.optInt("pageStarts",pageStarts);
+	pageFinish = notifications.optInt("pageFinish",pageFinish);
 	notificationList = notifications.optJSONArray("notifications");
-	pageStarts = (pageNum-1) - ((pageNum-1) % pageSize)+1;
-	pageFinish = pageStarts + (pageSize-1);
-	if(pageFinish > totalPage) {
-		pageFinish = totalPage;
-	}
+	
 } catch (Exception e) {
 }
 
@@ -90,11 +94,11 @@ try {
 								<div class="col-md-12">
 									<span>Rows <%=rowStarts %> - <%=rowFinish %> of <%=totalSize %></span>
 									<div class="btn-group pull-right">
-										<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&laquo;</a>
+										<a href="javascript:goPage(<%=pageNum-1 %>);" class="btn btn-sm" rel="tooltip">&laquo;</a>
 										<% for(int pageInx=pageStarts;pageInx <=pageFinish; pageInx++) { %>
-										<a href="javascript:void(0);" class="btn btn-sm <%=pageInx==pageNum?"btn-primary":"" %>" rel="tooltip"><%=pageInx %></a>
+										<a href="javascript:goPage(<%=pageInx %>);" class="btn btn-sm <%=pageInx==pageNum?"btn-primary":"" %>" rel="tooltip"><%=pageInx %></a>
 										<% } %>
-										<a href="javascript:void(0);" class="btn btn-sm" rel="tooltip">&raquo;</a>
+										<a href="javascript:goPage(<%=pageNum+1 %>);" class="btn btn-sm" rel="tooltip">&raquo;</a>
 									</div>
 								</div>
 								
