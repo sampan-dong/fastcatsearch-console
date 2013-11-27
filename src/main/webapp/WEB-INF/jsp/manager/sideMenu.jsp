@@ -7,6 +7,7 @@
 	String collectionId = (String) request.getAttribute("collectionId");
 	JSONArray collectionList = (JSONArray) request.getAttribute("collectionList");
 	JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginList");
+	JSONArray serverList = (JSONArray) request.getAttribute("serverList");
 	String lcat = request.getParameter("lcat");
 	String mcat = request.getParameter("mcat");
 	String scat = request.getParameter("scat");
@@ -100,21 +101,30 @@
 				</ul>
 			</li>
 			
+			<%
+				lcatCurrent = "servers".equals(lcat);
+			%>
 			<li class="<%="servers".equals(lcat) ? "current" :"" %>">
 				<a href="javascript:void(0);"> <i class="icon-globe"></i>Servers <!-- <span class="label label-info pull-right">3</span> -->
 				</a>
 				<ul class="sub-menu">
-					<li class="current"><a href="<c:url value="/manager/servers/overview.html"/>"> <i
-							class="icon-cogs"></i> Overview
+					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/servers/overview.html"/>"> <i
+							class="icon-dashboard"></i> Overview
 					</a></li>
-					<li><a href="<c:url value="/manager/servers/server.html"/>"> <i
-							class="icon-angle-right"></i> Node1
+					<%-- <%
+					for(int i=0;i<serverList.length(); i++){
+						JSONObject nodeObject = serverList.getJSONObject(i);
+						String id = nodeObject.getString("id");
+						String name = nodeObject.getString("name");
+					%>
+					<li><a href="<c:url value="/manager/servers/server.html"/>?id=<%=id %>"> <i
+							class="icon-angle-right"></i> <%=name %>
 					</a></li>
-					<li><a href="<c:url value="/manager/servers/server.html"/>"> <i
-							class="icon-angle-right"></i> Node2
-					</a></li>
-					<li><a href="<c:url value="/manager/servers/server.html"/>"> <i
-							class="icon-angle-right"></i> Node3
+					<%
+					}
+					%> --%>
+					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/servers/settings.html"/>"> <i
+							class="icon-cogs"></i> Settings
 					</a></li>
 				</ul>
 			</li>

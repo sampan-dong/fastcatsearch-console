@@ -27,6 +27,10 @@
 				<dd><%=indexingStatus.getString("diskSize") %></dd>
 				<dt>Create Time : </dt>
 				<dd><%=indexingStatus.getString("createTime") %></dd>
+				<dt>Segment Size : </dt>
+				<dd><%=indexingStatus.getInt("segmentSize") %></dd>
+				<dt>Revision UUID : </dt>
+				<dd><%=indexingStatus.getString("revisionUUID") %></dd>
 			</dl>
 		</div>
 	</div>

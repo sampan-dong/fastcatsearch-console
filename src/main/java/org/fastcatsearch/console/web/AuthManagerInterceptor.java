@@ -22,6 +22,9 @@ public class AuthManagerInterceptor extends AuthMainInterceptor {
 		JSONObject analysisPluginList = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
 		request.setAttribute("analysisPluginList", analysisPluginList.getJSONArray("pluginList"));
 		
+		String getServerListURL = "/management/servers/list";
+		JSONObject serverList = httpClient.httpGet(getServerListURL).requestJSON();
+		request.setAttribute("serverList", serverList.getJSONArray("nodeList"));
 		return true;
 	}
 }

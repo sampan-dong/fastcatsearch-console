@@ -28,6 +28,18 @@ public class ServersController extends AbstractController {
 		return mav;
 	}
 	
+	@RequestMapping("/settings")
+	public ModelAndView settings(HttpSession session) throws Exception {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/servers/list.json";
+		JSONObject jsonObj = httpClient.httpPost(requestUrl).requestJSON();
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/servers/settings");
+		mav.addObject("nodeList", jsonObj.getJSONArray("nodeList"));
+		return mav;
+	}
+	
 	@RequestMapping("/server")
 	public ModelAndView server(HttpSession session) throws Exception {
 //		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");

@@ -18,6 +18,7 @@
 	<div id="container">
 		<c:import url="${ROOT_PATH}/manager/sideMenu.jsp">
 			<c:param name="lcat" value="servers" />
+			<c:param name="mcat" value="overview" />
 		</c:import>
 		<div id="content">
 			<div class="container">
@@ -40,21 +41,11 @@
 				</div>
 				<!-- /Page Header -->
 
-				<div class="widget box">
-					<div class="widget-content no-padding">
-						<div class="dataTables_header clearfix">
-							<div class="input-group col-md-12">
-								<a href="javascript:void(0);" class="btn btn-sm"><span
-									class="glyphicon glyphicon-plus-sign"></span> Add Server</a>
-								
-								<!-- <span class="pull-right">
-								<a href="javascript:void(0);" class="btn btn-sm btn-primary">
-									<span class="glyphicon glyphicon-ok"></span> Save Changes
-								</a>
-								</span> -->
-							</div>
-							
-						</div>
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Node Settings</h4>
+					</div>
+					<div class="widget-content">
 						<table class="table table-hover table-bordered">
 							<thead>
 								<tr>
@@ -65,7 +56,6 @@
 									<th>Port</th>
 									<th>Enabled</th>
 									<th>Active</th>
-									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -89,7 +79,6 @@
 									<td><%=port %></td>
 									<td><%=enabledStatus %></td>
 									<td><%=activeStatus %></td>
-									<td><a href="javascript:void(0);" class="btn btn-sm">Edit</a></td>
 								</tr>
 							<%
 							}
@@ -99,7 +88,219 @@
 					</div>
 				</div>
 
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Engine Information</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Node</th>
+									<th>JVM Path</th>
+									<th>JVM Version</th>
+									<th>JVM Option</th>
+									<th>Install Path</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>My node1</td>
+									<td>/home/jvm</td>
+									<td>1.7</td>
+									<td>-Xmx5g -server</td>
+									<td>/home/fastcatsearch/fastcatsearch2</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>My node2</td>
+									<td>/home/jvm</td>
+									<td>1.7</td>
+									<td>-Xmx5g -server</td>
+									<td>/home/fastcatsearch/fastcatsearch2</td>
+								</tr>
+							</tbody>
+						</table>
+					
+					</div>
+				</div>
+
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Collection Status</h4>
+					</div>
+					<div class="widget-content">
+						<h5><i class="icon-angle-right"></i> Vol1</h5>
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Node</th>
+									<th>Document Size</th>
+									<th>Data Path</th>
+									<th>Data Disk Size</th>
+									<th>Segment Size</th>
+									<th>Revision ID</th>
+									<th>Revision UUID</th>
+									<th>Update Time</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>My node1</td>
+									<td>47</td>
+									<td>data/index0</td>
+									<td>543Mb</td>
+									<td>2</td>
+									<td>1</td>
+									<td>8a51848240</td>
+									<td>2013.11.27 12:22:49</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>My node2</td>
+									<td>47</td>
+									<td>data/index0</td>
+									<td>543Mb</td>
+									<td>2</td>
+									<td>1</td>
+									<td>8a51848240</td>
+									<td>2013.11.27 12:22:49</td>
+								</tr>
+							</tbody>
+						</table>
 						
+						<h5><i class="icon-angle-right"></i> Vol2</h5>
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Node</th>
+									<th>Document Size</th>
+									<th>Data Path</th>
+									<th>Data Disk Size</th>
+									<th>Segment Size</th>
+									<th>Revision ID</th>
+									<th>Revision UUID</th>
+									<th>Update Time</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>My node1</td>
+									<td>47</td>
+									<td>data/index0</td>
+									<td>543Mb</td>
+									<td>2</td>
+									<td>1</td>
+									<td>8a51848240</td>
+									<td>2013.11.27 12:22:49</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>My node2</td>
+									<td>47</td>
+									<td>data/index0</td>
+									<td>543Mb</td>
+									<td>2</td>
+									<td>1</td>
+									<td>8a51848240</td>
+									<td>2013.11.27 12:22:49</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<h5><i class="icon-angle-right"></i> Vol3</h5>
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Node</th>
+									<th>Document Size</th>
+									<th>Data Path</th>
+									<th>Data Disk Size</th>
+									<th>Segment Size</th>
+									<th>Revision ID</th>
+									<th>Revision UUID</th>
+									<th>Update Time</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>My node1</td>
+									<td>47</td>
+									<td>data/index0</td>
+									<td>543Mb</td>
+									<td>2</td>
+									<td>1</td>
+									<td>8a51848240</td>
+									<td>2013.11.27 12:22:49</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>My node2</td>
+									<td>47</td>
+									<td>data/index0</td>
+									<td>543Mb</td>
+									<td>2</td>
+									<td>1</td>
+									<td>8a51848240</td>
+									<td>2013.11.27 12:22:49</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+						
+						
+						
+						
+						
+				<div class="widget">
+					<div class="widget-header">
+						<h4>System Health</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Node</th>
+									<th>Disk</th>
+									<th>CPU</th>
+									<th>RAM</th>
+									<th>Load</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>My node1</td>
+									<td>20% (256Mb/1.5Tb)</td>
+									<td>12%</td>
+									<td>45% (16GB/32GB)</td>
+									<td>1.1</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>My node2</td>
+									<td>10% (256Mb/1.5Tb)</td>
+									<td>22%</td>
+									<td>45% (16GB/32GB)</td>
+									<td>0.5</td>
+								</tr>
+							</tbody>
+						</table>
+					
+					</div>
+				</div>
+				
+				
 				<!-- /Page Content -->
 			</div>
 		</div>

@@ -58,7 +58,7 @@ $(document).ready(function(){
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<!-- <tr>
 							<td>2</td>
 							<td><span class="task">
 								<span class="desc">Collection Vol1 indexing..</span> <span class="percent">20%</span>
@@ -81,7 +81,7 @@ $(document).ready(function(){
 							</td>
 							<td>1h</td>
 							<td>2013-09-10 12:35:00</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 
