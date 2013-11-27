@@ -50,383 +50,348 @@
 				</div>
 				<!-- /Page Header -->
 				
-				<div class="tabbable tabbable-custom tabbable-full-width ">
-					<ul class="nav nav-tabs">
-						<li class="active"><a href="#tab_datasource_full" data-toggle="tab">Full Indexing</a></li>
-						<li class=""><a href="#tab_datasource_add" data-toggle="tab">Add Indexing</a></li>
-						<li class=""><a href="#tab_db_sources" data-toggle="tab"><i class="icon-reorder"></i> JDBC Sources</a></li>
-					</ul>
-					<div class="tab-content row">
-
-						<!--=== Overview ===-->
-						<div class="tab-pane active" id="tab_datasource_full">
-							<div class="col-md-12">
-								<div class="widget box">
-									<div class="widget-content no-padding">
-										<div class="dataTables_header clearfix">
-											<div class="input-group col-md-12">
-												<a href="javascript:void(0);" class="btn btn-sm"><span
-													class="glyphicon glyphicon-plus-sign"></span> Add Datasource</a>
-											</div>
-											
-										</div>
-										<table class="table table-hover table-bordered table-checkable">
-											<thead>
-												<tr>
-													<th>Name</th>
-													<th>Enable</th>
-													<th>Reader / Modifier</th>
-													<th> </th>
-												</tr>
-											</thead>
-											<tbody>
-												<%
-												List<Element> sourceConfgiList = fullIndexingNode.getChildren("source");
-												for(int i = 0; sourceConfgiList != null && i < sourceConfgiList.size(); i++){
-													Element sourceConfig = sourceConfgiList.get(i);
-													String name = sourceConfig.getAttributeValue("name");
-													String active = sourceConfig.getAttributeValue("active");
-													String reader = sourceConfig.getChildText("reader");
-													String modifier = sourceConfig.getChildText("modifier");
-												%>
-												<tr class="_full_<%=i %>">
-													<td class="._name"><%=name %></td>
-													<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
-													<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
-													<td class=""><a href="javascript:void(0)" data-toggle="modal" data-target="#fullSourceModal_<%=i %>">Edit</a></td>
-												</tr>
-												<%
-												}
-												%>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Full Indexing</h4>
+					</div>
+					<div class="widget-content">
+						<a href="javascript:void(0);"><span class="icon-plus-sign"></span> Add Datasource</a>
+						<table class="table table-hover table-bordered table-checkable">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Enable</th>
+									<th>Reader / Modifier</th>
+									<th> </th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								List<Element> sourceConfgiList = fullIndexingNode.getChildren("source");
+								for(int i = 0; sourceConfgiList != null && i < sourceConfgiList.size(); i++){
+									Element sourceConfig = sourceConfgiList.get(i);
+									String name = sourceConfig.getAttributeValue("name");
+									String active = sourceConfig.getAttributeValue("active");
+									String reader = sourceConfig.getChildText("reader");
+									String modifier = sourceConfig.getChildText("modifier");
+								%>
+								<tr class="_full_<%=i %>">
+									<td class="._name"><%=name %></td>
+									<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
+									<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
+									<td class=""><a href="javascript:void(0)" data-toggle="modal" data-target="#fullSourceModal_<%=i %>">Edit</a></td>
+								</tr>
+								<%
+								}
+								%>
+							</tbody>
+						</table>
+					</div>
+				</div>
 						
-						<%
-						sourceConfgiList = fullIndexingNode.getChildren("source");
-						for(int i = 0; i< sourceConfgiList.size(); i++){
-							Element sourceConfig = sourceConfgiList.get(i);
-							String name = sourceConfig.getAttributeValue("name");
-							String active = sourceConfig.getAttributeValue("active");
-							String reader = sourceConfig.getChildText("reader");
-							String modifier = sourceConfig.getChildText("modifier");
-						%>
-							<div class="modal" id="fullSourceModal_<%=i %>" tabindex="-1" role="dialog"
-							aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal"
-												aria-hidden="true">&times;</button>
-											<h4 class="modal-title"> Full Indexing Source</h4>
-										</div>
-										<div class="modal-body">
-											<div class="col-md-12">
-												<div class="widget">
-													<div class="widget-header">
-														<h4>Setting</h4>
-													</div>
-													<div class="widget-content">
-														<div class="row">
-															<div class="col-md-12 form-horizontal">
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Name:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=name %>"></div>
-																</div>
-																
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Enabled:</label>
-																	<div class="col-md-9"><input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>"></div>
-																</div>
-																
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Reader Class:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=reader %>"></div>
-																</div>
-																
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Modifier Class:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=modifier %>"></div>
-																</div>
-															</div>
-															
+				<%
+				sourceConfgiList = fullIndexingNode.getChildren("source");
+				for(int i = 0; i< sourceConfgiList.size(); i++){
+					Element sourceConfig = sourceConfgiList.get(i);
+					String name = sourceConfig.getAttributeValue("name");
+					String active = sourceConfig.getAttributeValue("active");
+					String reader = sourceConfig.getChildText("reader");
+					String modifier = sourceConfig.getChildText("modifier");
+				%>
+					<div class="modal" id="fullSourceModal_<%=i %>" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title"> Full Indexing Source</h4>
+								</div>
+								<div class="modal-body">
+									<div class="col-md-12">
+										<div class="widget">
+											<div class="widget-header">
+												<h4>Setting</h4>
+											</div>
+											<div class="widget-content">
+												<div class="row">
+													<div class="col-md-12 form-horizontal">
+														<div class="form-group">
+															<label class="col-md-3 control-label">Name:</label>
+															<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=name %>"></div>
+														</div>
+														
+														<div class="form-group">
+															<label class="col-md-3 control-label">Enabled:</label>
+															<div class="col-md-9"><input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>"></div>
+														</div>
+														
+														<div class="form-group">
+															<label class="col-md-3 control-label">Reader Class:</label>
+															<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=reader %>"></div>
+														</div>
+														
+														<div class="form-group">
+															<label class="col-md-3 control-label">Modifier Class:</label>
+															<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=modifier %>"></div>
 														</div>
 													</div>
-												</div> <!-- /.widget -->
+													
+												</div>
 											</div>
-											<div class="col-md-12">
-												<div class="widget">
-													<div class="widget-header">
-														<h4>Properties</h4>
-													</div>
-													<div class="widget-content">
-														<div class="row">
-															<div class="col-md-12 form-horizontal">
-															<%
-															Element properties = sourceConfig.getChild("properties");
-															if(properties != null){
-																List<Element> propertyList = properties.getChildren("property");
-																for(int j=0; propertyList != null && j<propertyList.size(); j++){
-																	Element property = propertyList.get(j);
-																	String key = property.getAttributeValue("key");
-																	String value = property.getValue();
-															%>
-																
-																	<div class="form-group">
-																		<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>" placeholder="KEY"></div>
-																		<div class="col-md-8">
-																			<div class="input-group">
-																				<input type="text" name="regular" class="form-control" value="<%=value %>" placeholder="VALUE">
-																				<span class="input-group-btn">
-																					<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
-																				</span>
-																			</div>
-																		</div>
-																	</div>
-															<%
-																}
-															}
-															%>
-																	<div class="form-group">
-																		<div class="col-md-12">
-																			<a href="javascript:void(0)">Add Property</a>
-																		</div>
-																	</div>
-															</div>
-														</div>
-													</div>
-												</div> <!-- /.widget -->
-											</div>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
-											<button type="button" class="btn btn-default"
-												data-dismiss="modal">Close</button>
-											<button type="button" class="btn btn-primary">Save
-												changes</button>
-										</div>
+										</div> <!-- /.widget -->
 									</div>
-									<!-- /.modal-content -->
-								</div>
-								<!-- /.modal-dialog -->
-							</div>
-						<%
-						}
-						%>
-						
-						
-						<div class="tab-pane" id="tab_datasource_add">
-							<div class="col-md-12">
-								<div class="widget box">
-									<div class="widget-content no-padding">
-										<div class="dataTables_header clearfix">
-											<div class="input-group col-md-12">
-												<a href="javascript:void(0);" class="btn btn-sm"><span
-													class="glyphicon glyphicon-plus-sign"></span> Add Datasource</a>
+									<div class="col-md-12">
+										<div class="widget">
+											<div class="widget-header">
+												<h4>Properties</h4>
 											</div>
-											
-										</div>
-										<table class="table table-hover table-bordered table-checkable">
-											<thead>
-												<tr>
-													<th>Name</th>
-													<th>Enable</th>
-													<th>Reader / Modifier</th>
-													<th> </th>
-												</tr>
-											</thead>
-											<tbody>
-												<%
-												sourceConfgiList = addIndexingNode.getChildren("source");
-												for(int i = 0; sourceConfgiList != null && i< sourceConfgiList.size(); i++){
-													Element sourceConfig = sourceConfgiList.get(i);
-													String name = sourceConfig.getAttributeValue("name");
-													String active = sourceConfig.getAttributeValue("active");
-													String reader = sourceConfig.getChildText("reader");
-													String modifier = sourceConfig.getChildText("modifier");
-												%>
-												<tr class="_add_<%=i %>">
-													<td class="._name"><%=name %></td>
-													<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
-													<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
-													<td class=""><a href="javascript:void(0)" data-toggle="modal" data-target="#addSourceModal_<%=i %>">Edit</a></td>
-												</tr>
-												<%
-												}
-												%>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						
-						
-						<%
-						sourceConfgiList = addIndexingNode.getChildren("source");
-						for(int i = 0; i< sourceConfgiList.size(); i++){
-							Element sourceConfig = sourceConfgiList.get(i);
-							String name = sourceConfig.getAttributeValue("name");
-							String active = sourceConfig.getAttributeValue("active");
-							String reader = sourceConfig.getChildText("reader");
-							String modifier = sourceConfig.getChildText("modifier");
-						%>
-							<div class="modal" id="addSourceModal_<%=i %>" tabindex="-1" role="dialog"
-							aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal"
-												aria-hidden="true">&times;</button>
-											<h4 class="modal-title"> Add Indexing Source</h4>
-										</div>
-										<div class="modal-body">
-											<div class="col-md-12">
-												<div class="widget">
-													<div class="widget-header">
-														<h4>Setting</h4>
-													</div>
-													<div class="widget-content">
-														<div class="row">
-															<div class="col-md-12 form-horizontal">
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Name:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=name %>"></div>
-																</div>
-																
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Enabled:</label>
-																	<div class="col-md-9"><input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>"></div>
-																</div>
-																
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Reader Class:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=reader %>"></div>
-																</div>
-																
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Modifier Class:</label>
-																	<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=modifier %>"></div>
-																</div>
-															</div>
-															
-														</div>
-													</div>
-												</div> <!-- /.widget -->
-											</div>
-											<div class="col-md-12">
-												<div class="widget">
-													<div class="widget-header">
-														<h4>Properties</h4>
-													</div>
-													<div class="widget-content">
-														<div class="row form-horizontal">
-														<%
-														Element properties = sourceConfig.getChild("properties");
+											<div class="widget-content">
+												<div class="row">
+													<div class="col-md-12 form-horizontal">
+													<%
+													Element properties = sourceConfig.getChild("properties");
+													if(properties != null){
 														List<Element> propertyList = properties.getChildren("property");
-														for(int j=0; j<propertyList.size(); j++){
+														for(int j=0; propertyList != null && j<propertyList.size(); j++){
 															Element property = propertyList.get(j);
 															String key = property.getAttributeValue("key");
 															String value = property.getValue();
-														%>
-															
-																<div class="form-group">
-																<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>"></div>
-																<div class="col-md-8"><input type="text" name="regular" class="form-control" value="<%=value %>"></div>
+													%>
+														
+															<div class="form-group">
+																<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>" placeholder="KEY"></div>
+																<div class="col-md-8">
+																	<div class="input-group">
+																		<input type="text" name="regular" class="form-control" value="<%=value %>" placeholder="VALUE">
+																		<span class="input-group-btn">
+																			<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
+																		</span>
+																	</div>
 																</div>
-														<%
-															}
-														%>
-														</div>
+															</div>
+													<%
+														}
+													}
+													%>
+															<div class="form-group">
+																<div class="col-md-12">
+																	<a href="javascript:void(0)">Add Property</a>
+																</div>
+															</div>
 													</div>
-												</div> <!-- /.widget -->
+												</div>
 											</div>
+										</div> <!-- /.widget -->
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary">Save
+										changes</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<%
+					}
+					%>
+						
+						
+					<div class="widget">
+						<div class="widget-header">
+							<h4>Add Indexing</h4>
+						</div>
+						<div class="widget-content">
+							<a href="javascript:void(0);"><span
+								class="icon-plus-sign"></span> Add Datasource</a>
+							<table class="table table-hover table-bordered table-checkable">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Enable</th>
+										<th>Reader / Modifier</th>
+										<th> </th>
+									</tr>
+								</thead>
+								<tbody>
+									<%
+									sourceConfgiList = addIndexingNode.getChildren("source");
+									for(int i = 0; sourceConfgiList != null && i< sourceConfgiList.size(); i++){
+										Element sourceConfig = sourceConfgiList.get(i);
+										String name = sourceConfig.getAttributeValue("name");
+										String active = sourceConfig.getAttributeValue("active");
+										String reader = sourceConfig.getChildText("reader");
+										String modifier = sourceConfig.getChildText("modifier");
+									%>
+									<tr class="_add_<%=i %>">
+										<td class="._name"><%=name %></td>
+										<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
+										<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
+										<td class=""><a href="javascript:void(0)" data-toggle="modal" data-target="#addSourceModal_<%=i %>">Edit</a></td>
+									</tr>
+									<%
+									}
+									%>
+								</tbody>
+							</table>
+						</div>
+					</div>
+						
+						
+					
+					<%
+					sourceConfgiList = addIndexingNode.getChildren("source");
+					for(int i = 0; i< sourceConfgiList.size(); i++){
+						Element sourceConfig = sourceConfgiList.get(i);
+						String name = sourceConfig.getAttributeValue("name");
+						String active = sourceConfig.getAttributeValue("active");
+						String reader = sourceConfig.getChildText("reader");
+						String modifier = sourceConfig.getChildText("modifier");
+					%>
+						<div class="modal" id="addSourceModal_<%=i %>" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"
+											aria-hidden="true">&times;</button>
+										<h4 class="modal-title"> Add Indexing Source</h4>
+									</div>
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="widget">
+												<div class="widget-header">
+													<h4>Setting</h4>
+												</div>
+												<div class="widget-content">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+															<div class="form-group">
+																<label class="col-md-3 control-label">Name:</label>
+																<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=name %>"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Enabled:</label>
+																<div class="col-md-9"><input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Reader Class:</label>
+																<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=reader %>"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Modifier Class:</label>
+																<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=modifier %>"></div>
+															</div>
+														</div>
+														
+													</div>
+												</div>
+											</div> <!-- /.widget -->
 										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
-											<button type="button" class="btn btn-default"
-												data-dismiss="modal">Close</button>
-											<button type="button" class="btn btn-primary">Save
-												changes</button>
+										<div class="col-md-12">
+											<div class="widget">
+												<div class="widget-header">
+													<h4>Properties</h4>
+												</div>
+												<div class="widget-content">
+													<div class="row form-horizontal">
+													<%
+													Element properties = sourceConfig.getChild("properties");
+													List<Element> propertyList = properties.getChildren("property");
+													for(int j=0; j<propertyList.size(); j++){
+														Element property = propertyList.get(j);
+														String key = property.getAttributeValue("key");
+														String value = property.getValue();
+													%>
+														
+															<div class="form-group">
+															<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>"></div>
+															<div class="col-md-8"><input type="text" name="regular" class="form-control" value="<%=value %>"></div>
+															</div>
+													<%
+														}
+													%>
+													</div>
+												</div>
+											</div> <!-- /.widget -->
 										</div>
 									</div>
-									<!-- /.modal-content -->
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-primary">Save
+											changes</button>
+									</div>
 								</div>
-								<!-- /.modal-dialog -->
+								<!-- /.modal-content -->
 							</div>
-							
+							<!-- /.modal-dialog -->
+						</div>
+						
 						<%
 						}
 						%>
 						
 					
-						<!-- //tab field -->
-						<div class="tab-pane" id="tab_db_sources">
-							<div class="col-md-12">
-								<div class="widget box">
-									<div class="widget-content no-padding">
-										<div class="dataTables_header clearfix">
-											<div class="input-group col-md-12">
-												<a href="javascript:void(0);" class="btn btn-sm"><span
-													class="glyphicon glyphicon-plus-sign"></span> Add JDBC</a>
-											</div>
-											
-										</div>
-										<table class="table table-hover table-bordered">
-											<thead>
-												<tr>
-													<th>#</th>
-													<th>ID</th>
-													<th>Name</th>
-													<th>Driver</th>
-													<th>URL</th>
-													<th>User</th>
-													<th>Password</th>
-													<th></th>
-												</tr>
-											</thead>
-											<tbody>
-											<%
-											List<Element> sourceNodeList = jdbcSourcesNode.getChildren("jdbc-source");
-											for(int i =0; i< sourceNodeList.size(); i++){
-												Element sourceNode = sourceNodeList.get(i);
-												String id = sourceNode.getAttributeValue("id");
-												String name = sourceNode.getAttributeValue("name");
-												String driver = sourceNode.getAttributeValue("driver");
-												String url = sourceNode.getAttributeValue("url");
-												String user = sourceNode.getAttributeValue("user");
-												String maskedPassword = WebUtils.getMaskedPassword(sourceNode.getAttributeValue("password"));
-											%>
-												<tr>
-													<td><%=i+1 %></td>
-													<td><%=id %></td>
-													<td><%=name %></td>
-													<td><%=driver %></td>
-													<td><%=url %></td>
-													<td><%=user %></td>
-													<td><%=maskedPassword %></td>
-													<td><a href="">Edit</a></td>
-												</tr>
-												
-											<%
-											}
-											%>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
+						<div class="widget">
+						<div class="widget-header">
+							<h4>JDBC List</h4>
 						</div>
-						
+						<div class="widget-content">
+								<a href="javascript:void(0);" ><span
+									class="icon-plus-sign"></span> Add JDBC</a>
+							<table class="table table-hover table-bordered">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>ID</th>
+										<th>Name</th>
+										<th>Driver</th>
+										<th>URL</th>
+										<th>User</th>
+										<th>Password</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+								<%
+								List<Element> sourceNodeList = jdbcSourcesNode.getChildren("jdbc-source");
+								for(int i =0; i< sourceNodeList.size(); i++){
+									Element sourceNode = sourceNodeList.get(i);
+									String id = sourceNode.getAttributeValue("id");
+									String name = sourceNode.getAttributeValue("name");
+									String driver = sourceNode.getAttributeValue("driver");
+									String url = sourceNode.getAttributeValue("url");
+									String user = sourceNode.getAttributeValue("user");
+									String maskedPassword = WebUtils.getMaskedPassword(sourceNode.getAttributeValue("password"));
+								%>
+									<tr>
+										<td><%=i+1 %></td>
+										<td><%=id %></td>
+										<td><%=name %></td>
+										<td><%=driver %></td>
+										<td><%=url %></td>
+										<td><%=user %></td>
+										<td><%=maskedPassword %></td>
+										<td><a href="">Edit</a></td>
+									</tr>
+									
+								<%
+								}
+								%>
+								</tbody>
+							</table>
+						</div>
 					</div>
-					<!-- /.tab-content -->
-				</div>
-				
 				
 				
 			</div>
