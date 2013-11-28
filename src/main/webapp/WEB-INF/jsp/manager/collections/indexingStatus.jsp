@@ -32,6 +32,45 @@
 				<dt>Revision UUID : </dt>
 				<dd><%=indexingStatus.getString("revisionUUID") %></dd>
 			</dl>
+			<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Node</th>
+									<th>Document Size</th>
+									<th>Data Path</th>
+									<th>Data Disk Size</th>
+									<th>Segment Size</th>
+									<th>Revision ID</th>
+									<th>Revision UUID</th>
+									<th>Update Time</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>My node1</td>
+									<td>47</td>
+									<td>data/index0</td>
+									<td>543Mb</td>
+									<td>2</td>
+									<td>1</td>
+									<td>8a51848240</td>
+									<td>2013.11.27 12:22:49</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>My node2</td>
+									<td>47</td>
+									<td>data/index0</td>
+									<td>543Mb</td>
+									<td>2</td>
+									<td>1</td>
+									<td>8a51848240</td>
+									<td>2013.11.27 12:22:49</td>
+								</tr>
+							</tbody>
+						</table>
 		</div>
 	</div>
 	
