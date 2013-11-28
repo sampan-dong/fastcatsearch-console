@@ -1,3 +1,4 @@
+<%@page import="org.jdom2.output.XMLOutputter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -25,19 +26,93 @@ $(document).ready(function(){
 	$(".addIndexingForm").each(function(){ $(this).validate(); });
 	$(".jdbcForm").each(function(){ $(this).validate(); });
 	
-	//아래와 같이 ajax로 처리후 결과가 에러이면 에러를 말해주고, 성공이면 페이지를 리로드한다.
-	/* $(".fullIndexingForm").each(function(){ $(this).ajaxForm({
-			url: '',
-			type: 'POST',
-			dataType: 'json',
-			data: $(this).serializeData(),
-			success: function(responseText, statusText, xhr, $form){
+	$("a[data-toggle|=modal]").css("cursor","pointer");
+	
+	//new input form reset
+	$("a[data-toggle|=modal][index-type]").click(function() {
+		
+		$(".newIndexingForm")[0].reset();
+		
+		var indexType = $(this).attr("index-type");
+		
+		$("div#newSourceModal input[name=indexType]").val(indexType);
+		
+		var parent = $("div#newSourceModal i.icon-plus-sign").parent()
+			.parent().parent().parent();
+		
+		var elements = parent.children();
+		
+		var length = elements.length;
+		
+		for(var inx=length-2;inx>=0;inx--) {
+			$(elements[inx]).remove();
+		}
+		
+	});
+	
+	//property remove
+	var fncRemove = function() {
+		var element = $(this).parent().parent().parent().parent();
+		element.remove();
+	};
+	//property append
+	$("div.modal i.icon-plus-sign").parent().click(function() {
+		var element = $(this).parent().parent();
+		element.before($("div#property-template").html());
+		
+		$("div.modal span.input-group-btn button i.icon-minus-sign").parent()
+			.click(fncRemove).css("cursor","pointer");
+	}).css("cursor","pointer");
+	//property remove
+	$("div.modal span.input-group-btn button i.icon-minus-sign").parent()
+		.click(fncRemove).css("cursor","pointer");
+	//remove button
+	$("div.modal div.modal-footer button.btn-danger.pull-left ").click(function() {
+		var form = $(this).parents("form")[0];
+		form.mode.value="delete";
+		$(form).submit();
+	});
+	
+	//submit form
+	var fnSubmit = function(event){
+		event.preventDefault();
+		var className = $(this).attr("class");
+
+		var findKey = $(this).find("input[name=key]");
+		findKey.each(function() { $(this).attr("name","key"+findKey.index($(this))); });
+		findKey = $(this).find("input[name=value]");
+		findKey.each(function() { $(this).attr("name","value"+findKey.index($(this))); });
+		
+		var paramData = $(this).serializeArray();
+		paramData[paramData.length]={"name":"uri","value":"/management/collections/update-datasource"};
+		
+		$.ajax({
+			url: PROXY_REQUEST_URI,
+			type: "POST",
+			dataType: "json",
+			data: paramData,
+			success: function(response, statusText, xhr, $form){
+				if(response["success"]==true) {
+					$("div.modal").addClass("hidden");
+					alert("updated successed.");
+					location.href = location.href;
+				} else {
+					alert("update failed.");
+				}
 				
-				location.href = location.href;
+			}, fail: function() {
+				alert("cannot submit.");
 			}
+			
 		});
-	}); */
+		return false;
+	};
+	
+	$(".fullIndexingForm").submit(fnSubmit);
+	$(".addIndexingForm").submit(fnSubmit);
+	$(".newIndexingForm").submit(fnSubmit);
 });
+
 </script>
 </head>
 <body>
@@ -69,13 +144,12 @@ $(document).ready(function(){
 					</div>
 				</div>
 				<!-- /Page Header -->
-				
 				<div class="widget">
 					<div class="widget-header">
 						<h4>Full Indexing</h4>
 					</div>
 					<div class="widget-content">
-						<a href="javascript:void(0);" data-toggle="modal" data-target="#newFullSourceModal" ><span class="icon-plus-sign"></span> Add Datasource</a>
+						<a data-toggle="modal" data-target="#newSourceModal" index-type="full" update-type="new"><span class="icon-plus-sign"></span> Add Datasource</a>
 						<table class="table table-hover table-bordered table-checkable">
 							<thead>
 								<tr>
@@ -87,9 +161,9 @@ $(document).ready(function(){
 							</thead>
 							<tbody>
 								<%
-								List<Element> sourceConfgiList = fullIndexingNode.getChildren("source");
-								for(int i = 0; sourceConfgiList != null && i < sourceConfgiList.size(); i++){
-									Element sourceConfig = sourceConfgiList.get(i);
+								List<Element> sourceConfigList = fullIndexingNode.getChildren("source");
+								for(int i = 0; sourceConfigList != null && i < sourceConfigList.size(); i++){
+									Element sourceConfig = sourceConfigList.get(i);
 									String name = sourceConfig.getAttributeValue("name");
 									String active = sourceConfig.getAttributeValue("active");
 									String reader = sourceConfig.getChildText("reader");
@@ -99,7 +173,7 @@ $(document).ready(function(){
 									<td class="._name"><%=name %></td>
 									<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
 									<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
-									<td class=""><a href="javascript:void(0)" data-toggle="modal" data-target="#fullSourceModal_<%=i %>">Edit</a></td>
+									<td class=""><a data-toggle="modal" data-target="#fullSourceModal_<%=i%>">Edit</a></td>
 								</tr>
 								<%
 								}
@@ -110,9 +184,9 @@ $(document).ready(function(){
 				</div>
 				
 				<%
-				sourceConfgiList = fullIndexingNode.getChildren("source");
-				for(int i = 0; i< sourceConfgiList.size(); i++){
-					Element sourceConfig = sourceConfgiList.get(i);
+				sourceConfigList = fullIndexingNode.getChildren("source");
+				for(int i = 0; i< sourceConfigList.size(); i++){
+					Element sourceConfig = sourceConfigList.get(i);
 					String name = sourceConfig.getAttributeValue("name");
 					String active = sourceConfig.getAttributeValue("active");
 					String reader = sourceConfig.getChildText("reader");
@@ -121,7 +195,11 @@ $(document).ready(function(){
 					<div class="modal" id="fullSourceModal_<%=i %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<form id="newFullSourceModalForm_<%=i %>" class="fullIndexingForm" method="POST">
+								<form id="fullSourceModalForm_<%=i %>" class="fullIndexingForm" method="POST">
+									<input type="hidden" name="collectionId" value="${collectionId}"/>
+									<input type="hidden" name="sourceIndex" value="<%=i%>"/>
+									<input type="hidden" name="indexType" value="full"/>
+									<input type="hidden" name="mode" value="update"/>
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 										<h4 class="modal-title"> Full Indexing Source</h4>
@@ -137,14 +215,14 @@ $(document).ready(function(){
 														<div class="col-md-12 form-horizontal">
 															<div class="form-group">
 																<label class="col-md-3 control-label">Name:</label>
-																<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small required" value="<%=name %>"></div>
+																<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" value="<%=name %>"></div>
 															</div>
 															
 															<div class="form-group">
 																<label class="col-md-3 control-label">Enabled:</label>
 																<div class="col-md-9">
 																	<label class="checkbox">
-																		<input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>">
+																		<input type="checkbox" name="active" class="form-control" value="true" <%="true".equalsIgnoreCase(active)? "checked" :"" %>>
 																		Yes
 																	</label>
 																</div>
@@ -152,12 +230,12 @@ $(document).ready(function(){
 															
 															<div class="form-group">
 																<label class="col-md-3 control-label">Reader Class:</label>
-																<div class="col-md-9"><input type="text" name="regular" class="form-control required" value="<%=reader %>"></div>
+																<div class="col-md-9"><input type="text" name="readerClass" class="form-control required" value="<%=reader %>"></div>
 															</div>
 															
 															<div class="form-group">
 																<label class="col-md-3 control-label">Modifier Class:</label>
-																<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=modifier %>"></div>
+																<div class="col-md-9"><input type="text" name="modifierClass" class="form-control" value="<%=modifier %>"></div>
 															</div>
 														</div>
 														
@@ -176,33 +254,38 @@ $(document).ready(function(){
 														<%
 														Element properties = sourceConfig.getChild("properties");
 														if(properties != null){
+														%>
+															<%
 															List<Element> propertyList = properties.getChildren("property");
 															for(int j=0; propertyList != null && j<propertyList.size(); j++){
+															%>
+																<%
 																Element property = propertyList.get(j);
 																String key = property.getAttributeValue("key");
 																String value = property.getValue();
-														%>
-															
+																%>
 																<div class="form-group">
-																	<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>" placeholder="KEY"></div>
+																	<div class="col-md-4"><input type="text" name="key" class="form-control" value="<%=key %>" placeholder="KEY"></div>
 																	<div class="col-md-8">
 																		<div class="input-group">
-																			<input type="text" name="regular" class="form-control" value="<%=value %>" placeholder="VALUE">
+																			<input type="text" name="value" class="form-control" value="<%=value %>" placeholder="VALUE">
 																			<span class="input-group-btn">
 																				<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
 																			</span>
 																		</div>
 																	</div>
 																</div>
-														<%
+															<%
 															}
+															%>
+														<%
 														}
 														%>
-																<div class="form-group">
-																	<div class="col-md-12">
-																		<a href="javascript:void(0)"><i class="icon-plus-sign"></i> Add Property</a>
-																	</div>
-																</div>
+														<div class="form-group">
+															<div class="col-md-12">
+																<a><i class="icon-plus-sign"></i> Add Property</a>
+															</div>
+														</div>
 														</div>
 													</div>
 												</div>
@@ -223,13 +306,17 @@ $(document).ready(function(){
 					<%
 					}
 					%>
-					<div class="modal" id="newFullSourceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal" id="newSourceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<form id="newFullSourceModalForm" class="fullIndexingForm" method="POST">
+								<form id="newSourceModalForm" class="newIndexingForm" method="POST">
+									<input type="hidden" name="collectionId" value="${collectionId}"/>
+									<input type="hidden" name="sourceIndex" value="-1"/>
+									<input type="hidden" name="indexType" value=""/>
+									<input type="hidden" name="mode" value="update"/>
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-										<h4 class="modal-title"> Full Indexing Source</h4>
+										<h4 class="modal-title"> Indexing Source</h4>
 									</div>
 									<div class="modal-body">
 										<div class="col-md-12">
@@ -249,7 +336,7 @@ $(document).ready(function(){
 																<label class="col-md-3 control-label">Enabled:</label>
 																<div class="col-md-9">
 																	<label class="checkbox">
-																		<input type="checkbox" name="active" class="form-control" checked>
+																		<input type="checkbox" name="active" class="form-control" value="true" checked>
 																		Yes
 																	</label>
 																</div>
@@ -257,12 +344,12 @@ $(document).ready(function(){
 															
 															<div class="form-group">
 																<label class="col-md-3 control-label">Reader Class:</label>
-																<div class="col-md-9"><input type="text" name="reader" class="form-control required"></div>
+																<div class="col-md-9"><input type="text" name="readerClass" class="form-control required"></div>
 															</div>
 															
 															<div class="form-group">
 																<label class="col-md-3 control-label">Modifier Class:</label>
-																<div class="col-md-9"><input type="text" name="modifier" class="form-control"></div>
+																<div class="col-md-9"><input type="text" name="modifierClass" class="form-control"></div>
 															</div>
 														</div>
 														
@@ -280,7 +367,7 @@ $(document).ready(function(){
 														<div class="col-md-12 form-horizontal">
 															<div class="form-group">
 																<div class="col-md-12">
-																	<a href="javascript:void(0)"><i class="icon-plus-sign"></i> Add Property</a>
+																	<a><i class="icon-plus-sign"></i> Add Property</a>
 																</div>
 															</div>
 														</div>
@@ -290,7 +377,7 @@ $(document).ready(function(){
 										</div>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
+										<button type="button" class="btn btn-danger pull-left">Remove</button>
 										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 										<button type="submit" class="btn btn-primary">Save changes</button>
 									</div>
@@ -301,15 +388,12 @@ $(document).ready(function(){
 						<!-- /.modal-dialog -->
 					</div>
 						
-						
-						
-						
 					<div class="widget">
 						<div class="widget-header">
 							<h4>Add Indexing</h4>
 						</div>
 						<div class="widget-content">
-							<a href="javascript:void(0);" data-toggle="modal" data-target="#newAddSourceModal" ><span class="icon-plus-sign"></span> Add Datasource</a>
+							<a data-toggle="modal" data-target="#newSourceModal" index-type="add"><span class="icon-plus-sign"></span> Add Datasource</a>
 							<table class="table table-hover table-bordered table-checkable">
 								<thead>
 									<tr>
@@ -321,9 +405,9 @@ $(document).ready(function(){
 								</thead>
 								<tbody>
 									<%
-									sourceConfgiList = addIndexingNode.getChildren("source");
-									for(int i = 0; sourceConfgiList != null && i< sourceConfgiList.size(); i++){
-										Element sourceConfig = sourceConfgiList.get(i);
+									sourceConfigList = addIndexingNode.getChildren("source");
+									for(int i = 0; sourceConfigList != null && i< sourceConfigList.size(); i++){
+										Element sourceConfig = sourceConfigList.get(i);
 										String name = sourceConfig.getAttributeValue("name");
 										String active = sourceConfig.getAttributeValue("active");
 										String reader = sourceConfig.getChildText("reader");
@@ -333,7 +417,7 @@ $(document).ready(function(){
 										<td class="._name"><%=name %></td>
 										<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
 										<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
-										<td class=""><a href="javascript:void(0)" data-toggle="modal" data-target="#addSourceModal_<%=i %>">Edit</a></td>
+										<td class=""><a data-toggle="modal" data-target="#addSourceModal_<%=i %>">Edit</a></td>
 									</tr>
 									<%
 									}
@@ -342,13 +426,11 @@ $(document).ready(function(){
 							</table>
 						</div>
 					</div>
-						
-						
 					
 					<%
-					sourceConfgiList = addIndexingNode.getChildren("source");
-					for(int i = 0; i< sourceConfgiList.size(); i++){
-						Element sourceConfig = sourceConfgiList.get(i);
+					sourceConfigList = addIndexingNode.getChildren("source");
+					for(int i = 0; i< sourceConfigList.size(); i++){
+						Element sourceConfig = sourceConfigList.get(i);
 						String name = sourceConfig.getAttributeValue("name");
 						String active = sourceConfig.getAttributeValue("active");
 						String reader = sourceConfig.getChildText("reader");
@@ -357,84 +439,110 @@ $(document).ready(function(){
 						<div class="modal" id="addSourceModal_<%=i %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-										<h4 class="modal-title"> Add Indexing Source</h4>
-									</div>
-									<div class="modal-body">
-										<div class="col-md-12">
-											<div class="widget">
-												<div class="widget-header">
-													<h4>Setting</h4>
-												</div>
-												<div class="widget-content">
-													<div class="row">
-														<div class="col-md-12 form-horizontal">
-															<div class="form-group">
-																<label class="col-md-3 control-label">Name:</label>
-																<div class="col-md-9"><input type="text" name="regular" class="form-control input-width-small" value="<%=name %>"></div>
-															</div>
-															
-															<div class="form-group">
-																<label class="col-md-3 control-label">Enabled:</label>
-																<div class="col-md-9">
-																	<label class="checkbox">
-																		<input type="checkbox" name="regular" class="form-control" value="<%=active.equalsIgnoreCase("true")? "checked" :"" %>">
-																		Yes
-																	</label>
+									<form id="addSourceModalForm_<%=i %>" class="addIndexingForm" method="POST">
+										<input type="hidden" name="collectionId" value="${collectionId}"/>
+										<input type="hidden" name="sourceIndex" value="<%=i%>"/>
+										<input type="hidden" name="indexType" value="add"/>
+										<input type="hidden" name="mode" value="update"/>
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+											<h4 class="modal-title"> Add Indexing Source</h4>
+										</div>
+										<div class="modal-body">
+											<div class="col-md-12">
+												<div class="widget">
+													<div class="widget-header">
+														<h4>Setting</h4>
+													</div>
+													<div class="widget-content">
+														<div class="row">
+															<div class="col-md-12 form-horizontal">
+																<div class="form-group">
+																	<label class="col-md-3 control-label">Name:</label>
+																	<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small" value="<%=name %>"></div>
+																</div>
+																
+																<div class="form-group">
+																	<label class="col-md-3 control-label">Enabled:</label>
+																	<div class="col-md-9">
+																		<label class="checkbox">
+																			<input type="checkbox" name="active" class="form-control" value="true" <%="true".equalsIgnoreCase(active)? "checked" :"" %>>
+																			Yes
+																		</label>
+																	</div>
+																</div>
+																
+																<div class="form-group">
+																	<label class="col-md-3 control-label">Reader Class:</label>
+																	<div class="col-md-9"><input type="text" name="readerClass" class="form-control" value="<%=reader %>"></div>
+																</div>
+																
+																<div class="form-group">
+																	<label class="col-md-3 control-label">Modifier Class:</label>
+																	<div class="col-md-9"><input type="text" name="modifierClass" class="form-control" value="<%=modifier %>"></div>
 																</div>
 															</div>
 															
+														</div>
+													</div>
+												</div> <!-- /.widget -->
+											</div>
+											<div class="col-md-12">
+												<div class="widget">
+													<div class="widget-header">
+														<h4>Properties</h4>
+													</div>
+													<div class="widget-content">
+														<div class="row">
+															<div class="col-md-12 form-horizontal">
+															<%
+															Element properties = sourceConfig.getChild("properties");
+															if(properties != null){
+															%>
+																<%
+																List<Element> propertyList = properties.getChildren("property");
+																for(int j=0; j<propertyList.size(); j++){
+																%>
+																	<%
+																	Element property = propertyList.get(j);
+																	String key = property.getAttributeValue("key");
+																	String value = property.getValue();
+																	%>
+																	<div class="form-group">
+																		<div class="col-md-4"><input type="text" name="key" class="form-control" value="<%=key %>" placeholder="KEY"></div>
+																		<div class="col-md-8">
+																			<div class="input-group">
+																				<input type="text" name="value" class="form-control" value="<%=value %>" placeholder="VALUE">
+																				<span class="input-group-btn">
+																					<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
+																				</span>
+																			</div>
+																		</div>
+																	</div>
+																<%
+																}
+																%>
+															<%
+															}
+															%>
 															<div class="form-group">
-																<label class="col-md-3 control-label">Reader Class:</label>
-																<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=reader %>"></div>
+																<div class="col-md-12">
+																	<a><i class="icon-plus-sign"></i> Add Property</a>
+																</div>
+															</div>
 															</div>
 															
-															<div class="form-group">
-																<label class="col-md-3 control-label">Modifier Class:</label>
-																<div class="col-md-9"><input type="text" name="regular" class="form-control" value="<%=modifier %>"></div>
-															</div>
 														</div>
-														
 													</div>
-												</div>
-											</div> <!-- /.widget -->
+												</div> <!-- /.widget -->
+											</div>
 										</div>
-										<div class="col-md-12">
-											<div class="widget">
-												<div class="widget-header">
-													<h4>Properties</h4>
-												</div>
-												<div class="widget-content">
-													<div class="row form-horizontal">
-													<%
-													Element properties = sourceConfig.getChild("properties");
-													List<Element> propertyList = properties.getChildren("property");
-													for(int j=0; j<propertyList.size(); j++){
-														Element property = propertyList.get(j);
-														String key = property.getAttributeValue("key");
-														String value = property.getValue();
-													%>
-														
-															<div class="form-group">
-															<div class="col-md-4"><input type="text" name="regular" class="form-control" value="<%=key %>"></div>
-															<div class="col-md-8"><input type="text" name="regular" class="form-control" value="<%=value %>"></div>
-															</div>
-													<%
-														}
-													%>
-													</div>
-												</div>
-											</div> <!-- /.widget -->
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Save changes</button>
 										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-										<button type="button" class="btn btn-primary">Save
-											changes</button>
-									</div>
+									</form>
 								</div>
 								<!-- /.modal-content -->
 							</div>
@@ -445,14 +553,6 @@ $(document).ready(function(){
 						}
 						%>
 						
-						
-					
-					
-					
-					
-					
-					
-					
 						<div class="widget">
 						<div class="widget-header">
 							<h4>JDBC List</h4>
@@ -502,8 +602,19 @@ $(document).ready(function(){
 							</table>
 						</div>
 					</div>
-				
-				
+					<div id="property-template" class="hidden">
+						<div class="form-group">
+							<div class="col-md-4"><input type="text" name="key" class="form-control" value="" placeholder="KEY"></div>
+							<div class="col-md-8">
+								<div class="input-group">
+									<input type="text" name="value" class="form-control" value="" placeholder="VALUE">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
 			</div>
 		</div>
 	</div>

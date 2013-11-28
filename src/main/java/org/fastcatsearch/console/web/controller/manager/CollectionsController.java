@@ -1,10 +1,13 @@
 package org.fastcatsearch.console.web.controller.manager;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.jdom2.Document;
+import org.jdom2.Element;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
