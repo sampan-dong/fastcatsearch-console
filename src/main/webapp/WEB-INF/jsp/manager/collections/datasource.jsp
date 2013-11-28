@@ -76,7 +76,9 @@ $(document).ready(function(){
 	//submit form
 	var fnSubmit = function(event){
 		event.preventDefault();
-		var className = $(this).attr("class");
+		if(! $(this).valid()){
+			return false;
+		} 
 
 		var findKey = $(this).find("input[name=key]");
 		findKey.each(function() { $(this).attr("name","key"+findKey.index($(this))); });
@@ -84,7 +86,6 @@ $(document).ready(function(){
 		findKey.each(function() { $(this).attr("name","value"+findKey.index($(this))); });
 		
 		var paramData = $(this).serializeArray();
-		paramData[paramData.length]={"name":"uri","value":"/management/collections/update-datasource"};
 		
 		$.ajax({
 			url: PROXY_REQUEST_URI,
@@ -111,6 +112,39 @@ $(document).ready(function(){
 	$(".fullIndexingForm").submit(fnSubmit);
 	$(".addIndexingForm").submit(fnSubmit);
 	$(".newIndexingForm").submit(fnSubmit);
+	
+	var fnJdbcSubmit = function(event) {
+		event.preventDefault();
+		if(! $(this).valid()) {
+			return false;
+		}
+		
+		var paramData = $(this).serializeArray();
+		
+		$.ajax({
+			url: PROXY_REQUEST_URI,
+			type: "POST",
+			dataType: "json",
+			data: paramData,
+			success:function(response, statusText, xhr, $form) {
+				if(response["success"]==true) {
+					$("div.modal").addClass("hidden");
+					alert("updated successed.");
+					location.href = location.href;
+				} else {
+					alert("update failed.");
+				}
+				
+			}, fail:function() {
+				alert("cannot submit.");
+			}
+		});
+		
+		return false;
+	};
+	
+	$(".newJdbcSourceForm").submit(fnJdbcSubmit);
+	$(".jdbcSourceForm").submit(fnJdbcSubmit);
 });
 
 </script>
@@ -200,6 +234,7 @@ $(document).ready(function(){
 									<input type="hidden" name="sourceIndex" value="<%=i%>"/>
 									<input type="hidden" name="indexType" value="full"/>
 									<input type="hidden" name="mode" value="update"/>
+									<input type="hidden" name="uri" value="/management/collections/update-datasource"/>
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 										<h4 class="modal-title"> Full Indexing Source</h4>
@@ -314,6 +349,7 @@ $(document).ready(function(){
 									<input type="hidden" name="sourceIndex" value="-1"/>
 									<input type="hidden" name="indexType" value=""/>
 									<input type="hidden" name="mode" value="update"/>
+									<input type="hidden" name="uri" value="/management/collections/update-datasource"/>
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 										<h4 class="modal-title"> Indexing Source</h4>
@@ -444,6 +480,7 @@ $(document).ready(function(){
 										<input type="hidden" name="sourceIndex" value="<%=i%>"/>
 										<input type="hidden" name="indexType" value="add"/>
 										<input type="hidden" name="mode" value="update"/>
+										<input type="hidden" name="uri" value="/management/collections/update-datasource"/>
 										<div class="modal-header">
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 											<h4 class="modal-title"> Add Indexing Source</h4>
@@ -558,7 +595,9 @@ $(document).ready(function(){
 							<h4>JDBC List</h4>
 						</div>
 						<div class="widget-content">
-								<a href="javascript:void(0);" ><span class="icon-plus-sign"></span> Add JDBC</a>
+								
+								<a data-toggle="modal" data-target="#newJdbcSourceModal"><span class="icon-plus-sign"></span> Add JDBC</a>
+								
 							<table class="table table-hover table-bordered">
 								<thead>
 									<tr>
@@ -592,15 +631,161 @@ $(document).ready(function(){
 										<td><%=url %></td>
 										<td><%=user %></td>
 										<td><%=maskedPassword %></td>
-										<td><a href="">Edit</a></td>
+										<td><a data-toggle="modal" data-target="#jdbcSourceModal_<%=i%>">Edit</a></td>
 									</tr>
-									
 								<%
 								}
 								%>
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<%
+					sourceNodeList = jdbcSourcesNode.getChildren("jdbc-source");
+					for(int i =0; i< sourceNodeList.size(); i++){
+						Element sourceNode = sourceNodeList.get(i);
+						String id = sourceNode.getAttributeValue("id");
+						String name = sourceNode.getAttributeValue("name");
+						String driver = sourceNode.getAttributeValue("driver");
+						String url = sourceNode.getAttributeValue("url");
+						String user = sourceNode.getAttributeValue("user");
+					%>
+					<div class="modal" id="jdbcSourceModal_<%=i %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<form id="jdbcSourceForm_<%=i %>" class="jdbcSourceForm" method="POST">
+									<input type="hidden" name="collectionId" value="${collectionId}"/>
+									<input type="hidden" name="sourceIndex" value="<%=i%>"/>
+									<input type="hidden" name="uri" value="/management/collections/update-jdbc-source"/>
+									<input type="hidden" name="mode" value="update"/>
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 class="modal-title"> Jdbc Source</h4>
+									</div>
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="widget">
+												<div class="widget-header">
+													<h4>Setting</h4>
+												</div>
+												<div class="widget-content">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+															<div class="form-group">
+																<label class="col-md-3 control-label">Id:</label>
+																<div class="col-md-9"><input type="text" name="id" class="form-control input-width-small required" value="<%=id%>" placeholder="ID"></div>
+															</div>
+															<div class="form-group">
+																<label class="col-md-3 control-label">Name:</label>
+																<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" value="<%=name%>" placeholder="NAME"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Driver:</label>
+																<div class="col-md-9"><input type="text" name="driver" class="form-control required" value="<%=driver%>" placeholder="DRIVER"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Url:</label>
+																<div class="col-md-9"><input type="text" name="url" class="form-control required" value="<%=url%>" placeholder="URL"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">User:</label>
+																<div class="col-md-9"><input type="text" name="user" class="form-control" value="<%=user%>" placeholder="USER"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Password:</label>
+																<div class="col-md-9"><input type="text" name="password" class="form-control" placeholder="PASSWORD (LEAVE BLANK IF YOU DON'T WANT CHANGE)"></div>
+															</div>
+														</div>
+														
+													</div>
+												</div>
+											</div> <!-- /.widget -->
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger pull-left">Remove</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Save changes</button>
+									</div>
+								</form>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					
+					<%
+					}
+					%>	
+					<div class="modal" id="newJdbcSourceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<form id="newJdbcSourceForm" class="newJdbcSourceForm" method="POST">
+									<input type="hidden" name="collectionId" value="${collectionId}"/>
+									<input type="hidden" name="sourceIndex" value="-1"/>
+									<input type="hidden" name="uri" value="/management/collections/update-jdbc-source"/>
+									<input type="hidden" name="mode" value="update"/>
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 class="modal-title"> Jdbc Source</h4>
+									</div>
+									<div class="modal-body">
+										<div class="col-md-12">
+											<div class="widget">
+												<div class="widget-header">
+													<h4>Setting</h4>
+												</div>
+												<div class="widget-content">
+													<div class="row">
+														<div class="col-md-12 form-horizontal">
+															<div class="form-group">
+																<label class="col-md-3 control-label">Id:</label>
+																<div class="col-md-9"><input type="text" name="id" class="form-control input-width-small required" placeholder="ID"></div>
+															</div>
+															<div class="form-group">
+																<label class="col-md-3 control-label">Name:</label>
+																<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" placeholder="NAME"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Driver:</label>
+																<div class="col-md-9"><input type="text" name="driver" class="form-control required" placeholder="DRIVER"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Url:</label>
+																<div class="col-md-9"><input type="text" name="url" class="form-control required" placeholder="URL"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">User:</label>
+																<div class="col-md-9"><input type="text" name="user" class="form-control" placeholder="USER"></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Password:</label>
+																<div class="col-md-9"><input type="text" name="password" class="form-control" placeholder="PASSWORD"></div>
+															</div>
+														</div>
+														
+													</div>
+												</div>
+											</div> <!-- /.widget -->
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Save changes</button>
+									</div>
+								</form>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
 					</div>
 					<div id="property-template" class="hidden">
 						<div class="form-group">
