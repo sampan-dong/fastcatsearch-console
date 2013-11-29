@@ -159,7 +159,7 @@ public class CollectionsController extends AbstractController {
 	public ModelAndView indexingStatus(HttpSession session, @PathVariable String collectionId) throws Exception {
 		
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/collections/indexing-status.json";
+		String requestUrl = "/management/collections/all-node-indexing-status.json";
 		JSONObject indexingStatus = null;
 		try {
 			indexingStatus = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestJSON();
