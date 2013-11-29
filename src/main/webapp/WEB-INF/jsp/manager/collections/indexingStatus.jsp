@@ -9,6 +9,8 @@
 	JSONObject indexingStatus = (JSONObject) request.getAttribute("indexingStatus");
 	JSONObject indexingResult = (JSONObject) request.getAttribute("indexingResult");
 
+	JSONObject indexNodeStatus = indexingStatus.optJSONObject("indexNode");
+	JSONArray dataNodeStatusArray = indexingStatus.optJSONArray("dataNode");
 	String collectionId = (String) request.getAttribute("collectionId");
 %>
 <div class="col-md-12">
@@ -19,58 +21,64 @@
 		</div>
 		<div class="widget-content">
 			<dl class="dl-horizontal">
+				<dt>Indexing Node : </dt>
+				<dd><%=indexNodeStatus.getString("nodeName") %> (<%=indexNodeStatus.getString("nodeId") %>)</dd>
 				<dt>Data Path : </dt>
-				<dd><%=indexingStatus.getString("dataPath") %></dd>
+				<dd><%=indexNodeStatus.getString("dataPath") %></dd>
 				<dt>Total Document Size : </dt>
-				<dd><%=indexingStatus.getInt("documentSize") %></dd>
+				<dd><%=indexNodeStatus.getInt("documentSize") %></dd>
 				<dt>Total Disk Size : </dt>
-				<dd><%=indexingStatus.getString("diskSize") %></dd>
+				<dd><%=indexNodeStatus.getString("diskSize") %></dd>
 				<dt>Create Time : </dt>
-				<dd><%=indexingStatus.getString("createTime") %></dd>
+				<dd><%=indexNodeStatus.getString("createTime") %></dd>
 				<dt>Segment Size : </dt>
-				<dd><%=indexingStatus.getInt("segmentSize") %></dd>
+				<dd><%=indexNodeStatus.getInt("segmentSize") %></dd>
 				<dt>Revision UUID : </dt>
-				<dd><%=indexingStatus.getString("revisionUUID") %></dd>
+				<dd><%=indexNodeStatus.getString("revisionUUID") %></dd>
 			</dl>
 			<table class="table table-hover table-bordered">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Node</th>
-									<th>Document Size</th>
-									<th>Data Path</th>
-									<th>Data Disk Size</th>
-									<th>Segment Size</th>
-									<th>Revision ID</th>
-									<th>Revision UUID</th>
-									<th>Update Time</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>My node1</td>
-									<td>47</td>
-									<td>data/index0</td>
-									<td>543Mb</td>
-									<td>2</td>
-									<td>1</td>
-									<td>8a51848240</td>
-									<td>2013.11.27 12:22:49</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>My node2</td>
-									<td>47</td>
-									<td>data/index0</td>
-									<td>543Mb</td>
-									<td>2</td>
-									<td>1</td>
-									<td>8a51848240</td>
-									<td>2013.11.27 12:22:49</td>
-								</tr>
-							</tbody>
-						</table>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Node(ID)</th>
+						<th>Document Size</th>
+						<th>Data Path</th>
+						<th>Data Disk Size</th>
+						<th>Segment Size</th>
+						<th>Revision UUID</th>
+						<th>Update Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><%=1 %></td>
+						<td><%=indexNodeStatus.getString("nodeName") %> (<%=indexNodeStatus.getString("nodeId") %>)</td>
+						<td><%=indexNodeStatus.getInt("documentSize") %></td>
+						<td><%=indexNodeStatus.getString("dataPath") %></td>
+						<td><%=indexNodeStatus.getString("diskSize") %></td>
+						<td><%=indexNodeStatus.getInt("segmentSize") %></td>
+						<td><%=indexNodeStatus.getString("revisionUUID").substring(0, 10) %></td>
+						<td><%=indexNodeStatus.getString("createTime") %></td>
+					</tr>
+				<%
+				for(int i=0;i<dataNodeStatusArray.length(); i++){
+					JSONObject dataNodeStatus = dataNodeStatusArray.getJSONObject(i);
+				%>
+					<tr>
+						<td><%=i+2 %></td>
+						<td><%=dataNodeStatus.getString("nodeName") %> (<%=dataNodeStatus.getString("nodeId") %>)</td>
+						<td><%=dataNodeStatus.getInt("documentSize") %></td>
+						<td><%=dataNodeStatus.getString("dataPath") %></td>
+						<td><%=dataNodeStatus.getString("diskSize") %></td>
+						<td><%=dataNodeStatus.getInt("segmentSize") %></td>
+						<td><%=dataNodeStatus.getString("revisionUUID").substring(0, 10) %></td>
+						<td><%=dataNodeStatus.getString("createTime") %></td>
+					</tr>
+				<%
+				}
+				%>
+				</tbody>
+			</table>
 		</div>
 	</div>
 	
