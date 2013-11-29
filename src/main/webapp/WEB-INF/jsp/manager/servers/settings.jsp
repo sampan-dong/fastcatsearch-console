@@ -165,7 +165,7 @@ $(document).ready(function(){
 								<input type="hidden" name="uri" value="/management/servers/update"/>
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title"> Server Setting</h4>
+									<h4 class="modal-title"> Server Setting for Node ["<%=id %>"]</h4>
 								</div>
 								<div class="modal-body">
 									<div class="col-md-12">
@@ -173,10 +173,6 @@ $(document).ready(function(){
 											<div class="widget-content">
 												<div class="row">
 													<div class="col-md-12 form-horizontal">
-														<div class="form-group">
-															<label class="col-md-3 control-label">ID:</label>
-															<div class="col-md-9"><input type="text" name="id" class="form-control input-width-small required" value="<%=id%>"></div>
-														</div>
 														
 														<div class="form-group">
 															<label class="col-md-3 control-label">Name:</label>
@@ -210,7 +206,9 @@ $(document).ready(function(){
 									</div>
 								</div>
 								<div class="modal-footer">
+									<% if(!enabled) { %>	
 									<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
+									<% } %>
 									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 									<button type="submit" class="btn btn-primary">Save changes</button>
 								</div>
