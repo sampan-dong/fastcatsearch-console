@@ -84,12 +84,23 @@ int totalCount = 0;
 				%>
 					<%
 					JSONObject record = exceptionList.optJSONObject(inx);
+					String nodeName = record.optString("node");
+					int p = nodeName.indexOf('(');
+					if(p > 0){
+						nodeName = nodeName.substring(0, p);
+					}
+					String timeString = record.optString("regtime");
+					if(timeString.length() > 16){
+						timeString = timeString.substring(0, 16);
+					}
 					%>
 					<tr class="_row" onclick="loadMessage(this)">
 						<td><%=record.optInt("id") %></td>
-						<td class="_time"><%=record.optString("regtime") %></td>
-						<td class="_node"><%=record.optString("node") %></td>
-						<td class="_message"><%=record.optString("message") %></td>
+						<td class="" style="white-space: nowrap;"><%=timeString %></td>
+						<td class="_time hidden" style="white-space: nowrap;"><%=record.optString("regtime") %></td>
+						<td class="" style="white-space: nowrap;"><%=nodeName %></td>
+						<td class="_node hidden" style="white-space: nowrap;"><%=record.optString("node") %></td>
+						<td class="_message" style="overflow: hidden; white-space: nowrap;"><%=record.optString("message") %></td>
 						<td class="_trace hide"><%=record.optString("trace") %></td>
 					</tr>
 				<%

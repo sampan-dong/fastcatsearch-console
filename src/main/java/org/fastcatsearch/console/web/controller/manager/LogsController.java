@@ -31,7 +31,7 @@ public class LogsController extends AbstractController {
 		int end = 0;
 		
 		if(pageNo > 0){
-			start = (pageNo - 1) * PAGE_SIZE;
+			start = (pageNo - 1) * PAGE_SIZE + 1;
 			end = start + PAGE_SIZE - 1;
 		}
 		
@@ -47,8 +47,8 @@ public class LogsController extends AbstractController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/logs/notificationsDataRaw");
-		mav.addObject("start", start + 1);
-		mav.addObject("end", start + realSize);
+		mav.addObject("start", start);
+		mav.addObject("end", start + realSize - 1);
 		mav.addObject("pageNo", pageNo);
 		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("notifications", notificationData);
@@ -73,7 +73,7 @@ public class LogsController extends AbstractController {
 		int end = 0;
 		
 		if(pageNo > 0){
-			start = (pageNo - 1) * PAGE_SIZE;
+			start = (pageNo - 1) * PAGE_SIZE + 1;
 			end = start + PAGE_SIZE - 1;
 		}
 		
@@ -89,8 +89,8 @@ public class LogsController extends AbstractController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/logs/exceptionsDataRaw");
-		mav.addObject("start", start + 1);
-		mav.addObject("end", start + realSize);
+		mav.addObject("start", start);
+		mav.addObject("end", start + realSize - 1);
 		mav.addObject("pageNo", pageNo);
 		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("exceptions", exceptionData);
