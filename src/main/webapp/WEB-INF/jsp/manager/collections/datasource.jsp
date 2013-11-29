@@ -95,14 +95,14 @@ $(document).ready(function(){
 			success: function(response, statusText, xhr, $form){
 				if(response["success"]==true) {
 					$("div.modal").addClass("hidden");
-					alert("updated successed.");
+					noty({text: "Datasource update success", type: "success", layout:"topRight", timeout: 3000});
 					location.href = location.href;
 				} else {
-					alert("update failed.");
+					noty({text: "Datasource update fail", type: "error", layout:"topRight", timeout: 5000});
 				}
 				
 			}, fail: function() {
-				alert("cannot submit.");
+				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
 			}
 			
 		});
@@ -129,14 +129,14 @@ $(document).ready(function(){
 			success:function(response, statusText, xhr, $form) {
 				if(response["success"]==true) {
 					$("div.modal").addClass("hidden");
-					alert("updated successed.");
+					noty({text: "JDBC Source update success", type: "success", layout:"topRight", timeout: 3000});
 					location.href = location.href;
 				} else {
-					alert("update failed.");
+					noty({text: "JDBC Source update fail", type: "error", layout:"topRight", timeout: 5000});
 				}
 				
 			}, fail:function() {
-				alert("cannot submit.");
+				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
 			}
 		});
 		
