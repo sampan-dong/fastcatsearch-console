@@ -52,6 +52,9 @@ $(document).ready(function(){
 	});
 });
 
+function reloadIndexingSchdulePage(){
+	loadToTab('indexing/schedule.html', {}, '#tab_indexing_schedule');
+}
 
 
 

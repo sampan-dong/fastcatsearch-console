@@ -32,16 +32,9 @@
 $(document).ready(function(){
 	$( ".datepicker" ).datepicker({ dateFormat: "yy.mm.dd", showAnim: ""});
 	
-// 	$("#collection-indexing-schedule").validate({
-// 		errorLabelContainer: "#messageBox",
-// 		submitHandler: function(form) {
-// 		}
-// 	});
-	
-	
-// 	$(".form-actions input[type=submit]").click(function() {
-// 		$("form#collection-indexing-schedule").submit();
-// 	});
+	$("form#collection-indexing-schedule").validate({
+		errorLabelContainer: "#messageBox"
+	});
 	
 	$("form#collection-indexing-schedule").submit(function(event) {
 		event.preventDefault();
@@ -57,6 +50,7 @@ $(document).ready(function(){
 			success:function(response, status) {
 				if(response["success"]==true) {
 					noty({text: "Schedule update success", type: "success", layout:"topRight", timeout: 3000});
+					reloadIndexingSchdulePage();
 				} else {
 					noty({text: "Schedule update fail", type: "error", layout:"topRight", timeout: 5000});
 				}
@@ -165,16 +159,16 @@ $(document).ready(function(){
 							<label class="col-md-2 control-label">Period:</label>
 							<div class="col-md-10">
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<input type="number" name="addPeriodDay" class="form-control input-width-small" value="<%=addTimeUnits[0] %>">
 									<span class="input-group-addon">Day</span>
+									<input type="text" name="addPeriodDay" class="form-control input-width-small" value="<%=addTimeUnits[0] %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<input type="number" name="addPeriodHour" class="form-control input-width-small" value="<%=addTimeUnits[1] %>">
 									<span class="input-group-addon">Hr</span>
+									<input type="text" name="addPeriodHour" class="form-control input-width-small" value="<%=addTimeUnits[1] %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<input type="number" name="addPeriodMin" class="form-control input-width-small" value="<%=addTimeUnits[2] %>">
 									<span class="input-group-addon">Min</span>
+									<input type="text" name="addPeriodMin" class="form-control input-width-small" value="<%=addTimeUnits[2] %>">
 								</div>
 							</div>
 						</div>
