@@ -90,13 +90,26 @@ try {
 				%>
 					<%
 					JSONObject record = notificationList.optJSONObject(inx);
+					String message = record.optString("message");
+					String nodeName = record.optString("node");
+					int p = nodeName.indexOf('(');
+					if(p > 0){
+						nodeName = nodeName.substring(0, p);
+					}
+					String timeString = record.optString("regtime");
+					if(timeString.length() > 16){
+						timeString = timeString.substring(0, 16);
+					}
 					%>
-					<tr onclick="loadMessage(this)">
+					<tr class="_row" onclick="loadMessage(this)">
 						<td><%=record.optInt("id") %></td>
-						<td class="_time"><%=record.optString("regtime") %></td>
-						<td class="_node"><%=record.optString("node") %></td>
-						<td class="_messageCode"><%=record.optString("messageCode") %></td>
-						<td class="_message"><%=record.optString("message") %></td>
+						<td class="" style="white-space: nowrap;"><%=timeString %></td>
+						<td class="_time hidden" style="white-space: nowrap;"><%=record.optString("regtime") %></td>
+						<td class="" style="white-space: nowrap;"><%=nodeName %></td>
+						<td class="_node hidden" style="white-space: nowrap;"><%=record.optString("node") %></td>
+						<td class="_messageCode" style="white-space: nowrap;"><%=record.optString("messageCode") %></td>
+						<td class=""><div style="overflow: hidden; white-space: nowrap;"><%=message.length() > 50 ? message.substring(0, 50) +" ..." : message %></div></td>
+						<td class="_message hidden"><%=message %></td> 
 					</tr>
 				<%
 				}
