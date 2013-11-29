@@ -32,18 +32,45 @@
 $(document).ready(function(){
 	$( ".datepicker" ).datepicker({ dateFormat: "yy.mm.dd", showAnim: ""});
 	
-	$("#collection-indexing-schedule").validate({
-		errorLabelContainer: "#messageBox",
-		submitHandler: function(form) {
-			//$(form).ajaxSubmit();
-			alert("a");
-		}
+// 	$("#collection-indexing-schedule").validate({
+// 		errorLabelContainer: "#messageBox",
+// 		submitHandler: function(form) {
+// 		}
+// 	});
+	
+	
+// 	$(".form-actions input[type=submit]").click(function() {
+// 		$("form#collection-indexing-schedule").submit();
+// 	});
+	
+	$("form#collection-indexing-schedule").submit(function(event) {
+		event.preventDefault();
+		if(! $(this).valid()){
+			return false;
+		} 
+		
+		$.ajax({
+			url: PROXY_REQUEST_URI,
+			type: "POST",
+			dataType:"json",
+			data:$(this).serializeArray(),
+			success:function(response, status) {
+				if(response["success"]==true) {
+					alert("update successed.");
+				}
+			}, fail:function() {
+				alert("update failed.");
+			}
+		});
+		return false;
 	});
 });
 </script>
 <div class="col-md-12">
 <p id="messageBox" class="has-error"></p>
 	<form id="collection-indexing-schedule" >
+		<input type="hidden" name="collectionId" value="${collectionId }"/>
+		<input type="hidden" name="uri" value="/management/collections/update-indexing-schedule"/>
 		<div class="widget">
 		
 			<div class="widget-header">
@@ -55,7 +82,7 @@ $(document).ready(function(){
 						<div class="form-group">
 							<label class="col-md-2 control-label">Scheduled:</label>
 							<div class="col-md-10">
-								<span class="checkbox"><label><input type="checkbox" name="fullIndexingScheduled" <%=fullActive %>> Yes</label></span>
+								<span class="checkbox"><label><input type="checkbox" name="fullIndexingScheduled" <%=fullActive %> value="true"> Yes</label></span>
 							</div>
 						</div>
 						
@@ -110,7 +137,7 @@ $(document).ready(function(){
 						<div class="form-group">
 							<label class="col-md-2 control-label">Scheduled:</label>
 							<div class="col-md-10">
-								<span class="checkbox"><label><input type="checkbox" name="addIndexingScheduled" <%=addActive %>> Yes</label></span>
+								<span class="checkbox"><label><input type="checkbox" name="addIndexingScheduled" <%=addActive %> value="true"> Yes</label></span>
 							</div>
 						</div>
 						
@@ -136,15 +163,15 @@ $(document).ready(function(){
 							<label class="col-md-2 control-label">Period:</label>
 							<div class="col-md-10">
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<input type="number" name="regular" class="form-control input-width-small" value="<%=addTimeUnits[0] %>">
+									<input type="number" name="addPeriodDay" class="form-control input-width-small" value="<%=addTimeUnits[0] %>">
 									<span class="input-group-addon">Day</span>
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<input type="number" name="regular" class="form-control input-width-small" value="<%=addTimeUnits[1] %>">
+									<input type="number" name="addPeriodHour" class="form-control input-width-small" value="<%=addTimeUnits[1] %>">
 									<span class="input-group-addon">Hr</span>
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<input type="number" name="regular" class="form-control input-width-small" value="<%=addTimeUnits[2] %>">
+									<input type="number" name="addPeriodMin" class="form-control input-width-small" value="<%=addTimeUnits[2] %>">
 									<span class="input-group-addon">Min</span>
 								</div>
 							</div>
