@@ -96,7 +96,9 @@ $(document).ready(function(){
 				if(response["success"]==true) {
 					$("div.modal").addClass("hidden");
 					noty({text: "Datasource update success", type: "success", layout:"topRight", timeout: 3000});
-					location.href = location.href;
+					setTimeout(function() {
+						location.href = location.href;
+					},1000);
 				} else {
 					noty({text: "Datasource update fail", type: "error", layout:"topRight", timeout: 5000});
 				}
