@@ -57,9 +57,11 @@ $(document).ready(function(){
 			success:function(response, status) {
 				if(response["success"]==true) {
 					noty({text: "Schedule update success", type: "success", layout:"topRight", timeout: 3000});
+				} else {
+					noty({text: "Schedule update fail", type: "error", layout:"topRight", timeout: 5000});
 				}
 			}, fail:function() {
-				noty({text: "Schedule update fail", type: "error", layout:"topRight", timeout: 5000});
+				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
 			}
 		});
 		return false;

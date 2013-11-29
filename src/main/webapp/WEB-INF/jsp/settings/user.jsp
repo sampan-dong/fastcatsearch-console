@@ -60,7 +60,7 @@ function showUpdateUserModal(id){
 			$("#userEdit").modal({show: true, backdrop: 'static'});
 		}, 
 		function(jqxhr,status,err) {
-			alert(status+":"+err);
+			noty({text: "Can't submit data error : ["+status+"]"+err, type: "error", layout:"topRight", timeout: 5000});
 		}
 	);
 }
