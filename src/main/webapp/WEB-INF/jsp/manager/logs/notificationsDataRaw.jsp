@@ -10,6 +10,18 @@ function goNotificationDataRawPage(url, pageNo) {
 	loadNotificationTab(pageNo, "#tab_message_list");
 }
 
+function loadMessage(obj) {
+	$('#notification_detail').show();
+	$('#notification_detail').find("._time").text($(obj).find("._time").text());
+	$('#notification_detail').find("._node").text($(obj).find("._node").text());
+	$('#notification_detail').find("._messageCode").text($(obj).find("._messageCode").text());
+	$('#notification_detail').find("._message").text($(obj).find("._message").text());
+}
+$(document).ready(function(){
+	$('#notification_detail').hide();
+	$("._row").css("cursor","pointer");
+});
+
 </script>
 
 <%
@@ -79,12 +91,12 @@ try {
 					<%
 					JSONObject record = notificationList.optJSONObject(inx);
 					%>
-					<tr onclick="loadMessage('<%=record.optInt("id")%>')">
+					<tr onclick="loadMessage(this)">
 						<td><%=record.optInt("id") %></td>
-						<td><%=record.optString("regtime") %></td>
-						<td><%=record.optString("node") %></td>
-						<td><%=record.optString("messageCode") %></td>
-						<td><%=record.optString("message") %></td>
+						<td class="_time"><%=record.optString("regtime") %></td>
+						<td class="_node"><%=record.optString("node") %></td>
+						<td class="_messageCode"><%=record.optString("messageCode") %></td>
+						<td class="_message"><%=record.optString("message") %></td>
 					</tr>
 				<%
 				}
@@ -100,7 +112,18 @@ try {
 			%>
 			</tbody>
 		</table>
-		<div class="table-footer" id="tab_message_detail"></div>
+		<div class="table-footer" id="notification_detail">
+			<dl class="dl-horizontal col-md-12" >
+				<dt>Time</dt>
+				<dd class="_time"></dd>
+				<dt>Node</dt>
+				<dd class="_node"></dd>
+				<dt>Message Code</dt>
+				<dd class="_messageCode"></dd>
+				<dt>Message</dt>
+				<dd class="_message"></dd>
+			</dl>
+		</div>
 	</div>
 </div>
 </div>

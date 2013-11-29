@@ -11,17 +11,6 @@ $(document).ready(function(){
 	loadNotificationTab(1, "#tab_message_list");
 });
 
-function loadMessage(uid) {
-	$.ajax({
-		url : CONTEXT+"/manager/logs/notificationInfo.html",
-		data : {id:uid},
-		
-		dataType : "text",
-		success : function(response) {
-			$('#tab_message_detail').html(response);
-		}
-	});
-}
 </script>
 </head>
 <body>
