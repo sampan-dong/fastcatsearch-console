@@ -9,7 +9,17 @@ org.json.JSONArray
 function goExceptionDataRawPage(url, pageNo) {
 	loadExceptionTab(pageNo, "#tab_message_list");
 }
-
+function loadMessage(obj) {
+	$('#exception_detail').show();
+	$('#exception_detail').find("._time").text($(obj).find("._time").text());
+	$('#exception_detail').find("._node").text($(obj).find("._node").text());
+	$('#exception_detail').find("._message").text($(obj).find("._message").text());
+	$('#exception_detail').find("._trace").text($(obj).find("._trace").text());
+}
+$(document).ready(function(){
+	$('#exception_detail').hide();
+	$("._row").css("cursor","pointer");
+});
 </script>
 
 <%
@@ -19,14 +29,11 @@ int pageNo = (Integer)request.getAttribute("pageNo");
 int pageSize = (Integer)request.getAttribute("pageSize");
 int totalCount = 0;
 
-JSONArray exceptionList = null;
+	JSONArray exceptionList = null;
 
-try {
 	JSONObject exceptions = (JSONObject)request.getAttribute("exceptions");
 	exceptionList = exceptions.optJSONArray("exceptions");
 	totalCount = exceptions.optInt("totalCount", 0);
-} catch (Exception e) {
-}
 
 %>
 <div class="col-md-12">
@@ -78,11 +85,12 @@ try {
 					<%
 					JSONObject record = exceptionList.optJSONObject(inx);
 					%>
-					<tr onclick="loadMessage('<%=record.optInt("id")%>')">
+					<tr class="_row" onclick="loadMessage(this)">
 						<td><%=record.optInt("id") %></td>
-						<td><%=record.optString("regtime") %></td>
-						<td><%=record.optString("node") %></td>
-						<td><%=record.optString("message") %></td>
+						<td class="_time"><%=record.optString("regtime") %></td>
+						<td class="_node"><%=record.optString("node") %></td>
+						<td class="_message"><%=record.optString("message") %></td>
+						<td class="_trace hide"><%=record.optString("trace") %></td>
 					</tr>
 				<%
 				}
@@ -91,14 +99,25 @@ try {
 			} else {
 			%>
 				<tr>
-					<td colspan="5">No data</td>
+					<td colspan="5">Empty row</td>
 				</tr>
 			<%
 			}
 			%>
 			</tbody>
 		</table>
-		<div class="table-footer" id="tab_message_detail"></div>
+		<div class="table-footer" id="exception_detail">
+			<dl class="dl-horizontal col-md-12" >
+				<dt>Time</dt>
+				<dd class="_time"></dd>
+				<dt>Node</dt>
+				<dd class="_node"></dd>
+				<dt>Message</dt>
+				<dd class="_message"></dd>
+				<dt>Trace</dt>
+				<dd><div class="panel _trace"></div></dd>
+			</dl>
+		</div>
 	</div>
 </div>
 </div>

@@ -11,7 +11,7 @@ $(document).ready(function(){
 	loadExceptionTab(1, "#tab_message_list");
 });
 
-function loadMessage(uid) {
+function loadMessage(obj) {
 	$.ajax({
 		url : CONTEXT+"/manager/logs/exceptionInfo.html",
 		data : {id:uid},

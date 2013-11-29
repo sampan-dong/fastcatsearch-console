@@ -511,11 +511,9 @@ function getQueryHistory(host){
 
 /////////////////////////// logs data 
 function loadNotificationTab(pageNo, targetId){
-	console.log("loadNotificationHistoryTab", pageNo, targetId);
 	loadToTab('notificationsDataRaw.html', {pageNo: pageNo}, targetId);
 }
 
 function loadExceptionTab(pageNo, targetId){
-	console.log("loadExceptionHistoryTab", pageNo, targetId);
 	loadToTab('exceptionsDataRaw.html', {pageNo: pageNo}, targetId);
 }

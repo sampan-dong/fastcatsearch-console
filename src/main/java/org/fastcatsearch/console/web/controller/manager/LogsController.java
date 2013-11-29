@@ -55,21 +55,6 @@ public class LogsController extends AbstractController {
 		return mav;
 	}
 	
-	@RequestMapping("notificationInfo")
-	public ModelAndView notificationInfo(HttpSession session, 
-			@RequestParam Integer id ) throws Exception {
-		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/logs/notification-info.json";
-		JSONObject notificationInfo = httpClient.httpGet(requestUrl)
-					.addParameter("id",String.valueOf(id) )
-					.requestJSON();
-		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/logs/notificationInfoRaw");
-		mav.addObject("notificationInfo",notificationInfo);
-		return mav;
-	}
 	
 	@RequestMapping("exceptions")
 	public ModelAndView exceptions(HttpSession session,
@@ -109,22 +94,6 @@ public class LogsController extends AbstractController {
 		mav.addObject("pageNo", pageNo);
 		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("exceptions", exceptionData);
-		return mav;
-	}
-	
-	@RequestMapping("exceptionInfo")
-	public ModelAndView exceptionInfo(HttpSession session, 
-			@RequestParam Integer id ) throws Exception {
-		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/logs/exception-info.json";
-		JSONObject exceptionInfo = httpClient.httpGet(requestUrl)
-					.addParameter("id",String.valueOf(id) )
-					.requestJSON();
-		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/logs/exceptionInfoRaw");
-		mav.addObject("exceptionInfo",exceptionInfo);
 		return mav;
 	}
 	
