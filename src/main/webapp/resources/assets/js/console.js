@@ -85,6 +85,7 @@ function runIndexing(collectionId, indexingType) {
 		dataType : "json"
 
 	}).done(function(msg) {
+		noty({text: collectionId+ " " + indexingType + " Indexing Running.", type: "success", layout:"topRight", timeout: 3000});
 	}).fail(function(jqXHR, textStatus, error) {
 		alert("Request failed: " + jqXHR.responseText);
 	}).always(function() {
@@ -99,7 +100,26 @@ function runAddIndexing(collectionId) {
 }
 
 function stopIndexing(collectionId) {
-	
+	$.ajax({
+		url : PROXY_REQUEST_URI,
+		type : "POST",
+		data : {
+			uri : "/indexing/stop",
+			collectionId : collectionId
+		},
+		dataType : "json"
+
+	}).done(function(result) {
+		if(result.success){
+			noty({text: collectionId+ " Indexing Stop Requested.", type: "success", layout:"topRight", timeout: 3000});
+		}else{
+			noty({text: collectionId+ " indexing job not running.", type: "error", layout:"topRight", timeout: 5000});
+		}
+	}).fail(function(jqXHR, textStatus, error) {
+		alert("Request failed: " + jqXHR.responseText);
+	}).always(function() {
+		// alert("complete");
+	});
 }
 
 

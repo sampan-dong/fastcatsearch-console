@@ -52,13 +52,19 @@
 				<tbody>
 					<tr>
 						<td><%=1 %></td>
-						<td><%=indexNodeStatus.getString("nodeName") %> (<%=indexNodeStatus.getString("nodeId") %>)</td>
-						<td><%=indexNodeStatus.getInt("documentSize") %></td>
-						<td><%=indexNodeStatus.getString("dataPath") %></td>
-						<td><%=indexNodeStatus.getString("diskSize") %></td>
-						<td><%=indexNodeStatus.getInt("segmentSize") %></td>
-						<td><%=indexNodeStatus.getString("revisionUUID").substring(0, 10) %></td>
-						<td><%=indexNodeStatus.getString("createTime") %></td>
+						<td>* <%=indexNodeStatus.getString("nodeName") %> (<%=indexNodeStatus.getString("nodeId") %>)</td>
+						<td><%=indexNodeStatus.optInt("documentSize", -1) %></td>
+						<td><%=indexNodeStatus.optString("dataPath", "-") %></td>
+						<td><%=indexNodeStatus.optString("diskSize", "-") %></td>
+						<td><%=indexNodeStatus.optInt("segmentSize", -1) %></td>
+						<%
+						String revisionUUID = indexNodeStatus.optString("revisionUUID", "-");
+						if(revisionUUID.length() > 10){
+							revisionUUID = revisionUUID.substring(0, 10);
+						}
+						%>
+						<td><%=revisionUUID %></td>
+						<td><%=indexNodeStatus.optString("createTime", "-") %></td>
 					</tr>
 				<%
 				for(int i=0;i<dataNodeStatusArray.length(); i++){
@@ -67,12 +73,18 @@
 					<tr>
 						<td><%=i+2 %></td>
 						<td><%=dataNodeStatus.getString("nodeName") %> (<%=dataNodeStatus.getString("nodeId") %>)</td>
-						<td><%=dataNodeStatus.getInt("documentSize") %></td>
-						<td><%=dataNodeStatus.getString("dataPath") %></td>
-						<td><%=dataNodeStatus.getString("diskSize") %></td>
-						<td><%=dataNodeStatus.getInt("segmentSize") %></td>
-						<td><%=dataNodeStatus.getString("revisionUUID").substring(0, 10) %></td>
-						<td><%=dataNodeStatus.getString("createTime") %></td>
+						<td><%=dataNodeStatus.optInt("documentSize", -1) %></td>
+						<td><%=dataNodeStatus.optString("dataPath", "-") %></td>
+						<td><%=dataNodeStatus.optString("diskSize", "-") %></td>
+						<td><%=dataNodeStatus.optInt("segmentSize", -1) %></td>
+						<%
+						revisionUUID = dataNodeStatus.optString("revisionUUID", "-");
+						if(revisionUUID.length() > 10){
+							revisionUUID = revisionUUID.substring(0, 10);
+						}
+						%>
+						<td><%=revisionUUID %></td>
+						<td><%=dataNodeStatus.optString("createTime", "-") %></td>
 					</tr>
 				<%
 				}

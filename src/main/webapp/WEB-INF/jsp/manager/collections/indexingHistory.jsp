@@ -25,7 +25,7 @@ function goIndexingHistoryPage(ignore, pageNo){
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Collection</th>
+						<th class="hidden">Collection</th>
 						<th>Type</th>
 						<th>Status</th>
 						<th>Documents</th>
@@ -45,7 +45,7 @@ function goIndexingHistoryPage(ignore, pageNo){
 					%>
 					<tr>
 						<td><%=obj.getInt("id") %></td>
-						<td><strong><%=obj.getString("collectionId") %></strong></td>
+						<td class="hidden"><strong><%=obj.getString("collectionId") %></strong></td>
 						<td><%=obj.getString("type") %></td>
 						<td><%=obj.getString("status") %></td>
 						<td><%=obj.getInt("docSize") %></td>
