@@ -163,6 +163,7 @@ $(document).ready(function(){
 								<input type="hidden" name="mode" value="update"/>
 								<input type="hidden" name="serverIndex" value="<%=i %>"/>
 								<input type="hidden" name="uri" value="/management/servers/update"/>
+								<input type="hidden" name="id" value="<%=id%>"/>
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									<h4 class="modal-title"> Server Setting for Node ["<%=id %>"]</h4>
