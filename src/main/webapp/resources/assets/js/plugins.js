@@ -341,7 +341,7 @@ var Plugins = function() {
 				show: true,
 				lineWidth: 2, // in pixels
 				fill: false,
-				fillColor: { colors: [ { opacity: 0.4 }, { opacity: 0.1 } ] },
+				fillColor: { colors: [ { opacity: 0.4 }, { opacity: 0.1 } ] }
 			},
 			bars: {
 				lineWidth: 1, // in pixels
@@ -377,7 +377,7 @@ var Plugins = function() {
 		},
 		tooltipOpts: {
 			defaultTheme: false
-		},
+		}
 	};
 
 	var defaultPlotWidgetOptions = {
@@ -392,7 +392,7 @@ var Plugins = function() {
 		},
 		grid: {
 			tickColor: 'rgba(255, 255, 255, 0.1)',
-			color: '#ffffff',
+			color: '#ffffff'
 		},
 		shadowSize: 1
 	};
