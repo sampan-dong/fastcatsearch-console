@@ -1,10 +1,16 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="org.json.*"%>
-
+<%@page import="java.util.*"%>
+<%@page import="java.text.DecimalFormat"%>
 <%
 	JSONArray nodeList = (JSONArray) request.getAttribute("nodeList");
+
+	JSONObject systemInfo = (JSONObject) request.getAttribute("systemInfo");
+	JSONObject systemHealth = (JSONObject) request.getAttribute("systemHealth");
+	
 %>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
@@ -90,7 +96,7 @@
 
 				<div class="widget">
 					<div class="widget-header">
-						<h4>Engine Information</h4>
+						<h4>System Information</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered">
@@ -98,29 +104,37 @@
 								<tr>
 									<th>#</th>
 									<th>Node</th>
-									<th>JVM Path</th>
-									<th>JVM Version</th>
-									<th>JVM Option</th>
-									<th>Install Path</th>
+									<th>Engine Path</th>
+									<th>OS Name</th>
+									<th>OS Arch</th>
+									<th>Java Path</th>
+									<th>Java Vendor</th>
+									<th>Java Version</th>
 								</tr>
 							</thead>
 							<tbody>
+								<%
+								Iterator<String> systemInfoIterator = systemInfo.keys();
+								int i = 1;
+								while(systemInfoIterator.hasNext()){
+									String nodeId = systemInfoIterator.next();
+									JSONObject info = systemInfo.optJSONObject(nodeId);
+									if(nodeId != null){
+								%>
 								<tr>
-									<td>1</td>
-									<td>My node1</td>
-									<td>/home/jvm</td>
-									<td>1.7</td>
-									<td>-Xmx5g -server</td>
-									<td>/home/fastcatsearch/fastcatsearch2</td>
+									<td><%=i++ %></td>
+									<td><%=info.optString("nodeName") %></td>
+									<td><%=info.optString("homePath") %></td>
+									<td><%=info.optString("osName") %></td>
+									<td><%=info.optString("osArch") %></td>
+									<td><%=info.optString("javaHome") %></td>
+									<td><%=info.optString("javaVendor") %></td>
+									<td><%=info.optString("javaVersion") %></td>
 								</tr>
-								<tr>
-									<td>2</td>
-									<td>My node2</td>
-									<td>/home/jvm</td>
-									<td>1.7</td>
-									<td>-Xmx5g -server</td>
-									<td>/home/fastcatsearch/fastcatsearch2</td>
-								</tr>
+								<%
+									}
+								}
+								%>
 							</tbody>
 						</table>
 					
@@ -140,28 +154,52 @@
 									<th>#</th>
 									<th>Node</th>
 									<th>Disk</th>
-									<th>CPU</th>
-									<th>RAM</th>
+									<th>Java CPU</th>
+									<th>System CPU</th>
+									<th>Memory</th>
 									<th>Load</th>
 								</tr>
 							</thead>
 							<tbody>
+								<%
+								Iterator<String> systemHealthIterator = systemHealth.keys();
+								i = 1;
+								DecimalFormat decimalFormat = new DecimalFormat("##.#");
+								while(systemHealthIterator.hasNext()){
+									String nodeId = systemHealthIterator.next();
+									JSONObject info = systemHealth.optJSONObject(nodeId);
+									if(nodeId != null){
+										int totalDiskSize = info.optInt("totalDiskSize");
+										int usedDiskSize = info.optInt("usedDiskSize");
+										float diskUseRate = 0;
+										if(totalDiskSize > 0){
+											diskUseRate = (float) usedDiskSize / (float) totalDiskSize;
+											diskUseRate *= 100.0;
+										}
+										
+										int usedMemory = info.optInt("usedMemory");
+										int totalMemory = info.optInt("totalMemory");
+										float memoryUseRate = 0;
+										if(totalMemory > 0){
+											memoryUseRate = (float) usedMemory / (float) totalMemory;
+											memoryUseRate *= 100.0;
+										}
+										
+										
+								%>
 								<tr>
-									<td>1</td>
-									<td>My node1</td>
-									<td>20% (256Mb/1.5Tb)</td>
-									<td>12%</td>
-									<td>45% (16GB/32GB)</td>
-									<td>1.1</td>
+									<td><%=i++ %></td>
+									<td><%=info.optString("nodeName") %></td>
+									<td><%=decimalFormat.format(diskUseRate) %>% (<%=usedDiskSize %>MB / <%=totalDiskSize %>MB)</td>
+									<td><%=info.optInt("jvmCpuUse")%>%</td>
+									<td><%=info.optInt("systemCpuUse")%>%</td>
+									<td><%=decimalFormat.format(memoryUseRate) %>% (<%=usedMemory %>MB / <%=totalMemory %>MB)</td>
+									<td><%=decimalFormat.format(info.optDouble("systemLoadAverage")) %></td>
 								</tr>
-								<tr>
-									<td>2</td>
-									<td>My node2</td>
-									<td>10% (256Mb/1.5Tb)</td>
-									<td>22%</td>
-									<td>45% (16GB/32GB)</td>
-									<td>0.5</td>
-								</tr>
+								<%
+									}
+								}
+								%>
 							</tbody>
 						</table>
 					

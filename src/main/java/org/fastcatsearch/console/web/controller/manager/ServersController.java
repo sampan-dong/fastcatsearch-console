@@ -20,11 +20,19 @@ public class ServersController extends AbstractController {
 	public ModelAndView overview(HttpSession session) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/servers/list.json";
-		JSONObject jsonObj = httpClient.httpPost(requestUrl).requestJSON();
+		JSONObject serverList = httpClient.httpPost(requestUrl).requestJSON();
+		
+		requestUrl = "/management/servers/systemInfo.json";
+		JSONObject systemInfo = httpClient.httpPost(requestUrl).requestJSON();
+		
+		requestUrl = "/management/servers/systemHealth.json";
+		JSONObject systemHealth = httpClient.httpPost(requestUrl).requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/servers/overview");
-		mav.addObject("nodeList", jsonObj.getJSONArray("nodeList"));
+		mav.addObject("nodeList", serverList.getJSONArray("nodeList"));
+		mav.addObject("systemInfo", systemInfo);
+		mav.addObject("systemHealth", systemHealth);
 		return mav;
 	}
 	
