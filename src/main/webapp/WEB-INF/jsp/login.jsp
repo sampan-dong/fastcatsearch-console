@@ -3,6 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:import url="inc/common.jsp" />
+<%
+String redirect = request.getParameter("redirect");
+if(redirect == null){
+	redirect = "";
+}
+
+%>
 <html>
 <head>
 <c:import url="inc/header.jsp" />
@@ -33,6 +40,7 @@ $(document).ready(function(){
 					<td class="right">
 						<form class="form-vertical login-form" id="login-form"
 							action="<c:url value="/doLogin.html"/>" method="post">
+							<input type="hidden" name="redirect" value="<%=redirect %>" />
 							<!-- Input Fields -->
 							<div class="form-group">
 								<div class="input-icon">

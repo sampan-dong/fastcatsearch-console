@@ -44,7 +44,7 @@ public class MainController extends AbstractController {
 
 	@RequestMapping(value = "/doLogin", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView doLogin(HttpSession session, @RequestParam("host") String host, @RequestParam("userId") String userId,
-			@RequestParam("password") String password) throws Exception {
+			@RequestParam("password") String password, @RequestParam(value="redirect", required=false) String redirect) throws Exception {
 
 		logger.debug("login {} : {}:{}", host, userId, password);
 
@@ -54,16 +54,21 @@ public class MainController extends AbstractController {
 			return mav;
 		}
 
-		// TODO 로그인되었다면 바로 start.html로 간다.
-
 		ResponseHttpClient httpClient = new ResponseHttpClient(host);
 		JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("id", userId).addParameter("password", password)
 				.requestJSON();
 		logger.debug("loginResult > {}", loginResult);
 		if (loginResult != null && loginResult.getInt("status") == 0) {
 			// 로그인이 올바를 경우 메인 화면으로 이동한다.
+			
 			ModelAndView mav = new ModelAndView();
-			mav.setViewName("redirect:main/start.html");
+			if(redirect != null && redirect.length() > 0){
+				mav.setViewName("redirect:"+redirect);
+			}else{
+				// 로그인되었다면 바로 start.html로 간다.
+				mav.setViewName("redirect:main/start.html");	
+			}
+			
 			String userName = loginResult.getString("name");
 			session.setAttribute("_userName", userName);
 			session.setAttribute("httpclient", httpClient);
