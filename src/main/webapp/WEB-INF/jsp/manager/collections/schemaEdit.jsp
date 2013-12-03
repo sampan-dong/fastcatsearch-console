@@ -66,23 +66,31 @@ $(document).ready(function(){
 		var index = regex[2];
 		
 		var newIndex = new Date().getTime();
-		var st = -1, md = 0;
-		var html = clone[0].outerHTML;
-		//renew key index
-		while((st=html.indexOf(prefix+index),md)!=-1) {
-			md = st+(prefix+index).length;
-			html = html.substr(0,st)+
-				(prefix+newIndex)+
-				html.substr(md);
-			break;
-		}
 		
-		clone = $(html);
+		clone.find("input[name=KEY_NAME]").val(prefix+newIndex);
+		clone.find("input").each(function() {
+			if($(this).attr("name").startsWith(prefix+index)) {
+				var regex = /([a-zA-Z0-9_-]+)([0-9]+)(.+)/.exec($(this).attr("name"));
+				$(this).attr("name",prefix+newIndex+regex[3]);
+			}
+		});
+		
+// 		var st = -1, md = 0;
+// 		var html = clone[0].outerHTML;
+// 		//renew key index
+// 		while((st=html.indexOf(prefix+index),md)!=-1) {
+// 			md = st+(prefix+index).length;
+// 			html = html.substr(0,st)+
+// 				(prefix+newIndex)+
+// 				html.substr(md);
+// 			break;
+// 		}
+// 		clone = $(html);
 		//remove tooltip object
 		clone.find("div.tooltip.fade.top.in").remove();
 		//clear input
 		clone.find("input").each(inputClearFunction);
-		//linke event
+		//link event
 		clone.find("a.addRow").click(addRowFunction).tooltip(addRowTooltip);
 		clone.find("a.deleteRow").click(deleteRowFunction).tooltip(deleteRowTooltip);
 		trElement.after(clone);
@@ -222,9 +230,9 @@ $(document).ready(function(){
 											<td class=""><input type="text" name="_fields_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
 											<td class=""><input type="text" name="_fields_<%=i%>-type" class="form-control required" value="<%=type %>"></td>
 											<td class=""><input type="text" name="_fields_<%=i%>-size" class="form-control digit" value="<%=size %>"></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" name="_fields_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" name="_fields_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" name="_fields_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
+											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
+											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
+											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
 											<td class="" ><input type="text" class="form-control" name="_fields_<%=i%>-multiValueDelimeter" value="<%=multiValueDelimeter %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
@@ -410,8 +418,8 @@ $(document).ready(function(){
 											<td class=""><input type="text" name="_search_indexes_<%=i%>-ref_list" class="form-control required" value="<%=fieldRefList %>"></td>
 											<td class=""><input type="text" name="_search_indexes_<%=i%>-index_analyzer" class="form-control required" value="<%=indexAnalyzer %>"></td>
 											<td class=""><input type="text" name="_search_indexes_<%=i%>-query_analyzer" class="form-control required" value="<%=queryAnalyzer %>"></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" name="_search_indexes_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" name="_search_indexes_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
+											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_search_indexes_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
+											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_search_indexes_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
 											<td class="" ><input type="text" name="_search_indexes_<%=i%>-pig" class="form-control digits" value="<%=positionIncrementGap %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
