@@ -16,9 +16,6 @@
 
 $(document).ready(function(){
 	
-	$("a.addRow").tooltip({title : "Insert 1 below"});
-	$("a.deleteRow").tooltip({title : "Delete row"});
-	
 	$("#schemaForm").validate();
 	
 	$("#schemaForm").submit(function(event){
@@ -47,6 +44,62 @@ $(document).ready(function(){
 		return;
 	});
 	
+	var addRowTooltip = {title : "Insert 1 below"};
+	var deleteRowTooltip = {title : "Delete row"};
+	
+	$("a.addRow").tooltip(addRowTooltip);
+	$("a.deleteRow").tooltip(deleteRowTooltip);
+	
+	var inputClearFunction = function() {
+		if($(this).attr("name")!="KEY_NAME") {
+			$(this).val("");
+		}
+		$(this).removeAttr("checked");
+	};
+	
+	var addRowFunction = function(){
+		var trElement = $(this).parents("tr");
+		var clone = trElement.clone();
+		var key = keyId = clone.find("input[name=KEY_NAME]").val();
+		var regex = /([a-zA-Z0-9_-]+)([0-9]+)/.exec(key);
+		var prefix = regex[1];
+		var index = regex[2];
+		
+		var newIndex = new Date().getTime();
+		var st = -1, md = 0;
+		var html = clone[0].outerHTML;
+		//renew key index
+		while((st=html.indexOf(prefix+index),md)!=-1) {
+			md = st+(prefix+index).length;
+			html = html.substr(0,st)+
+				(prefix+newIndex)+
+				html.substr(md);
+			break;
+		}
+		
+		clone = $(html);
+		//remove tooltip object
+		clone.find("div.tooltip.fade.top.in").remove();
+		//clear input
+		clone.find("input").each(inputClearFunction);
+		//linke event
+		clone.find("a.addRow").click(addRowFunction).tooltip(addRowTooltip);
+		clone.find("a.deleteRow").click(deleteRowFunction).tooltip(deleteRowTooltip);
+		trElement.after(clone);
+	};
+	
+	var deleteRowFunction = function() {
+		var trElement = $(this).parents("tr");
+		var trElements = trElement.parents("tbody").find("tr");
+		if(trElements.length>1) {
+			trElement.remove();
+		} else {
+			trElement.find("input").each(inputClearFunction);
+		}
+	};
+	
+	$("a.addRow").click(addRowFunction);
+	$("a.deleteRow").click(deleteRowFunction);
 	
 });
 
