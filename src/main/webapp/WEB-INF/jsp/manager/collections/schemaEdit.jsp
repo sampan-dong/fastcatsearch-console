@@ -35,7 +35,7 @@ $(document).ready(function(){
 				if(response.success) {
 					noty({text: "Schema update success", type: "success", layout:"topRight", timeout: 3000});
 				} else {
-					noty({text: "Schema update fail", type: "error", layout:"topRight", timeout: 5000});
+					noty({text: "Schema update fail : " + response.errorMessage, type: "error", layout:"topRight", timeout: 0}); //클릭해야 사라진다.
 				}
 			}, fail:function() {
 				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
@@ -61,7 +61,7 @@ $(document).ready(function(){
 		var trElement = $(this).parents("tr");
 		var clone = trElement.clone();
 		var key = keyId = clone.find("input[name=KEY_NAME]").val();
-		var regex = /([a-zA-Z0-9_-]+)([0-9]+)/.exec(key);
+		var regex = /([a-zA-Z_]+)([0-9]+)/.exec(key);
 		var prefix = regex[1];
 		var index = regex[2];
 		
@@ -70,22 +70,11 @@ $(document).ready(function(){
 		clone.find("input[name=KEY_NAME]").val(prefix+newIndex);
 		clone.find("input").each(function() {
 			if($(this).attr("name").indexOf(prefix+index)==0) {
-				var regex = /([a-zA-Z0-9_-]+)([0-9]+)(.+)/.exec($(this).attr("name"));
+				var regex = /([a-zA-Z_]+)([0-9]+)(.+)/.exec($(this).attr("name"));
 				$(this).attr("name",prefix+newIndex+regex[3]);
 			}
 		});
 		
-// 		var st = -1, md = 0;
-// 		var html = clone[0].outerHTML;
-// 		//renew key index
-// 		while((st=html.indexOf(prefix+index),md)!=-1) {
-// 			md = st+(prefix+index).length;
-// 			html = html.substr(0,st)+
-// 				(prefix+newIndex)+
-// 				html.substr(md);
-// 			break;
-// 		}
-// 		clone = $(html);
 		//remove tooltip object
 		clone.find("div.tooltip.fade.top.in").remove();
 		//clear input
@@ -196,8 +185,8 @@ $(document).ready(function(){
 									
 									<thead>
 										<tr>
-											<th class="">ID</th>
-											<th class="">Name</th>
+											<th>ID</th>
+											<th>Name</th>
 											<th class="fcol2">Type</th>
 											<th class="fcol2">Length</th>
 											<th class="fcol1">Store</th>
@@ -225,15 +214,15 @@ $(document).ready(function(){
 											String multiValue = field.getAttributeValue("multiValue", "false");
 											String multiValueDelimeter = field.getAttributeValue("multiValueDelimeter", "");
 										%>
-										<tr id="_fields_<%=i%>">
-											<td class=""><input type="hidden" name="KEY_NAME" value="_fields_<%=i %>" /><input type="text" name="_fields_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-											<td class=""><input type="text" name="_fields_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-											<td class=""><input type="text" name="_fields_<%=i%>-type" class="form-control required" value="<%=type %>"></td>
-											<td class=""><input type="text" name="_fields_<%=i%>-size" class="form-control digit" value="<%=size %>"></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
-											<td class="" ><input type="text" class="form-control" name="_fields_<%=i%>-multiValueDelimeter" value="<%=multiValueDelimeter %>"></td>
+										<tr>
+											<td><input type="hidden" name="KEY_NAME" value="_fields_<%=i %>" /><input type="text" name="_fields_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
+											<td><input type="text" name="_fields_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
+											<td><input type="text" name="_fields_<%=i%>-type" class="form-control required" value="<%=type %>"></td>
+											<td><input type="text" name="_fields_<%=i%>-size" class="form-control digit" value="<%=size %>"></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
+											<td ><input type="text" class="form-control" name="_fields_<%=i%>-multiValueDelimeter" value="<%=multiValueDelimeter %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -264,7 +253,7 @@ $(document).ready(function(){
 									<table class="table table-bordered table-hover table-highlight-head table-condensed">
 										<thead>
 											<tr>
-												<th class="">Field</th>
+												<th>Field</th>
 												<th class="fcol1-1"></th>
 											</tr>
 										</thead>
@@ -278,8 +267,8 @@ $(document).ready(function(){
 												Element field = fieldList.get(i);
 												String ref = field.getAttributeValue("ref");
 											%>
-											<tr id="_row_<%=ref%>">
-												<td class="">
+											<tr>
+												<td>
 													<input type="hidden" name="KEY_NAME" value="_constraints_<%=i %>" />
 													<input type="text" name="_constraints_<%=i%>-ref" class="fcol2 form-control required" value="<%=ref %>"/>
 												</td>
@@ -317,7 +306,7 @@ $(document).ready(function(){
 												<th class="fcol2">ID</th>
 												<th class="fcol1-1">Core<br>Pool Size</th>
 												<th class="fcol1-1">Maximum<br>Pool Size</th>
-												<th class="">Analyzer</th>
+												<th>Analyzer</th>
 												<th class="fcol1-1"></th>
 											</tr>
 										</thead>
@@ -335,12 +324,12 @@ $(document).ready(function(){
 												String maximumPoolSize = analyzer.getAttributeValue("maximumPoolSize", "");
 												String analyzerClass = analyzer.getAttributeValue("className", "");
 											%>
-											<tr class="_row_<%=id%>">
+											<tr>
 												<td>
 													<input type="hidden" name="KEY_NAME" value="_analyzers_<%=i %>" />
 													<input type="text" name="_analyzers_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-												<td><input type="text" name="_analyzers_<%=i%>-core_pool_size" class="form-control required digits" value="<%=corePoolSize %>"></td>
-												<td><input type="text" name="_analyzers_<%=i%>-max_pool_size" class="form-control required digits" value="<%=maximumPoolSize %>"></td>
+												<td><input type="text" name="_analyzers_<%=i%>-corePoolSize" class="form-control required digits" value="<%=corePoolSize %>"></td>
+												<td><input type="text" name="_analyzers_<%=i%>-maximumPoolSize" class="form-control required digits" value="<%=maximumPoolSize %>"></td>
 												<td><input type="text" name="_analyzers_<%=i%>-class" class="form-control required" value="<%=analyzerClass %>"></td>
 												<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
@@ -376,8 +365,8 @@ $(document).ready(function(){
 											<th class="fcol1-2">ID</th>
 											<th class="fcol2">Name</th>
 											<th class="fcol2">Field</th>
-											<th class="">Index Analyzer</th>
-											<th class="">Query Analyzer</th>
+											<th>Index Analyzer</th>
+											<th>Query Analyzer</th>
 											<th class="fcol1">Ignore Case</th>
 											<th class="fcol1">Store Position</th>
 											<th class="fcol1">Position Increment Gap</th>
@@ -410,17 +399,17 @@ $(document).ready(function(){
 											String storePosition = field.getAttributeValue("storePosition", "");
 											String positionIncrementGap = field.getAttributeValue("positionIncrementGap", "");
 										%>
-										<tr id="_search_indexes_<%=id%>">
-											<td class="">
+										<tr>
+											<td>
 												<input type="hidden" name="KEY_NAME" value="_search_indexes_<%=i %>" />
 												<input type="text" name="_search_indexes_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-											<td class=""><input type="text" name="_search_indexes_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-											<td class=""><input type="text" name="_search_indexes_<%=i%>-ref_list" class="form-control required" value="<%=fieldRefList %>"></td>
-											<td class=""><input type="text" name="_search_indexes_<%=i%>-index_analyzer" class="form-control required" value="<%=indexAnalyzer %>"></td>
-											<td class=""><input type="text" name="_search_indexes_<%=i%>-query_analyzer" class="form-control required" value="<%=queryAnalyzer %>"></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_search_indexes_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
-											<td class="" ><label class="checkbox"><input type="checkbox" value="true" name="_search_indexes_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
-											<td class="" ><input type="text" name="_search_indexes_<%=i%>-pig" class="form-control digits" value="<%=positionIncrementGap %>"></td>
+											<td><input type="text" name="_search_indexes_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
+											<td><input type="text" name="_search_indexes_<%=i%>-refList" class="form-control required" value="<%=fieldRefList %>"></td>
+											<td><input type="text" name="_search_indexes_<%=i%>-indexAnalyzer" class="form-control required" value="<%=indexAnalyzer %>"></td>
+											<td><input type="text" name="_search_indexes_<%=i%>-queryAnalyzer" class="form-control required" value="<%=queryAnalyzer %>"></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_search_indexes_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_search_indexes_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
+											<td ><input type="text" name="_search_indexes_<%=i%>-pig" class="form-control digits" value="<%=positionIncrementGap %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -451,7 +440,7 @@ $(document).ready(function(){
 									<thead>
 										<tr>
 											<th class="fcol2">ID</th>
-											<th class="">Name</th>
+											<th>Name</th>
 											<th class="fcol2">Field</th>
 											<th class="fcol2">Size</th>
 											<th class="fcol1-1"></th>
@@ -471,13 +460,13 @@ $(document).ready(function(){
 											String ref = fieldIndex.getAttributeValue("ref", "");
 											String size = fieldIndex.getAttributeValue("size", "");
 										%>
-										<tr id="_row_<%=id%>">
-											<td class="">
+										<tr>
+											<td>
 												<input type="hidden" name="KEY_NAME" value="_field_indexes_<%=i %>" />
 												<input type="text" name="_field_indexes_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-											<td class=""><input type="text" name="_field_indexes_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-											<td class=""><input type="text" name="_field_indexes_<%=i%>-field" class="form-control required" value="<%=ref %>"></td>
-											<td class=""><input type="text" name="_field_indexes_<%=i%>-size" class="form-control digits fcol1-1" value="<%=size %>"></td>
+											<td><input type="text" name="_field_indexes_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
+											<td><input type="text" name="_field_indexes_<%=i%>-field" class="form-control required" value="<%=ref %>"></td>
+											<td><input type="text" name="_field_indexes_<%=i%>-size" class="form-control digits fcol1-1" value="<%=size %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -508,7 +497,7 @@ $(document).ready(function(){
 										<thead>
 											<tr>
 												<th class="fcol2">ID</th>
-												<th class="">Name</th>
+												<th>Name</th>
 												<th class="fcol2">Field</th>
 												<th class="fcol1-1"></th>
 											</tr>
@@ -526,12 +515,12 @@ $(document).ready(function(){
 												String name = groupIndex.getAttributeValue("name", "");
 												String ref = groupIndex.getAttributeValue("ref", "");
 											%>
-											<tr id="_row_<%=id%>">
-												<td class="">
+											<tr>
+												<td>
 													<input type="hidden" name="KEY_NAME" value="_group_indexes_<%=i %>" />
 													<input type="text" name="_group_indexes_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-												<td class=""><input type="text" name="_group_indexes_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-												<td class=""><input type="text" name="_group_indexes_<%=i%>-ref" class="form-control required" value="<%=ref %>"></td>
+												<td><input type="text" name="_group_indexes_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
+												<td><input type="text" name="_group_indexes_<%=i%>-ref" class="form-control required" value="<%=ref %>"></td>
 												<td>
 													<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 													<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
