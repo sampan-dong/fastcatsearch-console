@@ -156,7 +156,8 @@
 									<th>Disk</th>
 									<th>Java CPU</th>
 									<th>System CPU</th>
-									<th>Memory</th>
+									<th>Java Memory</th>
+									<th>System Memory</th>
 									<th>Load</th>
 								</tr>
 							</thead>
@@ -178,10 +179,10 @@
 										}
 										
 										int usedMemory = info.optInt("usedMemory");
-										int totalMemory = info.optInt("totalMemory");
+										int maxMemory = info.optInt("maxMemory");
 										float memoryUseRate = 0;
-										if(totalMemory > 0){
-											memoryUseRate = (float) usedMemory / (float) totalMemory;
+										if(maxMemory > 0){
+											memoryUseRate = (float) usedMemory / (float) maxMemory;
 											memoryUseRate *= 100.0;
 										}
 										
@@ -193,7 +194,8 @@
 									<td><%=decimalFormat.format(diskUseRate) %>% (<%=usedDiskSize %>MB / <%=totalDiskSize %>MB)</td>
 									<td><%=info.optInt("jvmCpuUse")%>%</td>
 									<td><%=info.optInt("systemCpuUse")%>%</td>
-									<td><%=decimalFormat.format(memoryUseRate) %>% (<%=usedMemory %>MB / <%=totalMemory %>MB)</td>
+									<td><%=decimalFormat.format(memoryUseRate) %>% (<%=usedMemory %>MB / <%=maxMemory %>MB)</td>
+									<td><%=info.optInt("totalMemory")%>MB</td>
 									<td><%=decimalFormat.format(info.optDouble("systemLoadAverage")) %></td>
 								</tr>
 								<%
