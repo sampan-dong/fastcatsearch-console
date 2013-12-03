@@ -69,7 +69,7 @@ $(document).ready(function(){
 		
 		clone.find("input[name=KEY_NAME]").val(prefix+newIndex);
 		clone.find("input").each(function() {
-			if($(this).attr("name").startsWith(prefix+index)) {
+			if($(this).attr("name").indexOf(prefix+index)==0) {
 				var regex = /([a-zA-Z0-9_-]+)([0-9]+)(.+)/.exec($(this).attr("name"));
 				$(this).attr("name",prefix+newIndex+regex[3]);
 			}
