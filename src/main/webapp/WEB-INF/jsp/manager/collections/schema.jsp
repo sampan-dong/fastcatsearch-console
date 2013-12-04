@@ -49,7 +49,7 @@ $(document).ready(function(){
 					<ul id="breadcrumbs" class="breadcrumb">
 						<li><i class="icon-home"></i> Manager</li>
 						<li class="current"> Collections</li>
-						<li class="current"> VOL</li>
+						<li class="current"> ${collectionId}</li>
 						<li class="current"> Schema</li>
 					</ul>
 
