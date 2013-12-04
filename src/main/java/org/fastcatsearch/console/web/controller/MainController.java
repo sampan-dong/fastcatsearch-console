@@ -23,15 +23,9 @@ public class MainController extends AbstractController {
 	private static Logger logger = LoggerFactory.getLogger(MainController.class);
 
 	@RequestMapping("/index")
-	public ModelAndView index() throws Exception {
-
-		// TODO 로긴여부 확인.
-		// 로긴되어있으면 start로, 아니면 login페이지로.
+	public ModelAndView index(HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("redirect:login.html");
-		// 접속에 사용할 client를 셋팅해준다.
-
-		// mav.setViewName("start");
+		mav.setViewName("redirect:main/start.html");
 		return mav;
 	}
 	

@@ -21,7 +21,6 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
 		
 		if(httpClient == null || !httpClient.isActive()){
 			//연결에러..
-//			response.sendRedirect(request.getContextPath() + "/login.html");
 			checkLoginRedirect(request, response);
 			return false;
 		}else{
@@ -29,21 +28,6 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
 			String getCollectionListURL = "/service/isAlive";
 			JSONObject isAlive = httpClient.httpGet(getCollectionListURL).requestJSON();
 			if(isAlive == null){
-				
-//				String loginURL = request.getContextPath() + "/login.html";
-//				String method = request.getMethod();
-//				
-//				if(method.equalsIgnoreCase("GET")){
-//					String target = request.getRequestURL().toString();
-//					String queryString = request.getQueryString();
-//					target += ("?" + queryString);
-//					loginURL += ( "?redirect=" + target);
-//					logger.debug("REDIRECT >> {}, target = {}", method, target);
-//					logger.debug("RedirectURL >> {}", loginURL);
-//				}
-//				
-//				
-//				response.sendRedirect(request.getContextPath() + "/login.html");
 				checkLoginRedirect(request, response);
 				return false;
 			}
