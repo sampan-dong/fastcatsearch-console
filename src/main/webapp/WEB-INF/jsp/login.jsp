@@ -65,8 +65,8 @@ $(document).ready(function(){
 
 							<!-- Form Actions -->
 							<div class="form-actions">
-								<label class="checkbox pull-left"><input type="checkbox"
-									class="uniform" name="remember"> Remember me</label>
+								<!-- <label class="checkbox pull-left"><input type="checkbox"
+									class="uniform" name="remember"> Remember me</label> -->
 								<button type="submit" class="submit btn btn-primary pull-right">
 									Sign In <i class="icon-angle-right"></i>
 								</button>
