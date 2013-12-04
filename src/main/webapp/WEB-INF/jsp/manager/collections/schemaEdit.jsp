@@ -201,9 +201,21 @@ $(document).ready(function(){
 									root = document.getRootElement();
 									el = root.getChild("field-list");
 									if(el != null){
-									List<Element> fildList = el.getChildren();
-										for(int i = 0; i <fildList.size(); i++){
-											Element field = fildList.get(i);
+										List<Element> fieldList = el.getChildren();
+										if(fieldList.size()==0) {
+											Element element = new Element("field");
+											fieldList.add(element);
+											element.setAttribute("id","")
+												.setAttribute("type","")
+												.setAttribute("name","")
+												.setAttribute("source","")
+												.setAttribute("size","")
+												.setAttribute("store","true")
+												.setAttribute("multiValue","")
+												.setAttribute("multiValueDelimeter","");
+										}
+										for(int i = 0; i <fieldList.size(); i++){
+											Element field = fieldList.get(i);
 											String id = field.getAttributeValue("id");
 											String type = field.getAttributeValue("type");
 											String name = field.getAttributeValue("name", "");
@@ -227,7 +239,7 @@ $(document).ready(function(){
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
 											</td>
-										</tr>														
+										</tr>
 										<%
 										}
 									}
@@ -263,6 +275,11 @@ $(document).ready(function(){
 										el = root.getChild("primary-key");
 										if(el != null){
 											List<Element> fieldList = el.getChildren();
+											if(fieldList.size()==0) {
+												Element element = new Element("fild");
+												fieldList.add(element);
+												element.setAttribute("ref","");
+											}
 											for(int i = 0; i < fieldList.size(); i++){
 												Element field = fieldList.get(i);
 												String ref = field.getAttributeValue("ref");
@@ -316,6 +333,15 @@ $(document).ready(function(){
 										el = root.getChild("analyzer-list");
 										if(el != null){
 											List<Element> analyzerList = el.getChildren();
+											if(analyzerList.size()==0) {
+												Element element = new Element("analyzer");
+												analyzerList.add(element);
+												element.setAttribute("id","")
+													.setAttribute("corePoolSize","")
+													.setAttribute("maximumPoolSize","")
+													.setAttribute("className","");
+												
+											}
 											for(int i = 0; i < analyzerList.size(); i++){
 												Element analyzer = analyzerList.get(i);
 												
@@ -335,7 +361,7 @@ $(document).ready(function(){
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
 												</td>
-											</tr>														
+											</tr>
 											<%
 											}
 										}
@@ -380,6 +406,17 @@ $(document).ready(function(){
 									el = root.getChild("index-list");
 									if(el != null){
 										List<Element> indexList = el.getChildren();
+										if(indexList.size()==0) {
+											Element element = new Element("index");
+											indexList.add(element);
+											element.setAttribute("id","")
+												.setAttribute("name","")
+												.setAttribute("indexAnalyzer","")
+												.setAttribute("queryAnalyzer","")
+												.setAttribute("ignoreCase","")
+												.setAttribute("storePosition","")
+												.setAttribute("positionIncrementGap","");
+										}
 										for(int i = 0; i <indexList.size(); i++){
 											Element field = indexList.get(i);
 											List<Element> fieldList = field.getChildren("field");
@@ -452,6 +489,14 @@ $(document).ready(function(){
 									el = root.getChild("field-index-list");
 									if(el != null){
 										List<Element> indexList = el.getChildren();
+										if(indexList.size()==0) {
+											Element element = new Element("index");
+											indexList.add(element);
+											element.setAttribute("id","")
+												.setAttribute("name","")
+												.setAttribute("ref","")
+												.setAttribute("size","");
+										}
 										for(int i = 0; i < indexList.size(); i++){
 											Element fieldIndex = indexList.get(i);
 											
@@ -508,12 +553,21 @@ $(document).ready(function(){
 										el = root.getChild("group-index-list");
 										if(el != null){
 											List<Element> indexList = el.getChildren();
-											for(int i = 0; i < indexList.size(); i++){
-												Element groupIndex = indexList.get(i);
-												
-												String id = groupIndex.getAttributeValue("id");
-												String name = groupIndex.getAttributeValue("name", "");
-												String ref = groupIndex.getAttributeValue("ref", "");
+											if(indexList.size()==0) {
+												Element element = new Element("index");
+												indexList.add(element);
+												element.setAttribute("id","")
+													.setAttribute("name","")
+													.setAttribute("ref","");
+											}
+											for(int i = 0; i<indexList.size(); i++){
+												String id="", name="", ref="";
+												if(indexList.size() > 0) {
+													Element groupIndex = indexList.get(i);
+													id = groupIndex.getAttributeValue("id");
+													name = groupIndex.getAttributeValue("name", "");
+													ref = groupIndex.getAttributeValue("ref", "");
+												}
 											%>
 											<tr>
 												<td>
