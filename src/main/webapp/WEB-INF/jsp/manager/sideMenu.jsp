@@ -42,10 +42,9 @@
 				lcatCurrent = "collections".equals(lcat);
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>">
-				<a href="javascript:void(0);"> <i class="icon-desktop"></i> Collections 
-					<%-- <span class="label label-info pull-right"><%=collectionList.length() %></span> --%>
-				</a>
+				<a href="javascript:void(0);"> <i class="icon-desktop"></i> Collections</a>
 				<ul class="sub-menu">
+					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/index.html"/>"> <i class="icon-angle-right"></i> Overview</a></li>
 					<%
 					for(int i=0;i<collectionList.length(); i++){
 						String id = collectionList.getJSONObject(i).getString("id");

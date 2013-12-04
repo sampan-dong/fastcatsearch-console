@@ -125,7 +125,7 @@ $(document).ready(function(){
 								boolean active = nodeList.getJSONObject(i).getBoolean("active");
 								
 								String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
-								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
+								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">InActive</span>";
 							%>
 								<tr>
 									<td><%=i+1 %></td>
@@ -154,7 +154,7 @@ $(document).ready(function(){
 					boolean active = nodeList.getJSONObject(i).getBoolean("active");
 					
 					String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
-					String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
+					String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">InActive</span>";
 				%>
 				<div class="modal" id="serverInfoModal_<%=i %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">

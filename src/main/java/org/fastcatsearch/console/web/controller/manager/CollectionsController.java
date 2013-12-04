@@ -8,7 +8,6 @@ import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.jdom2.Document;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,12 +18,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/manager/collections/{collectionId}")
+@RequestMapping("/manager/collections")
 public class CollectionsController extends AbstractController {
 
 	private static Logger logger = LoggerFactory.getLogger(CollectionsController.class);
 
-	@RequestMapping("/schema")
+	@RequestMapping("/index")
+	public ModelAndView index(HttpSession session) throws Exception {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		String requestUrl = "/management/collections/collection-info-list.json";
+		JSONObject collectionInfoList = httpClient.httpPost(requestUrl).requestJSON();
+
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/index");
+		if(collectionInfoList != null){
+			mav.addObject("collectionInfoList", collectionInfoList.optJSONArray("collectionInfoList"));
+		}
+		return mav;
+	}
+	
+	@RequestMapping("/{collectionId}/schema")
 	public ModelAndView schema(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/schema.xml";
@@ -38,7 +51,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/workSchema")
+	@RequestMapping("/{collectionId}/workSchema")
 	public ModelAndView workSchemaView(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/schema.xml";
@@ -52,7 +65,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/workSchemaEdit")
+	@RequestMapping("/{collectionId}/workSchemaEdit")
 	public ModelAndView workSchemaEdit(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/schema.xml";
@@ -67,7 +80,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/workSchemaSave")
+	@RequestMapping("/{collectionId}/workSchemaSave")
 	@ResponseBody
 	public String workSchemaSave(HttpSession session, HttpServletRequest request, @PathVariable String collectionId) throws Exception {
 
@@ -172,7 +185,7 @@ public class CollectionsController extends AbstractController {
 		}
 	}
 
-	@RequestMapping("/data")
+	@RequestMapping("/{collectionId}/data")
 	public ModelAndView data(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/data");
@@ -180,7 +193,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/dataRaw")
+	@RequestMapping("/{collectionId}/dataRaw")
 	public ModelAndView dataRaw(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId)
 			throws Exception {
 
@@ -220,7 +233,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/dataSearch")
+	@RequestMapping("/{collectionId}/dataSearch")
 	public ModelAndView dataSearch(HttpSession session, @PathVariable String collectionId, @RequestParam(value = "se", required = false) String se,
 			@RequestParam(value = "ft", required = false) String ft, @RequestParam(value = "gr", required = false) String gr, @RequestParam(defaultValue = "1") Integer pageNo,
 			@RequestParam String targetId) throws Exception {
@@ -257,7 +270,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/datasource")
+	@RequestMapping("/{collectionId}/datasource")
 	public ModelAndView datasource(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/datasource.xml";
@@ -270,7 +283,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/indexing")
+	@RequestMapping("/{collectionId}/indexing")
 	public ModelAndView indexing(HttpSession session, @PathVariable String collectionId) throws Exception {
 
 		ModelAndView mav = new ModelAndView();
@@ -279,7 +292,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/indexing/status")
+	@RequestMapping("/{collectionId}/indexing/status")
 	public ModelAndView indexingStatus(HttpSession session, @PathVariable String collectionId) throws Exception {
 
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
@@ -304,7 +317,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/indexing/schedule")
+	@RequestMapping("/{collectionId}/indexing/schedule")
 	public ModelAndView indexingSchedule(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/indexing-schedule.xml";
@@ -318,7 +331,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/indexing/history")
+	@RequestMapping("/{collectionId}/indexing/history")
 	public ModelAndView indexingHistory(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue = "1") Integer pageNo) throws Exception {
 
 		int PAGE_SIZE = 10;
@@ -345,7 +358,7 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping("/config")
+	@RequestMapping("/{collectionId}/config")
 	public ModelAndView settings(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/config.xml";

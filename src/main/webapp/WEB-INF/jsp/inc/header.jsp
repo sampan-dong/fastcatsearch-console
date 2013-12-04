@@ -107,13 +107,13 @@
 <script type="text/javascript" src="${contextPath}/resources/plugins/noty/layouts/topRight.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/plugins/noty/themes/default.js"></script>
 
+<script type="text/javascript" src="${contextPath}/resources/plugins/select2/select2.min.js"></script> <!-- Styled select boxes -->
 <!-- Forms -->
 <script type="text/javascript" src="${contextPath}/resources/plugins/validation/jquery.validate.min.js"></script>
 
 
 <script type="text/javascript" src="${contextPath}/resources/assets/js/jquery.form.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/assets/js/spin.min.js"></script>
-
 
 <!-- App -->
 <script type="text/javascript" src="${contextPath}/resources/assets/js/app.js"></script>

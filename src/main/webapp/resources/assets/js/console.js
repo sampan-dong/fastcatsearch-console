@@ -537,3 +537,23 @@ function loadNotificationTab(pageNo, targetId){
 function loadExceptionTab(pageNo, targetId){
 	loadToTab('exceptionsDataRaw.html', {pageNo: pageNo}, targetId);
 }
+
+/////
+function startCollection(collectionId){
+	operateCollection(collectionId, "Start");
+}
+function stopCollection(collectionId){
+	operateCollection(collectionId, "Stop");
+}
+
+function operateCollection(collectionId, command){
+	
+	if(confirm(command+" collection " + collectionId + "?")){
+		requestProxy("POST", {uri:"/management/collections/operate", collectionId: collectionId, command: command}, "json"
+			, function(){
+				location.href = location.href;
+			}, function(){
+				noty({text: "Cannot "+command+" collection "+collectionId+" : " + response["errorMessage"], type: "error", layout:"topRight", timeout: 5000});
+			});
+	}
+}
