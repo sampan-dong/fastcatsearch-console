@@ -463,9 +463,9 @@ $(document).ready(function(){
 										<tr>
 											<td>
 												<input type="hidden" name="KEY_NAME" value="_field_indexes_<%=i %>" />
-												<input type="text" name="_field_indexes_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-											<td><input type="text" name="_field_indexes_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-											<td><input type="text" name="_field_indexes_<%=i%>-field" class="form-control required" value="<%=ref %>"></td>
+												<input type="text" name="_field_indexes_<%=i%>-id" class="form-control" value="<%=id %>"></td>
+											<td><input type="text" name="_field_indexes_<%=i%>-name" class="form-control" value="<%=name %>"></td>
+											<td><input type="text" name="_field_indexes_<%=i%>-field" class="form-control" value="<%=ref %>"></td>
 											<td><input type="text" name="_field_indexes_<%=i%>-size" class="form-control digits fcol1-1" value="<%=size %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
@@ -518,9 +518,9 @@ $(document).ready(function(){
 											<tr>
 												<td>
 													<input type="hidden" name="KEY_NAME" value="_group_indexes_<%=i %>" />
-													<input type="text" name="_group_indexes_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-												<td><input type="text" name="_group_indexes_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-												<td><input type="text" name="_group_indexes_<%=i%>-ref" class="form-control required" value="<%=ref %>"></td>
+													<input type="text" name="_group_indexes_<%=i%>-id" class="form-control" value="<%=id %>"></td>
+												<td><input type="text" name="_group_indexes_<%=i%>-name" class="form-control" value="<%=name %>"></td>
+												<td><input type="text" name="_group_indexes_<%=i%>-ref" class="form-control" value="<%=ref %>"></td>
 												<td>
 													<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 													<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
