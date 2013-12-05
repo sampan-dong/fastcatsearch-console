@@ -81,7 +81,7 @@ $(document).ready(function(){
 					<div class="widget-content no-padding">
 						<div class="dataTables_header clearfix">
 							<div class="input-group col-md-12">
-								<a data-toggle="modal" data-target="#newCollectionModal" class="btn btn-sm"><span
+								<a data-toggle="modal" data-target="#newCollectionModal" class="btn btn-sm" data-backdrop="static"><span
 									class="glyphicon glyphicon-plus-sign"></span> Create Collection</a>
 							</div>
 							
