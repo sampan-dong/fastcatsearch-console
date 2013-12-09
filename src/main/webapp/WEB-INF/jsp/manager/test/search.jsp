@@ -133,13 +133,13 @@ $(document).ready(function(){
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">COLLECTION ID</label>
 										<div class="col-sm-10">
-											<textarea class="form-control required" name="cn" placeholder="CN">news_kor</textarea>
+											<textarea class="form-control required" name="cn" placeholder="CN"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">FIELD LIST</label>
 										<div class="col-sm-10">
-											<textarea class="form-control required" name="fl" placeholder="FL">code,title,content</textarea>
+											<textarea class="form-control required" name="fl" placeholder="FL"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
@@ -157,7 +157,13 @@ $(document).ready(function(){
 									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">GROUP</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" name="gr" placeholder="GR">category:count</textarea>
+											<textarea class="form-control" name="gr" placeholder="GR"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="query_se" class="col-sm-2 control-label">RANK</label>
+										<div class="col-sm-10">
+											<textarea class="form-control" name="ra" placeholder="RA"></textarea>
 										</div>
 									</div>
 									<div class="form-group">

@@ -56,7 +56,8 @@ function selectRawFieldValue(value){
 	</div>
 	<% } %>
 	<div class="well well-sm result-queryString">
-		<b>QueryString:</b><br> <%=queryString%>
+		<b>QueryString:</b><br>
+		<div class="wordwrap"><%=queryString%></div>
 	</div>
 	<div class="widget box">
 
