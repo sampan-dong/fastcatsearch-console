@@ -179,6 +179,12 @@ $(document).ready(function(){
 										</div>
 									</div>
 									<div class="form-group">
+										<label for="query_se" class="col-sm-2 control-label">HIGHLIGHT TAG</label>
+										<div class="col-sm-2">
+											<input type="text" class="form-control" name="ht" placeholder="HT">
+										</div>
+									</div>
+									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">SEARCH OPTION</label>
 										<div class="col-sm-10">
 											<input type="text" class="form-control" name="so" placeholder="SO" value="nocache">
