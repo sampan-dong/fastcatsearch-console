@@ -160,6 +160,45 @@
 							<i class="icon-angle-right"></i> SYSTEM DB <span class="arrow"></span>
 					</a></li>
 				</ul></li>
+				
+			<%
+				lcatCurrent = "statistics".equals(lcat);
+			%>	
+			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-signal"></i>
+				Statistics
+			</a>
+				<ul class="sub-menu">
+					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/settings.html"/>">
+							<i class="icon-cogs"></i> Settings <span class="arrow"></span>
+					</a></li>
+					<li class="<%=(lcatCurrent && "search-progress".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/searchProgress.html"/>">
+							<i class="icon-bar-chart"></i> Search Progress <span class="arrow"></span>
+					</a></li>
+				</ul></li>
+				
+			<%
+				lcatCurrent = "additional".equals(lcat);
+			%>	
+			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-folder-open-alt"></i>
+				Additional Service
+			</a>
+				<ul class="sub-menu">
+					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/settings.html"/>">
+							<i class="icon-cogs"></i> Settings <span class="arrow"></span>
+					</a></li>
+					<li class="<%=(lcatCurrent && "popular".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/popularKeyword.html"/>">
+							<i class="icon-angle-right"></i> Popular Keyword <span class="arrow"></span>
+					</a></li>
+					<li class="<%=(lcatCurrent && "relate".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/relateKeyword.html"/>">
+							<i class="icon-angle-right"></i> Relate Keyword <span class="arrow"></span>
+					</a></li>
+					<li class="<%=(lcatCurrent && "keyword-suggestions".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/keywordSuggestions.html"/>">
+							<i class="icon-angle-right"></i> Keyword Suggestions <span class="arrow"></span>
+					</a></li>
+					<li class="<%=(lcatCurrent && "ad-keyword".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/adKeyword.html"/>">
+							<i class="icon-angle-right"></i> AD Keyword <span class="arrow"></span>
+					</a></li>
+				</ul></li>
 		</ul>
 	
 		<!-- /Navigation -->
