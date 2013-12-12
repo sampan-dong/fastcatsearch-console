@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -45,14 +46,24 @@ public class AnalysisController extends AbstractController {
 	}
 	
 	@RequestMapping("/{analysisId}/analyzeTools")
-	public ModelAndView analyzeTools(HttpSession session, @PathVariable String analysisId) throws Exception {
+	public ModelAndView analyzeTools(HttpSession session, @PathVariable String analysisId, @RequestParam String type, @RequestParam String queryWords) throws Exception {
 		
-//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-//		String getAnalysisPluginSettingURL = "/management/analysis/plugin-setting.xml?pluginId="+analysisId;
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		
+		String getAnalysisToolsURL = null;
+		
+		if("detail".equalsIgnoreCase(type)){
+			getAnalysisToolsURL = "/management/analysis/analysis-tools-detail.json";
+		}else{
+			getAnalysisToolsURL = "/management/analysis/analysis-tools-basic.json";	
+		}
+		
+		JSONObject jsonObj = httpClient.httpPost(getAnalysisToolsURL)
+				.addParameter("pluginId", analysisId)
+				.addParameter("queryWords", queryWords).requestJSON();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/analyzeTools");
-		mav.addObject("analysisId", analysisId);
-		mav.addObject("type","");
+		mav.addObject("analyzedResult", jsonObj);
 		return mav;
 	}
 }

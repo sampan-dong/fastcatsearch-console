@@ -326,7 +326,7 @@ if(rootElement!=null) {
 									
 									<div class="form-group">
 										<label for="words" class="control-label">Query Words:</label>
-										<input type="text" class="form-control required largeText" name="words" placeholder="Query Words" value="Z80 USB 16gb 가격비교"/>
+										<input type="text" class="form-control required largeText" name="queryWords" placeholder="Query Words" value="Sandisk Extream 원조교제 Z80 USB 16gb 가격비교"/>
 									</div>
 									
 									<div class="form-inline">

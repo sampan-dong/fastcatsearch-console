@@ -4,17 +4,41 @@
 <%@page import="org.json.*"%>
 <%@page import="java.util.*"%>
 <%
-//JSONObject analyzedResult = (JSONObject) request.getAttribute("analyzedResult");
+JSONObject analyzedResult = (JSONObject) request.getAttribute("analyzedResult");
 String type = (String) request.getParameter("type");
+String queryWords = analyzedResult.getString("query");
+boolean isSuccess = analyzedResult.getBoolean("success");
+
+if(!isSuccess){
+	String errorMessage = analyzedResult.getString("errorMessage");
 %>
+<table class="table table-bordered table-highlight-head">
+	<tbody>
+		<tr>
+			<td>
+				<label>Error Message: </label>
+				<div class="col-md-12"><%=errorMessage %></div>
+			</td>
+		</tr>
+	</tbody>
+</table>
 <%
-if(type == null || type.equalsIgnoreCase("simple")){
+} else if(type == null || type.equalsIgnoreCase("simple")) {
+	JSONArray result = analyzedResult.getJSONArray("result");
+	String resultList = "";
+	for(int i = 0 ; i < result.length() ; i++ ){
+		resultList += result.get(i);
+		if(i < result.length() - 1){
+			resultList += ", ";
+		}
+				
+	}
 %>
 <table class="table table-bordered table-highlight-head">
 	<thead>
 		<tr>
 			<th style="padding: 15px 0 15px 10px;">
-				<h4>Sandisk Extream 원조교제 Z80 USB 16gb 가격비교</h4>
+				<h4><%=queryWords %></h4>
 			</th>
 		</tr>
 	</thead>	
@@ -22,27 +46,30 @@ if(type == null || type.equalsIgnoreCase("simple")){
 		<tr>
 			<td>
 				<label>1. Analyzed Terms: </label>
-				<div class="col-md-12">Sandisk, Extream, 원조교제, Z, 80, Z80</div>
+				<div class="col-md-12"><%=resultList %></div>
 			</td>
 		</tr>
 		<tr>
 			<td>
 				<label>2. Analyzed Terms List: </label>
 				<div class="col-md-12">
-					<table class="table table-fixed" style="border:0px">
+					<table class="table table-fixed table-bordered">
 						<tr>
-							<td>[1] Sandisk</td>
-							<td>[2] Extream</td>
-							<td>[3] 원조교제</td>
-							<td>[4] Z</td>
-							<td>[5] 80</td>
-						</tr>
-						<tr>
-							<td>[6] Z80</td>
-							<td>[7] USB</td>
-							<td>[8] 16gb</td>
-							<td>[9] 16</td>
-							<td></td>
+						<%
+						int i = 0;
+						for( i = 0 ; i < result.length() ; i++ ){
+						%>
+							<td>[<%=i+1 %>] <%=result.get(i) %></td>
+						<%
+							if(i > 0 && (i+1) % 5 == 0 && i < result.length() - 1){ //마지막 원소면 다음 줄을 만들필요가 없다.
+								%></tr><tr><%
+							}
+						}
+						while(i % 5 != 0){
+							%><td></td><%
+							i++;
+						}
+						%>
 						</tr>
 					</table>
 				</div>
@@ -52,18 +79,33 @@ if(type == null || type.equalsIgnoreCase("simple")){
 </table>
 <%
 
-} else if(type.equalsIgnoreCase("detail")){
-	
+} else if(type.equalsIgnoreCase("detail")) {
+	JSONArray result = analyzedResult.getJSONArray("result");
 %>							
 <table class="table table-bordered table-highlight-head">
 	<thead>
 		<tr>
 			<th style="padding: 15px 0 15px 10px;">
-				<h4>Sandisk Extream 원조교제 Z80 USB 16gb 가격비교</h4>
+				<h4><%=queryWords %></h4>
 			</th>
 		</tr>
 	</thead>	
 	<tbody>
+	<%
+	for(int i = 0 ; i < result.length() ; i++ ){
+		JSONObject object = result.getJSONObject(i);
+	%>
+		<tr>
+			<td>
+				<label><%=i+1 %>. <%=object.getString("key") %></label>
+				<div class="col-md-12"><%=object.getString("value") %></div>
+			</td>
+		</tr>
+	<%
+	}
+	%>
+		
+	<!-- 
 		<tr>
 			<td>
 				<label>1. 전처리(쿼리패턴): 가격비교 </label>
@@ -111,6 +153,7 @@ if(type == null || type.equalsIgnoreCase("simple")){
 				</div>
 			</td>
 		</tr>
+		 -->
 	</tbody>
 </table>
 <%
