@@ -13,9 +13,35 @@ java.util.List
 
 <script>
 $(document).ready(function(){
-	loadAnalysisToolsTab("#tab_analysis_tools");
+	$("#analyzeToolsForm").validate();
+	
+	$("#analyzeToolsForm").submit(function(e) {
+		e.preventDefault(); //STOP default page load submit
+		
+		if(! $(this).valid()){
+			return;
+		}
+		
+		var formData = $(this).serializeArray();
+		$.ajax({
+				url : "analyzeTools.html",
+				type: "POST",
+				data : formData,
+				dataType : "html",
+				success:function(data, textStatus, jqXHR) {
+					try {
+						//console.log("search success.", data);
+						$("#analyzedResult").html(data);
+					} catch (e) { 
+						alert("Abnormal result "+data);
+					}
+				}, error: function(jqXHR, textStatus, errorThrown) {
+					alert("ERROR" + textStatus + " : " + errorThrown);
+				}
+		});
+		
+	});
 });
-
 </script>
 
 </head>
@@ -103,7 +129,7 @@ if(rootElement!=null) {
 					</ul>
 					
 					<div class="tab-content row">
-						<div class="tab-pane " id="tab_analysis_settings">
+						<div class="tab-pane active" id="tab_analysis_settings">
 							<div class="col-md-12">
 								<div class="widget">
 									<div class="widget-header">
@@ -294,30 +320,30 @@ if(rootElement!=null) {
 						</div>
 						
 						<!-- tab_analysis_tools -->
-						<div class="tab-pane active" id="tab_analysis_tools">
+						<div class="tab-pane" id="tab_analysis_tools">
 							<div class="col-md-12">
-								<form role="form" id="dbQueryTest" class="">
+								<form role="form" id="analyzeToolsForm">
 									
 									<div class="form-group">
 										<label for="words" class="control-label">Query Words:</label>
-										<input type="text" class="form-control required largeText" name="words" placeholder="Query Words" />
+										<input type="text" class="form-control required largeText" name="words" placeholder="Query Words" value="Z80 USB 16gb 가격비교"/>
 									</div>
 									
 									<div class="form-inline">
 										<div class="form-group">
 											<label class="radio">
-												<input type="radio" name="enable" class="form-control" value="basic" checked> Simple
+												<input type="radio" name="type" class="form-control" value="simple" checked> Simple
 											</label>
 										</div>
 										&nbsp;
 										<div class="form-group">
 											<label class="radio">
-												<input type="radio" name="enable" class="form-control" value="basic"> Detail
+												<input type="radio" name="type" class="form-control" value="detail"> Detail
 											</label>
 										</div>
 										&nbsp;
 										<div class="form-group">
-											<a href="javascript:void(0);" id="dbQueryButton" class="btn btn-sm" data-loading-text="Searching..">Analyze</a>
+											<button class="btn btn-sm">Analyze</button>
 										</div>
 									</div>
 								</form>
@@ -325,108 +351,7 @@ if(rootElement!=null) {
 							<br/>
 							
 							<!-- 분석결과 -->
-							<div class="col-md-12">
-								<!-- <table class="table table-bordered table-highlight-head thead">
-									<thead>
-										<tr>
-											<th style="padding: 15px 0 15px 10px;">
-												<h4>Sandisk Extream 원조교제 Z80 USB 16gb 가격비교</h4>
-											</th>
-										</tr>
-									</thead>	
-									<tbody>
-										<tr>
-											<td>
-												<label>1. Analyzed Terms: </label>
-												<div class="col-md-12">Sandisk, Extream, 원조교제, Z, 80, Z80</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<label>2. Analyzed Terms List: </label>
-												<div class="col-md-12">
-													<table class="table table-fixed" style="border:0px">
-														<tr>
-															<td>[1] Sandisk</td>
-															<td>[2] Extream</td>
-															<td>[3] 원조교제</td>
-															<td>[4] Z</td>
-															<td>[5] 80</td>
-														</tr>
-														<tr>
-															<td>[6] Z80</td>
-															<td>[7] USB</td>
-															<td>[8] 16gb</td>
-															<td>[9] 16</td>
-															<td></td>
-														</tr>
-													</table>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table> -->
-							
-								<table class="table table-bordered table-highlight-head thead">
-									<thead>
-										<tr>
-											<th style="padding: 15px 0 15px 10px;">
-												<h4>Sandisk Extream 원조교제 Z80 USB 16gb 가격비교</h4>
-											</th>
-										</tr>
-									</thead>	
-									<tbody>
-										<tr>
-											<td>
-												<label>1. 전처리(쿼리패턴): 가격비교 </label>
-												<div class="col-md-12">Sandisk Extream 원조교제 Z80 USB 16gb</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<label>2. 불용어: 원조교제 </label>
-												<div class="col-md-12">Sandisk Extream Z80 USB 16gb</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<label>3. 모델명 규칙 </label>
-												<div class="col-md-12">Z80 (z, 80, z80)</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<label>4. 단위명 규칙 </label>
-												<div class="col-md-12">16gb (16gb, 16)</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<label>5. 형태소 분리 결과</label>
-												<div class="col-md-12">Sandisk, Extream, 원조교제, Z, 80, Z80</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<label>6. 동의어 확장: Sandisk, Extream, Z80, USB, 16gb</label>
-												<div class="col-md-12">
-													<strong>Sandisk</strong> : 샌디스크, 산디스크, sandisk, 센디스크, sendisk, 샌디스크코리아, 산디스크코리아
-													<br>
-													<strong>Extream</strong> : extream, xtreame, 익스트림
-													<br>
-													<strong>Z80</strong> : 
-													<br>
-													<strong>USB</strong> : 유에스비
-													<br>
-													<strong>16gb</strong> : 16g, 16기가
-													<br>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								
-							</div>
+							<div class="col-md-12" id="analyzedResult"></div>
 							<!--// 분석결과 -->
 						</div>
 						<!--// tab_analysis_tools -->

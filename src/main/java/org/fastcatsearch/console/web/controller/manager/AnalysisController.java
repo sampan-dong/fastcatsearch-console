@@ -43,4 +43,16 @@ public class AnalysisController extends AbstractController {
 		mav.addObject("setting",rootElement);
 		return mav;
 	}
+	
+	@RequestMapping("/{analysisId}/analyzeTools")
+	public ModelAndView analyzeTools(HttpSession session, @PathVariable String analysisId) throws Exception {
+		
+//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+//		String getAnalysisPluginSettingURL = "/management/analysis/plugin-setting.xml?pluginId="+analysisId;
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/analysis/analyzeTools");
+		mav.addObject("analysisId", analysisId);
+		mav.addObject("type","");
+		return mav;
+	}
 }
