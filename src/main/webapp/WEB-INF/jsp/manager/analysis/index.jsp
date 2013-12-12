@@ -10,6 +10,14 @@ java.util.List
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+
+<script>
+$(document).ready(function(){
+	loadAnalysisToolsTab("#tab_analysis_tools");
+});
+
+</script>
+
 </head>
 <%
 Element element = null;
@@ -88,185 +96,347 @@ if(rootElement!=null) {
 				</div>
 				<!-- /Page Header -->
 
-				<div class="widget">
-					<div class="widget-header">
-						<h4>Overview</h4>
-					</div>
-					<div class="widget-content">
-						<dl class="dl-horizontal">
-							<dt>ID</dt>
-							<dd>${analysisId} analysis</dd>
-							<dt>Namespace</dt>
-							<dd><%=namespace%></dd>
-							<dt>Class</dt>
-							<dd><%=analyzerClass%></dd>
-							<dt>Name</dt>
-							<dd><%=analyzerName%></dd>
-							<dt>Version</dt>
-							<dd><%=analyzerVersion%></dd>
-							<dt>Decription</dt>
-							<dd><%=description %></dd>
-						</dl>
-					</div>
-				</div>
-				<% 
-				if (dictionaryList!=null) { 
-				%>
-				<div class="widget">
-					<div class="widget-header">
-						<h4>Dictionary</h4>
-					</div>
-					<div class="widget-content">
-						<table class="table table-hover table-bordered">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Dictionary File</th>
-									<th>Dictionary Type</th>
-									<th>Columns</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-								for(int rowInx=0;rowInx<dictionaryList.size();rowInx++) {
+				<div class="tabbable tabbable-custom tabbable-full-width">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab_analysis_settings" data-toggle="tab">Settings</a></li>
+						<li class=""><a href="#tab_analysis_tools" data-toggle="tab">Tools</a></li>
+					</ul>
+					
+					<div class="tab-content row">
+						<div class="tab-pane " id="tab_analysis_settings">
+							<div class="col-md-12">
+								<div class="widget">
+									<div class="widget-header">
+										<h4>Overview</h4>
+									</div>
+									<div class="widget-content">
+										<dl class="dl-horizontal">
+											<dt>ID</dt>
+											<dd>${analysisId} analysis</dd>
+											<dt>Namespace</dt>
+											<dd><%=namespace%></dd>
+											<dt>Class</dt>
+											<dd><%=analyzerClass%></dd>
+											<dt>Name</dt>
+											<dd><%=analyzerName%></dd>
+											<dt>Version</dt>
+											<dd><%=analyzerVersion%></dd>
+											<dt>Decription</dt>
+											<dd><%=description %></dd>
+										</dl>
+									</div>
+								</div>
+								<% 
+								if (dictionaryList!=null) { 
 								%>
-									<%
-									Element dictionary = dictionaryList.get(rowInx);
-									String dictionaryId = dictionary.getAttributeValue("id");
-									String dictionaryName = dictionary.getAttributeValue("name");
-									String dictionaryType = dictionary.getAttributeValue("type");
-									if(dictionaryType==null) {
-										dictionaryType="";
-									}
-									List<Element>schema = dictionary.getChildren();
-									%>
-									<tr>
-										<td><%=rowInx+1 %></td>
-										<td><strong><%=dictionaryId %></strong></td>
-										<td><%=dictionaryName %></td>
-										<td><i><%=dictionaryId.toLowerCase() %>.dict</i></td>
-										<td><span class="label label-default"><%=dictionaryType %></span></td>
-										<td>
-										<% if(schema!=null && schema.size() > 0) { %>
-											<a data-toggle="modal" href="#schemaView<%=rowInx%>" >View</a>
-										<% } %>
-										</td>
-									</tr>
+								<div class="widget">
+									<div class="widget-header">
+										<h4>Dictionary</h4>
+									</div>
+									<div class="widget-content">
+										<table class="table table-hover table-bordered">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>ID</th>
+													<th>Name</th>
+													<th>Dictionary File</th>
+													<th>Dictionary Type</th>
+													<th>Columns</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%
+												for(int rowInx=0;rowInx<dictionaryList.size();rowInx++) {
+												%>
+													<%
+													Element dictionary = dictionaryList.get(rowInx);
+													String dictionaryId = dictionary.getAttributeValue("id");
+													String dictionaryName = dictionary.getAttributeValue("name");
+													String dictionaryType = dictionary.getAttributeValue("type");
+													if(dictionaryType==null) {
+														dictionaryType="";
+													}
+													List<Element>schema = dictionary.getChildren();
+													%>
+													<tr>
+														<td><%=rowInx+1 %></td>
+														<td><strong><%=dictionaryId %></strong></td>
+														<td><%=dictionaryName %></td>
+														<td><i><%=dictionaryId.toLowerCase() %>.dict</i></td>
+														<td><span class="label label-default"><%=dictionaryType %></span></td>
+														<td>
+														<% if(schema!=null && schema.size() > 0) { %>
+															<a data-toggle="modal" href="#schemaView<%=rowInx%>" >View</a>
+														<% } %>
+														</td>
+													</tr>
+												<%
+												}
+												%>
+											</tbody>
+										</table>
+									</div>
+								</div>
 								<%
 								}
 								%>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<%
-				}
-				%>
+											
+										
+								<%
+								if(actionList!=null) {
+								%>		
+								<div class="widget">
+									<div class="widget-header">
+										<h4>Action</h4>
+									</div>
+									<div class="widget-content">
+										<table class="table table-hover table-bordered">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>URI</th>
+													<th>Method</th>
+													<th>Class</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%
+												for(int rowInx=0;rowInx<actionList.size();rowInx++) {
+												%>
+													<%
+													Element action = actionList.get(rowInx);
+													String actionClass = action.getAttributeValue("class");
+													String actionMethod = action.getAttributeValue("methods").toUpperCase();
+													String actionUri = action.getAttributeValue("uri");
+													%>
+													<tr>
+														<td><%=rowInx+1 %></td>
+														<td><strong><%=actionUri %></strong></td>
+														<td><%=actionMethod %></td>
+														<td><i><%=actionClass %></i></td>
+													</tr>
+												<%
+												}
+												%>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<%
+								}
+								%>
+											
+								<%
+								if(scheduleList!=null) {
+								%>
+								<div class="widget">
+									<div class="widget-header">
+										<h4>Schedule</h4>
+									</div>
+									<div class="widget-content">
+										<table class="table table-hover table-bordered">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>Task</th>
+													<th>Base Time</th>
+													<th>Period</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%
+												for(int rowInx=0;rowInx<scheduleList.size();rowInx++) {
+												%>
+													<%
+													Element schedule = scheduleList.get(rowInx);
+													String scheduleClass = schedule.getAttributeValue("class");
+													String startTime = schedule.getAttributeValue("startTime");
+													int period = -1;
+													String unit = "Minute";
+													try {
+														period = Integer.parseInt(schedule.getAttributeValue("periodInMinute"));
+													} catch (Exception e) {
+													}
+													if(period > 60) {
+														period = period / 60;
+														unit = "Hour";
+													}
+													%>
+													
+													<tr id="schedule_<%=rowInx+1%>">
+														<td><%=rowInx+1 %></td>
+														<td><strong><%=scheduleClass %></strong></td>
+														<td><%=startTime %></td>
+														<td>
+														<% if(period != -1) { %>
+															<%=period %> <%=unit %>
+														<% } %>
+														</td>
+													</tr>
+												<%
+												}
+												%>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<%
+								}
+								%>
 							
+							
+							
+							
+							</div>
 						
-				<%
-				if(actionList!=null) {
-				%>		
-				<div class="widget">
-					<div class="widget-header">
-						<h4>Action</h4>
-					</div>
-					<div class="widget-content">
-						<table class="table table-hover table-bordered">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>URI</th>
-									<th>Method</th>
-									<th>Class</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-								for(int rowInx=0;rowInx<actionList.size();rowInx++) {
-								%>
-									<%
-									Element action = actionList.get(rowInx);
-									String actionClass = action.getAttributeValue("class");
-									String actionMethod = action.getAttributeValue("methods").toUpperCase();
-									String actionUri = action.getAttributeValue("uri");
-									%>
-									<tr>
-										<td><%=rowInx+1 %></td>
-										<td><strong><%=actionUri %></strong></td>
-										<td><%=actionMethod %></td>
-										<td><i><%=actionClass %></i></td>
-									</tr>
-								<%
-								}
-								%>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<%
-				}
-				%>
 							
-				<%
-				if(scheduleList!=null) {
-				%>
-				<div class="widget">
-					<div class="widget-header">
-						<h4>Schedule</h4>
-					</div>
-					<div class="widget-content">
-						<table class="table table-hover table-bordered">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Task</th>
-									<th>Base Time</th>
-									<th>Period</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-								for(int rowInx=0;rowInx<scheduleList.size();rowInx++) {
-								%>
-									<%
-									Element schedule = scheduleList.get(rowInx);
-									String scheduleClass = schedule.getAttributeValue("class");
-									String startTime = schedule.getAttributeValue("startTime");
-									int period = -1;
-									String unit = "Minute";
-									try {
-										period = Integer.parseInt(schedule.getAttributeValue("periodInMinute"));
-									} catch (Exception e) {
-									}
-									if(period > 60) {
-										period = period / 60;
-										unit = "Hour";
-									}
-									%>
+						</div>
+						
+						<!-- tab_analysis_tools -->
+						<div class="tab-pane active" id="tab_analysis_tools">
+							<div class="col-md-12">
+								<form role="form" id="dbQueryTest" class="">
 									
-									<tr id="schedule_<%=rowInx+1%>">
-										<td><%=rowInx+1 %></td>
-										<td><strong><%=scheduleClass %></strong></td>
-										<td><%=startTime %></td>
-										<td>
-										<% if(period != -1) { %>
-											<%=period %> <%=unit %>
-										<% } %>
-										</td>
-									</tr>
-								<%
-								}
-								%>
-							</tbody>
-						</table>
+									<div class="form-group">
+										<label for="words" class="control-label">Query Words:</label>
+										<input type="text" class="form-control required largeText" name="words" placeholder="Query Words" />
+									</div>
+									
+									<div class="form-inline">
+										<div class="form-group">
+											<label class="radio">
+												<input type="radio" name="enable" class="form-control" value="basic" checked> Simple
+											</label>
+										</div>
+										&nbsp;
+										<div class="form-group">
+											<label class="radio">
+												<input type="radio" name="enable" class="form-control" value="basic"> Detail
+											</label>
+										</div>
+										&nbsp;
+										<div class="form-group">
+											<a href="javascript:void(0);" id="dbQueryButton" class="btn btn-sm" data-loading-text="Searching..">Analyze</a>
+										</div>
+									</div>
+								</form>
+							</div>
+							<br/>
+							
+							<!-- 분석결과 -->
+							<div class="col-md-12">
+								<!-- <table class="table table-bordered table-highlight-head thead">
+									<thead>
+										<tr>
+											<th style="padding: 15px 0 15px 10px;">
+												<h4>Sandisk Extream 원조교제 Z80 USB 16gb 가격비교</h4>
+											</th>
+										</tr>
+									</thead>	
+									<tbody>
+										<tr>
+											<td>
+												<label>1. Analyzed Terms: </label>
+												<div class="col-md-12">Sandisk, Extream, 원조교제, Z, 80, Z80</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label>2. Analyzed Terms List: </label>
+												<div class="col-md-12">
+													<table class="table table-fixed" style="border:0px">
+														<tr>
+															<td>[1] Sandisk</td>
+															<td>[2] Extream</td>
+															<td>[3] 원조교제</td>
+															<td>[4] Z</td>
+															<td>[5] 80</td>
+														</tr>
+														<tr>
+															<td>[6] Z80</td>
+															<td>[7] USB</td>
+															<td>[8] 16gb</td>
+															<td>[9] 16</td>
+															<td></td>
+														</tr>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table> -->
+							
+								<table class="table table-bordered table-highlight-head thead">
+									<thead>
+										<tr>
+											<th style="padding: 15px 0 15px 10px;">
+												<h4>Sandisk Extream 원조교제 Z80 USB 16gb 가격비교</h4>
+											</th>
+										</tr>
+									</thead>	
+									<tbody>
+										<tr>
+											<td>
+												<label>1. 전처리(쿼리패턴): 가격비교 </label>
+												<div class="col-md-12">Sandisk Extream 원조교제 Z80 USB 16gb</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label>2. 불용어: 원조교제 </label>
+												<div class="col-md-12">Sandisk Extream Z80 USB 16gb</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label>3. 모델명 규칙 </label>
+												<div class="col-md-12">Z80 (z, 80, z80)</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label>4. 단위명 규칙 </label>
+												<div class="col-md-12">16gb (16gb, 16)</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label>5. 형태소 분리 결과</label>
+												<div class="col-md-12">Sandisk, Extream, 원조교제, Z, 80, Z80</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label>6. 동의어 확장: Sandisk, Extream, Z80, USB, 16gb</label>
+												<div class="col-md-12">
+													<strong>Sandisk</strong> : 샌디스크, 산디스크, sandisk, 센디스크, sendisk, 샌디스크코리아, 산디스크코리아
+													<br>
+													<strong>Extream</strong> : extream, xtreame, 익스트림
+													<br>
+													<strong>Z80</strong> : 
+													<br>
+													<strong>USB</strong> : 유에스비
+													<br>
+													<strong>16gb</strong> : 16g, 16기가
+													<br>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								
+							</div>
+							<!--// 분석결과 -->
+						</div>
+						<!--// tab_analysis_tools -->
+						
 					</div>
+				
 				</div>
-				<%
-				}
-				%>
+
+
+				
 
 						
 				<!-- /Page Content -->

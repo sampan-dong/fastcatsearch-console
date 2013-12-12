@@ -109,7 +109,7 @@ body.error .trace {
 	height:200px; border: 1px solid #fff; overflow: scroll; text-align: left; color: #fff;
 }
 
-form.searchTest input, form.searchTest textarea {font-size: 18px !important;}
+form.searchTest input, form.searchTest textarea, input.largeText {font-size: 18px !important;}
 
 .long2 {height:200px;}
 .long3 {height:300px;}
