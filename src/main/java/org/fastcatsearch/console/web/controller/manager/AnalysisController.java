@@ -68,7 +68,7 @@ public class AnalysisController extends AbstractController {
 		JSONObject jsonObj = null;
 		
 		if("detail".equalsIgnoreCase(type)){
-			getAnalysisToolsURL = "/_analysis/"+analysisId+"/analysis-tools-detail.json";
+			getAnalysisToolsURL = "/_plugin/"+analysisId+"/analysis-tools-detail.json";
 			try{
 				jsonObj = httpClient.httpPost(getAnalysisToolsURL).addParameter("queryWords", queryWords).requestJSON();
 			}catch(ClientProtocolException e){

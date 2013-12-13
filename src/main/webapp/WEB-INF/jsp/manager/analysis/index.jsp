@@ -400,6 +400,7 @@ if(rootElement!=null) {
 								<th>#</th>
 								<th>Name</th>
 								<th>Type</th>
+								<th>Key</th>
 								<th>Index</th>
 								<th>Search</th>
 								<th>Compile</th>
@@ -415,6 +416,12 @@ if(rootElement!=null) {
 							Element columns = schema.get(colInx);
 							String columnName = columns.getAttributeValue("name").toUpperCase();
 							String columnType = columns.getAttributeValue("type").toUpperCase();
+							String isKey = columns.getAttributeValue("key");
+							if(isKey != null){
+								isKey = isKey.toUpperCase();
+							}else{
+								isKey = "FALSE";
+							}
 							String isIndex = columns.getAttributeValue("index").toUpperCase();
 							String isSearchable = columns.getAttributeValue("searchable").toUpperCase();
 							String isCompilable = columns.getAttributeValue("compilable").toUpperCase();
@@ -425,6 +432,7 @@ if(rootElement!=null) {
 								<td><%=colInx+1 %></td>
 								<td><%=columnName %></td>
 								<td><%=columnType %></td>
+								<td><%=isKey %></td>
 								<td><%=isIndex %></td>
 								<td><%=isSearchable %></td>
 								<td><%=isCompilable %></td>
