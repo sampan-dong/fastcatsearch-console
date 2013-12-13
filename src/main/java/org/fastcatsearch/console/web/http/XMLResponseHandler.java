@@ -35,7 +35,9 @@ public class XMLResponseHandler implements ResponseHandler<Document> {
 				}
 			}
 			return null;
-
+		}else if(status == 404){
+			//NOT FOUND URL
+			throw new ClientProtocolException(new Http404Error());
 		} else {
 			throw new ClientProtocolException("Unexpected response status: " + status);
 		}

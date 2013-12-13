@@ -7,17 +7,17 @@
 JSONObject analyzedResult = (JSONObject) request.getAttribute("analyzedResult");
 String type = (String) request.getParameter("type");
 String queryWords = analyzedResult.getString("query");
-boolean isSuccess = analyzedResult.getBoolean("success");
+boolean isSuccess = analyzedResult.optBoolean("success");
 
 if(!isSuccess){
-	String errorMessage = analyzedResult.getString("errorMessage");
+	String errorMessage = analyzedResult.optString("errorMessage");
 %>
 <table class="table table-bordered table-highlight-head">
 	<tbody>
 		<tr>
 			<td>
 				<label>Error Message: </label>
-				<div class="col-md-12"><%=errorMessage %></div>
+				<div class="col-md-12 text-danger"><%=errorMessage %></div>
 			</td>
 		</tr>
 	</tbody>

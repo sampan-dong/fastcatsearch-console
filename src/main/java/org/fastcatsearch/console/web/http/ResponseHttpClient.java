@@ -35,7 +35,7 @@ public class ResponseHttpClient {
 
 	private static final ResponseHandler<JSONObject> jsonResponseHandler = new JSONResponseHandler();
 	private static final ResponseHandler<Document> xmlResponseHandler = new XMLResponseHandler();
-	private static final ResponseHandler<String> textResponseHandler = new BasicResponseHandler();
+	private static final ResponseHandler<String> textResponseHandler = new TextResponseHandler();
 	
 	public ResponseHttpClient(String host) {
 
@@ -105,41 +105,50 @@ public class ResponseHttpClient {
 			return this;
 		}
 		
-		public JSONObject requestJSON() throws ClientProtocolException, IOException {
+		public JSONObject requestJSON() throws ClientProtocolException, IOException, Http404Error {
 			try {
 				return responseHttpClient.httpclient.execute(getHttpRequest(), jsonResponseHandler);
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
 			}catch(ClientProtocolException e){
-				logger.debug("httpclient error! >> {}", e.getMessage());
-				throw new IOException("Request fail. " + url);
+				if(e.getCause() instanceof Http404Error){
+					throw (Http404Error) e.getCause();
+				}
+				logger.debug("httpclient error! >> {}, {}", e.getMessage(), e.getCause());
+				throw e;
 			}
 			return null;
 		}
 		
-		public Document requestXML() throws ClientProtocolException, IOException {
+		public Document requestXML() throws ClientProtocolException, IOException, Http404Error {
 			try {
 				return responseHttpClient.httpclient.execute(getHttpRequest(), xmlResponseHandler);
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
 			}catch(ClientProtocolException e){
-				logger.debug("httpclient error! >> {}", e.getMessage());
-				throw new IOException("Request fail. " + url);
+				if(e.getCause() instanceof Http404Error){
+					throw (Http404Error) e.getCause();
+				}
+				logger.debug("httpclient error! >> {}, {}", e.getMessage(), e.getCause());
+				throw e;
 			}
 			return null;
 		}
 		
-		public String requestText() throws ClientProtocolException, IOException {
+		public String requestText() throws ClientProtocolException, IOException, Http404Error {
 			try {
 				return responseHttpClient.httpclient.execute(getHttpRequest(), textResponseHandler);
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
 			}catch(ClientProtocolException e){
+				if(e.getCause() instanceof Http404Error){
+					throw (Http404Error) e.getCause();
+				}
 				logger.debug("httpclient error! >> {}", e.getMessage());
-				throw new IOException("Request fail. " + url);
+				throw e;
 			}
 			return null;
 		}

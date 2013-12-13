@@ -6,6 +6,10 @@ java.util.List
 "%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ROOT_PATH" value="../.." />
+
+<%
+String analysisId = (String) request.getAttribute("analysisId"); 
+%>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
 <head>
@@ -232,13 +236,18 @@ if(rootElement!=null) {
 												%>
 													<%
 													Element action = actionList.get(rowInx);
-													String actionClass = action.getAttributeValue("class");
+													String actionClass = action.getAttributeValue("className");
 													String actionMethod = action.getAttributeValue("methods").toUpperCase();
 													String actionUri = action.getAttributeValue("uri");
+													if(actionUri == null){
+														actionUri = "";
+													}else{
+														actionUri = "/_plugin/" + analysisId + actionUri;
+													}
 													%>
 													<tr>
 														<td><%=rowInx+1 %></td>
-														<td><strong><%=actionUri %></strong></td>
+														<td><%=actionUri %></td>
 														<td><%=actionMethod %></td>
 														<td><i><%=actionClass %></i></td>
 													</tr>

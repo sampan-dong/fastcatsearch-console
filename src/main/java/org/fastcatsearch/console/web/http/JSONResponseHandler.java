@@ -27,7 +27,9 @@ public class JSONResponseHandler implements ResponseHandler<JSONObject> {
 			} else {
 				return new JSONObject();
 			}
-
+		}else if(status == 404){
+			//NOT FOUND URL
+			throw new ClientProtocolException(new Http404Error());
 		} else {
 			throw new ClientProtocolException("Unexpected response status: " + status);
 		}
