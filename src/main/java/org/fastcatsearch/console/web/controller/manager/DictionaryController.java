@@ -118,6 +118,8 @@ public class DictionaryController extends AbstractController {
 		}else if(dictionaryType.equalsIgnoreCase("SYNONYM_2WAY")){
 			dictionaryPrefix = "SYNONYM";
 			dictionaryOption = "2WAY";
+		}else if(dictionaryType.equalsIgnoreCase("SPACE")){
+			dictionaryPrefix = "SET";
 		}
 		int start = 0;
 		
@@ -148,10 +150,8 @@ public class DictionaryController extends AbstractController {
 		ModelAndView mav = new ModelAndView();
 		dictionaryPrefix = dictionaryPrefix.toLowerCase();
 		if(isEditable != null && isEditable.booleanValue()){
-			System.out.println("manager/dictionary/" + dictionaryPrefix + "DictionaryEdit");
 			mav.setViewName("manager/dictionary/" + dictionaryPrefix + "DictionaryEdit");
 		}else{
-			System.out.println("manager/dictionary/" + dictionaryPrefix + "Dictionary");
 			mav.setViewName("manager/dictionary/" + dictionaryPrefix + "Dictionary");
 		}
 		mav.addObject("analysisId", analysisId);

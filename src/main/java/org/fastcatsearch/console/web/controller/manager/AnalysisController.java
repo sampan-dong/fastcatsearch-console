@@ -34,7 +34,7 @@ public class AnalysisController extends AbstractController {
 	public ModelAndView plugin(HttpSession session) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String getAnalysisPluginListURL = "/management/analysis/plugin-list";
-		JSONObject jsonObj = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
+		JSONObject jsonObj = httpClient.httpPost(getAnalysisPluginListURL).requestJSON();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/plugin");
 		mav.addObject("analysisPluginOverview", jsonObj.getJSONArray("pluginList"));
@@ -46,7 +46,7 @@ public class AnalysisController extends AbstractController {
 		
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String getAnalysisPluginSettingURL = "/management/analysis/plugin-setting.xml";
-		Document document = httpClient.httpGet(getAnalysisPluginSettingURL).addParameter("pluginId", analysisId).requestXML();
+		Document document = httpClient.httpPost(getAnalysisPluginSettingURL).addParameter("pluginId", analysisId).requestXML();
 		Element rootElement = document.getRootElement();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/index");

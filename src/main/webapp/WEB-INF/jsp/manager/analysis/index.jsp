@@ -172,6 +172,7 @@ if(rootElement!=null) {
 													<th>Name</th>
 													<th>Dictionary File</th>
 													<th>Dictionary Type</th>
+													<th>Ignore Case</th>
 													<th>Columns</th>
 												</tr>
 											</thead>
@@ -184,10 +185,16 @@ if(rootElement!=null) {
 													String dictionaryId = dictionary.getAttributeValue("id");
 													String dictionaryName = dictionary.getAttributeValue("name");
 													String dictionaryType = dictionary.getAttributeValue("type");
+													String ignoreCase = dictionary.getAttributeValue("ignoreCase");
 													if(dictionaryType==null) {
 														dictionaryType="";
 													}
-													List<Element>schema = dictionary.getChildren();
+													if(ignoreCase != null && ignoreCase.equalsIgnoreCase("true")){
+														ignoreCase = "Y";
+													}else{
+														ignoreCase = "N";
+													}
+													List<Element> schema = dictionary.getChildren();
 													%>
 													<tr>
 														<td><%=rowInx+1 %></td>
@@ -195,6 +202,7 @@ if(rootElement!=null) {
 														<td><%=dictionaryName %></td>
 														<td><i><%=dictionaryId.toLowerCase() %>.dict</i></td>
 														<td><span class="label label-default"><%=dictionaryType %></span></td>
+														<td><%=ignoreCase %></td>
 														<td>
 														<% if(schema!=null && schema.size() > 0) { %>
 															<a data-toggle="modal" href="#schemaView<%=rowInx%>" >View</a>
@@ -404,7 +412,6 @@ if(rootElement!=null) {
 								<th>Index</th>
 								<th>Search</th>
 								<th>Compile</th>
-								<th>IgnoreCase</th>
 								<th>NullUnique</th>
 							</tr>
 						</thead>
@@ -425,7 +432,6 @@ if(rootElement!=null) {
 							String isIndex = columns.getAttributeValue("index").toUpperCase();
 							String isSearchable = columns.getAttributeValue("searchable").toUpperCase();
 							String isCompilable = columns.getAttributeValue("compilable").toUpperCase();
-							String isIgnoreCase = columns.getAttributeValue("ignoreCase").toUpperCase();
 							String isNullableUnique = columns.getAttributeValue("nullableUnique").toUpperCase();
 							%>
 							<tr>
@@ -436,7 +442,6 @@ if(rootElement!=null) {
 								<td><%=isIndex %></td>
 								<td><%=isSearchable %></td>
 								<td><%=isCompilable %></td>
-								<td><%=isIgnoreCase %></td>
 								<td><%=isNullableUnique %></td>
 							</tr>
 						<%
@@ -445,8 +450,12 @@ if(rootElement!=null) {
 						</tbody>
 						</table>
 					</div>
+					<div class="modal-footer">
+			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      		</div>
 				</div>
 				<!-- /.modal-content -->
+				
 			</div>
 			<!-- /.modal-dialog -->
 		</div>
