@@ -5,6 +5,7 @@
 <%@page import="org.json.*"%>
 <%
 	String dictionaryId = (String) request.getAttribute("dictionaryId");
+	String dictionaryOption = (String) request.getAttribute("dictionaryOption");
 	JSONObject list = (JSONObject) request.getAttribute("list");
 	int totalSize = list.getInt("totalSize");
 	int filteredSize = list.getInt("filteredSize");
@@ -13,6 +14,7 @@
 	String targetId = (String) request.getAttribute("targetId");
 	JSONArray searchableColumnList = (JSONArray) list.getJSONArray("searchableColumnList");
 	String searchColumn = (String) request.getAttribute("searchColumn");
+	boolean is2Way = "2WAY".equals(dictionaryOption);
 %>
 <script>
 
@@ -35,7 +37,7 @@ $(document).ready(function(){
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = toSafeString($(this).val());
-			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+			loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 			return;
 		}
 	});
@@ -44,13 +46,13 @@ $(document).ready(function(){
 	searchColumnObj.on("change", function(){
 		var keyword = toSafeString(searchInputObj.val());
 		if(keyword != ""){
-			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+			loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 		}
 	});
 	exactMatchObj.on("change", function(){
 		var keyword = toSafeString(searchInputObj.val());
 		if(keyword != ""){
-			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+			loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 		}
 	});
 	
@@ -118,7 +120,7 @@ function <%=dictionaryId%>Truncate(){
 }
 function <%=dictionaryId%>LoadList(){
 	var keyword = toSafeString(searchInputObj.val());
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+	loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 }
 function <%=dictionaryId%>SynonymInsert(){
 	var keyword = toSafeString(wordInputObj.val());
@@ -211,14 +213,14 @@ function <%=dictionaryId%>WordUpdate(id){
 	);
 }
 function go<%=dictionaryId%>DictionaryPage(uri, pageNo){
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
+	loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');
 }
 function go<%=dictionaryId%>ViewablePage(pageNo){
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');	
+	loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');	
 }
 function <%=dictionaryId%>deleteOneWord(deleteId){
 	if(confirm("Are you sure?")){
-		loadDictionaryTab("synonym", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteId);
+		loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteId);
 	}
 }
 function <%=dictionaryId%>deleteSelectWord(){
@@ -235,7 +237,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 		return;
 	}
 	var deleteIdList = idList.join(",");
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteIdList);	
+	loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteIdList);	
 }
 </script>
 
@@ -245,6 +247,11 @@ function <%=dictionaryId%>deleteSelectWord(){
 		<div class="dataTables_header clearfix">
 			
 			<div class="form-inline col-md-7">
+				<%
+				if(is2Way){
+				%>
+					<input type="hidden" id="<%=dictionaryId %>SearchColumn" value="_ALL" />
+				<% }else{ %>
 				<div class="form-group">
 					<select id="<%=dictionaryId %>SearchColumn" class="select_flat form-control">
 						<option value="_ALL">ALL</option>
@@ -258,6 +265,9 @@ function <%=dictionaryId%>deleteSelectWord(){
 						 %>
 					</select>
 				</div>
+				<%
+				}
+				%>
 				<div class="form-group" style="width:240px">
 			        <div class="input-group" >
 			            <span class="input-group-addon"><i class="icon-search"></i></span>
@@ -302,9 +312,15 @@ function <%=dictionaryId%>deleteSelectWord(){
 				<thead>
 					<tr>
 						<th class="checkbox-column">
-							<input type="checkbox">
+							<input type="checkbox" class="form-control">
 						</th>
+						<%
+						if(!is2Way){
+						%>
 						<th>Keyword</th>
+						<%
+						}
+						%>
 						<th>Synonym words</th>
 						<th>Action</th>
 					</tr>
@@ -316,12 +332,19 @@ function <%=dictionaryId%>deleteSelectWord(){
 				%>
 					<tr id="_<%=dictionaryId %>-<%=obj.getInt("ID") %>">
 						<td class="checkbox-column">
-							<input type="checkbox">
-						</td>
-						<td class="col-md-2">
+							<input type="checkbox" class="form-control edit" />
 							<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>"/>
+						</td>
+						<%
+						//is2Way 이면 표시하지 않는다.
+						if(!is2Way){
+						%>
+						<td class="col-md-2">
 							<input type="text" name="KEYWORD" value="<%=obj.getString("KEYWORD") %>" class="form-control"/>
 						</td>
+						<%
+						}
+						%>
 						<td><input type="text" name="SYNONYM" value="<%=obj.getString("SYNONYM") %>" class="form-control"/></td>
 						<td class="col-md-2"><a href="javascript:<%=dictionaryId%>WordUpdate(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
 						<a href="javascript:<%=dictionaryId%>deleteOneWord(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
@@ -367,7 +390,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 			</div>
 			<div class="modal-body">
 				<div class="form-inline">
-					<div class="form-group">
+					<div class="form-group <%=is2Way ? "hidden" : ""%>">
 						<input type="text" id="word_input_${dictionaryId}" class="form-control" placeholder="Keyword">
 					</div>
 					<div class="form-group" style="width:370px">

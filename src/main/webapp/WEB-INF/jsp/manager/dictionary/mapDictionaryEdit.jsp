@@ -326,10 +326,10 @@ function <%=dictionaryId%>deleteSelectWord(){
 				%>
 					<tr id="_<%=dictionaryId %>-<%=obj.getInt("ID") %>">
 						<td class="checkbox-column">
-							<input type="checkbox">
+							<input type="checkbox" class="edit">
+							<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>"/>
 						</td>
 						<td class="col-md-2">
-							<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>"/>
 							<input type="text" name="KEYWORD" value="<%=obj.getString("KEYWORD") %>" class="form-control"/>
 						</td>
 						<td><input type="text" name="VALUE" value="<%=obj.getString("VALUE") %>" class="form-control"/></td>

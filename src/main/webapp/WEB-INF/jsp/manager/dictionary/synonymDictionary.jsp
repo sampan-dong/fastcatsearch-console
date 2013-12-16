@@ -5,6 +5,7 @@
 <%@page import="org.json.*"%>
 <%
 	String dictionaryId = (String) request.getAttribute("dictionaryId");
+	String dictionaryOption = (String) request.getAttribute("dictionaryOption");
 	JSONObject list = (JSONObject) request.getAttribute("list");
 	int totalSize = list.getInt("totalSize");
 	int filteredSize = list.getInt("filteredSize");
@@ -13,6 +14,7 @@
 	String targetId = (String) request.getAttribute("targetId");
 	JSONArray searchableColumnList = (JSONArray) list.getJSONArray("searchableColumnList");
 	String searchColumn = (String) request.getAttribute("searchColumn");
+	boolean is2Way = "2WAY".equals(dictionaryOption);
 %>
 <script>
 
@@ -29,7 +31,7 @@ $(document).ready(function(){
 	searchInputObj.keydown(function (e) {
 		if(e.keyCode == 13){
 			var keyword = toSafeString($(this).val());
-			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
+			loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
 			return;
 		}
 	});
@@ -38,22 +40,22 @@ $(document).ready(function(){
 	searchColumnObj.on("change", function(){
 		var keyword = toSafeString(searchInputObj.val());
 		if(keyword != ""){
-			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
+			loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
 		}
 	});
 	exactMatchObj.on("change", function(){
 		var keyword = toSafeString(searchInputObj.val());
 		if(keyword != ""){
-			loadDictionaryTab("synonym", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
+			loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', 1, keyword, searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');
 		}
 	});
 });
 
 function go<%=dictionaryId%>DictionaryPage(uri, pageNo){
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');	
+	loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');	
 }
 function go<%=dictionaryId%>EditablePage(pageNo){
-	loadDictionaryTab("synonym", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');	
+	loadDictionaryTab("${dictionaryType}", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>');	
 }
 </script>
 
@@ -61,7 +63,12 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 <div class="widget box">
 	<div class="widget-content no-padding">
 		<div class="dataTables_header clearfix">
-			<div class="form-inline col-md-6">
+			<div class="form-inline col-md-7">
+				<%
+				if(is2Way){
+				%>
+					<input type="hidden" id="<%=dictionaryId %>SearchColumn" value="_ALL" />
+				<% }else{ %>
 				<div class="form-group">
 					<select id="<%=dictionaryId %>SearchColumn" class="select_flat form-control">
 						<option value="_ALL">ALL</option>
@@ -75,6 +82,9 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 						 %>
 					</select>
 				</div>
+				<%
+				}
+				%>
 				<div class="form-group " style="width:240px">
 			        <div class="input-group" >
 			            <span class="input-group-addon"><i class="icon-search"></i></span>
@@ -91,7 +101,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 			    </div>
 			</div>
 				
-			<div class="col-md-6">
+			<div class="col-md-5">
 				<div class="pull-right">
 					<a href="javascript:downloadDictionary('synonym', '<%=dictionaryId%>')"  class="btn btn-default btn-sm">
 						<span class="icon icon-download"></span> Download
@@ -116,7 +126,13 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
+						<%
+						if(!is2Way){
+						%>
 						<th>Keyword</th>
+						<%
+						}
+						%>
 						<th>Synonym words</th>
 					</tr>
 				</thead>
@@ -127,7 +143,14 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 					JSONObject obj = entryList.getJSONObject(i);
 				%>
 					<tr>
-						<td id="_<%=dictionaryId %>_<%=obj.getInt("ID") %>" class="col-md-2"><%=obj.getString("KEYWORD") %></td>
+						<%
+						//is2Way 이면 표시하지 않는다.
+						if(!is2Way){
+						%>
+						<td class="col-md-2"><%=obj.getString("KEYWORD") %></td>
+						<%
+						}
+						%>
 						<td><%=obj.getString("SYNONYM") %></td>
 					</tr>
 					

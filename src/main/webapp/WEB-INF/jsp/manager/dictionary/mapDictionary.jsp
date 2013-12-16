@@ -127,7 +127,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 					JSONObject obj = entryList.getJSONObject(i);
 				%>
 					<tr>
-						<td id="_<%=dictionaryId %>_<%=obj.getInt("ID") %>" class="col-md-2"><%=obj.getString("KEYWORD") %></td>
+						<td class="col-md-2"><%=obj.getString("KEYWORD") %></td>
 						<td><%=obj.getString("VALUE") %></td>
 					</tr>
 					

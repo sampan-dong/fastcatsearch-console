@@ -110,10 +110,14 @@ public class DictionaryController extends AbstractController {
 		
 		
 		String requestUrl = "/management/dictionary/list.json";
-		
+		String dictionaryPrefix = dictionaryType;
+		String dictionaryOption = null;
 		int PAGE_SIZE = 10;
-		if(dictionaryType.equalsIgnoreCase("set")){
+		if(dictionaryType.equalsIgnoreCase("SET")){
 			PAGE_SIZE = 40;
+		}else if(dictionaryType.equalsIgnoreCase("SYNONYM_2WAY")){
+			dictionaryPrefix = "SYNONYM";
+			dictionaryOption = "2WAY";
 		}
 		int start = 0;
 		
@@ -142,13 +146,18 @@ public class DictionaryController extends AbstractController {
 				.requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
+		dictionaryPrefix = dictionaryPrefix.toLowerCase();
 		if(isEditable != null && isEditable.booleanValue()){
-			mav.setViewName("manager/dictionary/" + dictionaryType.toLowerCase() + "DictionaryEdit");
+			System.out.println("manager/dictionary/" + dictionaryPrefix + "DictionaryEdit");
+			mav.setViewName("manager/dictionary/" + dictionaryPrefix + "DictionaryEdit");
 		}else{
-			mav.setViewName("manager/dictionary/" + dictionaryType.toLowerCase() + "Dictionary");
+			System.out.println("manager/dictionary/" + dictionaryPrefix + "Dictionary");
+			mav.setViewName("manager/dictionary/" + dictionaryPrefix + "Dictionary");
 		}
 		mav.addObject("analysisId", analysisId);
 		mav.addObject("dictionaryId", dictionaryId);
+		mav.addObject("dictionaryType", dictionaryType);
+		mav.addObject("dictionaryOption", dictionaryOption);
 		mav.addObject("list", jsonObj);
 		mav.addObject("start", start);
 		mav.addObject("pageNo", pageNo);

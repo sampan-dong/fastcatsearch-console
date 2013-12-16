@@ -134,3 +134,5 @@ input.has-error { border-color: #dd4b39  !important; }
    white-space: -o-pre-wrap;   /* Opera 7 */    
    word-wrap: break-word;      /* IE */
 }
+
+td input[type=checkbox].edit { margin-top: 8px;}
