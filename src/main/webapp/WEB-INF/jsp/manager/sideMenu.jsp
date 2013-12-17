@@ -27,7 +27,12 @@
 				<ul class="sub-menu">
 					<%
 					for(int i=0;i<analysisPluginList.length(); i++){
-						String id = analysisPluginList.getJSONObject(i).getString("id");
+						JSONObject pluginObject = analysisPluginList.getJSONObject(i);
+						String id = pluginObject.getString("id");
+						boolean hasDictionary = pluginObject.getBoolean("hasDictionary");
+						if(!hasDictionary){
+							continue;
+						}
 						boolean maybeCurrent = lcatCurrent && id.equals(mcat);
 					%>
 					<li class="<%=maybeCurrent ? "current" : "" %>"><a href="<c:url value="/manager/dictionary/"/><%=id %>/index.html"> <i
