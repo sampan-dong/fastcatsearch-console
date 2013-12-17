@@ -59,7 +59,7 @@ public class AnalysisController extends AbstractController {
 	
 	
 	@RequestMapping("/{analysisId}/analyzeTools")
-	public ModelAndView analyzeTools(HttpSession session, @PathVariable String analysisId, @RequestParam String type, @RequestParam String queryWords) throws Exception {
+	public ModelAndView analyzeTools(HttpSession session, @PathVariable String analysisId, @RequestParam String type, @RequestParam String analyzerId, @RequestParam String queryWords) throws Exception {
 		
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
@@ -70,7 +70,7 @@ public class AnalysisController extends AbstractController {
 		if("detail".equalsIgnoreCase(type)){
 			getAnalysisToolsURL = "/_plugin/"+analysisId+"/analysis-tools-detail.json";
 			try{
-				jsonObj = httpClient.httpPost(getAnalysisToolsURL).addParameter("queryWords", queryWords).requestJSON();
+				jsonObj = httpClient.httpPost(getAnalysisToolsURL).addParameter("analyzerId", analyzerId).addParameter("queryWords", queryWords).requestJSON();
 			}catch(ClientProtocolException e){
 				jsonObj = AnalyzeToolsDetailNotImplementedResult;
 				jsonObj.put("query", queryWords);
@@ -79,6 +79,7 @@ public class AnalysisController extends AbstractController {
 			getAnalysisToolsURL = "/management/analysis/analysis-tools.json";
 			jsonObj = httpClient.httpPost(getAnalysisToolsURL)
 					.addParameter("pluginId", analysisId)
+					.addParameter("analyzerId", analyzerId)
 					.addParameter("queryWords", queryWords).requestJSON();
 		}
 		

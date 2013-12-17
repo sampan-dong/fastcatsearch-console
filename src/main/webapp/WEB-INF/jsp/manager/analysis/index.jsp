@@ -68,6 +68,7 @@ boolean usedb = false;
 List<Element> dictionaryList = null;
 List<Element> scheduleList = null;
 List<Element> actionList = null;
+List<Element> analyzerList = null;
 
 if(rootElement!=null) {
 
@@ -94,6 +95,10 @@ if(rootElement!=null) {
 	
 	if((element = rootElement.getChild("action-list"))!=null) {
 		actionList = element.getChildren();
+	}
+	
+	if((element = rootElement.getChild("analyzer-list"))!=null) {
+		analyzerList = element.getChildren();
 	}
 }
 
@@ -219,7 +224,50 @@ if(rootElement!=null) {
 								<%
 								}
 								%>
-											
+									
+								<%
+								if(analyzerList!=null) {
+								%>		
+								<div class="widget">
+									<div class="widget-header">
+										<h4>Analyzer</h4>
+									</div>
+									<div class="widget-content">
+										<table class="table table-hover table-bordered">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>ID</th>
+													<th>Name</th>
+													<th>Class</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%
+												for(int rowInx=0;rowInx<analyzerList.size();rowInx++) {
+												%>
+													<%
+													Element analyzer = analyzerList.get(rowInx);
+													String id = analyzer.getAttributeValue("id");
+													String name = analyzer.getAttributeValue("name");
+													String className = analyzer.getAttributeValue("className");
+													%>
+													<tr>
+														<td><%=rowInx+1 %></td>
+														<td>${analysisId}.<%=id.toUpperCase() %></td>
+														<td><%=name %></td>
+														<td><i><%=className %></i></td>
+													</tr>
+												<%
+												}
+												%>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<%
+								}
+								%>		
 										
 								<%
 								if(actionList!=null) {
@@ -359,6 +407,23 @@ if(rootElement!=null) {
 											</label>
 										</div>
 										&nbsp;
+										
+										<select name="analyzerId" class="select_flat form-control fcol2-1">
+											<%
+											for(int rowInx=0;rowInx<analyzerList.size();rowInx++) {
+											%>
+												<%
+												Element analyzer = analyzerList.get(rowInx);
+												String id = analyzer.getAttributeValue("id");
+												String name = analyzer.getAttributeValue("name");
+												%>
+												<option value="<%=id %>"><%=name %></option>
+											<%
+											}
+											%>
+										</select>
+										&nbsp;
+											
 										<div class="form-group">
 											<button class="btn btn-sm">Analyze</button>
 										</div>
