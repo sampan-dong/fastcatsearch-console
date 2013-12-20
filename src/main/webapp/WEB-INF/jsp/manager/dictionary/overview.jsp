@@ -34,6 +34,7 @@ $(document).ready(function() {
 					<th>Applied Entry Size</th>
 					<th>Applied Time</th>
 					<th>Token Type</th>
+					<th>Ignore Case</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -64,6 +65,7 @@ $(document).ready(function() {
 					<td><%=dictionary.getInt("applyEntrySize") %></td>
 					<td><%=dictionary.getString("applyTime") %></td>
 					<td><%=dictionary.getString("tokenType") %></td>
+					<td><%=dictionary.optString("ignoreCase") %></td>
 				</tr>
 				<%
 				}

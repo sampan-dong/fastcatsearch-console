@@ -96,7 +96,7 @@ if(!isSuccess){
 		JSONObject object = result.getJSONObject(i);
 	%>
 		<tr>
-			<td>
+			<td class="analysis-tools-detail">
 				<label><%=i+1 %>. <%=object.getString("key") %></label>
 				<div class="col-md-12"><%=object.getString("value") %></div>
 			</td>
@@ -104,56 +104,6 @@ if(!isSuccess){
 	<%
 	}
 	%>
-		
-	<!-- 
-		<tr>
-			<td>
-				<label>1. 전처리(쿼리패턴): 가격비교 </label>
-				<div class="col-md-12">Sandisk Extream 원조교제 Z80 USB 16gb</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label>2. 불용어: 원조교제 </label>
-				<div class="col-md-12">Sandisk Extream Z80 USB 16gb</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label>3. 모델명 규칙 </label>
-				<div class="col-md-12">Z80 (z, 80, z80)</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label>4. 단위명 규칙 </label>
-				<div class="col-md-12">16gb (16gb, 16)</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label>5. 형태소 분리 결과</label>
-				<div class="col-md-12">Sandisk, Extream, 원조교제, Z, 80, Z80</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label>6. 동의어 확장: Sandisk, Extream, Z80, USB, 16gb</label>
-				<div class="col-md-12">
-					<strong>Sandisk</strong> : 샌디스크, 산디스크, sandisk, 센디스크, sendisk, 샌디스크코리아, 산디스크코리아
-					<br>
-					<strong>Extream</strong> : extream, xtreame, 익스트림
-					<br>
-					<strong>Z80</strong> : 
-					<br>
-					<strong>USB</strong> : 유에스비
-					<br>
-					<strong>16gb</strong> : 16g, 16기가
-					<br>
-				</div>
-			</td>
-		</tr>
-		 -->
 	</tbody>
 </table>
 <%
