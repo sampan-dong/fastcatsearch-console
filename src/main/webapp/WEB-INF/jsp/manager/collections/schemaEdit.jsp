@@ -52,9 +52,13 @@ $(document).ready(function(){
 	
 	var inputClearFunction = function() {
 		if($(this).attr("name")!="KEY_NAME") {
-			$(this).val("");
+			var type = $(this).attr("type").toLowerCase();
+			if( type=="radio" || type=="checkbox" ) {
+				$(this).removeAttr("checked");
+			} else {
+				$(this).val("");
+			}
 		}
-		$(this).removeAttr("checked");
 	};
 	
 	var addRowFunction = function(){
