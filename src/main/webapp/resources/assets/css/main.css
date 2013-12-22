@@ -1536,7 +1536,7 @@ span.red {
 /* * * * * * * * * * * *
  * Button Groups
  * * * * * * * * * * * */
-.btn-group > .btn:first-child,
+/* .btn-group > .btn:first-child,
 .btn-group > .btn:last-child {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
@@ -1549,11 +1549,11 @@ span.red {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-}
+} */
 /* * * * * * * * * * * *
  * Dropdown Toggles
  * * * * * * * * * * * */
-.btn-group > .btn + .dropdown-toggle {
+/* .btn-group > .btn + .dropdown-toggle {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -1566,7 +1566,7 @@ span.red {
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.13) inset;
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.13) inset;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.13) inset;
-}
+} */
 /* * * * * * * * * * * *
  * Icon Buttons
  * * * * * * * * * * * */

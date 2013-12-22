@@ -98,7 +98,9 @@ function runFullIndexing(collectionId) {
 function runAddIndexing(collectionId) {
 	runIndexing(collectionId, "add");
 }
-
+function runDocumentFullIndexing(collectionId) {
+	runIndexing(collectionId, "full/document-store");
+}
 function stopIndexing(collectionId) {
 	$.ajax({
 		url : PROXY_REQUEST_URI,

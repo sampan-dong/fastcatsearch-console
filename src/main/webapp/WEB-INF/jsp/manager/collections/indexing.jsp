@@ -135,6 +135,46 @@ function reloadIndexingSchdulePage(){
 													&nbsp;
 												<a href="javascript:stopIndexing('${collectionId}');" class="btn btn-sm btn-danger">
 													<span class="glyphicon glyphicon-stop"></span> Stop Indexing</a>
+														&nbsp;
+														
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								
+								<div class="widget "><!-- widget-closed -->
+									<div class="widget-header">
+										<h4>Advanced Index Management</h4>
+										<div class="toolbar no-padding">
+											<span class="widget-collapse"><a href="javascript:void(0);">Toggle</a></span>
+										</div>
+									</div>
+									<div class="widget-content">
+										<div class="row">
+											<div class=" col-md-12">
+												<a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
+													Run Document Full Indexing</a>
+													&nbsp;|&nbsp;
+												<a href="javascript:runRebuildIndex('${collectionId}');" class="">
+													Buld Index Full Indexing</a>
+													&nbsp;
+												<%-- <a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
+													<span class="glyphicon glyphicon-play"></span> Run Document Add Indexing</a>
+													&nbsp;
+												<a href="javascript:runRebuildIndex('${collectionId}');" class="">
+													<span class="glyphicon glyphicon-play"></span> Buld Index Add Indexing</a>
+													&nbsp; --%>
+											</div>
+										</div>
+										<br/>
+										<div class="row">
+											<div class=" col-md-12">
+												<a href="javascript:runRebuildIndex('${collectionId}');" class="">
+													Copy Index to Search Nodes..</a>
+												&nbsp;|&nbsp;
+												<a href="javascript:runRebuildIndex('${collectionId}');" class="">
+													Switch to Next Sequence Index</a>
 											</div>
 										</div>
 									</div>
