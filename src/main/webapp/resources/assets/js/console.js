@@ -101,6 +101,10 @@ function runAddIndexing(collectionId) {
 function runDocumentFullIndexing(collectionId) {
 	runIndexing(collectionId, "full/document-store");
 }
+
+function runIndexBuildFullIndexing(collectionId) {
+	runIndexing(collectionId, "full/index-build");
+}
 function stopIndexing(collectionId) {
 	$.ajax({
 		url : PROXY_REQUEST_URI,

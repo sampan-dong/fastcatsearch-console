@@ -156,7 +156,7 @@ function reloadIndexingSchdulePage(){
 												<a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
 													Run Document Full Indexing</a>
 													&nbsp;|&nbsp;
-												<a href="javascript:runRebuildIndex('${collectionId}');" class="">
+												<a href="javascript:runIndexBuildFullIndexing('${collectionId}');" class="">
 													Buld Index Full Indexing</a>
 													&nbsp;
 												<%-- <a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
