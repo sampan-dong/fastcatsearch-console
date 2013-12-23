@@ -232,6 +232,46 @@ public class CollectionsController extends AbstractController {
 		mav.addObject("targetId", targetId);
 		return mav;
 	}
+	
+	@RequestMapping("/{collectionId}/dataAnalyzed")
+	public ModelAndView dataAnalyzed(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId)
+			throws Exception {
+
+		int PAGE_SIZE = 10;
+		int start = 0;
+		int end = 0;
+
+		if (pageNo > 0) {
+			start = (pageNo - 1) * PAGE_SIZE;
+			end = start + PAGE_SIZE - 1;
+		}
+
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+
+		// String requestUrl = "/management/collections/index-data-status.json";
+		// JSONObject indexDataStatus = httpClient.httpGet(requestUrl)
+		// .addParameter("collectionId", collectionId)
+		// .requestJSON();
+		// logger.debug("indexDataStatus >> {}", indexDataStatus);
+
+		String requestUrl = "/management/collections/index-data-analyzed.json";
+		JSONObject indexData = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
+				.addParameter("end", String.valueOf(end)).requestJSON();
+		logger.debug("indexData >> {}", indexData);
+		JSONArray list = indexData.getJSONArray("indexData");
+		int realSize = list.length();
+
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/dataAnalyzed");
+		mav.addObject("collectionId", collectionId);
+		mav.addObject("start", start + 1);
+		mav.addObject("end", start + realSize);
+		mav.addObject("pageNo", pageNo);
+		mav.addObject("pageSize", PAGE_SIZE);
+		mav.addObject("indexDataResult", indexData);
+		mav.addObject("targetId", targetId);
+		return mav;
+	}
 
 	@RequestMapping("/{collectionId}/dataSearch")
 	public ModelAndView dataSearch(HttpSession session, @PathVariable String collectionId, @RequestParam(value = "se", required = false) String se,

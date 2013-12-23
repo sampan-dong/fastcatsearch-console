@@ -136,7 +136,7 @@ table {
   background-color: #ffffcc;
 }
 
-.table > thead > tr > td.active,
+/* .table > thead > tr > td.active,
 .table > tbody > tr > td.active,
 .table > tfoot > tr > td.active,
 .table > thead > tr > th.active,
@@ -149,7 +149,7 @@ table {
 .table > tbody > tr.active > th,
 .table > tfoot > tr.active > th {
   background-color: #ffffcc;
-}
+} */
 
 .table > thead > tr > td.success,
 .table > tbody > tr > td.success,

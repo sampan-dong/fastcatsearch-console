@@ -17,8 +17,9 @@ $(document).ready(function(){
 		if(targetId == "#tab_raw_data"){
 			loadDataRawTab("${collectionId}", 1, "#tab_raw_data");
 		}else if(targetId == "#tab_search_data"){
-			//loadDataSearchTab("${collectionId}", "${shardId}", 1, "#tab_search_data");
 			loadToTab('dataSearch.html', {collectionId: "${collectionId}", targetId: "#tab_search_data"}, "#tab_search_data");
+		}else if(targetId == "#tab_analyzed_data"){
+			loadToTab('dataAnalyzed.html', {collectionId: "${collectionId}", targetId: "#tab_analyzed_data"}, "#tab_analyzed_data");
 		}else {
 			var aObj = $(e.target);
 			if($(targetId).text() != ""){
@@ -69,12 +70,13 @@ $(document).ready(function(){
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul id="data_tab" class="nav nav-tabs">
 						<li class="active"><a href="#tab_raw_data" data-toggle="tab">Raw</a></li>
-						<!-- <li class=""><a href="#tab_analyzed_data" data-toggle="tab">Analyzed Raw</a></li> -->
+						<li class=""><a href="#tab_analyzed_data" data-toggle="tab">Analyzed Index</a></li>
 					</ul>
 					<div class="tab-content row">
 
 						<!--=== Overview ===-->
 						<div class="tab-pane active" id="tab_raw_data"></div>
+						<div class="tab-pane" id="tab_analyzed_data"></div>
 						<!-- //tab field -->
 					</div>
 					<!-- /.tab-content -->

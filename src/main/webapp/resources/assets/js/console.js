@@ -439,6 +439,11 @@ function loadDataRawTab(collectionId, pageNo, targetId){
 	loadToTab('dataRaw.html', {collectionId: collectionId, pageNo: pageNo, targetId: targetId}, targetId);
 }
 
+function loadDataAnalyzedTab(collectionId, pageNo, targetId){
+	console.log("loadDataAnalyzedTab", collectionId, pageNo, targetId);
+	loadToTab('dataAnalyzed.html', {collectionId: collectionId, pageNo: pageNo, targetId: targetId}, targetId);
+}
+
 function loadDataSearchTab(collectionId, pageNo, targetId){
 	console.log("loadDataRawTab", collectionId, pageNo, targetId);
 	loadToTab('dataRaw.html', {collectionId: collectionId, pageNo: pageNo, targetId: targetId}, targetId);
