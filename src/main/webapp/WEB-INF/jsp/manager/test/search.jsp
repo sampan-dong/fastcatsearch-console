@@ -197,6 +197,12 @@ $(document).ready(function(){
 										</div>
 									</div>
 									<div class="form-group">
+										<label for="query_se" class="col-sm-2 control-label">TIMEOUT</label>
+										<div class="col-sm-2">
+											<input type="text" class="form-control" name="timeout" placeholder="TIMEOUT" value="10">
+										</div>
+									</div>
+									<div class="form-group">
 										<div class="col-sm-offset-2 col-sm-10 form-inline">
 											<select id="requestUri1" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
