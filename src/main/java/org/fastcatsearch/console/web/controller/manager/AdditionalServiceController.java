@@ -3,7 +3,6 @@ package org.fastcatsearch.console.web.controller.manager;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
-import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,7 +60,6 @@ public class AdditionalServiceController extends AbstractController {
 			@RequestParam(defaultValue="0") int start, 
 			@RequestParam int length,
 			@RequestParam(defaultValue="") String search) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		ModelAndView mav = null;
 		
@@ -71,7 +69,7 @@ public class AdditionalServiceController extends AbstractController {
 			int pageSize=10;
 			
 			String requestUrl = "/management/keyword/"+keywordType+"/list.json";
-			JSONObject jsonObj = httpClient.httpPost(requestUrl)
+			JSONObject jsonObj = httpPost(session, requestUrl)
 						.addParameter("category", category)
 						.addParameter("start", String.valueOf(start))
 						.addParameter("length", String.valueOf(length))

@@ -8,8 +8,6 @@ import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.jdom2.Document;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/manager/collections")
 public class CollectionsController extends AbstractController {
 
-	private static Logger logger = LoggerFactory.getLogger(CollectionsController.class);
-
 	@RequestMapping("/index")
 	public ModelAndView index(HttpSession session) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/collection-info-list.json";
-		JSONObject collectionInfoList = httpClient.httpPost(requestUrl).requestJSON();
+		JSONObject collectionInfoList = httpPost(session, requestUrl).requestJSON();
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/index");
@@ -39,9 +34,8 @@ public class CollectionsController extends AbstractController {
 	
 	@RequestMapping("/{collectionId}/schema")
 	public ModelAndView schema(HttpSession session, @PathVariable String collectionId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/schema.xml";
-		Document document = httpClient.httpPost(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionId).requestXML();
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/schema");
@@ -53,9 +47,8 @@ public class CollectionsController extends AbstractController {
 
 	@RequestMapping("/{collectionId}/workSchema")
 	public ModelAndView workSchemaView(HttpSession session, @PathVariable String collectionId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/schema.xml";
-		Document document = httpClient.httpPost(requestUrl).addParameter("collectionId", collectionId).addParameter("type", "workSchema").requestXML();
+		Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionId).addParameter("type", "workSchema").requestXML();
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/schema");
@@ -67,9 +60,8 @@ public class CollectionsController extends AbstractController {
 
 	@RequestMapping("/{collectionId}/workSchemaEdit")
 	public ModelAndView workSchemaEdit(HttpSession session, @PathVariable String collectionId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/schema.xml";
-		Document document = httpClient.httpPost(requestUrl).addParameter("collectionId", collectionId).addParameter("type", "workSchema").addParameter("mode", "copyCurrentSchema")
+		Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionId).addParameter("type", "workSchema").addParameter("mode", "copyCurrentSchema")
 				.requestXML();
 
 		ModelAndView mav = new ModelAndView();
@@ -172,9 +164,8 @@ public class CollectionsController extends AbstractController {
 		String jsonSchemaString = root.toString();
 		logger.debug("jsonSchemaString > {}", jsonSchemaString);
 
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/schema/update.json";
-		JSONObject object = httpClient.httpPost(requestUrl).addParameter("collectionId", collectionId)
+		JSONObject object = httpPost(session, requestUrl).addParameter("collectionId", collectionId)
 				.addParameter("type", "workSchema") //work schema를 업데이트한다.
 				.addParameter("schemaObject", jsonSchemaString).requestJSON();
 
@@ -206,16 +197,8 @@ public class CollectionsController extends AbstractController {
 			end = start + PAGE_SIZE - 1;
 		}
 
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-
-		// String requestUrl = "/management/collections/index-data-status.json";
-		// JSONObject indexDataStatus = httpClient.httpGet(requestUrl)
-		// .addParameter("collectionId", collectionId)
-		// .requestJSON();
-		// logger.debug("indexDataStatus >> {}", indexDataStatus);
-
 		String requestUrl = "/management/collections/index-data.json";
-		JSONObject indexData = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
+		JSONObject indexData = httpGet(session, requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
 				.addParameter("end", String.valueOf(end)).requestJSON();
 		logger.debug("indexData >> {}", indexData);
 		JSONArray list = indexData.getJSONArray("indexData");
@@ -246,16 +229,8 @@ public class CollectionsController extends AbstractController {
 			end = start + PAGE_SIZE - 1;
 		}
 
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-
-		// String requestUrl = "/management/collections/index-data-status.json";
-		// JSONObject indexDataStatus = httpClient.httpGet(requestUrl)
-		// .addParameter("collectionId", collectionId)
-		// .requestJSON();
-		// logger.debug("indexDataStatus >> {}", indexDataStatus);
-
 		String requestUrl = "/management/collections/index-data-analyzed.json";
-		JSONObject indexData = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
+		JSONObject indexData = httpGet(session, requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
 				.addParameter("end", String.valueOf(end)).requestJSON();
 		logger.debug("indexData >> {}", indexData);
 		JSONArray list = indexData.getJSONArray("indexData");
@@ -281,14 +256,12 @@ public class CollectionsController extends AbstractController {
 		int PAGE_SIZE = 10;
 		int start = (pageNo - 1) * PAGE_SIZE + 1;
 
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-
 		String requestUrl = "/management/collections/index-data-status.json";
-		JSONObject indexDataStatus = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestJSON();
+		JSONObject indexDataStatus = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
 		logger.debug("indexDataStatus >> {}", indexDataStatus);
 
 		requestUrl = "/service/search.json";
-		JSONObject searchResult = httpClient.httpGet(requestUrl).addParameter("cn", collectionId).addParameter("fl", "Title")
+		JSONObject searchResult = httpGet(session, requestUrl).addParameter("cn", collectionId).addParameter("fl", "Title")
 				// FIXME
 				.addParameter("se", se).addParameter("ft", ft).addParameter("gr", gr).addParameter("sn", String.valueOf(start)).addParameter("ln", String.valueOf(PAGE_SIZE))
 				.requestJSON();
@@ -314,7 +287,7 @@ public class CollectionsController extends AbstractController {
 	public ModelAndView datasource(HttpSession session, @PathVariable String collectionId) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/datasource.xml";
-		Document document = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		Document document = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestXML();
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/datasource");
@@ -335,18 +308,17 @@ public class CollectionsController extends AbstractController {
 	@RequestMapping("/{collectionId}/indexing/status")
 	public ModelAndView indexingStatus(HttpSession session, @PathVariable String collectionId) throws Exception {
 
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/all-node-indexing-status.json";
 		JSONObject indexingStatus = null;
 		try {
-			indexingStatus = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestJSON();
+			indexingStatus = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
 		} catch (Exception e) {
 			logger.error("", e);
 		}
 		logger.debug("indexingStatus >> {}", indexingStatus);
 
 		requestUrl = "/management/collections/indexing-result.json";
-		JSONObject indexingResult = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestJSON();
+		JSONObject indexingResult = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
 		logger.debug("indexingResult >> {}", indexingResult);
 
 		ModelAndView mav = new ModelAndView();
@@ -359,9 +331,8 @@ public class CollectionsController extends AbstractController {
 
 	@RequestMapping("/{collectionId}/indexing/schedule")
 	public ModelAndView indexingSchedule(HttpSession session, @PathVariable String collectionId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/indexing-schedule.xml";
-		Document indexingSchedule = httpClient.httpGet(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		Document indexingSchedule = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestXML();
 		logger.debug("indexingSchedule >> {}", indexingSchedule);
 
 		ModelAndView mav = new ModelAndView();
@@ -383,9 +354,8 @@ public class CollectionsController extends AbstractController {
 			end = start + PAGE_SIZE - 1;
 		}
 
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/indexing-history.json";
-		JSONObject jsonObj = httpClient.httpPost(requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
+		JSONObject jsonObj = httpPost(session, requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
 				.addParameter("end", String.valueOf(end)).requestJSON();
 
 		ModelAndView mav = new ModelAndView();
@@ -400,9 +370,8 @@ public class CollectionsController extends AbstractController {
 
 	@RequestMapping("/{collectionId}/config")
 	public ModelAndView settings(HttpSession session, @PathVariable String collectionId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/collections/config.xml";
-		Document document = httpClient.httpPost(requestUrl).addParameter("collectionId", collectionId).requestXML();
+		Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionId).requestXML();
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/config");

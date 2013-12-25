@@ -1,5 +1,10 @@
 package org.fastcatsearch.console.web.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.fastcatsearch.console.web.http.ResponseHttpClient.GetMethod;
+import org.fastcatsearch.console.web.http.ResponseHttpClient.PostMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +14,8 @@ public class AbstractController {
 	
 	protected static Logger logger = LoggerFactory.getLogger(AbstractController.class);
 	
+	protected static final String HTTPCLIENT_ID = "httpclient";
+	protected static final String USERNAME_ID = "_username";
 	/*
 	 * exception페이지로 이동한다.
 	 * */
@@ -19,5 +26,15 @@ public class AbstractController {
 		model.addObject("exception", ex);
 		return model;
  
+	}
+	
+	protected PostMethod httpPost(HttpSession session, String uri) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute(HTTPCLIENT_ID);
+		return httpClient.httpPost(uri);
+	}
+	
+	protected GetMethod httpGet(HttpSession session, String uri) {
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute(HTTPCLIENT_ID);
+		return httpClient.httpGet(uri);
 	}
 }

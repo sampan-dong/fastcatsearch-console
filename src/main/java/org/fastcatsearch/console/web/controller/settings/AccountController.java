@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AccountController extends AbstractController {
-	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 	
 	@RequestMapping("/settings/index")
 	public ModelAndView index(HttpSession session) {
@@ -24,18 +23,17 @@ public class AccountController extends AbstractController {
 
 	@RequestMapping("/settings/user")
 	public ModelAndView user(HttpSession session) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/settings/user");
 		String requestUrl = null;
 		requestUrl = "/settings/authority/get-group-list.json";
 		JSONObject jsonObj = null;
-		jsonObj = httpClient.httpGet(requestUrl).requestJSON();
+		jsonObj = httpPost(session, requestUrl).requestJSON();
 		modelAndView.addObject("groupList",jsonObj);
 		
 		requestUrl = "/settings/authority/get-user-list.json";
 		try {
-			jsonObj = httpClient.httpGet(requestUrl).requestJSON();
+			jsonObj = httpPost(session, requestUrl).requestJSON();
 			modelAndView.addObject("userList",jsonObj);
 		} catch (Exception e) {
 			logger.error("",e);
@@ -52,12 +50,12 @@ public class AccountController extends AbstractController {
 		String requestUrl;
 		requestUrl = "/settings/authority/get-group-authority-list.json";
 		JSONObject jsonObj = null;
-		jsonObj = httpClient.httpGet(requestUrl)
+		jsonObj = httpPost(session, requestUrl)
 				.addParameter("mode", "all").requestJSON();
 		modelAndView.addObject("groupAuthorityList",jsonObj);
 		
 		requestUrl = "/settings/authority/get-group-authority-list.json";
-		jsonObj = httpClient.httpGet(requestUrl)
+		jsonObj = httpPost(session, requestUrl)
 				.addParameter("groupId", "-1").requestJSON();
 		modelAndView.addObject("authorityList",jsonObj);
 		

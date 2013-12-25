@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
-import org.jdom2.Document;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,8 +63,8 @@ public class MainController extends AbstractController {
 			}
 			
 			String userName = loginResult.getString("name");
-			session.setAttribute("_userName", userName);
-			session.setAttribute("httpclient", httpClient);
+			session.setAttribute(USERNAME_ID, userName);
+			session.setAttribute(HTTPCLIENT_ID, httpClient);
 			return mav;
 		}
 
@@ -142,14 +141,11 @@ public class MainController extends AbstractController {
 			uri = uri.substring(0, parameterStart);
 		}
 		
-		ResponseHttpClient httpClient = (ResponseHttpClient) request.getSession().getAttribute("httpclient");
-
-		
 		AbstractMethod abstractMethod = null;
 		if (request.getMethod().equalsIgnoreCase("GET")) {
-			abstractMethod = httpClient.httpGet(uri);
+			abstractMethod = httpGet(request.getSession(), uri);
 		}else if (request.getMethod().equalsIgnoreCase("POST")) {
-			abstractMethod = httpClient.httpPost(uri);
+			abstractMethod = httpPost(request.getSession(), uri);
 		}else{
 			//error
 			logger.error("Unknown http method >> {}", request.getMethod());
