@@ -8,8 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MainController extends AbstractController {
-	private static Logger logger = LoggerFactory.getLogger(MainController.class);
 
 	@RequestMapping("/index")
 	public ModelAndView index(HttpSession session) throws Exception {
