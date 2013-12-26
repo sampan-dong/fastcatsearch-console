@@ -3,7 +3,6 @@ package org.fastcatsearch.console.web.controller.manager;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
-import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -35,9 +34,8 @@ public class LogsController extends AbstractController {
 			end = start + PAGE_SIZE - 1;
 		}
 		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/logs/notification-history-list.json";
-		JSONObject notificationData = httpClient.httpGet(requestUrl)
+		JSONObject notificationData = httpGet(session, requestUrl)
 					.addParameter("start", String.valueOf(start))
 					.addParameter("end", String.valueOf(end))
 					.requestJSON();
@@ -77,9 +75,8 @@ public class LogsController extends AbstractController {
 			end = start + PAGE_SIZE - 1;
 		}
 		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/logs/exception-history-list.json";
-		JSONObject exceptionData = httpClient.httpGet(requestUrl)
+		JSONObject exceptionData = httpGet(session, requestUrl)
 					.addParameter("start", String.valueOf(start))
 					.addParameter("end", String.valueOf(end))
 					.requestJSON();

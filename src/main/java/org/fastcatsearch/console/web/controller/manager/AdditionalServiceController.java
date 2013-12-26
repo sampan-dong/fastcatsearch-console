@@ -76,7 +76,7 @@ public class AdditionalServiceController extends AbstractController {
 			}
 			
 			String requestUrl = "/management/keyword/"+keywordType+"/list.json";
-			JSONObject jsonObj = httpClient.httpPost(requestUrl)
+			JSONObject jsonObj = httpPost(session, requestUrl)
 						.addParameter("category", category)
 						.addParameter("start", String.valueOf(start))
 						.addParameter("length", String.valueOf(pageSize))

@@ -4,13 +4,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.http.client.ClientProtocolException;
 import org.fastcatsearch.console.web.controller.AbstractController;
-import org.fastcatsearch.console.web.http.Http404Error;
-import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/manager/analysis")
 public class AnalysisController extends AbstractController {
-	private static Logger logger = LoggerFactory.getLogger(AnalysisController.class);
 
 	private static JSONObject AnalyzeToolsDetailNotImplementedResult;
 	
@@ -32,9 +27,8 @@ public class AnalysisController extends AbstractController {
 	
 	@RequestMapping("/plugin")
 	public ModelAndView plugin(HttpSession session) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String getAnalysisPluginListURL = "/management/analysis/plugin-list";
-		JSONObject jsonObj = httpClient.httpPost(getAnalysisPluginListURL).requestJSON();
+		JSONObject jsonObj = httpPost(session, getAnalysisPluginListURL).requestJSON();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/plugin");
 		mav.addObject("analysisPluginOverview", jsonObj.getJSONArray("pluginList"));
@@ -44,9 +38,8 @@ public class AnalysisController extends AbstractController {
 	@RequestMapping("/{analysisId}/index")
 	public ModelAndView view(HttpSession session, @PathVariable String analysisId) throws Exception {
 		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String getAnalysisPluginSettingURL = "/management/analysis/plugin-setting.xml";
-		Document document = httpClient.httpPost(getAnalysisPluginSettingURL).addParameter("pluginId", analysisId).requestXML();
+		Document document = httpPost(session, getAnalysisPluginSettingURL).addParameter("pluginId", analysisId).requestXML();
 		Element rootElement = document.getRootElement();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/index");
@@ -61,8 +54,6 @@ public class AnalysisController extends AbstractController {
 	@RequestMapping("/{analysisId}/analyzeTools")
 	public ModelAndView analyzeTools(HttpSession session, @PathVariable String analysisId, @RequestParam String type, @RequestParam String analyzerId, @RequestParam String queryWords) throws Exception {
 		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
 		String getAnalysisToolsURL = null;
 		
 		JSONObject jsonObj = null;
@@ -70,14 +61,14 @@ public class AnalysisController extends AbstractController {
 		if("detail".equalsIgnoreCase(type)){
 			getAnalysisToolsURL = "/_plugin/"+analysisId+"/analysis-tools-detail.json";
 			try{
-				jsonObj = httpClient.httpPost(getAnalysisToolsURL).addParameter("analyzerId", analyzerId).addParameter("queryWords", queryWords).requestJSON();
+				jsonObj = httpPost(session, getAnalysisToolsURL).addParameter("analyzerId", analyzerId).addParameter("queryWords", queryWords).requestJSON();
 			}catch(ClientProtocolException e){
 				jsonObj = AnalyzeToolsDetailNotImplementedResult;
 				jsonObj.put("query", queryWords);
 			}
 		}else{
 			getAnalysisToolsURL = "/management/analysis/analysis-tools.json";
-			jsonObj = httpClient.httpPost(getAnalysisToolsURL)
+			jsonObj = httpPost(session, getAnalysisToolsURL)
 					.addParameter("pluginId", analysisId)
 					.addParameter("analyzerId", analyzerId)
 					.addParameter("queryWords", queryWords).requestJSON();

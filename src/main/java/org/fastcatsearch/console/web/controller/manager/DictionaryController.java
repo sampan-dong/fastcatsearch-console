@@ -11,12 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
-import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,13 +25,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/manager/dictionary/{analysisId}")
 public class DictionaryController extends AbstractController {
-	private static Logger logger = LoggerFactory.getLogger(DictionaryController.class);
 	
 	@RequestMapping("/index")
 	public ModelAndView index(HttpSession session, @PathVariable String analysisId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/dictionary/overview.json";
-		JSONObject jsonObj = httpClient.httpPost(requestUrl)
+		JSONObject jsonObj = httpPost(session, requestUrl)
 					.addParameter("pluginId", analysisId)
 					.requestJSON();
 		
@@ -47,9 +42,8 @@ public class DictionaryController extends AbstractController {
 	
 	@RequestMapping("/overview")
 	public ModelAndView overview(HttpSession session, @PathVariable String analysisId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/dictionary/overview.json";
-		JSONObject jsonObj = httpClient.httpPost(requestUrl)
+		JSONObject jsonObj = httpPost(session, requestUrl)
 					.addParameter("pluginId", analysisId)
 					.requestJSON();
 		
@@ -63,11 +57,10 @@ public class DictionaryController extends AbstractController {
 	@RequestMapping({"/system/list", "SYSTEM/list"})
 	public ModelAndView listSystemDictionary(HttpSession session, @PathVariable String analysisId,
 			@RequestParam String keyword, @RequestParam String targetId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		String requestUrl = "/management/dictionary/system.json";
 		
-		JSONObject jsonObj = httpClient.httpPost(requestUrl)
+		JSONObject jsonObj = httpPost(session, requestUrl)
 				.addParameter("pluginId", analysisId)
 				.addParameter("search", keyword)
 				.requestJSON();
@@ -92,14 +85,13 @@ public class DictionaryController extends AbstractController {
 			, @RequestParam(required = false) Boolean exactMatch
 			, @RequestParam(required = false) Boolean isEditable
 			, @RequestParam String targetId, @RequestParam(required = false) String deleteIdList) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		JSONObject jsonObj = null;
 		Integer deletedSize = 0; 
 		logger.debug("deleteIdList >> {}", deleteIdList);
 		if(deleteIdList != null && deleteIdList.length() > 0){
 			String requestUrl = "/management/dictionary/delete.json";
-			jsonObj = httpClient.httpPost(requestUrl)
+			jsonObj = httpPost(session, requestUrl)
 					.addParameter("pluginId", analysisId)
 					.addParameter("dictionaryId", dictionaryId)
 					.addParameter("deleteIdList", deleteIdList)
@@ -138,7 +130,7 @@ public class DictionaryController extends AbstractController {
 		if(searchColumn.equals("_ALL")){
 			searchColumn = null;
 		}
-		jsonObj = httpClient.httpPost(requestUrl)
+		jsonObj = httpPost(session, requestUrl)
 				.addParameter("pluginId", analysisId)
 				.addParameter("dictionaryId", dictionaryId)
 				.addParameter("start", String.valueOf(start))
@@ -176,7 +168,6 @@ public class DictionaryController extends AbstractController {
 	@RequestMapping("/{dictionaryType}/download")
 	public void downloadDictionary(HttpSession session, HttpServletResponse response, @PathVariable String analysisId, @PathVariable String dictionaryType
 			, @RequestParam String dictionaryId, @RequestParam(required = false) Boolean forView) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		JSONObject jsonObj = null;
 		
@@ -204,7 +195,7 @@ public class DictionaryController extends AbstractController {
 				}
 				
 				try {
-					jsonObj = httpClient.httpPost(requestUrl)
+					jsonObj = httpPost(session, requestUrl)
 							.addParameter("pluginId", analysisId)
 							.addParameter("dictionaryId", dictionaryId)
 							.addParameter("start", String.valueOf(start))
@@ -289,10 +280,7 @@ public class DictionaryController extends AbstractController {
 					errorMessage = "File must be plain text.";
 				}else{
 			
-					ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-					
 					String requestUrl = "/management/dictionary/bulkPut.json";
-				
 					
 					int bulkSize = 100;
 					
@@ -316,7 +304,7 @@ public class DictionaryController extends AbstractController {
 						
 						if(count > 0){
 							try {
-								JSONObject jsonObj = httpClient.httpPost(requestUrl)
+								JSONObject jsonObj = httpPost(session, requestUrl)
 										.addParameter("pluginId", analysisId)
 										.addParameter("dictionaryId", dictionaryId)
 										.addParameter("entryList", list.toString())

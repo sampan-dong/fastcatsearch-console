@@ -3,10 +3,7 @@ package org.fastcatsearch.console.web.controller.manager;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
-import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,19 +11,17 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/manager/servers")
 public class ServersController extends AbstractController {
-	private static Logger logger = LoggerFactory.getLogger(ServersController.class);
 	
 	@RequestMapping("/overview")
 	public ModelAndView overview(HttpSession session) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/servers/list.json";
-		JSONObject serverList = httpClient.httpPost(requestUrl).requestJSON();
+		JSONObject serverList = httpPost(session, requestUrl).requestJSON();
 		
 		requestUrl = "/management/servers/systemInfo.json";
-		JSONObject systemInfo = httpClient.httpPost(requestUrl).requestJSON();
+		JSONObject systemInfo = httpPost(session, requestUrl).requestJSON();
 		
 		requestUrl = "/management/servers/systemHealth.json";
-		JSONObject systemHealth = httpClient.httpPost(requestUrl).requestJSON();
+		JSONObject systemHealth = httpPost(session, requestUrl).requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/servers/overview");
@@ -38,9 +33,8 @@ public class ServersController extends AbstractController {
 	
 	@RequestMapping("/settings")
 	public ModelAndView settings(HttpSession session) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		String requestUrl = "/management/servers/list.json";
-		JSONObject jsonObj = httpClient.httpPost(requestUrl).requestJSON();
+		JSONObject jsonObj = httpPost(session, requestUrl).requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/servers/settings");
@@ -54,7 +48,7 @@ public class ServersController extends AbstractController {
 //		String requestUrl = "/management/servers/list.json";
 //		JSONObject jsonObj = null;
 //		try {
-//			jsonObj = httpClient.httpPost(requestUrl).requestJSON();
+//			jsonObj = httpPost(session, requestUrl).requestJSON();
 //		} catch (Exception e) {
 //			logger.error("", e);
 //		}

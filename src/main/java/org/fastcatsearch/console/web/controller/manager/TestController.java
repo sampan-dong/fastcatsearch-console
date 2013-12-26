@@ -3,7 +3,6 @@ package org.fastcatsearch.console.web.controller.manager;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
-import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.PostMethod;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -25,10 +24,8 @@ public class TestController extends AbstractController {
 	@RequestMapping("searchResult")
 	public ModelAndView searchResult(HttpSession session, @RequestParam String requestUri, @RequestParam String queryString) throws Exception {
 		
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		
 		JSONObject jsonObj = null;
-		PostMethod postMethod = (PostMethod) httpClient.httpPost(requestUri).addParameterString(queryString);
+		PostMethod postMethod = (PostMethod) httpPost(session, requestUri).addParameterString(queryString);
 		jsonObj = postMethod.requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
