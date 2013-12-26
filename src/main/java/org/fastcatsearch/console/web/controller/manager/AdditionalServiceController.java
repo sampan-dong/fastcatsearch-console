@@ -55,36 +55,47 @@ public class AdditionalServiceController extends AbstractController {
 	}
 	
 	@RequestMapping("/{keywordType}/keywordList")
-	public ModelAndView index(HttpSession session, 
-			@PathVariable String keywordType, 
-			@RequestParam String category, 
-			@RequestParam(defaultValue="0") int start, 
-			@RequestParam int length,
-			@RequestParam(defaultValue="") String search) throws Exception {
+	public ModelAndView index(HttpSession session
+			, @PathVariable String keywordType
+			, @RequestParam String category
+			, @RequestParam(required = false) Boolean isEditable
+			, @RequestParam int pageNo
+			, @RequestParam(defaultValue="") String search) throws Exception {
 		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
 		
 		ModelAndView mav = null;
 		
 		if("relate".equals(keywordType)) {
 		
-			int pageNo=1;
 			int pageSize=10;
+			
+			int start = 0;
+			
+			if(pageNo > 0) {
+				start = (pageNo - 1) * pageSize + 1;
+			}
 			
 			String requestUrl = "/management/keyword/"+keywordType+"/list.json";
 			JSONObject jsonObj = httpClient.httpPost(requestUrl)
 						.addParameter("category", category)
 						.addParameter("start", String.valueOf(start))
-						.addParameter("length", String.valueOf(length))
+						.addParameter("length", String.valueOf(pageSize))
 						.addParameter("search", search)
 						.requestJSON();
 			
 			mav = new ModelAndView();
-			mav.setViewName("manager/additional/relateKeywordList");
+			
+			if(isEditable != null && isEditable.booleanValue()){
+				mav.setViewName("manager/additional/relateKeywordEdit");
+			} else {
+				mav.setViewName("manager/additional/relateKeywordList");
+			}
+			mav.addObject("keywordType", keywordType);
 			mav.addObject("category", category);
 			mav.addObject("list", jsonObj);
-			mav.addObject("start",start);
+			mav.addObject("start", start);
 			mav.addObject("pageNo", pageNo);
-			mav.addObject("pageSize",pageSize);
+			mav.addObject("pageSize", pageSize);
 		}
 		return mav;
 	}

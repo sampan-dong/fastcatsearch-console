@@ -30,8 +30,16 @@ $(document).ready(function(){
 		}
 	});
 	
-	loadToTab("relate/keywordList.html", {category:"total",start:"0",length:"10",search:""}, "#tab_keyword_overview");
+	loadKeywordTab("relate","total","",1);
+	
 });
+
+function loadKeywordTab(keywordType,category, isEditable, pageNo) {
+	loadToTab(keywordType+"/keywordList.html", {
+		 category:category
+		,isEditable:isEditable
+		,pageNo:pageNo}, "#tab_keyword_overview");
+}
 
 </script>
 </head>

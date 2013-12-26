@@ -4,6 +4,7 @@
 
 <%@page import="org.json.*"%>
 <%
+	String keywordType = (String) request.getAttribute("keywordType");
 	String category = (String) request.getAttribute("category");
 	JSONObject list = (JSONObject) request.getAttribute("list");
 	int totalSize = list.getInt("totalSize");
@@ -43,6 +44,14 @@ $(document).ready(function(){
 	});
 });
 
+function go<%=keywordType%>KeywrdPage(pageNo){
+	loadKeywordTab('<%=keywordType%>','<%=category%>', false, pageNo);
+}
+
+function go<%=keywordType%>EditablePage(pageNo){
+	loadKeywordTab('<%=keywordType%>','<%=category%>', true, pageNo);
+}
+
 </script>
 
 <div class="col-md-12">
@@ -69,10 +78,10 @@ $(document).ready(function(){
 				<div class="pull-right">
 					&nbsp;
 					<div class="btn-group">
-						<a href="javascript:goDictionaryPage('', '${pageNo}');" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
+						<a href="javascript:go<%=keywordType %>KeywordPage('${pageNo}');" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
 					</div>
 					&nbsp;
-					<a href="javascript:goEditablePage('${pageNo}');"  class="btn btn-default btn-sm">
+					<a href="javascript:go<%=keywordType %>EditablePage('${pageNo}');"  class="btn btn-default btn-sm">
 						<span class="glyphicon glyphicon-edit"></span> Edit
 					</a>
 				</div>
