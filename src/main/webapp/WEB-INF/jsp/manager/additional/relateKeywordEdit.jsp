@@ -174,6 +174,7 @@ function <%=keywordType%>ValueInsert(){
 }
 
 function <%=keywordType%>WordUpdate(id){
+	console.log("wordupdate : "+id);
 	
 	var trObj = $("#_${keywordType}-"+id);
 	//console.log("update", id, trObj);
@@ -270,7 +271,7 @@ function <%=keywordType%>deleteSelectWord(){
 				
 			<div class="col-md-6">
 				<div class="pull-right">
-					<a href="javascript:Truncate();"  class="btn btn-danger btn-sm">
+					<a href="javascript:<%=keywordType %>Truncate();"  class="btn btn-danger btn-sm">
 						<span class="glyphicon glyphicon-ban-circle"></span> Clean
 					</a>
 					&nbsp;
@@ -309,17 +310,17 @@ function <%=keywordType%>deleteSelectWord(){
 				for(int i=0; i < entryList.length(); i++){
 					JSONObject obj = entryList.getJSONObject(i);
 				%>
-					<tr id="">
+					<tr id="_<%=keywordType %>-<%=obj.getInt("ID") %>">
 						<td class="checkbox-column">
 							<input type="checkbox" class="edit"/>
-							<input type="hidden" name="ID" value=""/>
+							<input type="hidden" name="ID" value="<%=obj.getInt("ID") %>"/>
 						</td>
 						<td class="col-md-2">
-							<input type="text" name="KEYWORD" value="<%=obj.getString("keyword") %>" class="form-control"/>
+							<input type="text" name="KEYWORD" value="<%=obj.getString("KEYWORD") %>" class="form-control"/>
 						</td>
-						<td><input type="text" name="VALUE" value="<%=obj.getString("value") %>" class="form-control"/></td>
-						<td class="col-md-2"><a href="javascript:WordUpdate();" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
-						<a href="javascript:deleteOneWord();" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
+						<td><input type="text" name="VALUE" value="<%=obj.getString("VALUE") %>" class="form-control"/></td>
+						<td class="col-md-2"><a href="javascript:<%=keywordType %>WordUpdate(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-saved"></i></a>
+						<a href="javascript:<%=keywordType %>deleteOneWord(<%=obj.getInt("ID") %>);" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a></td>
 					</tr>
 					
 				<%
