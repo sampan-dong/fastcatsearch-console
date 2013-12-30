@@ -47,37 +47,46 @@
 					</div>
 					
 					<div class="widget-content">
-						<div><a href="javascript:void(0);" data-toggle="modal" data-target="#newServerInfoModal" >
+						<div class="bottom-space-sm"><a href="javascript:void(0);" data-toggle="modal" data-target="#newServerInfoModal" >
 						<span class="icon-plus-sign"></span> Add Category</a></div>
-						<table class="table table-hover table-bordered">
+						<table class="table table-hover table-bordered table-vertical-align-middle">
 							<thead>
 								<tr>
 									<th>#</th>
 									<th>Category ID</th>
 									<th>Name</th>
-									<th>RealTime PopularKeyword</th>
-									<th>PopularKeyword</th>
-									<th>RelateKeyword</th>
+									<th>Make Realtime Popular Keyword</th>
+									<th>Make Popular Keyword</th>
+									<th>Make Relate Keyword</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td>1</td>
-									<td>total</td>
-									<td>통합검색</td>
-									<td><label>Y</label></td>
-									<td><label>Y</label></td>
-									<td><label>Y</label></td>
-									<td><a data-toggle="modal" data-target="#categoryEditModal_" href="javascript:void(0);">Edit</a></td>
+									<td>ROOT</td>
+									<td>ROOT</td>
+									<td><label>Yes</label></td>
+									<td><label>Yes</label></td>
+									<td><label>Yes</label></td>
+									<td></td>
 								</tr>
 								<tr>
 									<td>2</td>
+									<td>total</td>
+									<td>통합검색</td>
+									<td><label>Yes</label></td>
+									<td><label>Yes</label></td>
+									<td><label>Yes</label></td>
+									<td><a data-toggle="modal" data-target="#categoryEditModal_" href="javascript:void(0);">Edit</a></td>
+								</tr>
+								<tr>
+									<td>3</td>
 									<td>mobile</td>
 									<td>모바일 검색</td>
-									<td><label>Y</label></td>
-									<td><label>Y</label></td>
-									<td><label>Y</label></td>
+									<td><label>Yes</label></td>
+									<td><label>Yes</label></td>
+									<td><label>Yes</label></td>
 									<td><a data-toggle="modal" data-target="#categoryEditModal_" href="javascript:void(0);">Edit</a></td>
 								</tr>
 							<%-- <%
@@ -128,14 +137,29 @@
 				
 				<div class="widget">
 					<div class="widget-header">
-						<h4>RealTime Popular Keyword</h4>
+						<h4>Realtime Popular Keyword</h4>
 					</div>
 					<div class="widget-content">
 						<div class="row">
 							<div class="col-md-12 form-horizontal">
 								<div class="form-group">
 									<label class="col-md-2 control-label">Minimum Hit Count:</label>
-									<div class="col-md-2"><input type="text" name="" class="form-control digits required" value="5"></div>
+									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="5">
+									<p class="help-block">If keyword hit count is smaller than this, it's ignored.</p>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label">Recent Log Using Size:</label>
+									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="6">
+									<p class="help-block">When aggregating keyword count with previos logs, this value set how many previous logs envolved.</p>
+									</div>
+									
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label">TopN Store Size:</label>
+									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="10">
+									<p class="help-block">How many top keywords provides to show.</p>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -151,7 +175,15 @@
 							<div class="col-md-12 form-horizontal">
 								<div class="form-group">
 									<label class="col-md-2 control-label">Minimum Hit Count:</label>
-									<div class="col-md-2"><input type="text" name="" class="form-control digits required" value="5"></div>
+									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="5">
+									<p class="help-block">If keyword hit count is smaller than this, it's ignored.</p>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label">TopN Store Size:</label>
+									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="10">
+									<p class="help-block">How many top keywords provides to show.</p>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -168,7 +200,9 @@
 							<div class="col-md-12 form-horizontal">
 								<div class="form-group">
 									<label class="col-md-2 control-label">Minimum Hit Count:</label>
-									<div class="col-md-2"><input type="text" name="" class="form-control digits required" value="3"></div>
+									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="3">
+									<p class="help-block">If keyword hit count is smaller than this, it's ignored.</p>
+									</div>
 								</div>
 							</div>
 						</div>

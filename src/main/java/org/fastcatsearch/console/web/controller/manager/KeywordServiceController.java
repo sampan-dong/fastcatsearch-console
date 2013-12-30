@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/manager/additional")
-public class AdditionalServiceController extends AbstractController {
+@RequestMapping("/manager/keyword-service")
+public class KeywordServiceController extends AbstractController {
 	
 	@RequestMapping("settings")
 	public ModelAndView search(HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/additional/settings");
+		mav.setViewName("manager/keyword/settings");
 		return mav;
 	}
 	
@@ -26,7 +26,7 @@ public class AdditionalServiceController extends AbstractController {
 	@RequestMapping("popularKeyword")
 	public ModelAndView popularKeyword(HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/additional/popularKeyword");
+		mav.setViewName("manager/keyword/popularKeyword");
 		return mav;
 	}
 	
@@ -34,7 +34,7 @@ public class AdditionalServiceController extends AbstractController {
 	@RequestMapping("relateKeyword")
 	public ModelAndView relateKeyword(HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/additional/relateKeyword");
+		mav.setViewName("manager/keyword/relateKeyword");
 		return mav;
 	}
 	
@@ -42,7 +42,7 @@ public class AdditionalServiceController extends AbstractController {
 	@RequestMapping("keywordSuggestions")
 	public ModelAndView keywordSuggestions(HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/additional/keywordSuggestions");
+		mav.setViewName("manager/keyword/keywordSuggestions");
 		return mav;
 	}
 	
@@ -50,7 +50,7 @@ public class AdditionalServiceController extends AbstractController {
 	@RequestMapping("adKeyword")
 	public ModelAndView adKeyword(HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("manager/additional/adKeyword");
+		mav.setViewName("manager/keyword/adKeyword");
 		return mav;
 	}
 	
@@ -86,9 +86,9 @@ public class AdditionalServiceController extends AbstractController {
 			mav = new ModelAndView();
 			
 			if(isEditable != null && isEditable.booleanValue()){
-				mav.setViewName("manager/additional/relateKeywordEdit");
+				mav.setViewName("manager/keyword/relateKeywordEdit");
 			} else {
-				mav.setViewName("manager/additional/relateKeywordList");
+				mav.setViewName("manager/keyword/relateKeywordList");
 			}
 			mav.addObject("keywordType", keywordType);
 			mav.addObject("category", category);

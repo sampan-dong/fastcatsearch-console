@@ -182,25 +182,28 @@
 				</ul></li>
 				
 			<%
-				lcatCurrent = "additional".equals(lcat);
+				lcatCurrent = "keyword".equals(lcat);
 			%>	
 			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-folder-open-alt"></i>
-				Additional Service
+				Keyword Service
 			</a>
 				<ul class="sub-menu">
-					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/settings.html"/>">
+					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/settings.html"/>">
 							<i class="icon-cogs"></i> Settings <span class="arrow"></span>
 					</a></li>
-					<li class="<%=(lcatCurrent && "popular".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/popularKeyword.html"/>">
+					<li class="<%=(lcatCurrent && "realTimePopular".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/realTimePopularKeyword.html"/>">
+							<i class="icon-angle-right"></i> Realtime Popular Keyword <span class="arrow"></span>
+					</a></li>
+					<li class="<%=(lcatCurrent && "popular".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/popularKeyword.html"/>">
 							<i class="icon-angle-right"></i> Popular Keyword <span class="arrow"></span>
 					</a></li>
-					<li class="<%=(lcatCurrent && "relate".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/relateKeyword.html"/>">
+					<li class="<%=(lcatCurrent && "relate".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/relateKeyword.html"/>">
 							<i class="icon-angle-right"></i> Relate Keyword <span class="arrow"></span>
 					</a></li>
-					<li class="<%=(lcatCurrent && "keyword-suggestions".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/keywordSuggestions.html"/>">
+					<li class="<%=(lcatCurrent && "keyword-suggestions".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/keywordSuggestions.html"/>">
 							<i class="icon-angle-right"></i> Keyword Suggestions <span class="arrow"></span>
 					</a></li>
-					<li class="<%=(lcatCurrent && "ad-keyword".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/additional/adKeyword.html"/>">
+					<li class="<%=(lcatCurrent && "ad-keyword".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/adKeyword.html"/>">
 							<i class="icon-angle-right"></i> AD Keyword <span class="arrow"></span>
 					</a></li>
 				</ul></li>

@@ -138,3 +138,7 @@ input.has-error { border-color: #dd4b39  !important; }
 td input[type=checkbox].edit { margin-top: 8px;}
 
 td.analysis-tools-detail div {line-height: 200%;}
+
+table.table-vertical-align-middle tbody tr td { vertical-align:middle; }
+
+.bottom-space-sm {margin-bottom: 7px;}
