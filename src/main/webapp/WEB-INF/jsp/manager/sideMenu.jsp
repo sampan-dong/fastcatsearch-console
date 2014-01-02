@@ -165,55 +165,6 @@
 							<i class="icon-angle-right"></i> SYSTEM DB <span class="arrow"></span>
 					</a></li>
 				</ul></li>
-				
-			<%
-				lcatCurrent = "statistics".equals(lcat);
-			%>	
-			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-signal"></i>
-				Statistics
-			</a>
-				<ul class="sub-menu">
-					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/settings.html"/>">
-							<i class="icon-cogs"></i> Settings <span class="arrow"></span>
-					</a></li>
-					<li class="<%=(lcatCurrent && "keyword-rank".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/keywordRank.html"/>">
-							<i class="icon-bar-chart"></i> Keyword Rank <span class="arrow"></span>
-					</a></li>
-					<li class="<%=(lcatCurrent && "relate-keyword".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/relateKeyword.html"/>">
-							<i class="icon-bar-chart"></i> Relate Keyword <span class="arrow"></span>
-					</a></li>
-					
-					<%-- <li class="<%=(lcatCurrent && "search-progress".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/searchProgress.html"/>">
-							<i class="icon-bar-chart"></i> Search Progress <span class="arrow"></span>
-					</a></li> --%>
-				</ul></li>
-				
-			<%
-				lcatCurrent = "keyword".equals(lcat);
-			%>	
-			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-folder-open-alt"></i>
-				Keyword Service
-			</a>
-				<ul class="sub-menu">
-					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/settings.html"/>">
-							<i class="icon-cogs"></i> Settings <span class="arrow"></span>
-					</a></li>
-					<li class="<%=(lcatCurrent && "realTimePopular".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/realTimePopularKeyword.html"/>">
-							<i class="icon-angle-right"></i> Realtime Popular Keyword <span class="arrow"></span>
-					</a></li>
-					<li class="<%=(lcatCurrent && "popular".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/popularKeyword.html"/>">
-							<i class="icon-angle-right"></i> Popular Keyword <span class="arrow"></span>
-					</a></li>
-					<li class="<%=(lcatCurrent && "relate".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/relateKeyword.html"/>">
-							<i class="icon-angle-right"></i> Relate Keyword <span class="arrow"></span>
-					</a></li>
-					<%-- <li class="<%=(lcatCurrent && "keyword-suggestions".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/keywordSuggestions.html"/>">
-							<i class="icon-angle-right"></i> Keyword Suggestions <span class="arrow"></span>
-					</a></li>
-					<li class="<%=(lcatCurrent && "ad-keyword".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/adKeyword.html"/>">
-							<i class="icon-angle-right"></i> AD Keyword <span class="arrow"></span>
-					</a></li> --%>
-				</ul></li>
 		</ul>
 	
 		<!-- /Navigation -->
