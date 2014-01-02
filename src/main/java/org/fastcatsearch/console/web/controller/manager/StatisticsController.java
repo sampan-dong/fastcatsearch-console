@@ -18,6 +18,20 @@ public class StatisticsController extends AbstractController {
 		return mav;
 	}
 	
+	@RequestMapping("keywordRank")
+	public ModelAndView keywordRank(HttpSession session) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/statistics/keywordRank");
+		return mav;
+	}
+	
+	@RequestMapping("relateKeyword")
+	public ModelAndView relateKeyword(HttpSession session) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/statistics/relateKeyword");
+		return mav;
+	}
+	
 	@RequestMapping("searchProgress")
 	public ModelAndView searchProgress(HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();

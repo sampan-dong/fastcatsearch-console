@@ -127,8 +127,12 @@
 						<div class="row">
 							<div class="col-md-12 form-horizontal">
 								<div class="form-group">
-									<label class="col-md-2 control-label">Stopwords:</label>
+									<label class="col-md-2 control-label">Banwords:</label>
 									<div class="col-md-10"><textarea placeholder="word#1, word#2, ..." style="width:100%"></textarea></div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label">File Encoding:</label>
+									<div class="col-md-10"><input class="form-control fcol2" name="fileEncoding" value="utf-8"/></div>
 								</div>
 							</div>
 						</div>
@@ -157,8 +161,8 @@
 								</div>
 								<div class="form-group">
 									<label class="col-md-2 control-label">TopN Store Size:</label>
-									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="10">
-									<p class="help-block">How many top keywords provides to show.</p>
+									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="1000">
+									<p class="help-block">How many top keywords to store.</p>
 									</div>
 								</div>
 							</div>
@@ -181,8 +185,8 @@
 								</div>
 								<div class="form-group">
 									<label class="col-md-2 control-label">TopN Store Size:</label>
-									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="10">
-									<p class="help-block">How many top keywords provides to show.</p>
+									<div class="col-md-10"><input type="text" name="" class="form-control digits required fcol1-1" value="1000">
+									<p class="help-block">How many top keywords to store.</p>
 									</div>
 								</div>
 							</div>

@@ -47,17 +47,17 @@ function loadKeywordTab(keywordType,category, isEditable, pageNo) {
 	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 	<div id="container">
 		<c:import url="${ROOT_PATH}/manager/sideMenu.jsp">
-			<c:param name="lcat" value="keyword" />
-			<c:param name="mcat" value="${keywordType}" />
+			<c:param name="lcat" value="statistics" />
+			<c:param name="mcat" value="relate-keyword" />
 		</c:import>
 		<div id="content">
 			<div class="container">
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> keyword</li>
-						<li class="current"> ${keywordType}</li>
+						<li><i class="icon-home"></i> <a href="javascript:void(0);">Manager</a></li>
+						<li><a href="#">Statistics</a></li>
+						<li><a href="#">Relate Keyword</a></li>
 					</ul>
 
 				</div>
@@ -70,23 +70,16 @@ function loadKeywordTab(keywordType,category, isEditable, pageNo) {
 					</div>
 				</div>
 				<!-- /Page Header -->
-				<div class="tabbable tabbable-custom tabbable-full-width">
-					<ul id="keyword_tab" class="nav nav-tabs">
-						<li class="active"><a href="#tab_keyword_overview" data-toggle="tab">Overview</a></li>
-						
-					</ul>
-					<div class="tab-content row">
-
-						<!--=== Overview ===-->
-						<div class="tab-pane active" id="tab_keyword_overview"></div>
-						
-						<!-- //tab field -->
-					</div>
-					<!-- /.tab-content -->
-				</div>
-
-						
-				<!-- /Page Content -->
+				
+				
+				<!-- 탭없이 리스트 뿌려줌. -->
+				
+				
+				
+				
+				
+				
+				
 			</div>
 		</div>
 	</div>

@@ -131,7 +131,7 @@
 							</tbody>
 						</table>
 						
-						<div class="row">
+						<!-- <div class="row">
 							<div class="col-md-12 form-horizontal">
 								<div class="form-group">
 									<label class="col-md-3 control-label">Keyword Suggestions Service:</label>
@@ -150,7 +150,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				

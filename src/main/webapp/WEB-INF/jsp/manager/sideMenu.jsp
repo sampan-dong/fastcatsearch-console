@@ -176,9 +176,16 @@
 					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/settings.html"/>">
 							<i class="icon-cogs"></i> Settings <span class="arrow"></span>
 					</a></li>
-					<li class="<%=(lcatCurrent && "search-progress".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/searchProgress.html"/>">
-							<i class="icon-bar-chart"></i> Search Progress <span class="arrow"></span>
+					<li class="<%=(lcatCurrent && "keyword-rank".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/keywordRank.html"/>">
+							<i class="icon-bar-chart"></i> Keyword Rank <span class="arrow"></span>
 					</a></li>
+					<li class="<%=(lcatCurrent && "relate-keyword".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/relateKeyword.html"/>">
+							<i class="icon-bar-chart"></i> Relate Keyword <span class="arrow"></span>
+					</a></li>
+					
+					<%-- <li class="<%=(lcatCurrent && "search-progress".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/statistics/searchProgress.html"/>">
+							<i class="icon-bar-chart"></i> Search Progress <span class="arrow"></span>
+					</a></li> --%>
 				</ul></li>
 				
 			<%
@@ -200,12 +207,12 @@
 					<li class="<%=(lcatCurrent && "relate".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/relateKeyword.html"/>">
 							<i class="icon-angle-right"></i> Relate Keyword <span class="arrow"></span>
 					</a></li>
-					<li class="<%=(lcatCurrent && "keyword-suggestions".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/keywordSuggestions.html"/>">
+					<%-- <li class="<%=(lcatCurrent && "keyword-suggestions".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/keywordSuggestions.html"/>">
 							<i class="icon-angle-right"></i> Keyword Suggestions <span class="arrow"></span>
 					</a></li>
 					<li class="<%=(lcatCurrent && "ad-keyword".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/keyword-service/adKeyword.html"/>">
 							<i class="icon-angle-right"></i> AD Keyword <span class="arrow"></span>
-					</a></li>
+					</a></li> --%>
 				</ul></li>
 		</ul>
 	
