@@ -8,6 +8,17 @@
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 <script>
 $(document).ready(function(){
+	
+	$('#notification_tab a').on('shown.bs.tab', function (e) {
+		var targetId = e.target.hash;
+		if(targetId == "#tab_message_alert_settings"){
+			loadToTab("notificationsAlertSetting.html", null, targetId);
+		}else if(targetId == "#tab_message_list"){
+			loadNotificationTab(1, "#tab_message_list");
+		}
+	});
+	
+	
 	loadNotificationTab(1, "#tab_message_list");
 });
 
@@ -46,7 +57,7 @@ $(document).ready(function(){
 		
 		<!--=== Page Content ===-->
 		<div class="tabbable tabbable-custom tabbable-full-width">
-			<ul class="nav nav-tabs">
+			<ul id="notification_tab" class="nav nav-tabs">
 				<li class="active"><a href="#tab_message_list" data-toggle="tab">List</a></li>
 				<li class=""><a href="#tab_message_alert_settings" data-toggle="tab">Alert Settings</a></li>
 			</ul>
@@ -55,64 +66,7 @@ $(document).ready(function(){
 				<!--=== Overview ===-->
 				<div class="tab-pane active" id="tab_message_list"></div>
 				
-				<div class="tab-pane " id="tab_message_alert_settings">
-					<div class="col-md-12">
-						<div class="widget box">
-							<div class="widget-content no-padding">
-								<div class="dataTables_header clearfix">
-									<div class="input-group col-md-12">
-										<a href="javascript:void(0);" class="btn btn-sm"><span
-											class="glyphicon glyphicon-plus-sign"></span> Add Alert</a>
-											&nbsp;
-										<a href="javascript:void(0);" class="btn btn-sm">
-											<span class="glyphicon glyphicon-minus-sign"></span> Remove Alert
-										</a>
-											&nbsp;
-										<a href="javascript:void(0);" class="btn btn-sm">
-											<span class="glyphicon glyphicon-edit"></span> Edit Alert
-										</a>
-									</div>
-								</div>
-								<table class="table table-hover table-bordered table-checkable">
-									<thead>
-										<tr>
-											<th class="checkbox-column">
-												<input type="checkbox" class="uniform">
-											</th>
-											<th>Trigger Code</th>
-											<th>Alert To</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td class="checkbox-column">
-												<input type="checkbox" class="uniform">
-											</td>
-											<td><strong>FC-200</strong></td>
-											<td>
-												<div><span class="icon-envelope"> John Doe</span></div>
-												<div><span class="icon-envelope"> Smith Black</span></div>
-												<div><span class="icon-user"> John Doe</span></div>
-											</td>
-										</tr>
-										<tr>
-											<td class="checkbox-column">
-												<input type="checkbox" class="uniform">
-											</td>
-											<td><strong>FC-100</strong></td>
-											<td>
-												<div><span class="icon-envelope"> John Doe</span></div>
-												<div><span class="icon-user"> John Doe</span></div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					
-					</div>
-					
-				</div>
+				<div class="tab-pane " id="tab_message_alert_settings"></div>
 			</div>
 		</div>
 		<!-- /Page Content -->
