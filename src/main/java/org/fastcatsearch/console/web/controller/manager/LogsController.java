@@ -35,7 +35,7 @@ public class LogsController extends AbstractController {
 		}
 		
 		String requestUrl = "/management/logs/notification-history-list.json";
-		JSONObject notificationData = httpGet(session, requestUrl)
+		JSONObject notificationData = httpPost(session, requestUrl)
 					.addParameter("start", String.valueOf(start))
 					.addParameter("end", String.valueOf(end))
 					.requestJSON();
@@ -50,6 +50,25 @@ public class LogsController extends AbstractController {
 		mav.addObject("pageNo", pageNo);
 		mav.addObject("pageSize", PAGE_SIZE);
 		mav.addObject("notifications", notificationData);
+		return mav;
+	}
+	
+	@RequestMapping("notificationsAlertSetting")
+	public ModelAndView notificationsAlertSetting(HttpSession session) throws Exception {
+		
+		String requestUrl = "/management/logs/notification-alert-setting-list.json";
+		JSONObject notificationAlertSettingData = httpPost(session, requestUrl).requestJSON();
+		JSONArray settingList = notificationAlertSettingData.getJSONArray("setting-list");
+		
+		requestUrl = "/management/logs/notification-code-type-list.json";
+		JSONObject notificationCodeTypeData = httpPost(session, requestUrl).requestJSON();
+		JSONArray codeTypeList = notificationCodeTypeData.getJSONArray("code-type-list");
+		
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/logs/notificationsAlertSetting");
+		mav.addObject("settingList", settingList);
+		mav.addObject("codeTypeList", codeTypeList);
 		return mav;
 	}
 	
@@ -76,7 +95,7 @@ public class LogsController extends AbstractController {
 		}
 		
 		String requestUrl = "/management/logs/exception-history-list.json";
-		JSONObject exceptionData = httpGet(session, requestUrl)
+		JSONObject exceptionData = httpPost(session, requestUrl)
 					.addParameter("start", String.valueOf(start))
 					.addParameter("end", String.valueOf(end))
 					.requestJSON();

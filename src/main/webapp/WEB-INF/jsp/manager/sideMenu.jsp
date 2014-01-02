@@ -170,11 +170,9 @@
 		<!-- /Navigation -->
 		<!-- <div class="sidebar-title">
 			<span>Notifications</span>
-		</div>
-		<ul class="notifications demo-slide-in">
-			.demo-slide-in is just for demonstration purposes. You can remove this.
+		</div> -->
+		<!-- <ul class="notifications demo-slide-in">
 			<li style="display: none;">
-				style-attr is here only for fading in this notification after a specific time. Remove this.
 				<div class="col-left">
 					<span class="label label-danger"><i
 						class="icon-warning-sign"></i></span>
@@ -185,8 +183,7 @@
 					</span> <span class="time">few seconds ago</span>
 				</div>
 			</li>
-			
-			</ul> -->
+		</ul> -->
 	
 		</div>
 	<div id="divider" class="resizeable_del"></div>
