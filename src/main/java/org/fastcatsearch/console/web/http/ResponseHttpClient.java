@@ -21,6 +21,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.fastcatsearch.console.web.controller.InvalidAuthenticationException;
 import org.jdom2.Document;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -107,7 +108,11 @@ public class ResponseHttpClient {
 		
 		public JSONObject requestJSON() throws ClientProtocolException, IOException, Http404Error {
 			try {
-				return responseHttpClient.httpclient.execute(getHttpRequest(), jsonResponseHandler);
+				JSONObject obj = responseHttpClient.httpclient.execute(getHttpRequest(), jsonResponseHandler);
+				
+				checkAuthorizedMessage(obj);
+				
+				return obj;
 			}catch(SocketException e){
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
@@ -151,6 +156,17 @@ public class ResponseHttpClient {
 				throw e;
 			}
 			return null;
+		}
+		
+		private void checkAuthorizedMessage(Object obj) {
+			if(obj instanceof JSONObject) {
+				JSONObject jsonObj = (JSONObject) obj;
+				logger.trace("jsonobj:{}", jsonObj.optString("error"));
+				if("Not Authenticated.".equals(jsonObj.optString("error"))) {
+					logger.trace("throwing exception...");
+					throw new InvalidAuthenticationException();
+				}
+			}
 		}
 	}
 	
@@ -231,4 +247,5 @@ public class ResponseHttpClient {
 		}
 
 	}
+	
 }

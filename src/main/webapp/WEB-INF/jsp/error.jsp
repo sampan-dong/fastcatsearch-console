@@ -1,3 +1,4 @@
+<%@page import="org.fastcatsearch.console.web.controller.InvalidAuthenticationException"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -31,13 +32,21 @@
 			<div class="code"><span>ERROR</span><span class="icon-warning-sign"></span></div>
 			<%
 			if(exception != null){
-			%>
-			<div class="trace">
-			<%
-			  exception.printStackTrace(new java.io.PrintWriter(out));
-			%>
-			</div>
-			<%
+				if(exception instanceof InvalidAuthenticationException) {
+				%>
+				<div class="trace">
+				Not Authorized User
+				</div>
+				<%
+				} else {
+				%>
+				<div class="trace">
+				<%
+				  exception.printStackTrace(new java.io.PrintWriter(out));
+				%>
+				</div>
+				<%
+				}
 			}
 			%>
 			<div class="buttons">

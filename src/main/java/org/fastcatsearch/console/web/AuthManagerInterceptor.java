@@ -13,18 +13,26 @@ public class AuthManagerInterceptor extends AuthMainInterceptor {
 		if(!super.preHandle(request, response, handler)){
 			return false;
 		}
-		ResponseHttpClient httpClient = (ResponseHttpClient) request.getSession().getAttribute("httpclient");
-		String getCollectionListURL = "/management/collections/collection-list";
-		JSONObject collectionList = httpClient.httpGet(getCollectionListURL).requestJSON();
-		request.setAttribute("collectionList", collectionList.getJSONArray("collectionList"));
-		
-		String getAnalysisPluginListURL = "/management/analysis/plugin-list";
-		JSONObject analysisPluginList = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
-		request.setAttribute("analysisPluginList", analysisPluginList.getJSONArray("pluginList"));
-		
-		String getServerListURL = "/management/servers/list";
-		JSONObject serverList = httpClient.httpGet(getServerListURL).requestJSON();
-		request.setAttribute("serverList", serverList.getJSONArray("nodeList"));
-		return true;
+		try {
+			ResponseHttpClient httpClient = (ResponseHttpClient) request.getSession().getAttribute("httpclient");
+			String getCollectionListURL = "/management/collections/collection-list";
+			JSONObject collectionList = httpClient.httpGet(getCollectionListURL).requestJSON();
+			request.setAttribute("collectionList", collectionList.getJSONArray("collectionList"));
+			
+			//TODO:json 내용을 체크한다.
+			
+			String getAnalysisPluginListURL = "/management/analysis/plugin-list";
+			JSONObject analysisPluginList = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
+			request.setAttribute("analysisPluginList", analysisPluginList.getJSONArray("pluginList"));
+			
+			String getServerListURL = "/management/servers/list";
+			JSONObject serverList = httpClient.httpGet(getServerListURL).requestJSON();
+			request.setAttribute("serverList", serverList.getJSONArray("nodeList"));
+			return true;
+		} catch (Exception e) {
+			logger.error("",e);
+			super.checkLoginRedirect(request, response);
+		}
+		return false;
 	}
 }

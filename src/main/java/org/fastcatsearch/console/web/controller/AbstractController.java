@@ -22,8 +22,21 @@ public class AbstractController {
 	@ExceptionHandler(Throwable.class)
 	public ModelAndView handleAllException(Exception ex) {
  
-		ModelAndView model = new ModelAndView("error");
-		model.addObject("exception", ex);
+		logger.error("",ex);
+		
+		ModelAndView model = null;
+		logger.trace("ex : [{}],{}", ex instanceof InvalidAuthenticationException, ex);
+		
+		if(ex instanceof InvalidAuthenticationException) {
+			logger.debug("not authorized!!");
+			model = new ModelAndView("error");
+			model.addObject("message", "Not Authorized User");
+		} else {
+			logger.debug("normal error!!");
+			model = new ModelAndView("error");
+			model.addObject("message", ex.getMessage());
+		}
+		
 		return model;
  
 	}
