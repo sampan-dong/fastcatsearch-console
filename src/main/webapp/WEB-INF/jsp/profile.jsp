@@ -12,7 +12,13 @@ JSONObject userInfo = (JSONObject)request.getAttribute("userInfo");
 <c:import url="inc/header.jsp" />
 <script>
 $(document).ready(function(){
-	$("#user-update-form").validate();
+	$("#user-update-form").validate({
+		rules: {
+			reqPassword: {
+				equalTo: "#password"
+			}
+		}
+	});
 	
 	$("#user-update-form").submit(function(e) {
 		
@@ -121,15 +127,15 @@ $(document).ready(function(){
 								<div class="col-md-12 form-horizontal">		
 									<div class="form-group">
 										<label class="col-md-2 control-label">Old Password:</label>
-										<div class="col-md-3"><input type="password" name="password" class="form-control fcol2" value=""></div>
+										<div class="col-md-3"><input type="password" name="password" class="form-control fcol3" placeholder="Leave empty for no password-change"></div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">New Password:</label>
-										<div class="col-md-3"><input type="password" name="newPassword" class="form-control fcol2" value=""></div>
+										<div class="col-md-3"><input type="password" id="password" name="newPassword" class="form-control fcol3" minlength="4" placeholder="Leave empty for no password-change"></div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Repeat New Password:</label>
-										<div class="col-md-3"><input type="password" name="reqPassword" class="form-control fcol2" value=""></div>
+										<div class="col-md-3"><input type="password" name="reqPassword" class="form-control fcol3" minlength="4" placeholder="Leave empty for no password-change"></div>
 									</div>
 								</div>
 							</div>
