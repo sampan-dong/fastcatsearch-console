@@ -87,12 +87,15 @@ public class MainController extends AbstractController {
 	}
 
 	@RequestMapping("/main/profile")
-	public ModelAndView myProfile() {
+	public ModelAndView myProfile(HttpSession session) throws Exception {
 		
-		//TODO Get my account information
-		
+		String requestUrl = null;
+		requestUrl = "/settings/authority/get-my-info.json";
+		JSONObject jsonObj = null;
+		jsonObj = httpPost(session, requestUrl).requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("userInfo",jsonObj);
 		mav.setViewName("profile");
 		return mav;
 	}
