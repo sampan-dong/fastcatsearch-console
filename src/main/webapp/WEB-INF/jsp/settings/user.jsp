@@ -264,7 +264,7 @@ function showUpdateUserModal(id){
 						<div class="form-group">
 							<label for="userId" class="col-sm-3 control-label">User Id</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control required" id="userId" name="userId" placeholder="User Id" minlength="4">
+								<input type="text" class="form-control required" id="userId" name="userId" placeholder="User Id" minlength="4" readonly>
 							</div>
 						</div>
 						<div class="form-group">

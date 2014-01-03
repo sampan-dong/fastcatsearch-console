@@ -54,7 +54,7 @@ $(document).ready(function(){
 		<!-- Top Right Menu -->
 		<ul class="nav navbar-nav navbar-right">
 			<!-- Notifications -->
-			<li class="dropdown hidden-xs"><a href="#" class="dropdown-toggle"
+			<%-- <li class="dropdown hidden-xs"><a href="#" class="dropdown-toggle"
 				data-toggle="dropdown"> <i class="icon-bell"></i> <span
 					class="badge"></span>
 			</a>
@@ -74,7 +74,7 @@ $(document).ready(function(){
 					</a></li>
 					<li class="footer"><a href="<c:url value="/manager/logs/notifications.html"/>">View all
 							notifications</a></li>
-				</ul></li>
+				</ul></li> --%>
 
 			<!-- Tasks -->
 			<li class="dropdown hidden-xs" id="running_tasks_dropdown"><a href="#"

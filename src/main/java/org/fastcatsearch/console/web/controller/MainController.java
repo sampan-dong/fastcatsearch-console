@@ -86,6 +86,17 @@ public class MainController extends AbstractController {
 		return mav;
 	}
 
+	@RequestMapping("/main/profile")
+	public ModelAndView myProfile() {
+		
+		//TODO Get my account information
+		
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("profile");
+		return mav;
+	}
+	
 	@RequestMapping("/main/start")
 	public ModelAndView viewStart() {
 		ModelAndView mav = new ModelAndView();

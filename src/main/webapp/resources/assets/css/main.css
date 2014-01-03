@@ -503,7 +503,7 @@ span.red {
 /* # Dropdowns
 ================================================== */
 .navbar .dropdown-menu {
-  margin-top: 3px !important;
+  margin-top: 1px !important;
   position: absolute !important;
   float: left !important;
   background-color: #fff !important;
