@@ -34,7 +34,7 @@ $(document).ready(function(){
 			data: $(this).serializeArray(),
 			success: function(response, statusText, xhr, $form){
 				if(response["success"]==true) {
-					$("div.modal").addClass("hidden");
+					$("div.modal").modal("hide");
 					noty({text: "Server list update success", type: "success", layout:"topRight", timeout: 3000});
 					setTimeout(function() {
 						location.href = location.href;
