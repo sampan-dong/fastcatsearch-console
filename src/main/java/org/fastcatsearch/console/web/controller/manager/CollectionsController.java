@@ -200,7 +200,6 @@ public class CollectionsController extends AbstractController {
 		String requestUrl = "/management/collections/index-data.json";
 		JSONObject indexData = httpGet(session, requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
 				.addParameter("end", String.valueOf(end)).requestJSON();
-		logger.debug("indexData >> {}", indexData);
 		JSONArray list = indexData.getJSONArray("indexData");
 		int realSize = list.length();
 
@@ -232,7 +231,6 @@ public class CollectionsController extends AbstractController {
 		String requestUrl = "/management/collections/index-data-analyzed.json";
 		JSONObject indexData = httpGet(session, requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
 				.addParameter("end", String.valueOf(end)).requestJSON();
-		logger.debug("indexData >> {}", indexData);
 		JSONArray list = indexData.getJSONArray("indexData");
 		int realSize = list.length();
 

@@ -70,6 +70,20 @@ function requestProxy(methodType, data, resultType, successCallback, failCallbac
 	});
 }
 
+function requestSyncProxy(methodType, data, resultType, successCallback, failCallback, completeCallback){
+	
+	$.ajax({
+		async: false,
+		url : PROXY_REQUEST_URI,
+		type : methodType,
+		data : data,
+		dataType : resultType,
+		success: successCallback,
+		fail: failCallback,
+		complete: completeCallback 
+	});
+}
+
 function runIndexing(collectionId, indexingType) {
 	if(!indexingStatePollingFlag){
 		startPollingIndexTaskState(collectionId);

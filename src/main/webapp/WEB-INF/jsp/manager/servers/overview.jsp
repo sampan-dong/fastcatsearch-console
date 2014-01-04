@@ -141,8 +141,6 @@
 					</div>
 				</div>
 
-						
-						
 				<div class="widget">
 					<div class="widget-header">
 						<h4>System Health</h4>

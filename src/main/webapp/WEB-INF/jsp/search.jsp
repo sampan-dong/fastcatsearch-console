@@ -90,7 +90,7 @@
 												<div class="r">
 												"Research and experimental development (R&D) comprise creative work undertaken on a systematic basis in order to increase the stock of knowledge, ...
 												</div>
-												<div class="text-muted">2013.09.01 | scopus | Korea</div>
+												<div class="">2013.09.01 | scopus | Korea</div>
 											</li>
 											<li>
 												<h3><a href="javascript:void(0);">Research</a></h3>
@@ -242,9 +242,9 @@
 					<div class="col-md-2">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h3 class="panel-title">Popular Keyword</h3>
+								<h3 class="panel-title">Search History</h3>
 							</div>
-							<div class="panel-body">
+							<div class="panel-body" style="padding: 15px 0;">
 								<ol>
 									<li>display</li>
 									<li>nano</li>
