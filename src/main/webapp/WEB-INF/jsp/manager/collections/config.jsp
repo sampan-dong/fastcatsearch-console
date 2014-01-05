@@ -78,14 +78,24 @@ $(document).ready(function(){
 				Element root = document.getRootElement();
 				String collectionName = root.getChildText("name");
 				String indexNode = root.getChildText("index-node");
+				Element searchNodeList = root.getChild("search-node-list");
 				Element dataNodeList = root.getChild("data-node-list");
 				Element dataPlanConfig = root.getChild("data-plan");
-				List<Element> nodeList = dataNodeList.getChildren("node");
+				List<Element> searchNodeElList = searchNodeList.getChildren("node");
+				List<Element> dataNodeElList = dataNodeList.getChildren("node");
 				
+				String searchNodeListString = "";
+				for(int i = 0; i < searchNodeElList.size(); i++){
+					Element el = searchNodeElList.get(i);
+					if(searchNodeListString.length() > 0){
+						searchNodeListString += ", ";
+					}
+					searchNodeListString += el.getText();
+				}
 				
 				String dataNodeListString = "";
-				for(int i=0;i<nodeList.size(); i++){
-					Element el = nodeList.get(i);
+				for(int i = 0; i < dataNodeElList.size(); i++){
+					Element el = dataNodeElList.get(i);
 					if(dataNodeListString.length() > 0){
 						dataNodeListString += ", ";
 					}
@@ -106,14 +116,21 @@ $(document).ready(function(){
 								<div class="row">
 									<div class="col-md-12 form-horizontal">
 										<div class="form-group">
-											<label class="col-md-2 control-label">Collection Name:</label>
-											<div class="col-md-3"><input type="text" name="collectionName" class="form-control required" value="<%=collectionName %>"></div>
+											<label class="col-md-3 control-label">Collection Name:</label>
+											<div class="col-md-9"><input type="text" name="collectionName" class="form-control required" value="<%=collectionName %>"></div>
 										</div>
 									</div>
 									<div class="col-md-12 form-horizontal">
 										<div class="form-group">
-											<label class="col-md-2 control-label">Index Node:</label>
-											<div class="col-md-3"><input type="text" name="indexNode" class="form-control required fcol2" value="<%=indexNode %>"></div>
+											<label class="col-md-3 control-label">Index Node:</label>
+											<div class="col-md-9"><input type="text" name="indexNode" class="form-control required fcol2" value="<%=indexNode %>"></div>
+										</div>
+									</div>
+									<div class="col-md-12 form-horizontal">
+										<div class="form-group">
+											<label class="col-md-3 control-label">Search Node:</label>
+											<div class="col-md-9"><input type="text" name="searchNodeList" class="form-control required" value="<%=searchNodeListString %>">
+											</div>
 										</div>
 									</div>
 								</div>
@@ -128,24 +145,24 @@ $(document).ready(function(){
 							</div>
 							<div class="widget-content">
 								<div class="row">
-									<div class="col-md-8 form-horizontal">
+									<div class="col-md-12 form-horizontal">
 										
 										<div class="form-group">
-											<label class="col-md-4 control-label">Data Node List :</label>
-											<div class="col-md-8"><input type="text" name="dataNodeList" class="form-control required" value="<%=dataNodeListString %>"></div>
+											<label class="col-md-3 control-label">Data Node List :</label>
+											<div class="col-md-9"><input type="text" name="dataNodeList" class="form-control required" value="<%=dataNodeListString %>"></div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-4 control-label">Data-sequence-cycle :</label>
-											<div class="col-md-8"><input type="text" name="dataSequenceCycle" class="form-control required digits fcol1" value="<%=dataPlanConfig.getChildText("data-sequence-cycle") %>" maxlength="1" minlength="1"></div>
+											<label class="col-md-3 control-label">Data-sequence-cycle :</label>
+											<div class="col-md-9"><input type="text" name="dataSequenceCycle" class="form-control required digits fcol1" value="<%=dataPlanConfig.getChildText("data-sequence-cycle") %>" maxlength="1" minlength="1"></div>
 										</div>
 	
 										<div class="form-group">
-											<label class="col-md-4 control-label">Segment-revision-backup-size :</label>
-											<div class="col-md-8"><input type="text" name="segmentRevisionBackupSize" class="form-control required digits fcol1" value="<%=dataPlanConfig.getChildText("segment-revision-backup-size") %>" maxlength="2" minlength="1"></div>
+											<label class="col-md-3 control-label">Segment-revision-backup-size :</label>
+											<div class="col-md-9"><input type="text" name="segmentRevisionBackupSize" class="form-control required digits fcol1" value="<%=dataPlanConfig.getChildText("segment-revision-backup-size") %>" maxlength="2" minlength="1"></div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-4 control-label">Segment-document-limit :</label>
-											<div class="col-md-8"><input type="text" name="segmentDocumentLimit" class="form-control required digits fcol2" value="<%=dataPlanConfig.getChildText("segment-document-limit") %>"></div>
+											<label class="col-md-3 control-label">Segment-document-limit :</label>
+											<div class="col-md-9"><input type="text" name="segmentDocumentLimit" class="form-control required digits fcol2" value="<%=dataPlanConfig.getChildText("segment-document-limit") %>"></div>
 										</div>
 									</div>
 								</div>

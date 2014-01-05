@@ -80,8 +80,6 @@
 			
 			requestSyncProxy("get", {uri:"/management/common/realtime-query-count.json"}, "json", function(data){
 				
-				console.log(data);
-				
 				for( var i = 0; i < collectionList.length; i++ ){
 					id = collectionList[i].id;
 					if(data != 'undefined'){
