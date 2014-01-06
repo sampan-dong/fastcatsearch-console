@@ -24,7 +24,7 @@ $(document).ready(function(){
 		
 		$(this).button('loading');
 		$.ajax({
-			url : "searchResult.html",
+			url : "searchQueryResult.html",
 			type: "POST",
 			data : {
 				requestUri: $("#requestUri2").val(),
@@ -55,20 +55,29 @@ $(document).ready(function(){
 	});
 	
 	$("#structuredSearchTest").validate();
+	
 	$("#structuredSearchTest").submit(function(e) {
 		if(! $(this).valid()){
 			return;
 		}
 		$("#searchStructuredButton").button('loading');
-		var queryString = $(this).serialize();
-		console.log("queryString > ", queryString);
+		var array = $(this).serializeArray();
+		console.log("array > ", array);
+		params = {
+			requestUri: $("#requestUri1").val()
+		};
+		
+		for(var i=0;i<array.length; i++){
+			var name = array[i].name;
+			var value = array[i].value;
+			console.log("name > ", name, value);	
+			params[name] = value; 
+		}
+		
 		$.ajax({
 				url : "searchResult.html",
 				type: "POST",
-				data : {
-					requestUri: $("#requestUri1").val(),
-					queryString: queryString
-				},
+				data : params,
 				dataType : "html",
 				success:function(data, textStatus, jqXHR) {
 					try {

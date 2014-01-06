@@ -5,6 +5,7 @@ import java.net.URLDecoder;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
+import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.PostMethod;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -24,13 +25,56 @@ public class TestController extends AbstractController {
 	}
 	
 	@RequestMapping("searchResult")
-	public ModelAndView searchResult(HttpSession session, @RequestParam String requestUri, @RequestParam String queryString) throws Exception {
+	public ModelAndView searchResult(HttpSession session, @RequestParam String requestUri
+			, @RequestParam String cn, @RequestParam String fl, @RequestParam String se, @RequestParam String ft
+			, @RequestParam String gr, @RequestParam String ra, @RequestParam String ht, @RequestParam String sn
+			, @RequestParam String ln, @RequestParam String so, @RequestParam String timeout, @RequestParam String ud) throws Exception {
 		
-		JSONObject jsonObj = null;
-		//페이지에서 serialize()로 인코딩이 되었기 때문에 request를 보내기전에 디코드해서 넣어준다.
-		queryString = URLDecoder.decode(queryString, "utf-8");
-		PostMethod postMethod = (PostMethod) httpPost(session, requestUri).addParameterString(queryString);
-		jsonObj = postMethod.requestJSON();
+		PostMethod postMethod = (PostMethod) httpPost(session, requestUri);
+		postMethod.addParameter("cn", cn.trim());
+		postMethod.addParameter("fl", fl.trim());
+		postMethod.addParameter("se", se.trim());
+		postMethod.addParameter("ft", ft.trim());
+		postMethod.addParameter("gr", gr.trim());
+		postMethod.addParameter("ra", ra.trim());
+		postMethod.addParameter("ht", ht.trim());
+		postMethod.addParameter("sn", sn.trim());
+		postMethod.addParameter("ln", ln.trim());
+		postMethod.addParameter("so", so.trim());
+		postMethod.addParameter("timeout", timeout.trim());
+		postMethod.addParameter("ud", ud.trim());
+		
+		return searchResult(postMethod);
+	}
+	
+	@RequestMapping("searchQueryResult")
+	public ModelAndView searchQueryResult(HttpSession session, @RequestParam String requestUri, @RequestParam String queryString) throws Exception {
+		
+		PostMethod postMethod = (PostMethod) httpPost(session, requestUri);
+		
+		for (String pair : queryString.split("&")) {
+			int eq = pair.indexOf("=");
+			if (eq < 0) {
+				postMethod.addParameter(pair, "");
+			} else {
+				// key=value
+				String key = pair.substring(0, eq);
+				String value = pair.substring(eq + 1);
+				try {
+					String decodedValue = URLDecoder.decode(value, "utf-8");
+					postMethod.addParameter(key, decodedValue);
+				} catch (Exception e) {
+					postMethod.addParameter(key, value);
+				}
+
+			}
+		}
+		return searchResult(postMethod);
+	}
+	
+	public ModelAndView searchResult(AbstractMethod method) throws Exception {
+		
+		JSONObject jsonObj = method.requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -40,19 +84,15 @@ public class TestController extends AbstractController {
 			
 			if(status == 0){
 				//OK
-				
-				
 			}else{
 				//fail
-				
 			}
-			mav.addObject("queryString", queryString);
+			
+			mav.addObject("queryString", method.getQueryString());
 			mav.addObject("searchResult", jsonObj);
 			
 		}else{
 			//Exception
-			
-			
 		}
 		
 		

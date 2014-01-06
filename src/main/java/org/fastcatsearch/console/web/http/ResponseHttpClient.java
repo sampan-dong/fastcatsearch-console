@@ -15,6 +15,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -86,9 +87,11 @@ public class ResponseHttpClient {
 			this.responseHttpClient = responseHttpClient;
 			this.url = url;
 		}
-//		public abstract JSONObject requestJSON() throws ClientProtocolException, IOException;
-//		public abstract Document requestXML() throws ClientProtocolException, IOException;
+		
+		public abstract String getQueryString();
+		
 		public abstract AbstractMethod addParameter(String key, String value);
+		
 		protected abstract HttpUriRequest getHttpRequest();
 		
 		public AbstractMethod addParameterString(String parameterString){
@@ -206,6 +209,11 @@ public class ResponseHttpClient {
 			return this;
 		}
 
+		@Override
+		public String getQueryString() {
+			return queryString;
+		}
+
 	}
 
 	public static class PostMethod extends AbstractMethod {
@@ -214,7 +222,7 @@ public class ResponseHttpClient {
 		public PostMethod(ResponseHttpClient responseHttpClient, String url) {
 			super(responseHttpClient, url);
 		}
-
+		@Override
 		protected HttpPost getHttpRequest(){
 			HttpPost httpost = new HttpPost(url);
 			if (nvps != null) {
@@ -222,7 +230,11 @@ public class ResponseHttpClient {
 			}
 			return httpost;
 		}
-
+		@Override
+		public String getQueryString(){
+			return URLEncodedUtils.format(nvps, Consts.UTF_8);
+		}
+		
 		@Override
 		public PostMethod addParameter(String key, String value) {
 			if (nvps == null) {
