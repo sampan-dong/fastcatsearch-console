@@ -1,5 +1,7 @@
 package org.fastcatsearch.console.web.controller.manager;
 
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
@@ -25,6 +27,8 @@ public class TestController extends AbstractController {
 	public ModelAndView searchResult(HttpSession session, @RequestParam String requestUri, @RequestParam String queryString) throws Exception {
 		
 		JSONObject jsonObj = null;
+		//페이지에서 serialize()로 인코딩이 되었기 때문에 request를 보내기전에 디코드해서 넣어준다.
+		queryString = URLDecoder.decode(queryString, "utf-8");
 		PostMethod postMethod = (PostMethod) httpPost(session, requestUri).addParameterString(queryString);
 		jsonObj = postMethod.requestJSON();
 		

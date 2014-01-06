@@ -1,5 +1,7 @@
 package org.fastcatsearch.console.web.controller.manager;
 
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -74,11 +76,13 @@ public class CollectionsController extends AbstractController {
 
 	@RequestMapping("/{collectionId}/workSchemaSave")
 	@ResponseBody
-	public String workSchemaSave(HttpSession session, HttpServletRequest request, @PathVariable String collectionId) throws Exception {
+	public String workSchemaSave(HttpSession session, @PathVariable String collectionId, @RequestParam String queryString) throws Exception {
 
 		// 화면의 저장 값들을 재조정하여 json으로 만든후 서버로 보낸다.
-		String queryString = request.getParameter("queryString");
-		logger.debug("queryString > {}", queryString);
+		//serialize()해서 넘어온 값이기때문에, decode해서 보내준다.
+		queryString = URLDecoder.decode(queryString, "utf-8");
+		
+//		logger.debug("queryString > {}", queryString);
 		String[] keyValueList = queryString.split("&");
 
 		JSONObject root = new JSONObject();
