@@ -582,3 +582,22 @@ function operateCollection(collectionId, command){
 			});
 	}
 }
+
+
+function appendTableRecord(tableId, dataArray) {
+	var tableObject = $("#"+tableId);
+	var tbodyObject = tableObject.find("tbody");
+	if( !tbodyObject ) {
+		tbodyObject = tableObject;
+	}
+	var trObject = document.createElement("tr");
+	for( var inx=0; inx<dataArray.length; inx++) {
+		var tdObject = document.createElement("td");
+		tdObject.appendChild(
+				document.createTextNode(
+				dataArray[inx]
+				));
+		trObject.appendChild(tdObject);
+	}
+	tbodyObject[0].appendChild(trObject);
+}

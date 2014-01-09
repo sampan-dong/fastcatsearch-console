@@ -95,6 +95,7 @@ $(document).ready(function(){
 									<th>Status</th>
 									<th>Index Node</th>
 									<th>Data Node List</th>
+									<th>Search Node List</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -112,6 +113,7 @@ $(document).ready(function(){
 									<td><%=isActive ? "<span class='text-success'>Active</span>" : "<span class='text-danger'>InActive</span>" %></td>
 									<td><%=collectionInfo.getString("indexNode") %></td>
 									<td><%=collectionInfo.getString("dataNodeList") %></td>
+									<td><%=collectionInfo.getString("searchNodeList") %></td>
 									<td>
 									<% if(isActive) { %>
 									<a href="javascript:stopCollection('<%=collectionId%>')">STOP</a>
@@ -166,6 +168,11 @@ $(document).ready(function(){
 											<div class="form-group">
 												<label class="col-md-3 control-label">Data Node List:</label>
 												<div class="col-md-9"><input type="text" name="dataNodeList" class="form-control required" value="" placeholder="Data Node List"></div>
+											</div>
+											
+											<div class="form-group">
+												<label class="col-md-3 control-label">Search Node List:</label>
+												<div class="col-md-9"><input type="text" name="searchNodeList" class="form-control required" value="" placeholder="Search Node List"></div>
 											</div>
 											
 										</div>

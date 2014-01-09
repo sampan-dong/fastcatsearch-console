@@ -75,11 +75,8 @@
 			}
 		}));
 		
-		
 		function update() {
-			
 			requestSyncProxy("get", {uri:"/management/common/realtime-query-count.json"}, "json", function(data){
-				
 				for( var i = 0; i < collectionList.length; i++ ){
 					id = collectionList[i].id;
 					if(data != 'undefined'){
@@ -98,12 +95,90 @@
 				plot.setupGrid();
 				plot.draw();
 			});
-			
-			
-			
 		}
-
 		setInterval(update, 1000);
+		
+		requestProxy("post", {
+				uri:"/management/collections/collection-info-list"
+			}, "json", function(collectionInfoListData) {
+				var collectionInfoList = collectionInfoListData["collectionInfoList"];
+				for(var inx=0;inx < collectionInfoList.length; inx++) {
+					var info = collectionInfoList[inx];
+					appendTableRecord("collectionInfoTable", Array(
+							info["name"]+" ("+info["id"]+")"
+						,info["documentSize"]
+						,info["diskSize"]
+						,info["createTime"]
+					));
+				}
+			});
+		
+		requestProxy("post", {
+				uri:"/management/collections/collection-indexing-info-list"
+			}, "json", function(indexingInfoListData) {
+				var indexingInfoList = indexingInfoListData["indexingInfoList"];
+				for(var inx=0;inx < indexingInfoList.length; inx++) {
+					var info = indexingInfoList[inx];
+					if(info["time"]) {
+						info["time"]=info["time"]+" ago";
+					}
+					appendTableRecord("indexingInfoTable", Array(
+						 info["id"]
+						,info["status"]
+						,info["docSize"]
+						,info["duration"]
+						,info["time"]
+					));
+				}
+			});
+		
+		requestProxy("post", {
+				uri:"/management/servers/list"
+			}, "json", function(nodeList) {
+				nodeList = nodeList["nodeList"];
+				requestProxy("post", {
+						uri:"/management/servers/systemHealth"
+					}, "json", function(health) {
+						
+						for(var inx=0; inx < nodeList.length ; inx++) {
+							var node = nodeList[inx];
+							var nodeId = node["id"];
+							var info = health[nodeId];
+							var diskPrint = "";
+							var memoryPrint = "";
+							if(info) {
+								diskPrint = info["totalDiskSize"];
+								if(diskPrint > 0) {
+									diskPrint = Math.round(info["usedDiskSize"] / diskPrint * 10000) / 100;
+									diskPrint = diskPrint+"% ("+info["usedDiskSize"]+"MB / "+info["totalDiskSize"]+"MB)";
+								}
+								memoryPrint = info["maxMemory"];
+								if(memoryPrint > 0) {
+									memoryPrint = Math.round(info["usedMemory"] / memoryPrint * 10000) / 100;
+									memoryPrint = memoryPrint+"% ("+info["usedMemory"]+"MB / "+info["maxMemory"]+"MB)";
+								}
+								info["jvmCpuUse"]+="%";
+								info["systemCpuUse"]+="%";
+								info["totalMemory"]+="MB";
+							} else {
+								info = {jvmCpuUse:"",systemCpuUse:"",totalMemory:"",systemLoadAverage:""};
+							}
+							appendTableRecord("systemInfoTable", Array(
+								inx + 1
+								,node["name"]
+								,node["host"]
+								,node["port"]
+								,(node["active"]==true?"Alive":"Gone")
+								,diskPrint
+								,info["jvmCpuUse"]
+								,info["systemCpuUse"]
+								,memoryPrint
+								,info["totalMemory"]
+								,info["systemLoadAverage"]
+							));
+						}
+					});
+			});
 	});
 </script>
 </head>
@@ -156,7 +231,7 @@
 								</div>
 							</div>
 							<div class="widget-content no-padding">
-								<table class="table table-bordered table-hover">
+								<table id="collectionInfoTable" class="table table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>Collection</th>
@@ -166,36 +241,6 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>VOL</td>
-											<td>1500</td>
-											<td>128.5MB</td>
-											<td>2013-09-10 12:00:05</td>
-										</tr>
-										<tr>
-											<td>BOOK</td>
-											<td>45000</td>
-											<td>3128.5MB</td>
-											<td>2013-09-11 16:00:05</td>
-										</tr>
-										<tr>
-											<td>COMMUNITY_ETC</td>
-											<td>45000</td>
-											<td>3128.5MB</td>
-											<td>2013-09-11 16:00:05</td>
-										</tr>
-										<tr>
-											<td>BOOK_SHORT</td>
-											<td>45000</td>
-											<td>3128.5MB</td>
-											<td>2013-09-11 16:00:05</td>
-										</tr>
-										<tr>
-											<td>SAMPLE</td>
-											<td>45000</td>
-											<td>3128.5MB</td>
-											<td>2013-09-11 16:00:05</td>
-										</tr>
 									</tbody>
 								</table>
 							</div> <!-- /.widget-content -->
@@ -209,7 +254,7 @@
 								<h4><i class="icon-reorder"></i> Indexing Result</h4>
 							</div>
 							<div class="widget-content no-padding">
-								<table class="table table-hover table-bordered">
+								<table id="indexingInfoTable" class="table table-hover table-bordered">
 									<thead>
 										<tr>
 											<th>Collection</th>
@@ -220,41 +265,6 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>VOL</td>
-											<td>Sucess</td>
-											<td>1500</td>
-											<td>1h 20m 20s</td>
-											<td>20 mins ago</td>
-										</tr>
-										<tr>
-											<td>BOOK</td>
-											<td>Sucess</td>
-											<td>1500</td>
-											<td>1h 20m 20s</td>
-											<td>20 mins ago</td>
-										</tr>
-										<tr>
-											<td>COMMUNITY_ETC</td>
-											<td>Fail</td>
-											<td>1500</td>
-											<td>1h 20m 20s</td>
-											<td>20 mins ago</td>
-										</tr>
-										<tr>
-											<td>BOOK_SHORT</td>
-											<td>Sucess</td>
-											<td>1500</td>
-											<td>1h 20m 20s</td>
-											<td>20 mins ago</td>
-										</tr>
-										<tr>
-											<td>SAMPLE</td>
-											<td>Fail</td>
-											<td>1500</td>
-											<td>1h 20m 20s</td>
-											<td>20 mins ago</td>
-										</tr>
 									</tbody>
 								</table>
 							</div> <!-- /.widget-content -->
@@ -275,7 +285,7 @@
 								</div>
 							</div>
 							<div class="widget-content no-padding">
-								<table class="table table-bordered table-hover">
+								<table id="systemInfoTable" class="table table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>#</th>
@@ -292,32 +302,6 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Node1</td>
-											<td>localhost</td>
-											<td>8090</td>
-											<td>Alive</td>
-											<td>81.6% (193968MB / 237655MB)</td>
-											<td>10%</td>
-											<td>50%</td>
-											<td>41.6% (433MB / 1040MB)</td>
-											<td>8192MB</td>
-											<td>1.7</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Node2</td>
-											<td>192.168.0.30</td>
-											<td>8090</td>
-											<td>Alive</td>
-											<td>80.5% (192532MB / 237655MB)</td>
-											<td>20%</td>
-											<td>40%</td>
-											<td>35.6% (417MB / 1040MB)</td>
-											<td>8192MB</td>
-											<td>1.5</td>
-										</tr>
 									</tbody>
 								</table>
 							</div> <!-- /.widget-content -->
