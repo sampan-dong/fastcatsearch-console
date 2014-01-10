@@ -110,20 +110,23 @@ public class ResponseHttpClient {
 		}
 		
 		public JSONObject requestJSON() throws ClientProtocolException, IOException, Http404Error {
+			HttpUriRequest httpUriRequest = null;
 			try {
-				JSONObject obj = responseHttpClient.httpclient.execute(getHttpRequest(), jsonResponseHandler);
+				httpUriRequest = getHttpRequest();
+				JSONObject obj = responseHttpClient.httpclient.execute(httpUriRequest, jsonResponseHandler);
 				
 				checkAuthorizedMessage(obj);
 				
 				return obj;
 			}catch(SocketException e){
-				logger.debug("httpclient socket error! >> {}", e.getMessage());
+				logger.error("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
 			}catch(ClientProtocolException e){
 				if(e.getCause() instanceof Http404Error){
 					throw (Http404Error) e.getCause();
 				}
-				logger.debug("httpclient error! >> {}, {}", e.getMessage(), e.getCause());
+				logger.error("error while request > {}", httpUriRequest);
+				logger.error("httpclient error! >> {}, {}", e.getMessage(), e.getCause());
 				throw e;
 			}
 			return null;

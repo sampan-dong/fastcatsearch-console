@@ -89,6 +89,8 @@
 	src="${contextPath}/resources/plugins/flot/jquery.flot.time.min.js"></script>
 <script type="text/javascript"
 	src="${contextPath}/resources/plugins/flot/jquery.flot.growraf.min.js"></script>
+	<script type="text/javascript"
+	src="${contextPath}/resources/plugins/flot/jquery.flot.stack.min.js"></script>
 <script type="text/javascript"
 	src="${contextPath}/resources/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
 

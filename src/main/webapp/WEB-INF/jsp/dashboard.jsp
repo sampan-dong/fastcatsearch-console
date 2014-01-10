@@ -53,7 +53,13 @@
 		// Initialize flot
 		var plot = $.plot("#chart_multiple", series_multiple, $.extend(true, {}, Plugins.getFlotDefaults(), {
 			series: {
-				lines: { lineWidth: 1.5, show: true },
+				stack: true,
+				bars: {
+					show: true,
+					align: 'center',
+					lineWidth: 0
+				},
+				lines: { show: false },
 				points: { show: false },
 				grow: { active: false }
 			},
@@ -63,7 +69,7 @@
 			},
 			tooltip: true,
 			tooltipOpts: {
-				content: '%y'
+				content: '%s : %y'
 			},
 			yaxis: {
 				min: 0,
@@ -81,7 +87,7 @@
 					id = collectionList[i].id;
 					if(data != 'undefined'){
 						count = data[id];
-						if(count != 'undefined'){
+						if(count){
 							pushData(id, count);
 						}else{
 							pushData(id, 0);
@@ -186,6 +192,10 @@
 										memoryPrint = Math.round(info["usedMemory"] / memoryPrint * 10000) / 100;
 										memoryPrint = memoryPrint+"% ("+info["usedMemory"]+"MB / "+info["maxMemory"]+"MB)";
 									}
+									systemLoadAverage = info["systemLoadAverage"];
+									if(systemLoadAverage > 0) {
+										systemLoadAverage = Math.round(info["systemLoadAverage"] * 10) / 10;
+									}
 									info["jvmCpuUse"]+="%";
 									info["systemCpuUse"]+="%";
 									info["totalMemory"]+="MB";
@@ -203,7 +213,7 @@
 									,info["systemCpuUse"]
 									,memoryPrint
 									,info["totalMemory"]
-									,info["systemLoadAverage"]
+									,systemLoadAverage
 								));
 							}
 							table1.find("tbody").html(table2.find("tbody").html());
@@ -432,7 +442,7 @@
 									<thead>
 										<tr>
 											<th>Message</th>
-											<th>Time</th>
+											<th class="fcol2">Time</th>
 										</tr>
 									</thead>
 									<tbody>
