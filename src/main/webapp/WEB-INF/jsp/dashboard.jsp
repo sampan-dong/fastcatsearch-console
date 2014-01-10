@@ -105,12 +105,13 @@
 		setInterval(update, 1000);
 		
 		var fnRefreshCollectionInfo = function() {
+			console.log("call refreshCollectionInfo");
+			var table1 = $("#collection_info_table");
 			requestProxy("post", {
 					uri:"/management/collections/collection-info-list"
 				}, "json", function(collectionInfoListData) {
 					var collectionInfoList = collectionInfoListData["collectionInfoList"];
 					
-					var table1 = $("#collection_info_table");
 					var table2 = $(document.createElement("table"));
 					for(var inx=0;inx < collectionInfoList.length; inx++) {
 						var info = collectionInfoList[inx];
@@ -122,20 +123,21 @@
 						));
 					}
 					table1.find("tbody").html(table2.find("tbody").html());
-					table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
-						location.href=CONTEXT+"/manager/collections/index.html";
-					});
-					table1.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshCollectionInfo);
 				});
+			table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
+				location.href=CONTEXT+"/manager/collections/index.html";
+			});
+			table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshCollectionInfo;
 		}
 		fnRefreshCollectionInfo();
 		
 		var fnRefreshIndexinInfoList = function() {
+			console.log("call refreshIndexingInfo");
+			var table1 = $("#indexing_info_table");
 			requestProxy("post", {
 					uri:"/management/collections/collection-indexing-info-list"
 				}, "json", function(indexingInfoListData) {
 					var indexingInfoList = indexingInfoListData["indexingInfoList"];
-					var table1 = $("#indexing_info_table");
 					var table2 = $(document.createElement("table"));
 					
 					for(var inx=0;inx < indexingInfoList.length; inx++) {
@@ -157,13 +159,14 @@
 						));
 					}
 					table1.find("tbody").html(table2.find("tbody").html());
-					table1.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshIndexinInfoList);
 				});
+			table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshIndexinInfoList;
 		}
 		fnRefreshIndexinInfoList();
 		
 		var fnRefreshSystemInfo = function() {
-		
+			console.log("call refreshSystemInfo");
+			var table1 = $("#system_info_table");
 			requestProxy("post", {
 					uri:"/management/servers/list"
 				}, "json", function(nodeList) {
@@ -172,7 +175,6 @@
 							uri:"/management/servers/systemHealth"
 						}, "json", function(health) {
 							
-							var table1 = $("#system_info_table");
 							var table2 = $(document.createElement("table"));
 							
 							for(var inx=0; inx < nodeList.length ; inx++) {
@@ -217,21 +219,22 @@
 								));
 							}
 							table1.find("tbody").html(table2.find("tbody").html());
-							table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
-								location.href=CONTEXT+"/manager/servers/overview.html";
-							});
-							table1.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshSystemInfo);
 						});
 				});
+				table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
+					location.href=CONTEXT+"/manager/servers/overview.html";
+				});
+				table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshSystemInfo;
 		}
 		fnRefreshSystemInfo();
 		
 		var fnRefreshLog = function() {
+			console.log("call refreshLog");
+			var table1 = $("#log_table");
 			requestProxy("post", {
 					uri:"/management/logs/notification-history-list",
 					start:0, end:5
 				}, "json", function(notificationData) {
-					var table1 = $("#log_table");
 					var table2 = $(document.createElement("table"));
 					
 					var notifications = notificationData["notifications"];
@@ -251,21 +254,21 @@
 						));
 					}
 					table1.find("tbody").html(table2.find("tbody").html());
-					table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
-						location.href=CONTEXT+"/manager/logs/notifications.html";
-					});
-					table1.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshLog);
 				});
+			table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
+				location.href=CONTEXT+"/manager/logs/notifications.html";
+			});
+			table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshLog;
 		}
 		fnRefreshLog();
 		
 		var fnRefreshTaskInfo = function() {
-			
+			console.log("call refreshTaskInfo");
+			var table1 = $("#task_info_table");
 			requestProxy("post", {
 					uri:"/management/common/all-task-state",
 					start:0, end:5
 				}, "json", function(taskInfo) {
-					var table1 = $("#task_info_table");
 					var table2 = $(document.createElement("table"));
 					
 					var taskList = taskInfo["taskState"];
@@ -280,11 +283,11 @@
 					}
 					
 					table1.find("tbody").html(table2.find("tbody").html());
-					table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
-						location.href=CONTEXT+"/manager/logs/tasks.html";
-					});
-					table1.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshTaskInfo);
 				});
+			table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
+				location.href=CONTEXT+"/manager/logs/tasks.html";
+			});
+			table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshTaskInfo;
 		}
 		fnRefreshTaskInfo();
 		
