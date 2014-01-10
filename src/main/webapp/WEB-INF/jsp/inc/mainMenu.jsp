@@ -31,7 +31,7 @@ $(document).ready(function(){
 		</ul> -->
 
 		<!-- Logo -->
-		<a class="navbar-brand" href="<c:url value="/start.html" />"> <strong>Fastcat</strong>Search
+		<a class="navbar-brand" href="<c:url value="/main/start.html" />"> <strong>Fastcat</strong>Search
 		</a>
 		<!-- /logo -->
 
