@@ -98,87 +98,145 @@
 		}
 		setInterval(update, 1000);
 		
-		requestProxy("post", {
-				uri:"/management/collections/collection-info-list"
-			}, "json", function(collectionInfoListData) {
-				var collectionInfoList = collectionInfoListData["collectionInfoList"];
-				for(var inx=0;inx < collectionInfoList.length; inx++) {
-					var info = collectionInfoList[inx];
-					appendTableRecord("collectionInfoTable", Array(
-							info["name"]+" ("+info["id"]+")"
-						,info["documentSize"]
-						,info["diskSize"]
-						,info["createTime"]
-					));
-				}
-			});
-		
-		requestProxy("post", {
-				uri:"/management/collections/collection-indexing-info-list"
-			}, "json", function(indexingInfoListData) {
-				var indexingInfoList = indexingInfoListData["indexingInfoList"];
-				for(var inx=0;inx < indexingInfoList.length; inx++) {
-					var info = indexingInfoList[inx];
-					if(info["time"]) {
-						info["time"]=info["time"]+" ago";
+		var fnRefreshCollectionInfo = function() {
+			requestProxy("post", {
+					uri:"/management/collections/collection-info-list"
+				}, "json", function(collectionInfoListData) {
+					var collectionInfoList = collectionInfoListData["collectionInfoList"];
+					
+					var table1 = $("#collection_info_table");
+					var table2 = $(document.createElement("table"));
+					for(var inx=0;inx < collectionInfoList.length; inx++) {
+						var info = collectionInfoList[inx];
+						appendTableRecord(table2, Array(
+								info["name"]+" ("+info["id"]+")"
+							,info["documentSize"]
+							,info["diskSize"]
+							,info["createTime"]
+						));
 					}
-					appendTableRecord("indexingInfoTable", Array(
-						 info["id"]
-						,info["status"]
-						,info["docSize"]
-						,info["duration"]
-						,info["time"]
-					));
-				}
-			});
+					table1.find("tbody").html(table2.find("tbody").html());
+				});
+		}
+		fnRefreshCollectionInfo();
 		
-		requestProxy("post", {
-				uri:"/management/servers/list"
-			}, "json", function(nodeList) {
-				nodeList = nodeList["nodeList"];
-				requestProxy("post", {
-						uri:"/management/servers/systemHealth"
-					}, "json", function(health) {
-						
-						for(var inx=0; inx < nodeList.length ; inx++) {
-							var node = nodeList[inx];
-							var nodeId = node["id"];
-							var info = health[nodeId];
-							var diskPrint = "";
-							var memoryPrint = "";
-							if(info) {
-								diskPrint = info["totalDiskSize"];
-								if(diskPrint > 0) {
-									diskPrint = Math.round(info["usedDiskSize"] / diskPrint * 10000) / 100;
-									diskPrint = diskPrint+"% ("+info["usedDiskSize"]+"MB / "+info["totalDiskSize"]+"MB)";
-								}
-								memoryPrint = info["maxMemory"];
-								if(memoryPrint > 0) {
-									memoryPrint = Math.round(info["usedMemory"] / memoryPrint * 10000) / 100;
-									memoryPrint = memoryPrint+"% ("+info["usedMemory"]+"MB / "+info["maxMemory"]+"MB)";
-								}
-								info["jvmCpuUse"]+="%";
-								info["systemCpuUse"]+="%";
-								info["totalMemory"]+="MB";
-							} else {
-								info = {jvmCpuUse:"",systemCpuUse:"",totalMemory:"",systemLoadAverage:""};
-							}
-							appendTableRecord("systemInfoTable", Array(
-								inx + 1
-								,node["name"]
-								,node["host"]
-								,node["port"]
-								,(node["active"]==true?"Alive":"Gone")
-								,diskPrint
-								,info["jvmCpuUse"]
-								,info["systemCpuUse"]
-								,memoryPrint
-								,info["totalMemory"]
-								,info["systemLoadAverage"]
-							));
+		var fnRefreshIndexinInfoList = function() {
+			requestProxy("post", {
+					uri:"/management/collections/collection-indexing-info-list"
+				}, "json", function(indexingInfoListData) {
+					var indexingInfoList = indexingInfoListData["indexingInfoList"];
+					var table1 = $("#indexing_info_table");
+					var table2 = $(document.createElement("table"));
+					
+					for(var inx=0;inx < indexingInfoList.length; inx++) {
+						var info = indexingInfoList[inx];
+						if(info["time"]) {
+							info["time"]=info["time"]+" ago";
 						}
-					});
-			});
+						appendTableRecord(table2, Array(
+							 info["id"]
+							,info["status"]
+							,info["docSize"]
+							,info["duration"]
+							,info["time"]
+						));
+					}
+					table1.find("tbody").html(table2.find("tbody").html());
+				});
+		}
+		fnRefreshIndexinInfoList();
+		
+		var fnRefreshSystemInfo = function() {
+		
+			requestProxy("post", {
+					uri:"/management/servers/list"
+				}, "json", function(nodeList) {
+					nodeList = nodeList["nodeList"];
+					requestProxy("post", {
+							uri:"/management/servers/systemHealth"
+						}, "json", function(health) {
+							
+							var table1 = $("#system_info_table");
+							var table2 = $(document.createElement("table"));
+							
+							for(var inx=0; inx < nodeList.length ; inx++) {
+								var node = nodeList[inx];
+								var nodeId = node["id"];
+								var info = health[nodeId];
+								var diskPrint = "";
+								var memoryPrint = "";
+								if(info) {
+									diskPrint = info["totalDiskSize"];
+									if(diskPrint > 0) {
+										diskPrint = Math.round(info["usedDiskSize"] / diskPrint * 10000) / 100;
+										diskPrint = diskPrint+"% ("+info["usedDiskSize"]+"MB / "+info["totalDiskSize"]+"MB)";
+									}
+									memoryPrint = info["maxMemory"];
+									if(memoryPrint > 0) {
+										memoryPrint = Math.round(info["usedMemory"] / memoryPrint * 10000) / 100;
+										memoryPrint = memoryPrint+"% ("+info["usedMemory"]+"MB / "+info["maxMemory"]+"MB)";
+									}
+									info["jvmCpuUse"]+="%";
+									info["systemCpuUse"]+="%";
+									info["totalMemory"]+="MB";
+								} else {
+									info = {jvmCpuUse:"",systemCpuUse:"",totalMemory:"",systemLoadAverage:""};
+								}
+								appendTableRecord(table2, Array(
+									inx + 1
+									,node["name"]
+									,node["host"]
+									,node["port"]
+									,(node["active"]==true?"Alive":"Gone")
+									,diskPrint
+									,info["jvmCpuUse"]
+									,info["systemCpuUse"]
+									,memoryPrint
+									,info["totalMemory"]
+									,info["systemLoadAverage"]
+								));
+							}
+							table1.find("tbody").html(table2.find("tbody").html());
+						});
+				});
+		}
+		fnRefreshSystemInfo();
+		
+		var fnRefreshLog = function() {
+			requestProxy("post", {
+					uri:"/management/logs/notification-history-list",
+					start:0, end:5
+				}, "json", function(notificationData) {
+					var table1 = $("#log_table");
+					var table2 = $(document.createElement("table"));
+					
+					var notifications = notificationData["notifications"];
+					for(var inx=0;inx<notifications.length;inx++) {
+						var time = notifications[inx]["regtime"];
+						appendTableRecord(table2, Array(
+							notifications[inx]["message"], 
+							time
+						));
+					}
+					table1.find("tbody").html(table2.find("tbody").html());
+				});
+		}
+		fnRefreshLog();
+		
+		var fnRefreshTaskInfo = function() {
+			
+			requestProxy("post", {
+					uri:"/management/common/all-task-state",
+					start:0, end:5
+				}, "json", function(taskInfo) {
+					var table1 = $("#task_info_table");
+					var table2 = $(document.createElement("table"));
+					
+					table1.find("tbody").html(table2.find("tbody").html());
+				});
+		}
+		fnRefreshTaskInfo();
+		
 	});
 </script>
 </head>
@@ -231,7 +289,7 @@
 								</div>
 							</div>
 							<div class="widget-content no-padding">
-								<table id="collectionInfoTable" class="table table-bordered table-hover">
+								<table id="collection_info_table" class="table table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>Collection</th>
@@ -254,7 +312,7 @@
 								<h4><i class="icon-reorder"></i> Indexing Result</h4>
 							</div>
 							<div class="widget-content no-padding">
-								<table id="indexingInfoTable" class="table table-hover table-bordered">
+								<table id="indexing_info_table" class="table table-hover table-bordered">
 									<thead>
 										<tr>
 											<th>Collection</th>
@@ -285,7 +343,7 @@
 								</div>
 							</div>
 							<div class="widget-content no-padding">
-								<table id="systemInfoTable" class="table table-bordered table-hover">
+								<table id="system_info_table" class="table table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>#</th>
@@ -329,30 +387,6 @@
 										</tr>
 									</thead>
 									<tbody>
-											
-										<tr>
-											<td class="">community_etc컬렉션의 FULL색인이 실패하였습니다.</td>
-											<td>10 min ago</td>
-										</tr>
-										<tr>
-											<td class="">community_etc컬렉션의 FULL색인이 Manual실행되었습니다.</td>
-											<td>8 min ago</td>
-										</tr>
-										<tr>
-											<td class="">community_etc컬렉션의 FULL색인이 실패하였습니다.</td>
-											<td>6 min ago</td>
-										</tr>
-										<tr>
-											<td class="">community_etc컬렉션의 FULL색인이 Manual실행되었습니다.</td>
-											<td>5 min ago</td>
-										</tr>
-										<tr>
-											<td class="">community_etc컬렉션의 FULL색인이 실패하였습니다.</td>
-											<td>3 min ago</td>
-										</tr>
-										
-				
-			
 									</tbody>
 								</table>
 							</div> <!-- /.widget-content -->
@@ -370,7 +404,7 @@
 								</div>
 							</div>
 							<div class="widget-content no-padding">
-								<table class="table table-bordered table-checkable table-hover">
+								<table id="task_info" class="table table-bordered table-checkable table-hover">
 									<thead>
 										<tr>
 											<th>#</th>

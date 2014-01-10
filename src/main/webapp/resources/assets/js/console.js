@@ -583,13 +583,13 @@ function operateCollection(collectionId, command){
 	}
 }
 
-
-function appendTableRecord(tableId, dataArray) {
-	var tableObject = $("#"+tableId);
-	var tbodyObject = tableObject.find("tbody");
-	if( !tbodyObject ) {
-		tbodyObject = tableObject;
+function appendTableRecord(tableElement, dataArray) {
+	var tbodyObject = tableElement.find("tbody");
+	if( !tbodyObject[0] ) {
+		tbodyObject = $(document.createElement("tbody"));
+		tableElement[0].appendChild(tbodyObject[0]);
 	}
+	
 	var trObject = document.createElement("tr");
 	for( var inx=0; inx<dataArray.length; inx++) {
 		var tdObject = document.createElement("td");
