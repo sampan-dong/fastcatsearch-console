@@ -625,11 +625,11 @@ var MINUTE=SECOND*60;
 var HOUR = MINUTE*60;
 var DAY = HOUR*24;
 
-function getTimeHumanReadable(millis, depths) {
+function getTimeHumanReadable(millis, decimal, depths) {
 	var ret = "";
 	if(millis >= DAY) {
 		if(depths == undefined) {
-			var value = Math.floor(millis / DAY * 100) / 100;
+			var value = Math.floor(millis / DAY * decimal) / decimal;
 			return value + " days ";
 		} else if(depths>0 || ret=="") {
 			var value = Math.floor(millis / DAY);
@@ -640,7 +640,7 @@ function getTimeHumanReadable(millis, depths) {
 	}
 	if(millis >= HOUR) {
 		if(depths == undefined) {
-			var value = Math.floor(millis / HOUR * 100) / 100;
+			var value = Math.floor(millis / HOUR * decimal) / decimal;
 			return value + " hours ";
 		} else if(depths>0 || ret=="") {
 			var value = Math.floor(millis / HOUR);
@@ -651,22 +651,22 @@ function getTimeHumanReadable(millis, depths) {
 	}
 	if(millis >= MINUTE) {
 		if(depths == undefined) {
-			var value = Math.floor(millis / MINUTE * 100) / 100;
-			return value + " minutes ";
+			var value = Math.floor(millis / MINUTE * decimal) / decimal;
+			return value + " mins ";
 		} else if(depths>0 || ret=="") {
 			var value = Math.floor(millis / MINUTE);
-			ret += value + " minutes ";
+			ret += value + " mins ";
 			depths--;
 			millis -= value * MINUTE;
 		}
 	}
 	if(millis >= SECOND) {
 		if(depths == undefined) {
-			var value = Math.floor(millis / SECOND * 100) / 100;
-			return value + " seconds ";
+			var value = Math.floor(millis / SECOND * decimal) / decimal;
+			return value + " secs ";
 		} else if(depths>0 || ret=="") {
 			var value = Math.floor(millis / SECOND);
-			ret += value + " seconds ";
+			ret += value + " secs ";
 			depths--;
 			millis -= value * SECOND;
 		}

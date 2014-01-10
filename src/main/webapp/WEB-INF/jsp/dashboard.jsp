@@ -131,12 +131,12 @@
 					for(var inx=0;inx < indexingInfoList.length; inx++) {
 						var info = indexingInfoList[inx];
 						if(info["duration"]) {
-							info["duration"]=getTimeHumanReadable(info["duration"]*1,2);
+							info["duration"]=getTimeHumanReadable(info["duration"]*1,1,2);
 						}
 						if(info["time"]) {
 							info["time"]=
 								getTimeHumanReadable(new Date().getTime() - 
-								parseDate(info["time"]).getTime())+ " ago";
+								parseDate(info["time"]).getTime(),1,2)+ " ago";
 						}
 						appendTableRecord(table2, Array(
 							 info["id"]
@@ -220,7 +220,7 @@
 						var time1 = parseDate(notifications[inx]["regtime"]).getTime();
 						var time2 = new Date().getTime();
 						
-						var time = getTimeHumanReadable(time2-time1);
+						var time = getTimeHumanReadable(time2-time1,1);
 						
 						if(time) {
 							time+=" ago";
@@ -244,6 +244,17 @@
 				}, "json", function(taskInfo) {
 					var table1 = $("#task_info_table");
 					var table2 = $(document.createElement("table"));
+					
+					var taskList = taskInfo["taskState"];
+					for(var inx=0;inx<taskList.length;inx++) {
+						var task = taskList[inx];
+						appendTableRecord(table2, Array(
+							inx+1
+							,task["summary"]
+							,task["elapsed"]
+							,task["startTime"]
+						));
+					}
 					
 					table1.find("tbody").html(table2.find("tbody").html());
 				});
@@ -417,28 +428,16 @@
 								</div>
 							</div>
 							<div class="widget-content no-padding">
-								<table id="task_info" class="table table-bordered table-checkable table-hover">
+								<table id="task_info_table" class="table table-bordered table-checkable table-hover">
 									<thead>
 										<tr>
 											<th>#</th>
-											<th>Task Name</th>
-											<th>Status</th>
+											<th>Task</th>
+											<th>Elapsed</th>
 											<th>Start Time</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Indexing</td>
-											<td>[Sample] collection full indexing manually 420000 documents ..</td>
-											<td>4.5 hours ago</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Indexing</td>
-											<td>[Vol] collection add indexing manually 20000 documents ..</td>
-											<td>1.5 hours ago</td>
-										</tr>
 									</tbody>
 								</table>
 							</div> <!-- /.widget-content -->
