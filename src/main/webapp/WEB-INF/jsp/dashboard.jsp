@@ -130,8 +130,13 @@
 					
 					for(var inx=0;inx < indexingInfoList.length; inx++) {
 						var info = indexingInfoList[inx];
+						if(info["duration"]) {
+							info["duration"]=getTimeHumanReadable(info["duration"]*1,2);
+						}
 						if(info["time"]) {
-							info["time"]=info["time"]+" ago";
+							info["time"]=
+								getTimeHumanReadable(new Date().getTime() - 
+								parseDate(info["time"]).getTime())+ " ago";
 						}
 						appendTableRecord(table2, Array(
 							 info["id"]
@@ -212,7 +217,15 @@
 					
 					var notifications = notificationData["notifications"];
 					for(var inx=0;inx<notifications.length;inx++) {
-						var time = notifications[inx]["regtime"];
+						var time1 = parseDate(notifications[inx]["regtime"]).getTime();
+						var time2 = new Date().getTime();
+						
+						var time = getTimeHumanReadable(time2-time1);
+						
+						if(time) {
+							time+=" ago";
+						}
+						
 						appendTableRecord(table2, Array(
 							notifications[inx]["message"], 
 							time

@@ -601,3 +601,83 @@ function appendTableRecord(tableElement, dataArray) {
 	}
 	tbodyObject[0].appendChild(trObject);
 }
+
+function parseDate(dateStr) {
+	dateStr = dateStr.replace(/[-\/:. ]/g,"");
+	for(var inx=dateStr.length; inx < 17; inx++) {
+		dateStr+="0";
+	}
+	var year = dateStr.substr(0,4);
+	var month = dateStr.substr(4,2) * 1 - 1;
+	var date = dateStr.substr(6,2);
+	
+	var hour = dateStr.substr(8,2);
+	var minute = dateStr.substr(10,2);
+	var second = dateStr.substr(12,2);
+	
+	var milli = dateStr.substr(14,3);
+	
+	return new Date(year,month,date,hour,minute,second,milli);
+}
+
+var SECOND=1000;
+var MINUTE=SECOND*60;
+var HOUR = MINUTE*60;
+var DAY = HOUR*24;
+
+function getTimeHumanReadable(millis, depths) {
+	var ret = "";
+	if(millis >= DAY) {
+		if(depths == undefined) {
+			var value = Math.floor(millis / DAY * 100) / 100;
+			return value + " days ";
+		} else if(depths>0 || ret=="") {
+			var value = Math.floor(millis / DAY);
+			ret += value + " days ";
+			depths--;
+			millis -= (value * DAY);
+		}
+	}
+	if(millis >= HOUR) {
+		if(depths == undefined) {
+			var value = Math.floor(millis / HOUR * 100) / 100;
+			return value + " hours ";
+		} else if(depths>0 || ret=="") {
+			var value = Math.floor(millis / HOUR);
+			ret += value + " hours ";
+			depths--;
+			millis -= value * HOUR;
+		}
+	}
+	if(millis >= MINUTE) {
+		if(depths == undefined) {
+			var value = Math.floor(millis / MINUTE * 100) / 100;
+			return value + " minutes ";
+		} else if(depths>0 || ret=="") {
+			var value = Math.floor(millis / MINUTE);
+			ret += value + " minutes ";
+			depths--;
+			millis -= value * MINUTE;
+		}
+	}
+	if(millis >= SECOND) {
+		if(depths == undefined) {
+			var value = Math.floor(millis / SECOND * 100) / 100;
+			return value + " seconds ";
+		} else if(depths>0 || ret=="") {
+			var value = Math.floor(millis / SECOND);
+			ret += value + " seconds ";
+			depths--;
+			millis -= value * SECOND;
+		}
+	}
+	if(millis < SECOND) {
+		if(depths == undefined) {
+			return millis + " ms ";
+		} else if(depths > 0 || ret=="") {
+			ret += millis + " ms ";
+		}
+	}
+	ret = ret.replace(/([ ]+)$/,"");
+	return ret;
+}
