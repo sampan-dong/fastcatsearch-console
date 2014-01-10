@@ -124,12 +124,13 @@
 					}
 					table1.find("tbody").html(table2.find("tbody").html());
 				});
-			table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
-				location.href=CONTEXT+"/manager/collections/index.html";
-			});
-			table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshCollectionInfo;
+			return table1;
 		}
-		fnRefreshCollectionInfo();
+		var table = fnRefreshCollectionInfo();
+		table.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
+			location.href=CONTEXT+"/manager/collections/index.html";
+		});
+		table.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshCollectionInfo);
 		
 		var fnRefreshIndexinInfoList = function() {
 			console.log("call refreshIndexingInfo");
@@ -160,9 +161,10 @@
 					}
 					table1.find("tbody").html(table2.find("tbody").html());
 				});
-			table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshIndexinInfoList;
+			return table1;
 		}
-		fnRefreshIndexinInfoList();
+		var table = fnRefreshIndexinInfoList();
+		table.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshIndexinInfoList);
 		
 		var fnRefreshSystemInfo = function() {
 			console.log("call refreshSystemInfo");
@@ -221,12 +223,13 @@
 							table1.find("tbody").html(table2.find("tbody").html());
 						});
 				});
-				table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
-					location.href=CONTEXT+"/manager/servers/overview.html";
-				});
-				table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshSystemInfo;
+			return table1;
 		}
-		fnRefreshSystemInfo();
+		var table = fnRefreshSystemInfo();
+		table.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
+			location.href=CONTEXT+"/manager/servers/overview.html";
+		});
+		table.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshSystemInfo);
 		
 		var fnRefreshLog = function() {
 			console.log("call refreshLog");
@@ -255,12 +258,13 @@
 					}
 					table1.find("tbody").html(table2.find("tbody").html());
 				});
-			table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
-				location.href=CONTEXT+"/manager/logs/notifications.html";
-			});
-			table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshLog;
+			return table1;
 		}
-		fnRefreshLog();
+		var table = fnRefreshLog();
+		table.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
+			location.href=CONTEXT+"/manager/logs/notifications.html";
+		});
+		table.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshLog);
 		
 		var fnRefreshTaskInfo = function() {
 			console.log("call refreshTaskInfo");
@@ -284,12 +288,13 @@
 					
 					table1.find("tbody").html(table2.find("tbody").html());
 				});
-			table1.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
-				location.href=CONTEXT+"/manager/logs/tasks.html";
-			});
-			table1.parent().parent().find("span.btn-xs i.icon-refresh")[0].onclick=fnRefreshTaskInfo;
+			return table1;
 		}
-		fnRefreshTaskInfo();
+		var table = fnRefreshTaskInfo();
+		table.parent().parent().find("span.btn-xs i.icon-external-link").click(function() {
+			location.href=CONTEXT+"/manager/logs/tasks.html";
+		});
+		table.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshTaskInfo);
 		
 	});
 </script>
