@@ -143,7 +143,7 @@
 								parseDate(info["time"]).getTime(),1,2)+ " ago";
 						}
 						appendTableRecord(table2, Array(
-							 info["id"]
+							info["name"]+" ("+info["id"]+")"
 							,info["status"]
 							,info["docSize"]
 							,info["duration"]
@@ -151,6 +151,7 @@
 						));
 					}
 					table1.find("tbody").html(table2.find("tbody").html());
+					table1.parent().parent().find("span.btn-xs i.icon-refresh").click(fnRefreshIndexinInfoList);
 				});
 		}
 		fnRefreshIndexinInfoList();
@@ -324,10 +325,8 @@
 								<h4><i class="icon-reorder"></i> Collections</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
-										<span class="btn btn-xs">
-											<i class="icon-refresh"></i>
-											<i class="icon-external-link"></i>
-										</span>
+										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
+										<span class="btn btn-xs"><i class="icon-external-link"></i></span>
 									</div>
 								</div>
 							</div>
@@ -353,6 +352,11 @@
 						<div class="widget box">
 							<div class="widget-header">
 								<h4><i class="icon-reorder"></i> Indexing Result</h4>
+								<div class="toolbar no-padding">
+									<div class="btn-group">
+										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
+									</div>
+								</div>
 							</div>
 							<div class="widget-content no-padding">
 								<table id="indexing_info_table" class="table table-hover table-bordered">
@@ -381,10 +385,8 @@
 								<h4><i class="icon-reorder"></i> Server Status</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
-										<span class="btn btn-xs">
-											<i class="icon-refresh"></i>
-											<i class="icon-external-link"></i>
-										</span>
+										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
+										<span class="btn btn-xs"><i class="icon-external-link"></i></span>
 									</div>
 								</div>
 							</div>
@@ -420,10 +422,8 @@
 								<h4><i class="icon-reorder"></i> Notifications</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
-										<span class="btn btn-xs">
-											<i class="icon-refresh"></i>
-											<i class="icon-external-link"></i>
-										</span>
+										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
+										<span class="btn btn-xs"><i class="icon-external-link"></i></span>
 									</div>
 								</div>
 							</div>
@@ -449,10 +449,8 @@
 								<h4><i class="icon-reorder"></i> Running Tasks</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
-										<span class="btn btn-xs">
-											<i class="icon-refresh"></i>
-											<i class="icon-external-link"></i>
-										</span>
+										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
+										<span class="btn btn-xs"><i class="icon-external-link"></i></span>
 									</div>
 								</div>
 							</div>
