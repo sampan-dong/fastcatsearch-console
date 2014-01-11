@@ -51,7 +51,7 @@
 		
 		
 		// Initialize flot
-		var plot = $.plot("#chart_multiple", series_multiple, $.extend(true, {}, Plugins.getFlotDefaults(), {
+		var plot = $.plot("#chart_qps_bar", series_multiple, $.extend(true, {}, Plugins.getFlotDefaults(), {
 			series: {
 				stack: true,
 				bars: {
@@ -77,18 +77,28 @@
 				tickDecimals: 0
 			},
 			legend: {
-				position: "nw"
+				position: "nw",
+				noColumns: 10,
+				container: $("#chart_legend")
 			}
 		}));
 		
+		var startTime = new Date().getTime();
+		var rt_qps = 0;
+		var total_time_elapsed = 0;
+		var total_throughput = 0;
 		function update() {
 			requestSyncProxy("get", {uri:"/management/common/realtime-query-count.json"}, "json", function(data){
+				rt_qps = 0;
+				total_time_elapsed++;
 				for( var i = 0; i < collectionList.length; i++ ){
 					id = collectionList[i].id;
 					if(data != 'undefined'){
 						count = data[id];
 						if(count){
 							pushData(id, count);
+							rt_qps += count;
+							total_throughput += count;
 						}else{
 							pushData(id, 0);
 						}
@@ -97,6 +107,12 @@
 					}
 				}
 				
+				var now = new Date().getTime();
+				var diff = now - startTime;
+				$("#rt_qps").text(rt_qps);
+				$("#avg_qps").text(Math.round((total_throughput / total_time_elapsed) * 10) / 10);
+				$("#time_elapsed").text(getTimeHumanReadableDigits(diff));
+				$("#current_time").text(formatTime(new Date()));
 				plot.setData(series_multiple);
 				plot.setupGrid();
 				plot.draw();
@@ -329,8 +345,30 @@
 							<div class="widget-header">
 								<h4><i class="icon-reorder"></i> Realtime Query Request</h4>
 							</div>
+							<div class="widget-content" style="border-bottom: 1px solid #d9d9d9;">
+								<div id="chart_legend"></div>
+								<div id="chart_qps_bar" class="chart-medium fcol100"></div>
+							</div>
 							<div class="widget-content">
-								<div id="chart_multiple" class="chart chart-medium"></div>
+								<ul class="stats stats-sm"> <!-- .no-dividers -->
+									<li>
+										<strong id="current_time">&nbsp;</strong>
+										<small>Current Time</small>
+									</li>
+									<li>
+										<strong id="time_elapsed">&nbsp;</strong>
+										<small>Time Elapsed</small>
+									</li>
+									<li>
+										<strong id="avg_qps">0</strong>
+										<small>Average QPS</small>
+									</li>
+									<li>
+										<strong id="rt_qps">0</strong>
+										<small>Realtime QPS</small>
+									</li>
+								</ul>
+								
 							</div>
 						</div>
 					</div>

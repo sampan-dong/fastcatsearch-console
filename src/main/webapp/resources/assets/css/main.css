@@ -2684,18 +2684,7 @@ label > span.required {
   /* Sizes */
 
 }
-.chart.chart-small {
-  height: 100px;
-}
-.chart.chart-medium {
-  height: 200px;
-}
-.chart.chart-normal {
-  height: 250px;
-}
-.chart.chart-large {
-  height: 400px;
-}
+
 /* * * * * * * * * * * *
  * Tooltip
  * * * * * * * * * * * */
