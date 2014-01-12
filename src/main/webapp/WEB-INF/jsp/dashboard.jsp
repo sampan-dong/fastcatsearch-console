@@ -74,7 +74,8 @@
 			yaxis: {
 				min: 0,
 				minTickSize:1,
-				tickDecimals: 0
+				tickDecimals: 0,
+				position: "right"
 			},
 			legend: {
 				position: "nw",
