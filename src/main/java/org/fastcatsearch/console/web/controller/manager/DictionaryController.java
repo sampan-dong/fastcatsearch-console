@@ -124,7 +124,7 @@ public class DictionaryController extends AbstractController {
 			searchKeyword = keyword;
 		}else{
 			if(keyword != null && keyword.length() > 0){
-				searchKeyword = "%25" + keyword + "%25";
+				searchKeyword = "%" + keyword + "%";
 			}
 		}
 		if(searchColumn.equals("_ALL")){

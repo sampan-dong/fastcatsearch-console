@@ -681,3 +681,68 @@ function getTimeHumanReadable(millis, decimal, depths) {
 	ret = ret.replace(/([ ]+)$/,"");
 	return ret;
 }
+//1days 03:10:15 와 같이 리턴한다.
+function getTimeHumanReadableDigits(millis) {
+	var ret = "";
+	if(millis >= DAY) {
+		var value = Math.floor(millis / DAY);
+		ret += value + " days ";
+		millis -= (value * DAY);
+	}
+	if(millis >= HOUR) {
+		var value = Math.floor(millis / HOUR);
+		if(value < 10) {
+			value = "0"+value;
+		}
+		ret += value + ":";
+		millis -= value * HOUR;
+	}else{
+		ret += "00:"; 
+	}
+	if(millis >= MINUTE) {
+		var value = Math.floor(millis / MINUTE);
+		if(value < 10) {
+			value = "0"+value;
+		}
+		ret += value + ":";
+		millis -= value * MINUTE;
+	}else{
+		ret += "00:";
+	}
+	if(millis >= SECOND) {
+		var value = Math.floor(millis / SECOND);
+		if(value < 10) {
+			value = "0"+value;
+		}
+		ret += value;
+		millis -= value * SECOND;
+	}else{
+		ret += "00";
+	}
+	return ret;
+}
+function formatDate(d){
+	var year = d.getFullYear();
+	var month = d.getMonth() + 1; //Months are zero based
+	var date = d.getDate();
+	var hours = d.getHours();
+	var mins = d.getMinutes();
+	var secs = d.getSeconds();
+	
+	return getTwoDigits(year) + "." + getTwoDigits(month) + "." + getTwoDigits(date)
+	 + " " + getTwoDigits(hours) + ":" + getTwoDigits(mins) + ":" + getTwoDigits(secs);
+}
+function formatTime(d){
+	var hours = d.getHours();
+	var mins = d.getMinutes();
+	var secs = d.getSeconds();
+	
+	return getTwoDigits(hours) + ":" + getTwoDigits(mins) + ":" + getTwoDigits(secs);
+}
+
+function getTwoDigits(i){
+	if(i < 10){
+		return "0"+i;
+	}else
+		return i;
+}

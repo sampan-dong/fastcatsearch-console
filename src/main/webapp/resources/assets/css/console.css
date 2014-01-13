@@ -7,6 +7,7 @@
 .fcol3 {width: 300px;}
 .fcol4 {width: 400px;}
 .fcol5 {width: 500px;}
+.fcol100 {width: 100%;}
 
 .dataWidth { width: 150px; }
 
@@ -142,3 +143,9 @@ td.analysis-tools-detail div {line-height: 200%;}
 table.table-vertical-align-middle tbody tr td { vertical-align:middle; }
 
 .bottom-space-sm {margin-bottom: 7px;}
+
+ul.stats-sm li strong {font-size: 20px;padding:0;}
+ul.stats-sm li, ul.stats-sm li small {padding:0}
+
+.chart-medium { height: 200px;z-index: 90;overflow: hidden; }
+
