@@ -16,17 +16,13 @@
 <script>
 $(document).ready(function(){
 	//load dictionary tab contents
-	$('#dictionary_tab a').on('shown.bs.tab', function (e) {
+	$('#dictionary_tab a').on('show.bs.tab', function (e) {
 		var targetId = e.target.hash;
 		
 		if(targetId == "#tab_dictionary_overview"){
 			loadToTab("overview.html", null, targetId);
 		}else{
 			var aObj = $(e.target);
-			if($(targetId).text() != ""){
-				//이미 로드되어있으면 다시 로드하지 않음.
-				return;
-			}
 			var dictionaryId = aObj.attr("_id");
 			var dictionaryType = aObj.attr("_type");
 			loadDictionaryTab(dictionaryType, dictionaryId, 1, null, null, false, false, targetId);
