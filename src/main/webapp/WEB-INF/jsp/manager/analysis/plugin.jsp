@@ -48,7 +48,6 @@ JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginO
 							<th>Version</th>
 							<th>Decription</th>
 							<th>Class</th>
-							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -63,7 +62,6 @@ JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginO
 							<td><%=pluginInfo.getString("version") %></td>
 							<td><%=pluginInfo.getString("description") %></td>
 							<td><%=pluginInfo.getString("className") %></td>
-							<td><a href="javascript:reloadPlugin('<%=pluginInfo.getString("id") %>')">Reload</a></td>
 						</tr>
 						<%
 						}
