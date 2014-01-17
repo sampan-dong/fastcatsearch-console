@@ -180,8 +180,8 @@ $(document).ready(function(){
 													<td class=""><%=name %></td>
 													<td class=""><%=type %></td>
 													<td class=""><%=size %></td>
-													<td class=" _field_store " ><label><%="true".equalsIgnoreCase(store) ? "Y" : "N" %></label></td>
-													<td class=" _field_multivalue " ><label><%="true".equalsIgnoreCase(multiValue) ? "Y" : "N" %></label></td>
+													<td class=" _field_store " ><strong><%="true".equalsIgnoreCase(store) ? "Y" : "N" %></strong></td>
+													<td class=" _field_multivalue " ><strong><%="true".equalsIgnoreCase(multiValue) ? "Y" : "N" %></strong></td>
 													<td class=" _field_multivalue_delimiter" ><%=multiValueDelimeter %></td>
 												</tr>														
 												<%

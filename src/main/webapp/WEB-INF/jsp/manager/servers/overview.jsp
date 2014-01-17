@@ -96,53 +96,6 @@
 
 				<div class="widget">
 					<div class="widget-header">
-						<h4>System Information</h4>
-					</div>
-					<div class="widget-content">
-						<table class="table table-hover table-bordered">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Node</th>
-									<th>Engine Path</th>
-									<th>OS Name</th>
-									<th>OS Arch</th>
-									<th>Java Path</th>
-									<th>Java Vendor</th>
-									<th>Java Version</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%
-								Iterator<String> systemInfoIterator = systemInfo.keys();
-								int i = 1;
-								while(systemInfoIterator.hasNext()){
-									String nodeId = systemInfoIterator.next();
-									JSONObject info = systemInfo.optJSONObject(nodeId);
-									if(nodeId != null){
-								%>
-								<tr>
-									<td><%=i++ %></td>
-									<td><%=info.optString("nodeName") %></td>
-									<td><%=info.optString("homePath") %></td>
-									<td><%=info.optString("osName") %></td>
-									<td><%=info.optString("osArch") %></td>
-									<td><%=info.optString("javaHome") %></td>
-									<td><%=info.optString("javaVendor") %></td>
-									<td><%=info.optString("javaVersion") %></td>
-								</tr>
-								<%
-									}
-								}
-								%>
-							</tbody>
-						</table>
-					
-					</div>
-				</div>
-
-				<div class="widget">
-					<div class="widget-header">
 						<h4>System Health</h4>
 					</div>
 					<div class="widget-content">
@@ -206,6 +159,53 @@
 					</div>
 				</div>
 				
+				
+				<div class="widget">
+					<div class="widget-header">
+						<h4>System Information</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Node</th>
+									<th>Engine Path</th>
+									<th>OS Name</th>
+									<th>OS Arch</th>
+									<th>Java Path</th>
+									<th>Java Vendor</th>
+									<th>Java Version</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								Iterator<String> systemInfoIterator = systemInfo.keys();
+								int i = 1;
+								while(systemInfoIterator.hasNext()){
+									String nodeId = systemInfoIterator.next();
+									JSONObject info = systemInfo.optJSONObject(nodeId);
+									if(nodeId != null){
+								%>
+								<tr>
+									<td><%=i++ %></td>
+									<td><%=info.optString("nodeName") %></td>
+									<td><%=info.optString("homePath") %></td>
+									<td><%=info.optString("osName") %></td>
+									<td><%=info.optString("osArch") %></td>
+									<td><%=info.optString("javaHome") %></td>
+									<td><%=info.optString("javaVendor") %></td>
+									<td><%=info.optString("javaVersion") %></td>
+								</tr>
+								<%
+									}
+								}
+								%>
+							</tbody>
+						</table>
+					
+					</div>
+				</div>
 				
 				<!-- /Page Content -->
 			</div>
