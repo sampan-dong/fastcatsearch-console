@@ -3,6 +3,7 @@ package org.fastcatsearch.console.web.controller.manager;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,18 +45,15 @@ public class ServersController extends AbstractController {
 	
 	@RequestMapping("/server")
 	public ModelAndView server(HttpSession session) throws Exception {
-//		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-//		String requestUrl = "/management/servers/list.json";
-//		JSONObject jsonObj = null;
-//		try {
-//			jsonObj = httpPost(session, requestUrl).requestJSON();
-//		} catch (Exception e) {
-//			logger.error("", e);
-//		}
+		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/servers/server");
-		//mav.addObject("nodeList", jsonObj.getJSONArray("nodeList"));
+		mav.addObject("nodeInfo", new JSONObject());
+		mav.addObject("systemHealth", new JSONObject());
+		mav.addObject("systemInfo", new JSONObject());
+		mav.addObject("indexStatusList", new JSONArray());
+		mav.addObject("pluginStatusList", new JSONArray());
 		return mav;
 	}
 	

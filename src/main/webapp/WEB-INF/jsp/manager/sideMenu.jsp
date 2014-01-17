@@ -115,7 +115,7 @@
 					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/servers/overview.html"/>"> <i
 							class="icon-dashboard"></i> Overview
 					</a></li>
-					<%-- <%
+					<%
 					for(int i=0;i<serverList.length(); i++){
 						JSONObject nodeObject = serverList.getJSONObject(i);
 						String id = nodeObject.getString("id");
@@ -126,7 +126,7 @@
 					</a></li>
 					<%
 					}
-					%> --%>
+					%>
 					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/servers/settings.html"/>"> <i
 							class="icon-cogs"></i> Settings
 					</a></li>
@@ -147,7 +147,7 @@
 							<i class="icon-angle-right"></i> Exceptions <span class="arrow"></span>
 					</a></li>
 					<li class="<%=(lcatCurrent && "tasks".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/logs/tasks.html"/>">
-							<i class="icon-angle-right"></i> Tasks <span class="arrow"></span>
+							<i class="icon-angle-right"></i> Running Tasks <span class="arrow"></span>
 					</a></li>
 				</ul></li>
 				

@@ -213,6 +213,12 @@ $(document).ready(function(){
 									</div>
 									<div class="form-group">
 										<div class="col-sm-offset-2 col-sm-10 form-inline">
+											<select id="requestHost" class="form-control select_flat fcol1-2" >
+												<option value="fc-master">fc-master</option>
+												<option value="node2">Node2</option>
+												<option value="search1">Search1</option>
+												<option value="data1">Data1</option>
+											</select>
 											<select id="requestUri1" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>
@@ -239,6 +245,12 @@ $(document).ready(function(){
 									</div>
 									<div class="form-group">
 										<div class="form-inline">
+											<select id="requestHost" class="form-control select_flat fcol1-2" >
+												<option value="fc-master">fc-master</option>
+												<option value="node2">Node2</option>
+												<option value="search1">Search1</option>
+												<option value="data1">Data1</option>
+											</select>
 											<select id="requestUri2" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>

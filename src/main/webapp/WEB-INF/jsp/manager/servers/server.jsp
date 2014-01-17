@@ -2,9 +2,17 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="org.json.*"%>
+<%@page import="java.util.*"%>
+<%@page import="java.text.DecimalFormat"%>
 
 <%
-	//JSONArray nodeList = (JSONArray) request.getAttribute("nodeList");
+	JSONObject nodeInfo = (JSONObject) request.getAttribute("nodeInfo");
+	JSONObject systemHealth = (JSONObject) request.getAttribute("systemHealth");
+	JSONObject systemInfo = (JSONObject) request.getAttribute("systemInfo");
+	
+	JSONArray indexStatusList = (JSONArray) request.getAttribute("indexStatusList");
+	JSONArray pluginStatusList = (JSONArray) request.getAttribute("pluginStatusList");
+	
 %>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
@@ -14,76 +22,7 @@
 <script>
 $(document).ready(function(){
 
-	// Sample Data
-	var data_server_load = [];
-	var data_used_ram    = [];
-
-	// Random data for "Server load"
-	for (var x = 0; x < 200; x+=5) {
-		var y = Math.floor( 50 - 15 + Math.random() * 30 );
-		data_server_load.push([x, y]);
-	}
-
-	// Random data for "Used RAM"
-	function getRandomData() {
-		if (data_used_ram.length > 0)
-			data_used_ram = data_used_ram.slice(1);
-
-		// do a random walk
-		while (data_used_ram.length < 200) {
-			var prev = data_used_ram.length > 0 ? data_used_ram[data_used_ram.length - 1] : 50;
-			var y = prev + Math.random() * 10 - 5;
-			if (y < 0)
-			y = 0;
-			if (y > 100)
-			y = 100;
-			data_used_ram.push(y);
-		}
-
-		// zip the generated y values with the x values
-		var res = [];
-		for (var i = 0; i < data_used_ram.length; ++i)
-		res.push([i, data_used_ram[i]])
-		return res;
-	}
-
-	var series_multiple = [
-		{
-			label: "Used RAM",
-			data: getRandomData(),
-			color: App.getLayoutColorCode('red'),
-			lines: {
-				fill: true
-			},
-			points: {
-				show: false
-			}
-		},{
-			label: "Server load",
-			data: data_server_load,
-			color: App.getLayoutColorCode('blue')
-		}
-	];
-
-	// Initialize flot
-	var plot = $.plot("#chart_multiple", series_multiple, $.extend(true, {}, Plugins.getFlotDefaults(), {
-		series: {
-			lines: { show: true },
-			points: { show: true },
-			grow: { active: true }
-		},
-		grid: {
-			hoverable: true,
-			clickable: true
-		},
-		tooltip: true,
-		tooltipOpts: {
-			content: '%s: %y'
-		}
-	}));
-
 });
-
 </script>
 </head>
 <body>
@@ -114,103 +53,303 @@ $(document).ready(function(){
 				</div>
 				<!-- /Page Header -->
 
-				<div class="row">
-				<div class="col-md-12">
-					<div class="widget box">
-						<div class="widget-header">
-							<h4><i class="icon-reorder"></i> System</h4>
-						</div>
-						<div class="widget-content">
-							<div class="row">
-								<div class="col-md-12">
-									<div id="chart_multiple" class="chart"></div>
-								</div>
-							</div>
-						</div>
-						<div class="divider"></div>
-						<div class="widget-content">
-							<ul class="stats no-dividers">
-								<li class="circular-chart-inline">
-									<div class="circular-chart" data-percent="27" data-size="90">27%</div>
-									<span class="description">Server Load</span>
-								</li>
-								<li class="circular-chart-inline">
-									<div class="circular-chart" data-percent="75" data-size="90" data-bar-color="#e25856">75%</div>
-									<span class="description">Used RAM</span>
-								</li>
-								<li class="circular-chart-inline">
-									<div class="circular-chart" data-percent="10" data-size="90" data-bar-color="#8fc556">281 MB</div>
-									<span class="description">Space</span>
-								</li>
-							</ul>
-						</div>
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Node Settings</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered table-highlight-head">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Name</th>
+									<th>IP Address</th>
+									<th>Service Port</th>
+									<th>Internal Port</th>
+									<th>Enabled</th>
+									<th>Active</th>
+									<th>&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+							<%
+								String id = nodeInfo.optString("id");
+								String name = nodeInfo.optString("name");
+								String host = nodeInfo.optString("host");
+								int servicePort = nodeInfo.optInt("servicePort");
+								int internalPort = nodeInfo.optInt("internalPort");
+								boolean enabled = nodeInfo.optBoolean("enabled");
+								boolean active = nodeInfo.optBoolean("active");
+								
+								String enabledStatus = enabled ? "<span class=\"label text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
+								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
+							%>
+							<tr>
+								<td><strong><%=id %></strong></td>
+								<td><%=name %></td>
+								<td><%=host %></td>
+								<td><%=servicePort %></td>
+								<td><%=internalPort %></td>
+								<td><%=enabledStatus %></td>
+								<td><%=activeStatus %></td>
+								<td><a href="javascript:void(0);">Restart</a> &nbsp;<a href="javascript:void(0);">Shutdown</a></td>
+							</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
+
+
+
+				<div class="widget">
+					<div class="widget-header">
+						<h4>System Health</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered table-highlight-head">
+							<thead>
+								<tr>
+									<th>Disk</th>
+									<th>Java CPU</th>
+									<th>System CPU</th>
+									<th>Java Memory</th>
+									<th>System Memory</th>
+									<th>Load</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+									DecimalFormat decimalFormat = new DecimalFormat("##.#");
+									JSONObject info = systemHealth;
+									int totalDiskSize = info.optInt("totalDiskSize");
+									int usedDiskSize = info.optInt("usedDiskSize");
+									float diskUseRate = 0;
+									if(totalDiskSize > 0){
+										diskUseRate = (float) usedDiskSize / (float) totalDiskSize;
+										diskUseRate *= 100.0;
+									}
+									
+									int usedMemory = info.optInt("usedMemory");
+									int maxMemory = info.optInt("maxMemory");
+									float memoryUseRate = 0;
+									if(maxMemory > 0){
+										memoryUseRate = (float) usedMemory / (float) maxMemory;
+										memoryUseRate *= 100.0;
+									}
+										
+										
+								%>
+								<tr>
+									<td><%=decimalFormat.format(diskUseRate) %>% (<%=usedDiskSize %>MB / <%=totalDiskSize %>MB)</td>
+									<td><%=info.optInt("jvmCpuUse")%>%</td>
+									<td><%=info.optInt("systemCpuUse")%>%</td>
+									<td><%=decimalFormat.format(memoryUseRate) %>% (<%=usedMemory %>MB / <%=maxMemory %>MB)</td>
+									<td><%=info.optInt("totalMemory")%>MB</td>
+									<td><%=decimalFormat.format(info.optDouble("systemLoadAverage")) %></td>
+								</tr>
+							</tbody>
+						</table>
+					
+					</div>
+				</div>
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Running Tasks</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered table-highlight-head">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Task</th>
+									<th>Elapsed</th>
+									<th>Start</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>2</td>
+									<td>Collection Vol1 indexing..130000
+									</td>
+									<td>1h 20m</td>
+									<td>2013-09-10 12:35:00</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="widget">
+					<div class="widget-header">
+						<h4>System Information</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered table-highlight-head">
+							<thead>
+								<tr>
+									<th>Engine Path</th>
+									<th>OS Name</th>
+									<th>OS Arch</th>
+									<th>Java Path</th>
+									<th>Java Vendor</th>
+									<th>Java Version</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><%=systemInfo.optString("homePath") %></td>
+									<td><%=systemInfo.optString("osName") %></td>
+									<td><%=systemInfo.optString("osArch") %></td>
+									<td><%=systemInfo.optString("javaHome") %></td>
+									<td><%=systemInfo.optString("javaVendor") %></td>
+									<td><%=systemInfo.optString("javaVersion") %></td>
+								</tr>
+							</tbody>
+						</table>
+					
+					</div>
+				</div>
+
+
+				<div class="widget ">
+					<div class="widget-header">
+						<h4>Collection Status</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered table-highlight-head">
+							<thead>
+								<tr>
+									<th>Document Size</th>
+									<th>Data Path</th>
+									<th>Data Disk Size</th>
+									<th>Segment Size</th>
+									<th>Revision UUID</th>
+									<th>Update Time</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								for(int i = 0; i < indexStatusList.length(); i++){
+									JSONObject indexStatus = indexStatusList.getJSONObject(i);
+								%>
+								<tr>
+									<td><%=indexStatus.optInt("documentSize", -1) %></td>
+									<td><%=indexStatus.optString("dataPath", "-") %></td>
+									<td><%=indexStatus.optString("diskSize", "-") %></td>
+									<td><%=indexStatus.optInt("segmentSize", -1) %></td>
+									<%
+									String revisionUUID = indexStatus.optString("revisionUUID", "-");
+									if(revisionUUID.length() > 10){
+										revisionUUID = revisionUUID.substring(0, 10);
+									}
+									%>
+									<td><%=revisionUUID %></td>
+									<td><%=indexStatus.optString("createTime", "-") %></td>
+								</tr>
+								<%
+								}
+								%>
+							</tbody>
+						</table>
+					</div>
 				</div>
 				
-				<div class="row">
-					<div class="col-md-6">
-						<div class="widget box">
-							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> Engine Information</h4>
-							</div>
-							<div class="widget-content">
-								<div class="row">
-									<dl class="dl-horizontal">
-										<dt>Install Path</dt>
-										<dd>/home/fastcatsearch/fastcatsearch2</dd>
-									</dl>
-								</div>
-							</div>
-						</div>
+				<div class="widget ">
+					<div class="widget-header">
+						<h4>Plugin Status</h4>
 					</div>
-					<div class="col-md-6">
-						<div class="widget box">
-							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> JVM Information</h4>
-							</div>
-							<div class="widget-content">
-								<div class="row">
-									<dl class="dl-horizontal">
-										<dt>JVM Path</dt>
-										<dd>/home/jvm</dd>
-										<dt>JVM Version</dt>
-										<dd>1.7</dd>
-										<dt>JVM Options </dt>
-										<dd>-Xmx5g -server</dd>
-									</dl>
-								</div>
-							</div>
-						</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered table-highlight-head">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>ID</th>
+									<th>Namespace</th>
+									<th>Class</th>
+									<th>Version</th>
+									<th>Decription</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								for(int i = 0; i < pluginStatusList.length(); i++){
+									JSONObject pluginStatus = pluginStatusList.getJSONObject(i);
+								%>
+								<tr>
+									<td><%=pluginStatus.optInt("documentSize", -1) %></td>
+									<td><%=pluginStatus.optString("dataPath", "-") %></td>
+									<td><%=pluginStatus.optString("diskSize", "-") %></td>
+									<td><%=pluginStatus.optInt("segmentSize", -1) %></td>
+									<%
+									String revisionUUID = pluginStatus.optString("revisionUUID", "-");
+									if(revisionUUID.length() > 10){
+										revisionUUID = revisionUUID.substring(0, 10);
+									}
+									%>
+									<td><%=revisionUUID %></td>
+									<td><%=pluginStatus.optString("createTime", "-") %></td>
+								</tr>
+								<%
+								}
+								%>
+							</tbody>
+						</table>
 					</div>
 				</div>
 				
-				<div class="row">
-				<div class="col-md-6">
-					<div class="widget box">
-						<div class="widget-header">
-							<h4><i class="icon-reorder"></i> Service Module</h4>
-						</div>
-						<div class="widget-content">
-							<table class="table table-hover ">
+				
+				<div class="widget ">
+					<div class="widget-header">
+						<h4>Module Status</h4>
+					</div>
+					<div class="widget-content">
+						<table class="table table-hover table-bordered table-highlight-head">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Status</th>
+									<th>&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
 								<tr>
 									<td>IRService</td>
 									<td>Running</td>
+									<td><a href="javascript:void(0);">Stop</a></td>
+								</tr>
+								<tr>
+									<td>NodeService</td>
+									<td>Stopped</td>
+									<td><a href="javascript:void(0);">Start</a></td>
 								</tr>
 								<tr>
 									<td>DBService</td>
-									<td>Running</td>
+									<td>Stopped</td>
+									<td><a href="javascript:void(0);">Start</a></td>
 								</tr>
 								<tr>
-									<td>XXXService</td>
-									<td>Stop</td>
+									<td>JobService</td>
+									<td>Running</td>
+									<td><a href="javascript:void(0);">Stop</a></td>
 								</tr>
-							</table>
-						</div>
+								<tr>
+									<td>SystemInfoService</td>
+									<td>Running</td>
+									<td><a href="javascript:void(0);">Stop</a></td>
+								</tr>
+								<tr>
+									<td>HttpRequestService</td>
+									<td>Running</td>
+									<td><a href="javascript:void(0);">Stop</a></td>
+								</tr>
+								<tr>
+									<td>NotificationService</td>
+									<td>Running</td>
+									<td><a href="javascript:void(0);">Stop</a></td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
-				</div>
-						
 				<!-- /Page Content -->
 			</div>
 		</div>
