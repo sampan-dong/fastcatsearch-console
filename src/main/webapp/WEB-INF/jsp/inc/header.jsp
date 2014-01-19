@@ -122,12 +122,6 @@
 <script type="text/javascript" src="${contextPath}/resources/assets/js/plugins.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/assets/js/plugins.form-components.js"></script>
 
-
-
-<!-- Demo JS -->
-<script type="text/javascript" src="${contextPath}/resources/assets/js/custom.js"></script>
-<script type="text/javascript" src="${contextPath}/resources/assets/js/demo/pages_calendar.js"></script>
-
 <script type="text/javascript" src="${contextPath}/resources/assets/js/console.js"></script>
 
 <script>

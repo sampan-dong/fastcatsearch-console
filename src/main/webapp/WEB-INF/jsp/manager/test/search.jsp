@@ -132,7 +132,6 @@ $(document).ready(function(){
 					</div>
 				</div>
 				<!-- /Page Header -->
-				serverList  : ${serverList }
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul id="data_tab" class="nav nav-tabs">
 						<li class="active"><a href="#tab_structured_search" data-toggle="tab">Structured Search</a></li>
