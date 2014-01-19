@@ -88,7 +88,7 @@ public class DictionaryController extends AbstractController {
 		
 		JSONObject jsonObj = null;
 		Integer deletedSize = 0; 
-		logger.debug("deleteIdList >> {}", deleteIdList);
+//		logger.debug("deleteIdList >> {}", deleteIdList);
 		if(deleteIdList != null && deleteIdList.length() > 0){
 			String requestUrl = "/management/dictionary/delete.json";
 			jsonObj = httpPost(session, requestUrl)

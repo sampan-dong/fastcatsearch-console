@@ -387,19 +387,22 @@ function <%=dictionaryId%>deleteSelectWord(){
 				<h4 class="modal-title"><%=dictionaryId.toUpperCase() %> Word Insert</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-inline">
+				<div class="form-horizontal">
 					<% 
 					for(int columnInx=0;columnInx < viewColumnList.length(); columnInx++) { 
 						String columnName = viewColumnList.optString(columnInx);
 					%>
-					<div class="form-group" style="width:370px">
-						<input type="text" id="<%=columnName %>_input_${dictionaryId}" class="form-control" placeholder="<%=columnName%>">
+					<div class="form-group">
+						<label for="<%=columnName %>_input_${dictionaryId}" class="col-sm-2 control-label"><%=columnName %></label>
+						<div class="col-sm-10">
+							<input type="text" id="<%=columnName %>_input_${dictionaryId}" class="form-control" placeholder="<%=columnName%>">
+						</div>
 					</div>
 					<% } %>
-					<div class="form-group" style="width:370px">
-						<span class="input-group-btn">
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
 							<button class="btn btn-default" type="button" id="word_input_button_${dictionaryId}">Put</button>
-						</span>
+						</div>
 					</div>
 				</div>
 				<label id="word_input_result_${dictionaryId}" for="word_input" class="help-block" style="word-wrap: break-word;"></label>
