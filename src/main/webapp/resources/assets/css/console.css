@@ -149,3 +149,4 @@ ul.stats-sm li, ul.stats-sm li small {padding:0}
 
 .chart-medium { height: 200px;z-index: 90;overflow: hidden; }
 
+a.transparent,a.transparent:hover {color: #fff}

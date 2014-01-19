@@ -38,7 +38,7 @@ public class ResponseHttpClient {
 	private static final ResponseHandler<JSONObject> jsonResponseHandler = new JSONResponseHandler();
 	private static final ResponseHandler<Document> xmlResponseHandler = new XMLResponseHandler();
 	private static final ResponseHandler<String> textResponseHandler = new TextResponseHandler();
-	
+
 	public ResponseHttpClient(String host) {
 
 		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
@@ -82,47 +82,47 @@ public class ResponseHttpClient {
 	public static abstract class AbstractMethod {
 		protected ResponseHttpClient responseHttpClient;
 		protected String url;
-		
+
 		public AbstractMethod(ResponseHttpClient responseHttpClient, String url) {
 			this.responseHttpClient = responseHttpClient;
 			this.url = url;
 		}
-		
+
 		public abstract String getQueryString();
-		
+
 		public abstract AbstractMethod addParameter(String key, String value);
-		
+
 		protected abstract HttpUriRequest getHttpRequest();
-		
-		public AbstractMethod addParameterString(String parameterString){
+
+		public AbstractMethod addParameterString(String parameterString) {
 			String[] keyValues = parameterString.split("&");
-			for(String keyValue : keyValues){
+			for (String keyValue : keyValues) {
 				keyValue = keyValue.trim();
-				if(keyValue.length() > 0){
+				if (keyValue.length() > 0) {
 					String[] list = keyValue.split("=");
-					if(list.length == 2){
+					if (list.length == 2) {
 						addParameter(list[0], list[1]);
 					}
 				}
 			}
-			
+
 			return this;
 		}
-		
+
 		public JSONObject requestJSON() throws ClientProtocolException, IOException, Http404Error {
 			HttpUriRequest httpUriRequest = null;
 			try {
 				httpUriRequest = getHttpRequest();
 				JSONObject obj = responseHttpClient.httpclient.execute(httpUriRequest, jsonResponseHandler);
-				
+
 				checkAuthorizedMessage(obj);
-				
+
 				return obj;
-			}catch(SocketException e){
+			} catch (SocketException e) {
 				logger.error("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
-			}catch(ClientProtocolException e){
-				if(e.getCause() instanceof Http404Error){
+			} catch (ClientProtocolException e) {
+				if (e.getCause() instanceof Http404Error) {
 					throw (Http404Error) e.getCause();
 				}
 				logger.error("error while request > {}", httpUriRequest);
@@ -131,15 +131,15 @@ public class ResponseHttpClient {
 			}
 			return null;
 		}
-		
+
 		public Document requestXML() throws ClientProtocolException, IOException, Http404Error {
 			try {
 				return responseHttpClient.httpclient.execute(getHttpRequest(), xmlResponseHandler);
-			}catch(SocketException e){
+			} catch (SocketException e) {
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
-			}catch(ClientProtocolException e){
-				if(e.getCause() instanceof Http404Error){
+			} catch (ClientProtocolException e) {
+				if (e.getCause() instanceof Http404Error) {
 					throw (Http404Error) e.getCause();
 				}
 				logger.debug("httpclient error! >> {}, {}", e.getMessage(), e.getCause());
@@ -147,15 +147,15 @@ public class ResponseHttpClient {
 			}
 			return null;
 		}
-		
+
 		public String requestText() throws ClientProtocolException, IOException, Http404Error {
 			try {
 				return responseHttpClient.httpclient.execute(getHttpRequest(), textResponseHandler);
-			}catch(SocketException e){
+			} catch (SocketException e) {
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
-			}catch(ClientProtocolException e){
-				if(e.getCause() instanceof Http404Error){
+			} catch (ClientProtocolException e) {
+				if (e.getCause() instanceof Http404Error) {
 					throw (Http404Error) e.getCause();
 				}
 				logger.debug("httpclient error! >> {}", e.getMessage());
@@ -163,45 +163,45 @@ public class ResponseHttpClient {
 			}
 			return null;
 		}
-		
+
 		private void checkAuthorizedMessage(Object obj) {
-			if(obj instanceof JSONObject) {
+			if (obj instanceof JSONObject) {
 				JSONObject jsonObj = (JSONObject) obj;
 				logger.trace("jsonobj:{}", jsonObj.optString("error"));
-				if("Not Authenticated.".equals(jsonObj.optString("error"))) {
+				if ("Not Authenticated.".equals(jsonObj.optString("error"))) {
 					logger.trace("throwing exception...");
 					throw new InvalidAuthenticationException();
 				}
 			}
 		}
 	}
-	
+
 	public static class GetMethod extends AbstractMethod {
-		
+
 		private String queryString;
-		
+
 		public GetMethod(ResponseHttpClient responseHttpClient, String url) {
 			super(responseHttpClient, url);
 		}
 
-		protected HttpGet getHttpRequest(){
-			if(queryString != null){
+		protected HttpGet getHttpRequest() {
+			if (queryString != null) {
 				return new HttpGet(url + "?" + queryString);
-			}else{
+			} else {
 				return new HttpGet(url);
 			}
 		}
-		
+
 		@Override
 		public GetMethod addParameter(String key, String value) {
 			try {
-				if(value == null){
+				if (value == null) {
 					value = "";
 				}
-				
-				if(queryString == null){
+
+				if (queryString == null) {
 					queryString = "";
-				}else{
+				} else {
 					queryString += "&";
 				}
 				queryString += (key + "=" + URLEncoder.encode(value, "UTF-8"));
@@ -214,7 +214,11 @@ public class ResponseHttpClient {
 
 		@Override
 		public String getQueryString() {
-			return queryString;
+			if (queryString != null) {
+				return queryString;
+			} else {
+				return "";
+			}
 		}
 
 	}
@@ -225,19 +229,25 @@ public class ResponseHttpClient {
 		public PostMethod(ResponseHttpClient responseHttpClient, String url) {
 			super(responseHttpClient, url);
 		}
+
 		@Override
-		protected HttpPost getHttpRequest(){
+		protected HttpPost getHttpRequest() {
 			HttpPost httpost = new HttpPost(url);
 			if (nvps != null) {
 				httpost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 			}
 			return httpost;
 		}
+
 		@Override
-		public String getQueryString(){
-			return URLEncodedUtils.format(nvps, Consts.UTF_8);
+		public String getQueryString() {
+			if (nvps != null) {
+				return URLEncodedUtils.format(nvps, Consts.UTF_8);
+			} else {
+				return "";
+			}
 		}
-		
+
 		@Override
 		public PostMethod addParameter(String key, String value) {
 			if (nvps == null) {
@@ -248,19 +258,19 @@ public class ResponseHttpClient {
 
 			return this;
 		}
-		
-		public String getParameter(String key){
-			if(nvps != null){
-				for(NameValuePair pair : nvps){
-					if(pair.getName().equalsIgnoreCase(key)){
+
+		public String getParameter(String key) {
+			if (nvps != null) {
+				for (NameValuePair pair : nvps) {
+					if (pair.getName().equalsIgnoreCase(key)) {
 						return pair.getValue();
 					}
 				}
 			}
-			
+
 			return null;
 		}
 
 	}
-	
+
 }

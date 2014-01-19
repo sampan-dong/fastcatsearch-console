@@ -64,8 +64,8 @@ $(document).ready(function(){
 									<th>ID</th>
 									<th>Name</th>
 									<th>IP Address</th>
+									<th>Node Port</th>
 									<th>Service Port</th>
-									<th>Internal Port</th>
 									<th>Enabled</th>
 									<th>Active</th>
 									<th>&nbsp;</th>
@@ -76,8 +76,8 @@ $(document).ready(function(){
 								String id = nodeInfo.optString("id");
 								String name = nodeInfo.optString("name");
 								String host = nodeInfo.optString("host");
+								int port = nodeInfo.optInt("port");
 								int servicePort = nodeInfo.optInt("servicePort");
-								int internalPort = nodeInfo.optInt("internalPort");
 								boolean enabled = nodeInfo.optBoolean("enabled");
 								boolean active = nodeInfo.optBoolean("active");
 								
@@ -88,8 +88,8 @@ $(document).ready(function(){
 								<td><strong><%=id %></strong></td>
 								<td><%=name %></td>
 								<td><%=host %></td>
+								<td><%=port %></td>
 								<td><%=servicePort %></td>
-								<td><%=internalPort %></td>
 								<td><%=enabledStatus %></td>
 								<td><%=activeStatus %></td>
 								<td><a href="javascript:void(0);">Restart</a> &nbsp;<a href="javascript:void(0);">Shutdown</a></td>

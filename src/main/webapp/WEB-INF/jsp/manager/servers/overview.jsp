@@ -59,7 +59,8 @@
 									<th>ID</th>
 									<th>Name</th>
 									<th>IP Address</th>
-									<th>Port</th>
+									<th>Node Port</th>
+									<th>Service Port</th>
 									<th>Enabled</th>
 									<th>Active</th>
 								</tr>
@@ -71,6 +72,7 @@
 								String name = nodeList.getJSONObject(i).getString("name");
 								String host = nodeList.getJSONObject(i).getString("host");
 								int port = nodeList.getJSONObject(i).getInt("port");
+								int servicePort = nodeList.getJSONObject(i).getInt("servicePort");
 								boolean enabled = nodeList.getJSONObject(i).getBoolean("enabled");
 								boolean active = nodeList.getJSONObject(i).getBoolean("active");
 								
@@ -83,6 +85,7 @@
 									<td><%=name %></td>
 									<td><%=host %></td>
 									<td><%=port %></td>
+									<td><%=servicePort %></td>
 									<td><%=enabledStatus %></td>
 									<td><%=activeStatus %></td>
 								</tr>
@@ -115,7 +118,7 @@
 							<tbody>
 								<%
 								Iterator<String> systemHealthIterator = systemHealth.keys();
-								i = 1;
+								int i = 1;
 								DecimalFormat decimalFormat = new DecimalFormat("##.#");
 								while(systemHealthIterator.hasNext()){
 									String nodeId = systemHealthIterator.next();
@@ -181,7 +184,7 @@
 							<tbody>
 								<%
 								Iterator<String> systemInfoIterator = systemInfo.keys();
-								int i = 1;
+								i = 1;
 								while(systemInfoIterator.hasNext()){
 									String nodeId = systemInfoIterator.next();
 									JSONObject info = systemInfo.optJSONObject(nodeId);

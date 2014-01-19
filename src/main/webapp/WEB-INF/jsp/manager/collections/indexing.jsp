@@ -123,6 +123,9 @@ function reloadIndexingSchdulePage(){
 								<div class="widget ">
 									<div class="widget-header">
 										<h4>Collection Indexing</h4>
+										<div class="toolbar no-padding">
+											<a href="#advanceIndexTool" role="button" data-toggle="modal" class="transparent">advance</a>
+										</div>
 									</div>
 									<div class="widget-content">
 										<div class="row">
@@ -142,43 +145,6 @@ function reloadIndexingSchdulePage(){
 									</div>
 								</div>
 								
-								
-								<div class="widget "><!-- widget-closed -->
-									<div class="widget-header">
-										<h4>Advanced Index Management</h4>
-										<div class="toolbar no-padding">
-											<span class="widget-collapse"><a href="javascript:void(0);">Toggle</a></span>
-										</div>
-									</div>
-									<div class="widget-content">
-										<div class="row">
-											<div class=" col-md-12">
-												<a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
-													Run Document Full Indexing</a>
-													&nbsp;|&nbsp;
-												<a href="javascript:runIndexBuildFullIndexing('${collectionId}');" class="">
-													Buld Index Full Indexing</a>
-													&nbsp;
-												<%-- <a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
-													<span class="glyphicon glyphicon-play"></span> Run Document Add Indexing</a>
-													&nbsp;
-												<a href="javascript:runRebuildIndex('${collectionId}');" class="">
-													<span class="glyphicon glyphicon-play"></span> Buld Index Add Indexing</a>
-													&nbsp; --%>
-											</div>
-										</div>
-										<br/>
-										<div class="row">
-											<div class=" col-md-12">
-												<a href="javascript:runRebuildIndex('${collectionId}');" class="">
-													Copy Index to Search Nodes..</a>
-												&nbsp;|&nbsp;
-												<a href="javascript:runRebuildIndex('${collectionId}');" class="">
-													Switch to Next Sequence Index</a>
-											</div>
-										</div>
-									</div>
-								</div>
 								<div class="widget ">
 									<div class="widget-header">
 										<h4>Running Indexing Tasks</h4>
@@ -226,5 +192,49 @@ function reloadIndexingSchdulePage(){
 			</div>
 		</div>
 	</div>
+	
+	
+	<div class="modal" id="advanceIndexTool" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Advance Index Tool</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class=" col-md-12">
+							<a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
+								Run Document Full Indexing</a>
+								&nbsp;|&nbsp;
+							<a href="javascript:runIndexBuildFullIndexing('${collectionId}');" class="">
+								Buld Index Full Indexing</a>
+								&nbsp;
+							<%-- <a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
+								<span class="glyphicon glyphicon-play"></span> Run Document Add Indexing</a>
+								&nbsp;
+							<a href="javascript:runRebuildIndex('${collectionId}');" class="">
+								<span class="glyphicon glyphicon-play"></span> Buld Index Add Indexing</a>
+								&nbsp; --%>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class=" col-md-12">
+							<a href="javascript:runRebuildIndex('${collectionId}');" class="">
+								Copy Index to Search Nodes..</a>
+							&nbsp;|&nbsp;
+							<a href="javascript:runRebuildIndex('${collectionId}');" class="">
+								Switch to Next Sequence Index</a>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      	</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>	
+	
 </body>
 </html>

@@ -8,6 +8,10 @@
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+<%
+	JSONArray serverList = (JSONArray) request.getAttribute("serverList");
+
+%>
 <script>
 $(document).ready(function(){
 	
@@ -27,6 +31,7 @@ $(document).ready(function(){
 			url : "searchQueryResult.html",
 			type: "POST",
 			data : {
+				host: $("#requestHost2").val(),
 				requestUri: $("#requestUri2").val(),
 				queryString: $("#searchQueryText").val()
 			},
@@ -63,9 +68,8 @@ $(document).ready(function(){
 		$("#searchStructuredButton").button('loading');
 		var array = $(this).serializeArray();
 		console.log("array > ", array);
-		params = {
-			requestUri: $("#requestUri1").val()
-		};
+		params = {};
+		//requestUri: $("#requestUri1").val()
 		
 		for(var i=0;i<array.length; i++){
 			var name = array[i].name;
@@ -128,7 +132,7 @@ $(document).ready(function(){
 					</div>
 				</div>
 				<!-- /Page Header -->
-				
+				serverList  : ${serverList }
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul id="data_tab" class="nav nav-tabs">
 						<li class="active"><a href="#tab_structured_search" data-toggle="tab">Structured Search</a></li>
@@ -213,13 +217,18 @@ $(document).ready(function(){
 									</div>
 									<div class="form-group">
 										<div class="col-sm-offset-2 col-sm-10 form-inline">
-											<select id="requestHost" class="form-control select_flat fcol1-2" >
-												<option value="fc-master">fc-master</option>
-												<option value="node2">Node2</option>
-												<option value="search1">Search1</option>
-												<option value="data1">Data1</option>
+											<select name="host" class="form-control select_flat fcol1-2" >
+												<option value="">Master Node</option>
+												<%
+												for(int i = 0;i < serverList.length(); i++) {
+													JSONObject obj = serverList.getJSONObject(i);
+												%>
+												<option value="<%=(obj.getString("host") + ":" + obj.getInt("servicePort")) %>"><%=obj.getString("name") %></option>
+												<%
+												}
+												%>
 											</select>
-											<select id="requestUri1" class="form-control select_flat fcol2-1" >
+											<select name="requestUri" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>
 												<option value="/service/search-single.json">Search (Single)</option>
@@ -245,11 +254,16 @@ $(document).ready(function(){
 									</div>
 									<div class="form-group">
 										<div class="form-inline">
-											<select id="requestHost" class="form-control select_flat fcol1-2" >
-												<option value="fc-master">fc-master</option>
-												<option value="node2">Node2</option>
-												<option value="search1">Search1</option>
-												<option value="data1">Data1</option>
+											<select id="requestHost2" class="form-control select_flat fcol1-2" >
+												<option value="">Master Node</option>
+												<%
+												for(int i = 0;i < serverList.length(); i++) {
+													JSONObject obj = serverList.getJSONObject(i);
+												%>
+												<option value="<%=(obj.getString("host") + ":" + obj.getInt("servicePort")) %>"><%=obj.getString("name") %></option>
+												<%
+												}
+												%>
 											</select>
 											<select id="requestUri2" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
