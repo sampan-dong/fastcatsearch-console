@@ -13,22 +13,25 @@
 <c:import url="inc/header.jsp" />
 <script>
 
-
-	$(document).ready(function() {
+	var DashboardGraph = function(){
+		
+		var status = "stopped";
 		
 		var collectionList = ${collectionList};
 		var totalPoints = 60;
 
 		//초기셋팅.
 		var collectionData = {};
-		for( var i = 0; i < collectionList.length; i++ ){
-			id = collectionList[i].id;
-			var data = [];
-			for(var j=0; j < totalPoints; j++){
-				data.push([j, 0]);
-			}
-			collectionData[id] = {"data": data, "seq": i};
-		}
+		
+		var series_multiple = [];
+		
+		var plot;
+		var startTime;
+		var rt_qps = 0;
+		var total_time_elapsed = 0;
+		var total_throughput = 0;
+		
+		var intervalHandle;
 		
 		function pushData(id, value) {
 			countArray = collectionData[id].data;
@@ -40,58 +43,10 @@
 			
 			countArray.push([countArray.length, value]);
 		}
-		
-		
-		var series_multiple = [];
-		
-		for( var i = 0; i < collectionList.length; i++ ){
-			id = collectionList[i].id;
-			series_multiple.push({"label": id, "data": collectionData[id].data });
-		}
-		
-		
-		// Initialize flot
-		var plot = $.plot("#chart_qps_bar", series_multiple, $.extend(true, {}, Plugins.getFlotDefaults(), {
-			series: {
-				stack: true,
-				bars: {
-					show: true,
-					align: 'center',
-					lineWidth: 0
-				},
-				lines: { show: false },
-				points: { show: false },
-				grow: { active: false }
-			},
-			grid: {
-				hoverable: true,
-				clickable: true
-			},
-			tooltip: true,
-			tooltipOpts: {
-				content: '%s : %y'
-			},
-			yaxis: {
-				min: 0,
-				minTickSize:1,
-				tickDecimals: 0,
-				position: "right"
-			},
-			legend: {
-				position: "nw",
-				noColumns: 10,
-				container: $("#chart_legend")
-			}
-		}));
-		
-		var startTime = new Date().getTime();
-		var rt_qps = 0;
-		var total_time_elapsed = 0;
-		var total_throughput = 0;
-		function update() {
+		function update(){
 			requestSyncProxy("get", {uri:"/management/common/realtime-query-count.json"}, "json", function(data){
 				rt_qps = 0;
-				total_time_elapsed++;
+				
 				for( var i = 0; i < collectionList.length; i++ ){
 					id = collectionList[i].id;
 					if(data != 'undefined'){
@@ -100,6 +55,7 @@
 							pushData(id, count);
 							rt_qps += count;
 							total_throughput += count;
+							total_time_elapsed++;
 						}else{
 							pushData(id, 0);
 						}
@@ -110,16 +66,122 @@
 				
 				var now = new Date().getTime();
 				var diff = now - startTime;
-				$("#rt_qps").text(rt_qps);
-				$("#avg_qps").text(Math.round((total_throughput / total_time_elapsed) * 10) / 10);
-				$("#time_elapsed").text(getTimeHumanReadableDigits(diff));
-				$("#current_time").text(formatTime(new Date()));
+				var avgQps = 0;
+				if(total_time_elapsed > 0){
+					avgQps = Math.round((total_throughput / total_time_elapsed) * 10) / 10;
+				}
+				updateGraphInfoData(diff, avgQps, rt_qps);
 				plot.setData(series_multiple);
 				plot.setupGrid();
 				plot.draw();
 			});
 		}
-		setInterval(update, 1000);
+		
+		this.init = function() {
+			startTime = new Date().getTime();
+			collectionData = {};
+			series_multiple = [];
+			total_time_elapsed = 0;
+			total_throughput = 0;
+			
+			for( var i = 0; i < collectionList.length; i++ ){
+				id = collectionList[i].id;
+				var data = [];
+				for(var j=0; j < totalPoints; j++){
+					data.push([j, 0]);
+				}
+				collectionData[id] = {"data": data, "seq": i};
+			}
+			
+			for( var i = 0; i < collectionList.length; i++ ){
+				id = collectionList[i].id;
+				series_multiple.push({"label": id, "data": collectionData[id].data });
+			}
+			
+			
+			// Initialize flot
+			plot = $.plot("#chart_qps_bar", series_multiple, $.extend(true, {}, Plugins.getFlotDefaults(), {
+				series: {
+					stack: true,
+					bars: {
+						show: true,
+						align: 'center',
+						lineWidth: 0
+					},
+					lines: { show: false },
+					points: { show: false },
+					grow: { active: false }
+				},
+				grid: {
+					hoverable: true,
+					clickable: true
+				},
+				tooltip: true,
+				tooltipOpts: {
+					content: '%s : %y'
+				},
+				yaxis: {
+					min: 0,
+					minTickSize:1,
+					tickDecimals: 0,
+					position: "right"
+				},
+				legend: {
+					position: "nw",
+					noColumns: 10,
+					container: $("#chart_legend")
+				}
+			}));
+			
+			updateGraphInfoData(0, 0, 0);
+		};
+		
+		this.startUpdate = function(){
+			if(status == "started"){
+				console.log("Already started.");
+				return;
+			}
+			//시작시간은 play버튼 클릭기준이다. 
+			startTime = new Date().getTime();
+			update();//바로 업데이트하고.
+			intervalHandle = setInterval(update, 1000);
+			status = "started";
+		};
+		
+		this.stopUpdate = function(){
+			if(status == "stopped"){
+				console.log("Already stopped.");
+				return;
+			}
+			clearInterval(intervalHandle);
+			status = "stopped";
+		};
+	};
+	
+	function updateGraphInfoData(elapsedTime, avgQps, qps){
+		$("#current_time").text(formatTime(new Date()));
+		$("#time_elapsed").text(getTimeHumanReadableDigits(elapsedTime));
+		$("#avg_qps").text(avgQps);
+		$("#rt_qps").text(qps);
+	}
+	
+	var dashboardGraph = new DashboardGraph();
+	
+	function startGraphUpdate(){
+		dashboardGraph.startUpdate();
+	}
+	function stopGraphUpdate(){
+		dashboardGraph.stopUpdate();
+	}
+	function clearGraph(){
+		dashboardGraph.init();
+	}
+	
+	$(document).ready(function() {
+		dashboardGraph.init();
+		$("#graph-play").on("click", startGraphUpdate);
+		$("#graph-pause").on("click", stopGraphUpdate);
+		$("#graph-clear").on("click", clearGraph);
 		
 		var fnRefreshCollectionInfo = function() {
 			console.log("call refreshCollectionInfo");
@@ -345,6 +407,13 @@
 						<div class="widget box">
 							<div class="widget-header">
 								<h4><i class="icon-reorder"></i> Realtime Query Request</h4>
+								<div class="toolbar no-padding">
+									<div class="btn-group">
+										<span class="btn btn-xs" id="graph-play">&nbsp;<i class="icon-play"></i>&nbsp;</span>
+										<span class="btn btn-xs" id="graph-pause">&nbsp;<i class="icon-pause"></i>&nbsp;</span>
+										<span class="btn btn-xs" id="graph-clear">&nbsp;<i class="icon-ban-circle"></i>&nbsp;</span>
+									</div>
+								</div>
 							</div>
 							<div class="widget-content" style="border-bottom: 1px solid #d9d9d9;">
 								<div id="chart_legend"></div>
