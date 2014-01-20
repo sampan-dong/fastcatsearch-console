@@ -32,17 +32,47 @@
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 <style>
-div#moduleStatus table td a {
-	cursor:pointer;
-}
+div#nodeStatus table td a { cursor:pointer; }
+div#moduleStatus table td a { cursor:pointer; }
 </style>
 <script>
 $(document).ready(function(){
+	
+	$("div#nodeStatus table td a").click(function() {
+		var action = $(this).attr("class");
+		
+		if(confirm("WARNING : this can halt or damage your search-engine")) {
+			
+			var uri="";
+			var nodeId="${nodeId}";
+			
+			if(action=="restart") {
+				uri="/management/servers/restart";
+			} else if(action="shutdown") {
+				uri="/management/servers/shutdown";
+			}
+			
+			if(uri!="" && nodeId!="") {
+				requestProxy("post", {
+					uri:uri,
+					nodeId:nodeId
+				}, "json", function(data) {
+					if(data["success"]==true) {
+						noty({text: "module update success", type: "success", layout:"topRight", timeout: 3000});
+					} else {
+						noty({text: "module update failed", type: "error", layout:"topRight", timeout: 3000});
+					}
+					setTimeout(function(){ location.reload(true); },1000);
+				});
+			}
+		}
+	});
+	
 	$("div#moduleStatus table td a").click(function() {
 		var action = $(this).attr("class");
 		var serviceClass = $(this).parents("tr").attr("id");
 		
-		if(confirm("WARNING : this can halt your search-engine")) {
+		if(confirm("WARNING : this can halt or damage your search-engine")) {
 			
 			requestProxy("post", {
 				uri:"/management/common/update-modules-state",
@@ -54,7 +84,7 @@ $(document).ready(function(){
 				} else {
 					noty({text: "module update failed", type: "error", layout:"topRight", timeout: 3000});
 				}
-				setTimeout(function(){ location.reload(true) },1000);
+				setTimeout(function(){ location.reload(true); },1000);
 			});
 		}
 	});
@@ -89,7 +119,7 @@ $(document).ready(function(){
 				</div>
 				<!-- /Page Header -->
 
-				<div class="widget">
+				<div class="widget" id="nodeStatus">
 					<div class="widget-header">
 						<h4>Node Settings</h4>
 					</div>
@@ -104,7 +134,9 @@ $(document).ready(function(){
 									<th>Service Port</th>
 									<th>Enabled</th>
 									<th>Active</th>
+									<%if (systemActive) { %>
 									<th>&nbsp;</th>
+									<% } %>
 								</tr>
 							</thead>
 							<tbody>
@@ -118,7 +150,7 @@ $(document).ready(function(){
 								int port = nodeSetting.optInt("port");
 								int servicePort = nodeSetting.optInt("servicePort");
 								boolean enabled = nodeSetting.optBoolean("enabled");
-								boolean active = nodeSetting.optBoolean("active");
+								boolean active = systemActive;
 								
 								String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
 								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
@@ -131,14 +163,12 @@ $(document).ready(function(){
 									<td><%=servicePort %></td>
 									<td><%=enabledStatus %></td>
 									<td><%=activeStatus %></td>
-									<td>
 									<% if(active) { %>
-										<a href="javascript:void(0);">Restart</a>&nbsp;
-										<a href="javascript:void(0);">Shutdown</a>
-									<% } else { %>
-										<a href="javascript:void(0);">Start</a>
-									<% } %>
+									<td>
+										<a class="restart">Restart</a>&nbsp;
+										<a class="shutdown">Shutdown</a>
 									</td>
+									<% } %>
 								</tr>
 							<%
 							}
@@ -400,20 +430,20 @@ $(document).ready(function(){
 								<tr id="<%=module.optString("serviceClass")%>">
 									<td><%=module.optString("serviceName") %></td>
 									<td><%=runningStatus %></td>
+									<td>
 									<%
 									if(running) {
 									%>
-										<td>
 										<a class="stop">Stop</a> &nbsp;
 										<a class="restart">Restart</a>
-										</td>
 									<%
 									} else {
 									%>
-										<td><a class="start">Start</a></td>
+										<a class="restart">Start</a>
 									<%
 									}
 									%>
+									</td>
 								</tr>
 							<%
 							}
