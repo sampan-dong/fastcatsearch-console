@@ -89,7 +89,8 @@ public class ServersController extends AbstractController {
 				.addParameter("nodeId", nodeId).requestJSON();
 		
 		requestUrl = "/management/analysis/plugin-analyzer-list.json";
-		JSONObject pluginStatus = httpPost(session, requestUrl).requestJSON();
+		JSONObject pluginStatus = httpPost(session, requestUrl)
+				.addParameter("nodeId", nodeId).requestJSON();
 		
 		requestUrl = "/management/common/modules-running-state.json";
 		JSONObject moduleStatus = httpPost(session, requestUrl)
