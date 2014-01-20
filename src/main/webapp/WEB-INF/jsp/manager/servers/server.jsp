@@ -8,11 +8,23 @@
 <%
 	JSONObject nodeInfo = (JSONObject) request.getAttribute("nodeInfo");
 	JSONObject systemHealth = (JSONObject) request.getAttribute("systemHealth");
+	JSONObject taskStatus = (JSONObject) request.getAttribute("taskStatus");
 	JSONObject systemInfo = (JSONObject) request.getAttribute("systemInfo");
+	JSONObject indexStatus = (JSONObject) request.getAttribute("indexStatus");
+	JSONObject pluginStatus = (JSONObject) request.getAttribute("pluginStatus");
+	JSONObject moduleStatus = (JSONObject) request.getAttribute("moduleStatus");
+	String nodeId = (String) request.getAttribute("nodeId");
+	String nodeName = "";
 	
-	JSONArray indexStatusList = (JSONArray) request.getAttribute("indexStatusList");
-	JSONArray pluginStatusList = (JSONArray) request.getAttribute("pluginStatusList");
+	boolean systemActive = false;
 	
+	JSONArray nodeSettingList = nodeInfo.optJSONArray("nodeList");
+	JSONObject nodeSetting = null;
+	if(nodeSettingList != null && nodeSettingList.length() > 0) {
+		nodeSetting = nodeSettingList.optJSONObject(0);
+		nodeName = nodeSetting.optString("name");
+		systemActive = nodeSetting.optBoolean("active");
+	}
 %>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
@@ -38,7 +50,7 @@ $(document).ready(function(){
 					<ul id="breadcrumbs" class="breadcrumb">
 						<li><i class="icon-home"></i> Manager</li>
 						<li class=""> Servers</li>
-						<li class="current"> Node1</li>
+						<li class="current"> <%=nodeName %></li>
 					</ul>
 
 				</div>
@@ -47,7 +59,7 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Node#</h3>
+						<h3><%=nodeName %></h3>
 						<p>Each server information </p>
 					</div>
 				</div>
@@ -73,34 +85,40 @@ $(document).ready(function(){
 							</thead>
 							<tbody>
 							<%
-								String id = nodeInfo.optString("id");
-								String name = nodeInfo.optString("name");
-								String host = nodeInfo.optString("host");
-								int port = nodeInfo.optInt("port");
-								int servicePort = nodeInfo.optInt("servicePort");
-								boolean enabled = nodeInfo.optBoolean("enabled");
-								boolean active = nodeInfo.optBoolean("active");
-								
-								String enabledStatus = enabled ? "<span class=\"label text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
-								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
+							if(nodeSetting != null) {
 							%>
-							<tr>
-								<td><strong><%=id %></strong></td>
-								<td><%=name %></td>
-								<td><%=host %></td>
-								<td><%=port %></td>
-								<td><%=servicePort %></td>
-								<td><%=enabledStatus %></td>
-								<td><%=activeStatus %></td>
-								<td><a href="javascript:void(0);">Restart</a> &nbsp;<a href="javascript:void(0);">Shutdown</a></td>
-							</tr>
+								<%
+								String id = nodeSetting.optString("id");
+								String name = nodeSetting.optString("name");
+								String host = nodeSetting.optString("host");
+								int port = nodeSetting.optInt("port");
+								int servicePort = nodeSetting.optInt("servicePort");
+								boolean enabled = nodeSetting.optBoolean("enabled");
+								boolean active = nodeSetting.optBoolean("active");
+								
+								String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
+								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
+								%>
+								<tr>
+									<td><strong><%=id %></strong></td>
+									<td><%=name %></td>
+									<td><%=host %></td>
+									<td><%=port %></td>
+									<td><%=servicePort %></td>
+									<td><%=enabledStatus %></td>
+									<td><%=activeStatus %></td>
+									<td><a href="javascript:void(0);">Restart</a> &nbsp;<a href="javascript:void(0);">Shutdown</a></td>
+								</tr>
+							<%
+							}
+							%>
 							</tbody>
 						</table>
 					</div>
 				</div>
-
-
-
+				<%
+				if(systemActive) {
+				%>
 				<div class="widget">
 					<div class="widget-header">
 						<h4>System Health</h4>
@@ -119,8 +137,11 @@ $(document).ready(function(){
 							</thead>
 							<tbody>
 								<%
+								JSONObject info = systemHealth.optJSONObject(nodeId);
+								if(info!=null) {
+								%>
+									<%
 									DecimalFormat decimalFormat = new DecimalFormat("##.#");
-									JSONObject info = systemHealth;
 									int totalDiskSize = info.optInt("totalDiskSize");
 									int usedDiskSize = info.optInt("usedDiskSize");
 									float diskUseRate = 0;
@@ -136,17 +157,18 @@ $(document).ready(function(){
 										memoryUseRate = (float) usedMemory / (float) maxMemory;
 										memoryUseRate *= 100.0;
 									}
-										
-										
+									%>
+									<tr>
+										<td><%=decimalFormat.format(diskUseRate) %>% (<%=usedDiskSize %>MB / <%=totalDiskSize %>MB)</td>
+										<td><%=info.optInt("jvmCpuUse")%>%</td>
+										<td><%=info.optInt("systemCpuUse")%>%</td>
+										<td><%=decimalFormat.format(memoryUseRate) %>% (<%=usedMemory %>MB / <%=maxMemory %>MB)</td>
+										<td><%=info.optInt("totalMemory")%>MB</td>
+										<td><%=decimalFormat.format(info.optDouble("systemLoadAverage")) %></td>
+									</tr>
+								<%
+								}
 								%>
-								<tr>
-									<td><%=decimalFormat.format(diskUseRate) %>% (<%=usedDiskSize %>MB / <%=totalDiskSize %>MB)</td>
-									<td><%=info.optInt("jvmCpuUse")%>%</td>
-									<td><%=info.optInt("systemCpuUse")%>%</td>
-									<td><%=decimalFormat.format(memoryUseRate) %>% (<%=usedMemory %>MB / <%=maxMemory %>MB)</td>
-									<td><%=info.optInt("totalMemory")%>MB</td>
-									<td><%=decimalFormat.format(info.optDouble("systemLoadAverage")) %></td>
-								</tr>
 							</tbody>
 						</table>
 					
@@ -167,13 +189,22 @@ $(document).ready(function(){
 								</tr>
 							</thead>
 							<tbody>
+							<%
+							JSONArray taskList =  taskStatus.optJSONArray("taskState");
+							for(int inx=0 ; taskList != null && inx < taskList.length() ; inx++ ) {
+							%>
+								<%
+								JSONObject taskData = taskList.optJSONObject(inx);
+								%>
 								<tr>
-									<td>2</td>
-									<td>Collection Vol1 indexing..130000
-									</td>
-									<td>1h 20m</td>
-									<td>2013-09-10 12:35:00</td>
+									<td><%=inx+1 %></td>
+									<td><%=taskData.optString("summary") %></td>
+									<td><%=taskData.optString("elapsed") %></td>
+									<td><%=taskData.optString("startTime") %></td>
 								</tr>
+							<%
+							}
+							%>
 							</tbody>
 						</table>
 					</div>
@@ -195,6 +226,10 @@ $(document).ready(function(){
 								</tr>
 							</thead>
 							<tbody>
+								<%
+								systemInfo = systemInfo.optJSONObject(nodeId);
+								if(systemInfo!=null) {
+								%>
 								<tr>
 									<td><%=systemInfo.optString("homePath") %></td>
 									<td><%=systemInfo.optString("osName") %></td>
@@ -203,6 +238,9 @@ $(document).ready(function(){
 									<td><%=systemInfo.optString("javaVendor") %></td>
 									<td><%=systemInfo.optString("javaVersion") %></td>
 								</tr>
+								<%
+								}
+								%>
 							</tbody>
 						</table>
 					
@@ -228,22 +266,23 @@ $(document).ready(function(){
 							</thead>
 							<tbody>
 								<%
-								for(int i = 0; i < indexStatusList.length(); i++){
-									JSONObject indexStatus = indexStatusList.getJSONObject(i);
+								JSONArray indexStatusList = indexStatus.optJSONArray("indexingState");
+								for(int inx = 0; indexStatusList!=null && inx < indexStatusList.length(); inx++){
+									JSONObject indexData = indexStatusList.getJSONObject(inx);
 								%>
 								<tr>
-									<td><%=indexStatus.optInt("documentSize", -1) %></td>
-									<td><%=indexStatus.optString("dataPath", "-") %></td>
-									<td><%=indexStatus.optString("diskSize", "-") %></td>
-									<td><%=indexStatus.optInt("segmentSize", -1) %></td>
+									<td><%=indexData.optInt("documentSize", -1) %></td>
+									<td><%=indexData.optString("dataPath", "-") %></td>
+									<td><%=indexData.optString("diskSize", "-") %></td>
+									<td><%=indexData.optInt("segmentSize", -1) %></td>
 									<%
-									String revisionUUID = indexStatus.optString("revisionUUID", "-");
+									String revisionUUID = indexData.optString("revisionUUID", "-");
 									if(revisionUUID.length() > 10){
 										revisionUUID = revisionUUID.substring(0, 10);
 									}
 									%>
 									<td><%=revisionUUID %></td>
-									<td><%=indexStatus.optString("createTime", "-") %></td>
+									<td><%=indexData.optString("createTime", "-") %></td>
 								</tr>
 								<%
 								}
@@ -270,32 +309,39 @@ $(document).ready(function(){
 								</tr>
 							</thead>
 							<tbody>
+							
+							<%
+							JSONArray pluginStatusList = pluginStatus.optJSONArray("pluginList");
+							for(int inx=0;inx<pluginStatusList.length(); inx++) {
+							%>
 								<%
-								for(int i = 0; i < pluginStatusList.length(); i++){
-									JSONObject pluginStatus = pluginStatusList.getJSONObject(i);
-								%>
-								<tr>
-									<td><%=pluginStatus.optInt("documentSize", -1) %></td>
-									<td><%=pluginStatus.optString("dataPath", "-") %></td>
-									<td><%=pluginStatus.optString("diskSize", "-") %></td>
-									<td><%=pluginStatus.optInt("segmentSize", -1) %></td>
-									<%
-									String revisionUUID = pluginStatus.optString("revisionUUID", "-");
-									if(revisionUUID.length() > 10){
-										revisionUUID = revisionUUID.substring(0, 10);
-									}
-									%>
-									<td><%=revisionUUID %></td>
-									<td><%=pluginStatus.optString("createTime", "-") %></td>
-								</tr>
-								<%
+								JSONObject plugin = pluginStatusList.optJSONObject(inx);
+								JSONArray analyzers = plugin.optJSONArray("analyzer");
+								String analyzerNameStr = "";
+								for(int analyzerInx=0;analyzerInx< analyzers.length(); analyzerInx++) {
+									JSONObject analyzer = analyzers.optJSONObject(analyzerInx);
+									analyzerNameStr+=", "+ analyzer.optString("id");
+								}
+								if(analyzerNameStr.length() > 0) {
+									analyzerNameStr = analyzerNameStr.substring(1).toUpperCase();
 								}
 								%>
+								<tr>
+								<td><%=plugin.optString("name") %></td>
+								<td><%=plugin.optString("id") %></td>
+								<td><%=analyzerNameStr %></td>
+								<td><%=plugin.optString("className") %></td>
+								<td><%=plugin.optString("version") %></td>
+								<td><%=plugin.optString("description") %></td>
+								</tr>
+							
+							<%
+							}
+							%>
 							</tbody>
 						</table>
 					</div>
 				</div>
-				
 				
 				<div class="widget ">
 					<div class="widget-header">
@@ -311,45 +357,30 @@ $(document).ready(function(){
 								</tr>
 							</thead>
 							<tbody>
+							<%
+							JSONArray moduleStatusList = moduleStatus.optJSONArray("moduleState");
+							for(int moduleInx=0;moduleStatusList!=null && moduleInx < moduleStatusList.length(); moduleInx++) {
+							%>
+								<%
+								JSONObject module = moduleStatusList.optJSONObject(moduleInx);
+								boolean running = module.optBoolean("status", false);
+								String runningStatus = running ? "<span class=\"text-primary\">Running</span>" : "<span class=\"text-danger\">Stopped</span>";
+								%>
 								<tr>
-									<td>IRService</td>
-									<td>Running</td>
+									<td><%=module.optString("name") %></td>
+									<td><%=runningStatus %></td>
 									<td><a href="javascript:void(0);">Stop</a></td>
 								</tr>
-								<tr>
-									<td>NodeService</td>
-									<td>Stopped</td>
-									<td><a href="javascript:void(0);">Start</a></td>
-								</tr>
-								<tr>
-									<td>DBService</td>
-									<td>Stopped</td>
-									<td><a href="javascript:void(0);">Start</a></td>
-								</tr>
-								<tr>
-									<td>JobService</td>
-									<td>Running</td>
-									<td><a href="javascript:void(0);">Stop</a></td>
-								</tr>
-								<tr>
-									<td>SystemInfoService</td>
-									<td>Running</td>
-									<td><a href="javascript:void(0);">Stop</a></td>
-								</tr>
-								<tr>
-									<td>HttpRequestService</td>
-									<td>Running</td>
-									<td><a href="javascript:void(0);">Stop</a></td>
-								</tr>
-								<tr>
-									<td>NotificationService</td>
-									<td>Running</td>
-									<td><a href="javascript:void(0);">Stop</a></td>
-								</tr>
+							<%
+							}
+							%>
 							</tbody>
 						</table>
 					</div>
 				</div>
+				<%
+				}//system is active
+				%>
 				<!-- /Page Content -->
 			</div>
 		</div>
