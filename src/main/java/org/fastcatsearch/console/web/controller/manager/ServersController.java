@@ -44,9 +44,31 @@ public class ServersController extends AbstractController {
 		return mav;
 	}
 	
+	
+	private static final String[] serviceClasses = {
+		"org.fastcatsearch.ir.IRService",
+		"org.fastcatsearch.cluster.NodeService",
+		"org.fastcatsearch.db.DBService",
+		"org.fastcatsearch.control.JobService",
+		"org.fastcatsearch.management.SystemInfoService",
+		"org.fastcatsearch.http.HttpRequestService",
+		"org.fastcatsearch.notification.NotificationService"
+	};
+	
 	@RequestMapping("/server")
 	public ModelAndView server(HttpSession session, @RequestParam("id") String nodeId) throws Exception {
-		String requestUrl = "/management/servers/list.json";
+		String requestUrl = "";
+		
+		StringBuilder serviceClassStr = new StringBuilder();
+		for(String serviceClass : serviceClasses) {
+			if(serviceClassStr.length() > 0) {
+				serviceClassStr.append(",");
+			}
+			serviceClassStr.append(serviceClass);
+		}
+		
+		
+		requestUrl = "/management/servers/list.json";
 		JSONObject nodeInfo = httpPost(session, requestUrl)
 				.addParameter("nodeId", nodeId).requestJSON();
 		
@@ -70,7 +92,8 @@ public class ServersController extends AbstractController {
 		JSONObject pluginStatus = httpPost(session, requestUrl).requestJSON();
 		
 		requestUrl = "/management/common/modules-running-state.json";
-		JSONObject moduleStatus = httpPost(session, requestUrl).requestJSON();
+		JSONObject moduleStatus = httpPost(session, requestUrl)
+				.addParameter("services", serviceClassStr.toString()).requestJSON();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/servers/server");
@@ -82,6 +105,7 @@ public class ServersController extends AbstractController {
 		mav.addObject("pluginStatus", pluginStatus);
 		mav.addObject("moduleStatus", moduleStatus);
 		mav.addObject("nodeId", nodeId);
+		mav.addObject("serviceClasses", serviceClasses);
 		return mav;
 	}
 	

@@ -4,7 +4,6 @@
 <%@page import="org.json.*"%>
 <%@page import="java.util.*"%>
 <%@page import="java.text.DecimalFormat"%>
-
 <%
 	JSONObject nodeInfo = (JSONObject) request.getAttribute("nodeInfo");
 	JSONObject systemHealth = (JSONObject) request.getAttribute("systemHealth");
@@ -14,6 +13,7 @@
 	JSONObject pluginStatus = (JSONObject) request.getAttribute("pluginStatus");
 	JSONObject moduleStatus = (JSONObject) request.getAttribute("moduleStatus");
 	String nodeId = (String) request.getAttribute("nodeId");
+	String[] serviceClasses = (String[]) request.getAttribute("serviceClasses");
 	String nodeName = "";
 	
 	boolean systemActive = false;
@@ -31,9 +31,33 @@
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+<style>
+div#moduleStatus table td a {
+	cursor:pointer;
+}
+</style>
 <script>
 $(document).ready(function(){
-
+	$("div#moduleStatus table td a").click(function() {
+		var action = $(this).attr("class");
+		var serviceClass = $(this).parents("tr").attr("id");
+		
+		if(confirm("WARNING : this can halt your search-engine")) {
+			
+			requestProxy("post", {
+				uri:"/management/common/update-modules-state",
+				services:serviceClass,
+				action:action
+			}, "json", function(data) {
+				if(data["success"]==true) {
+					noty({text: "module update success", type: "success", layout:"topRight", timeout: 3000});
+				} else {
+					noty({text: "module update failed", type: "error", layout:"topRight", timeout: 3000});
+				}
+				setTimeout(function(){ location.reload(true) },1000);
+			});
+		}
+	});
 });
 </script>
 </head>
@@ -107,7 +131,14 @@ $(document).ready(function(){
 									<td><%=servicePort %></td>
 									<td><%=enabledStatus %></td>
 									<td><%=activeStatus %></td>
-									<td><a href="javascript:void(0);">Restart</a> &nbsp;<a href="javascript:void(0);">Shutdown</a></td>
+									<td>
+									<% if(active) { %>
+										<a href="javascript:void(0);">Restart</a>&nbsp;
+										<a href="javascript:void(0);">Shutdown</a>
+									<% } else { %>
+										<a href="javascript:void(0);">Start</a>
+									<% } %>
+									</td>
 								</tr>
 							<%
 							}
@@ -343,7 +374,7 @@ $(document).ready(function(){
 					</div>
 				</div>
 				
-				<div class="widget ">
+				<div class="widget" id="moduleStatus">
 					<div class="widget-header">
 						<h4>Module Status</h4>
 					</div>
@@ -366,10 +397,23 @@ $(document).ready(function(){
 								boolean running = module.optBoolean("status", false);
 								String runningStatus = running ? "<span class=\"text-primary\">Running</span>" : "<span class=\"text-danger\">Stopped</span>";
 								%>
-								<tr>
-									<td><%=module.optString("name") %></td>
+								<tr id="<%=module.optString("serviceClass")%>">
+									<td><%=module.optString("serviceName") %></td>
 									<td><%=runningStatus %></td>
-									<td><a href="javascript:void(0);">Stop</a></td>
+									<%
+									if(running) {
+									%>
+										<td>
+										<a class="stop">Stop</a> &nbsp;
+										<a class="restart">Restart</a>
+										</td>
+									<%
+									} else {
+									%>
+										<td><a class="start">Start</a></td>
+									<%
+									}
+									%>
 								</tr>
 							<%
 							}
