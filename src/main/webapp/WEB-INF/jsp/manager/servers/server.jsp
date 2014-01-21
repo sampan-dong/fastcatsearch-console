@@ -74,8 +74,11 @@ $(document).ready(function(){
 		
 		if(confirm("WARNING : this can halt or damage your search-engine")) {
 			
+			var nodeId="${nodeId}";
+			
 			requestProxy("post", {
 				uri:"/management/common/update-modules-state",
+				nodeId:nodeId,
 				services:serviceClass,
 				action:action
 			}, "json", function(data) {

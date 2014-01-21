@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,34 +68,83 @@ public class ServersController extends AbstractController {
 			serviceClassStr.append(serviceClass);
 		}
 		
+		JSONObject nodeInfo = new JSONObject();
+		JSONObject systemHealth = new JSONObject();
+		JSONObject taskStatus = new JSONObject();
+		JSONObject systemInfo = new JSONObject();
+		JSONObject indexStatus = new JSONObject();
+		JSONObject pluginStatus = new JSONObject();
+		JSONObject moduleStatus = new JSONObject();
 		
-		requestUrl = "/management/servers/list.json";
-		JSONObject nodeInfo = httpPost(session, requestUrl)
-				.addParameter("nodeId", nodeId).requestJSON();
+		try {
+			requestUrl = "/management/servers/list.json";
+			nodeInfo = httpPost(session, requestUrl)
+					.addParameter("nodeId", nodeId).requestJSON();
+		} catch (NullPointerException ignore) {
+			logger.debug("exception:null");
+		} catch (JSONException e) { 
+			logger.debug("exception:json:{}",e.getMessage());
+		}
 		
-		requestUrl = "/management/servers/systemHealth.json";
-		JSONObject systemHealth = httpPost(session, requestUrl)
-				.addParameter("nodeId", nodeId).requestJSON();
-		
-		requestUrl = "/management/common/all-task-state.json";
-		JSONObject taskStatus = httpPost(session, requestUrl)
-				.addParameter("start", "0").addParameter("end", "5").requestJSON();
-		
-		requestUrl = "/management/servers/systemInfo.json";
-		JSONObject systemInfo = httpPost(session, requestUrl)
-				.addParameter("nodeId", nodeId).requestJSON();
-		
-		requestUrl = "/management/collections/all-collection-indexing-status.json";
-		JSONObject indexStatus = httpPost(session, requestUrl)
-				.addParameter("nodeId", nodeId).requestJSON();
-		
-		requestUrl = "/management/analysis/plugin-analyzer-list.json";
-		JSONObject pluginStatus = httpPost(session, requestUrl)
-				.addParameter("nodeId", nodeId).requestJSON();
-		
-		requestUrl = "/management/common/modules-running-state.json";
-		JSONObject moduleStatus = httpPost(session, requestUrl)
-				.addParameter("services", serviceClassStr.toString()).requestJSON();
+		try {
+			requestUrl = "/management/servers/systemHealth.json";
+			systemHealth = httpPost(session, requestUrl)
+					.addParameter("nodeId", nodeId).requestJSON();
+		} catch (NullPointerException ignore) {
+			logger.debug("exception:null");
+		} catch (JSONException e) { 
+			logger.debug("exception:json:{}",e.getMessage());
+		}
+
+		try {
+			requestUrl = "/management/common/node-task-state.json";
+			taskStatus = httpPost(session, requestUrl)
+					.addParameter("nodeId", nodeId).requestJSON();
+		} catch (NullPointerException ignore) {
+			logger.debug("exception:null");
+		} catch (JSONException e) { 
+			logger.debug("exception:json:{}",e.getMessage());
+		}
+
+		try {
+			requestUrl = "/management/servers/systemInfo.json";
+			systemInfo = httpPost(session, requestUrl)
+					.addParameter("nodeId", nodeId).requestJSON();
+		} catch (NullPointerException ignore) {
+			logger.debug("exception:null");
+		} catch (JSONException e) { 
+			logger.debug("exception:json:{}",e.getMessage());
+		}
+
+		try {
+			requestUrl = "/management/collections/all-collection-indexing-status.json";
+			indexStatus = httpPost(session, requestUrl)
+					.addParameter("nodeId", nodeId).requestJSON();
+		} catch (NullPointerException ignore) {
+			logger.debug("exception:null");
+		} catch (JSONException e) { 
+			logger.debug("exception:json:{}",e.getMessage());
+		}
+
+		try {
+			requestUrl = "/management/analysis/plugin-analyzer-list.json";
+			pluginStatus = httpPost(session, requestUrl)
+					.addParameter("nodeId", nodeId).requestJSON();
+		} catch (NullPointerException ignore) {
+			logger.debug("exception:null");
+		} catch (JSONException e) { 
+			logger.debug("exception:json:{}",e.getMessage());
+		}
+
+		try {
+			requestUrl = "/management/common/modules-running-state.json";
+			moduleStatus = httpPost(session, requestUrl)
+					.addParameter("nodeId", nodeId).requestJSON();
+		} catch (NullPointerException ignore) {
+			logger.debug("exception:null");
+		} catch (JSONException e) { 
+			logger.debug("exception:json:{}",e.getMessage());
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/servers/server");
