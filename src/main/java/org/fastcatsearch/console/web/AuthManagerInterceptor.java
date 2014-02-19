@@ -28,6 +28,7 @@ public class AuthManagerInterceptor extends AuthMainInterceptor {
 			String getServerListURL = "/management/servers/list";
 			JSONObject serverList = httpClient.httpGet(getServerListURL).requestJSON();
 			request.setAttribute("serverList", serverList.getJSONArray("nodeList"));
+			
 			return true;
 		} catch (Exception e) {
 			logger.error("",e);

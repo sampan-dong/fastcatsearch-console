@@ -34,7 +34,8 @@ public class ResponseHttpClient {
 	private CloseableHttpClient httpclient;
 	private String urlPrefix;
 	private boolean isActive;
-
+	private String host;
+	
 	private static final ResponseHandler<JSONObject> jsonResponseHandler = new JSONResponseHandler();
 	private static final ResponseHandler<Document> xmlResponseHandler = new XMLResponseHandler();
 	private static final ResponseHandler<String> textResponseHandler = new TextResponseHandler();
@@ -45,12 +46,15 @@ public class ResponseHttpClient {
 		cm.setMaxTotal(100);
 		BasicCookieStore cookieStore = new BasicCookieStore();
 		httpclient = HttpClients.custom().setConnectionManager(cm).setDefaultCookieStore(cookieStore).build();
-
+		this.host = host;
 		urlPrefix = "http://" + host;
 		isActive = true;
 
 	}
 
+	public String getHostString(){
+		return host;
+	}
 	public boolean isActive() {
 		return isActive;
 	}

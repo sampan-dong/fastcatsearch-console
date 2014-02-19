@@ -17,6 +17,9 @@ $(document).ready(function(){
 	$('#running_tasks_dropdown').on('hide.bs.dropdown', function () {
 		stopPollingAllTaskStateForTaskBar();
 	});
+	
+	$("#hostString").tooltip();
+	$("#settingButton").tooltip();
 });
 </script>
 <!-- Header -->
@@ -75,7 +78,6 @@ $(document).ready(function(){
 					<li class="footer"><a href="<c:url value="/manager/logs/notifications.html"/>">View all
 							notifications</a></li>
 				</ul></li> --%>
-
 			<!-- Tasks -->
 			<li class="dropdown hidden-xs" id="running_tasks_dropdown"><a href="#"
 				class="dropdown-toggle" data-toggle="dropdown"> <i
@@ -107,9 +109,8 @@ $(document).ready(function(){
 					<li class="footer"><a href="javascript:void(0);">View all
 							messages</a></li>
 				</ul></li> -->
-
 			<!-- .row .row-bg Toggler -->
-			<li><a href="<c:url value="/settings/index.html"/>" class="dropdown-toggle"> <i class="icon-cog"></i>
+			<li><a id="settingButton" href="<c:url value="/settings/index.html"/>" data-toggle="tooltip" data-placement="bottom" title="Settings"> <i class="icon-cog"></i>
 			</a></li>
 
 			<!-- User Login Dropdown -->
@@ -124,6 +125,7 @@ $(document).ready(function(){
 					<li><a href="<c:url value="/main/logout.html" />"><i class="icon-key"></i> Log Out</a></li>
 				</ul>
 			</li>
+			<li><span id="hostString" class="host" data-toggle="tooltip" data-placement="bottom" title="Connected server : ${_hostString}"><i class="icon-globe"></i> ${_hostString}</span></li>
 			<!-- /user login dropdown -->
 		</ul>
 		<!-- /Top Right Menu -->

@@ -24,6 +24,10 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
 			checkLoginRedirect(request, response);
 			return false;
 		}else{
+			
+			//접속 서버HOST
+			request.setAttribute("_hostString", httpClient.getHostString());
+			
 			// /service/isAlive
 			String getCollectionListURL = "/service/isAlive";
 			JSONObject isAlive = httpClient.httpGet(getCollectionListURL).requestJSON();

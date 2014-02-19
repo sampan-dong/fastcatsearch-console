@@ -150,3 +150,17 @@ ul.stats-sm li, ul.stats-sm li small {padding:0}
 .chart-medium { height: 200px;z-index: 90;overflow: hidden; }
 
 a.transparent,a.transparent:hover {color: #fff}
+
+.navbar .nav > li > span.host {
+	background-color: #2B4E8D;
+	color: #ffffff;
+	font-size: 13px;
+	text-shadow: 0 1px 0 #000000;
+	padding-top: 14px;
+	padding-bottom: 14px;
+	padding-left: 18px;
+	padding-right: 18px;
+	position: relative;
+	display: block;
+	padding: 10px 15px;
+}
