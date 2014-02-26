@@ -64,13 +64,16 @@ $(document).ready(function(){
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul id="dictionary_tab" class="nav nav-tabs">
 						<li class="active"><a href="#tab_dictionary_overview" data-toggle="tab">Overview</a></li>
-						
+						<li class=""><a href="#tab_dictionary_search_tab" data-toggle="tab" _type="SYSTEM" _id="search_tab">Search</a></li>
 						<%
 						for(int i = 0; i < dictionaryList.length(); i++){
 							JSONObject dictionary = dictionaryList.getJSONObject(i);
 							String id = dictionary.getString("id");
 							String name = dictionary.getString("name");
 							String type = dictionary.getString("type");
+							if(type.equalsIgnoreCase("SYSTEM")){
+								continue;
+							}
 						%>
 						<li class=""><a href="#tab_dictionary_<%=id %>" data-toggle="tab" _type="<%=type %>" _id="<%=id %>"><%=name %></a></li>
 						<%
@@ -89,7 +92,7 @@ $(document).ready(function(){
 							String name = dictionary.getString("name");
 							String type = dictionary.getString("type");
 						%>
-						<div class="tab-pane" id="tab_dictionary_<%=id %>"></div>
+						<div class="tab-pane" id="tab_dictionary_search_tab"></div>
 						<%
 						}
 						%>
