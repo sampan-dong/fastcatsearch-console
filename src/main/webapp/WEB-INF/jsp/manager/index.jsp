@@ -25,14 +25,19 @@
 
 		</div>
 		<!-- /Breadcrumbs line -->
-
-		<!--=== Page Header ===-->
-		<div class="page-header">
-			<div class="page-title">
-				<h3>Manager</h3>
-			</div>
-		</div>
-		<!-- /Page Header -->
+		
+		<h3>Create Collection Wizard</h3>
+		<p>Start <a href="collections/createCollectionWizard.html" class="show-link">collection wizard</a></p>
+		
+		<h3>Add New Server</h3>
+		<p>Go to <a href="servers/settings.html" class="show-link">server setting</a></p>
+		
+		<h3>Check Logs</h3>
+		<p>Go to <a href="logs/exceptions.html" class="show-link">system exceptions</a></p>
+		<p>Go to <a href="logs/notifications.html" class="show-link">system notifications</a></p>
+		
+		
+		
 	</div>
 </div>
 </div>

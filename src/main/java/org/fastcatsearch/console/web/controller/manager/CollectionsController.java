@@ -381,5 +381,55 @@ public class CollectionsController extends AbstractController {
 		mav.addObject("document", document);
 		return mav;
 	}
+	
+	
+	@RequestMapping("/createCollectionWizard")
+	public ModelAndView createCollectionWizard(@RequestParam(required=false, defaultValue="1") String step, @RequestParam(required=false, defaultValue="") String next) {
+		ModelAndView mav = new ModelAndView();
+		
+		//페이지 변경사항 저장.
+		if(step.equals("1")){
+			
+			
+		}else if(step.equals("2")){
+			
+			
+		}else if(step.equals("3")){
+			
+			
+		}else if(step.equals("4")){
+			
+			
+		}else if(step.equals("5")){
+			
+			
+		}
+
+		if(next.equals("next")){
+			if(step.equals("1")){
+				step = "2";
+			}else if(step.equals("2")){
+				step = "3";
+			}else if(step.equals("3")){
+				step = "4";
+			}else if(step.equals("4")){
+				step = "5";
+			}
+		}else if(next.equals("back")){
+			if(step.equals("2")){
+				step = "1";
+			}else if(step.equals("3")){
+				step = "2";
+			}else if(step.equals("4")){
+				step = "3";
+			}else if(step.equals("5")){
+				step = "4";
+			}
+		}
+		
+		mav.addObject("step", step);
+		mav.setViewName("manager/collections/createCollectionWizard");
+		return mav;
+	}
 
 }

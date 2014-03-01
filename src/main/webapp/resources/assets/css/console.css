@@ -164,3 +164,8 @@ a.transparent,a.transparent:hover {color: #fff}
 	display: block;
 	padding: 10px 15px;
 }
+.valign-top {vertical-align: top;}
+.display-inline {display:inline;}
+.modal-dialog-wide {width:900px;}
+.data-table-wrapper { overflow: scroll; height: 400px; }
+.show-link { text-decoration : underline; }

@@ -100,8 +100,7 @@
 <script type="text/javascript" src="${contextPath}/resources/plugins/pickadate/picker.date.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/plugins/blockui/jquery.blockUI.min.js"></script>
 
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/fullcalendar/fullcalendar.min.js"></script>
 
 <!-- Noty -->
 <script type="text/javascript" src="${contextPath}/resources/plugins/noty/jquery.noty.js"></script>
@@ -116,7 +115,6 @@
 
 <script type="text/javascript" src="${contextPath}/resources/assets/js/jquery.form.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/assets/js/spin.min.js"></script>
-
 <!-- App -->
 <script type="text/javascript" src="${contextPath}/resources/assets/js/app.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/assets/js/plugins.js"></script>

@@ -57,23 +57,23 @@ public class AnalysisController extends AbstractController {
 		String getAnalysisToolsURL = null;
 		
 		JSONObject jsonObj = null;
-		
-		if("detail".equalsIgnoreCase(type)){
-			getAnalysisToolsURL = "/_plugin/"+analysisId+"/analysis-tools-detail.json";
-			try{
-				jsonObj = httpPost(session, getAnalysisToolsURL).addParameter("analyzerId", analyzerId).addParameter("queryWords", queryWords).requestJSON();
-			}catch(ClientProtocolException e){
-				jsonObj = AnalyzeToolsDetailNotImplementedResult;
-				jsonObj.put("query", queryWords);
+		if(queryWords != null && queryWords.length() > 0) {
+			if("detail".equalsIgnoreCase(type)){
+				getAnalysisToolsURL = "/_plugin/"+analysisId+"/analysis-tools-detail.json";
+				try{
+					jsonObj = httpPost(session, getAnalysisToolsURL).addParameter("analyzerId", analyzerId).addParameter("queryWords", queryWords).requestJSON();
+				}catch(ClientProtocolException e){
+					jsonObj = AnalyzeToolsDetailNotImplementedResult;
+					jsonObj.put("query", queryWords);
+				}
+			}else{
+				getAnalysisToolsURL = "/management/analysis/analysis-tools.json";
+				jsonObj = httpPost(session, getAnalysisToolsURL)
+						.addParameter("pluginId", analysisId)
+						.addParameter("analyzerId", analyzerId)
+						.addParameter("queryWords", queryWords).requestJSON();
 			}
-		}else{
-			getAnalysisToolsURL = "/management/analysis/analysis-tools.json";
-			jsonObj = httpPost(session, getAnalysisToolsURL)
-					.addParameter("pluginId", analysisId)
-					.addParameter("analyzerId", analyzerId)
-					.addParameter("queryWords", queryWords).requestJSON();
 		}
-		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/analysis/analyzeTools");
 		mav.addObject("analyzedResult", jsonObj);
