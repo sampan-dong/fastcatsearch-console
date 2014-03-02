@@ -46,10 +46,9 @@ $(document).ready(function(){
 
 		<!-- Top Left Menu -->
 		<ul class="nav navbar-nav navbar-left">
-				<li><a href="<c:url value="/main/start.html"/>"> Start </a></li>
 				<li><a href="<c:url value="/main/dashboard.html"/>"> Dashboard </a></li>
-				<%-- <li><a href="<c:url value="/main/search.html"/>"> Search </a></li> --%>
 				<li><a href="<c:url value="/manager/index.html"/>"> Manager </a></li>
+				<li><a href="<c:url value="/main/search.html"/>"> Search </a></li>
 			</ul>
 		<!-- /Top Left Menu -->
 
