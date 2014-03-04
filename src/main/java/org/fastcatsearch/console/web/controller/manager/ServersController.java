@@ -75,6 +75,7 @@ public class ServersController extends AbstractController {
 		JSONObject indexStatus = new JSONObject();
 		JSONObject pluginStatus = new JSONObject();
 		JSONObject moduleStatus = new JSONObject();
+		JSONObject threadStatus = new JSONObject();
 		
 		try {
 			requestUrl = "/management/servers/list.json";
@@ -146,6 +147,16 @@ public class ServersController extends AbstractController {
 			logger.debug("exception:json:{}",e.getMessage());
 		}
 		
+		try {
+			requestUrl = "/management/common/thread-state.json";
+			threadStatus = httpPost(session, requestUrl)
+					.addParameter("nodeId", nodeId).requestJSON();
+		} catch (NullPointerException ignore) {
+			logger.debug("exception:null");
+		} catch (JSONException e) { 
+			logger.debug("exception:json:{}",e.getMessage());
+		}
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/servers/server");
 		mav.addObject("nodeInfo", nodeInfo);
@@ -155,6 +166,7 @@ public class ServersController extends AbstractController {
 		mav.addObject("indexStatus", indexStatus);
 		mav.addObject("pluginStatus", pluginStatus);
 		mav.addObject("moduleStatus", moduleStatus);
+		mav.addObject("threadStatus", threadStatus);
 		mav.addObject("nodeId", nodeId);
 		mav.addObject("serviceClasses", serviceClasses);
 		return mav;

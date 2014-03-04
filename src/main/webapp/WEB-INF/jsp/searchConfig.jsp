@@ -25,6 +25,24 @@
 				<div class="col-md-12">
 					<div class="widget margin-space">
 						<div class="widget-header">
+							<h4>Common Settings</h4>
+						</div>
+						<div class="widget-content">
+							<div class="col-md-12 form-horizontal">
+								<div class="form-group">
+									<label class="col-md-2 control-label">Total Search List Size :</label>
+									<div class="col-md-10"><input type="text" name="" class="form-control fcol2 required" value="5"></div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label">Search List Size :</label>
+									<div class="col-md-10"><input type="text" name="" class="form-control fcol2 required" value="10"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="widget margin-space">
+						<div class="widget-header">
 							<h4>Category List</h4>
 						</div>
 						<div class="widget-content">

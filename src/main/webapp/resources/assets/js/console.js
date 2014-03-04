@@ -746,3 +746,74 @@ function getTwoDigits(i){
 	}else
 		return i;
 }
+
+function copyApplyIndexData(collectionId) {
+	var sourceNode = $("#indexCopyTable").find('input[type=radio]:checked').val();
+	var idList = new Array();
+	$("#indexCopyTable").find('td.checkbox-column').each(function() {
+		if($(this).children('input[type=checkbox]').is(":checked")){
+			var id = $(this).find("input[name=ID]").val();
+			idList.push(id);
+		}
+	});
+	console.log("sourceNode > ", sourceNode);
+	if(sourceNode == null){
+		alert("Please select source node.");
+		return;
+	}
+	if(idList.length == 0){
+		alert("Please select destination node.");
+		return;
+	}
+	var targetNodeIdList = idList.join(",");
+	console.log("idList > ", idList, ">>> " , targetNodeIdList);
+
+	$.ajax({
+		url : PROXY_REQUEST_URI,
+		type : "POST",
+		data : {
+			uri : "/management/collections/copy-apply-index.json",
+			collectionId : collectionId,
+			sourceNode: sourceNode,
+			destNodeList: targetNodeIdList
+		},
+		dataType : "json"
+
+	}).success(function(msg) {
+		console.log("ok");
+	}).fail(function(jqXHR, textStatus, error) {
+		noty({text: "Index copy apply error.", type: "error", layout:"topRight", timeout: 3000});
+	}).done(function(){
+		
+	});
+}
+
+function restoreToPreviousCollection(collectionId){
+	var idList = new Array();
+	$("#indexCopyTable").find('td.checkbox-column').each(function() {
+		if($(this).children('input[type=checkbox]').is(":checked")){
+			var id = $(this).find("input[name=ID]").val();
+			idList.push(id);
+		}
+	});
+	var destNodeList = idList.join(",");
+	console.log("idList > ", idList, ">>> " , destNodeList);
+	
+	$.ajax({
+		url : PROXY_REQUEST_URI,
+		type : "POST",
+		data : {
+			uri : "/management/collections/restore-to-previous.json",
+			collectionId : collectionId,
+			nodeList: destNodeList
+		},
+		dataType : "json"
+
+	}).success(function(msg) {
+		console.log("ok");
+	}).fail(function(jqXHR, textStatus, error) {
+		noty({text: "Index copy apply error.", type: "error", layout:"topRight", timeout: 3000});
+	}).done(function(){
+		
+	});
+}

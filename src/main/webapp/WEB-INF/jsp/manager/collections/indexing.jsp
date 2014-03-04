@@ -39,6 +39,10 @@ $(document).ready(function(){
 		loadToTab('indexing/schedule.html', {}, '#tab_indexing_schedule');
 	});
 	
+	$('#indexing_tab a[href="#tab_indexing_management"]').on('show.bs.tab', function (e) {
+		loadToTab('indexing/management.html', {}, '#tab_indexing_management');
+	});
+	
 	loadToTab('indexing/status.html', {}, '#tab_indexing_status');
 	
 	$('#autoUpdate').on("change", function(){
@@ -87,7 +91,7 @@ function reloadIndexingSchdulePage(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Indexing</h3>
+						<h3>Index</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -97,26 +101,18 @@ function reloadIndexingSchdulePage(){
 					<ul class="nav nav-tabs" id="indexing_tab">
 						<li class="active"><a href="#tab_indexing_status" data-toggle="tab">Status</a></li>
 						<li class=""><a href="#tab_indexing_schedule" data-toggle="tab">Schedule</a></li>
-						<li class=""><a href="#tab_indexing_run" data-toggle="tab">Run</a></li>
+						<li class=""><a href="#tab_indexing_run" data-toggle="tab">Build</a></li>
 						<li class=""><a href="#tab_indexing_history" data-toggle="tab">History</a></li>
+						<li class=""><a href="#tab_indexing_management" data-toggle="tab">Management</a></li>
 					</ul>
 					<div class="tab-content row">
 
 						<!--=== Overview ===-->
-						<div class="tab-pane active" id="tab_indexing_status">
-							
-						</div>
-
-
-
+						<div class="tab-pane active" id="tab_indexing_status"></div>
 						
-						<div class="tab-pane" id="tab_indexing_schedule">
-							
-						</div>
-						
+						<div class="tab-pane" id="tab_indexing_schedule"></div>
 						
 						<div class="tab-pane" id="tab_indexing_run">
-						
 						
 							<div class="col-md-12">
 								
@@ -180,8 +176,11 @@ function reloadIndexingSchdulePage(){
 	
 						</div>
 						
-						<div class="tab-pane active" id="tab_indexing_history">
-						</div>
+						<div class="tab-pane" id="tab_indexing_history"></div>
+						
+						
+						<div class="tab-pane" id="tab_indexing_management"></div>
+						
 						
 					</div>
 					<!-- /.tab-content -->

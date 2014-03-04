@@ -169,3 +169,6 @@ a.transparent,a.transparent:hover {color: #fff}
 .modal-dialog-wide {width:900px;}
 .data-table-wrapper { overflow: scroll; height: 400px; }
 .show-link { text-decoration : underline; }
+.thick-left {border-left : 2px solid #bbb; }
+
+.hide2 {display:none;}

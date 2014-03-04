@@ -69,7 +69,7 @@
 									class="icon-angle-right"></i> DataSource
 							</a></li>
 							<li class="<%=(maybeCurrent && "indexing".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/indexing.html"> <i
-									class="icon-angle-right"></i> Indexing
+									class="icon-angle-right"></i> Index
 							</a></li>
 							<li class="<%=(maybeCurrent && "config".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/config.html"> <i
 									class="icon-angle-right"></i> Config
@@ -121,7 +121,7 @@
 						String id = nodeObject.getString("id");
 						String name = nodeObject.getString("name");
 					%>
-					<li><a href="<c:url value="/manager/servers/server.html"/>?id=<%=id %>"> <i
+					<li class="<%=(lcatCurrent && id.equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/servers/server.html"/>?id=<%=id %>"> <i
 							class="icon-angle-right"></i> <%=name %>
 					</a></li>
 					<%

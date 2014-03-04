@@ -12,6 +12,7 @@
 	JSONObject indexStatus = (JSONObject) request.getAttribute("indexStatus");
 	JSONObject pluginStatus = (JSONObject) request.getAttribute("pluginStatus");
 	JSONObject moduleStatus = (JSONObject) request.getAttribute("moduleStatus");
+	JSONObject threadStatus = (JSONObject) request.getAttribute("threadStatus");
 	String nodeId = (String) request.getAttribute("nodeId");
 	String[] serviceClasses = (String[]) request.getAttribute("serviceClasses");
 	String nodeName = "";
@@ -34,6 +35,7 @@
 <style>
 div#nodeStatus table td a { cursor:pointer; }
 div#moduleStatus table td a { cursor:pointer; }
+.stacktrace {display:none;}
 </style>
 <script>
 $(document).ready(function(){
@@ -92,6 +94,22 @@ $(document).ready(function(){
 		}
 	});
 });
+
+function toggle(tid){
+	var el = $("#st-"+tid);
+	el.toggle();
+}
+
+function showAllThreadStacktrace(){
+	$("#thread-status").find(".stacktrace").each(function( index, element ) {
+		$(element).show();
+	});
+}
+function hideAllThreadStacktrace(){
+	$("#thread-status").find(".stacktrace").each(function( index, element ) {
+		$(element).hide();
+	});
+}
 </script>
 </head>
 <body>
@@ -99,6 +117,7 @@ $(document).ready(function(){
 	<div id="container">
 		<c:import url="${ROOT_PATH}/manager/sideMenu.jsp">
 			<c:param name="lcat" value="servers" />
+			<c:param name="mcat" value="${nodeId}" />
 		</c:import>
 		<div id="content">
 			<div class="container">
@@ -447,6 +466,62 @@ $(document).ready(function(){
 									}
 									%>
 									</td>
+								</tr>
+							<%
+							}
+							%>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Thread Status</h4>
+					</div>
+					<div class="widget-content">
+						<p>Thread count : <%=threadStatus.optInt("count", 0) %>
+						&nbsp;&nbsp;&nbsp;<a href="javascript:showAllThreadStacktrace();" class="show-link">Show all stacktrace</a>
+						&nbsp; | &nbsp;&nbsp;<a href="javascript:hideAllThreadStacktrace();" class="show-link">Collapse all stacktrace</a>
+						</p>
+						<table id="thread-status" class="table table-hover table-bordered table-highlight-head">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Group</th>
+									<th>Name</th>
+									<th>Tid</th>
+									<th>Priority</th>
+									<th>State</th>
+									<th>Daemon</th>
+									<th>Alive</th>
+									<th>Interrupted</th>
+									<th>&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+							<%
+							JSONArray threadStatusList = threadStatus.optJSONArray("threadList");
+							for(int inx=0; threadStatusList!=null && inx < threadStatusList.length(); inx++) {
+							%>
+								<%
+								JSONObject thread = threadStatusList.optJSONObject(inx);
+								%>
+								<tr>
+									<td><%=inx + 1 %></td>
+									<td><%=thread.optString("group") %></td>
+									<td><%=thread.optString("name") %></td>
+									<td><%=thread.optString("tid") %></td>
+									<td><%=thread.optString("priority") %></td>
+									<td><%=thread.optString("state") %></td>
+									<td><%=thread.optBoolean("daemon", false) ? "Daemom" : "User" %></td>
+									<td><%=thread.optBoolean("alive", false) ? "Alive" : "Stop" %></td>
+									<td><%=thread.optBoolean("interrupt", false) ? "Interrupted" : "-" %></td>
+									<td><a href="javascript:toggle(<%=thread.optString("tid") %>)">Stacktrace</a></td>
+								</tr>
+								<tr id="st-<%=thread.optString("tid") %>" class="stacktrace">
+									<td>&nbsp;</td>
+									<td colspan = "9" ><%=thread.optString("stacktrace") %></td>
 								</tr>
 							<%
 							}

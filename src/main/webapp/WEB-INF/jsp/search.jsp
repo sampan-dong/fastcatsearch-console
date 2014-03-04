@@ -35,7 +35,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-10">
+				<div class="col-md-10" style="padding-right: 0px;">
 					<div class="tabbable tabbable-custom tabs-left">
 						<!-- Only required for left/right tabs -->
 						<ul class="nav nav-tabs tabs-left">
@@ -210,7 +210,7 @@
 				</div>
 
 				<div class="col-md-2" style="padding-left: 0px;">
-					<div class="panel panel-default">
+					<div class="panel panel-default" style="border-left: 0px;">
 						<div class="panel-heading">
 							<h3 class="panel-title">Popular Keyword</h3>
 						</div>
@@ -222,7 +222,7 @@
 								<li><span class="badge badge-sx">4</span> <a href="#">아이폰</a><div><i class="icon-arrow-down" style="color:blue;"></i> 5</div></li>
 								<li><span class="badge badge-sx">5</span> <a href="#">mouse</a><div><span class="" style="color:red;">New</span></div></li>
 								<li><span class="badge badge-sx">6</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">7</span> <a href="#">원피스원피스원피스원피스원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
+								<li><span class="badge badge-sx">7</span> <a href="#">원피스원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
 								<li><span class="badge badge-sx">8</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
 								<li><span class="badge badge-sx">9</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
 								<li><span class="badge badge-sx">10</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>

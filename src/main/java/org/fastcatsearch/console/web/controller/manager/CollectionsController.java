@@ -370,6 +370,25 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
+	@RequestMapping("/{collectionId}/indexing/management")
+	public ModelAndView indexingManagement(HttpSession session, @PathVariable String collectionId) throws Exception {
+
+		String requestUrl = "/management/collections/all-node-indexing-management-status.json";
+		JSONObject indexingManagementStatus = null;
+		try {
+			indexingManagementStatus = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		logger.debug("indexingManagementStatus >> {}", indexingManagementStatus);
+
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("manager/collections/indexingManagement");
+		mav.addObject("collectionId", collectionId);
+		mav.addObject("indexingManagementStatus", indexingManagementStatus);
+		return mav;
+	}
+	
 	@RequestMapping("/{collectionId}/config")
 	public ModelAndView settings(HttpSession session, @PathVariable String collectionId) throws Exception {
 		String requestUrl = "/management/collections/config.xml";
