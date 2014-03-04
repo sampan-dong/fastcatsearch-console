@@ -756,7 +756,7 @@ function copyApplyIndexData(collectionId) {
 			idList.push(id);
 		}
 	});
-	console.log("sourceNode > ", sourceNode);
+	//console.log("sourceNode > ", sourceNode);
 	if(sourceNode == null){
 		alert("Please select source node.");
 		return;
@@ -765,9 +765,17 @@ function copyApplyIndexData(collectionId) {
 		alert("Please select destination node.");
 		return;
 	}
+	
+	if(idList.indexOf(sourceNode) != -1){
+		alert("Source node cannot be in destination node.");
+		return;
+	}
 	var targetNodeIdList = idList.join(",");
-	console.log("idList > ", idList, ">>> " , targetNodeIdList);
+	//console.log("idList > ", idList, ">>> " , targetNodeIdList);
 
+	if(!confirm("Copy index data from [" + sourceNode + "] to [" + targetNodeIdList + "]?")){
+		return;
+	}
 	$.ajax({
 		url : PROXY_REQUEST_URI,
 		type : "POST",
@@ -790,14 +798,24 @@ function copyApplyIndexData(collectionId) {
 
 function restoreToPreviousCollection(collectionId){
 	var idList = new Array();
-	$("#indexCopyTable").find('td.checkbox-column').each(function() {
+	$("#restoreTable").find('td.checkbox-column').each(function() {
 		if($(this).children('input[type=checkbox]').is(":checked")){
 			var id = $(this).find("input[name=ID]").val();
 			idList.push(id);
 		}
 	});
+	
+	if(idList.length == 0){
+		alert("Please select restore node.");
+		return;
+	}
+	
 	var destNodeList = idList.join(",");
 	console.log("idList > ", idList, ">>> " , destNodeList);
+	
+	if(!confirm("Restore [" + destNodeList + "] index data to previous?")){
+		return;
+	}
 	
 	$.ajax({
 		url : PROXY_REQUEST_URI,

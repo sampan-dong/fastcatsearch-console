@@ -413,7 +413,7 @@ function hideAllThreadStacktrace(){
 								<td><%=plugin.optString("name") %></td>
 								<td><%=plugin.optString("id") %></td>
 								<td><%=analyzerNameStr %></td>
-								<td><%=plugin.optString("className") %></td>
+								<td style="word-break:break-word;"><%=plugin.optString("className") %></td>
 								<td><%=plugin.optString("version") %></td>
 								<td><%=plugin.optString("description") %></td>
 								</tr>
@@ -484,6 +484,7 @@ function hideAllThreadStacktrace(){
 						&nbsp;&nbsp;&nbsp;<a href="javascript:showAllThreadStacktrace();" class="show-link">Show all stacktrace</a>
 						&nbsp; | &nbsp;&nbsp;<a href="javascript:hideAllThreadStacktrace();" class="show-link">Collapse all stacktrace</a>
 						</p>
+						<div style="height:400px; overflow-y:scroll">
 						<table id="thread-status" class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
@@ -528,6 +529,7 @@ function hideAllThreadStacktrace(){
 							%>
 							</tbody>
 						</table>
+						</div>
 					</div>
 				</div>
 				<%

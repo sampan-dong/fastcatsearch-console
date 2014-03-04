@@ -14,6 +14,9 @@ $(document).ready(function(){
 	$("#copyDataButton").on("click", function(){
 		copyApplyIndexData('<%=collectionId%>');
 	});
+	$("#restoreCollection").on("click", function(){
+		restoreToPreviousCollection('<%=collectionId%>');
+	});
 });
 
 </script>
@@ -76,12 +79,10 @@ $(document).ready(function(){
 			<h4>Index Restore</h4>
 		</div>
 		<div class="widget-content">
-			<table class="table table-bordered table-checkable">
+			<table id="restoreTable"  class="table table-bordered table-checkable">
 				<thead>
 				<tr>
-					<th class="checkbox-column">
-						<!-- <input type="checkbox"> -->
-					</th>
+					<th class="checkbox-column"></th>
 					<th>Node</th>
 					<th>Data Path</th>
 					<th>UUID</th>
@@ -98,6 +99,7 @@ $(document).ready(function(){
 					<tr>
 						<td class="checkbox-column">
 							<input type="checkbox">
+							<input type="hidden" name="ID" value="<%=dataNodeStatus.getString("nodeId") %>"/>
 						</td>
 						<td><%=restorableStatus.getString("nodeName") %> (<%=dataNodeStatus.getString("nodeId") %>)</td>
 						<td><%=restorableStatus.optString("dataPath", "-") %></td>
@@ -114,36 +116,9 @@ $(document).ready(function(){
 				<%
 				}
 				%>
-				
-				<!-- <tr>
-					<td class="checkbox-column">
-						<input type="checkbox">
-						<input type="hidden" name="ID" value=""/>
-					</td>
-					<td>Node1</td>
-					<td>data/index1</td>
-					<td>adec2d3d03</td>
-					<td>145000</td>
-					<td>data/index0</td>
-					<td>gdse2d3d03</td>
-					<td>130000</td>
-				</tr>
-				<tr>
-					<td class="checkbox-column">
-						<input type="checkbox">
-						<input type="hidden" name="dest" value=""/>
-					</td>
-					<td>Node2</td>
-					<td>data/index1</td>
-					<td>adec2d3d03</td>
-					<td>145000</td>
-					<td>data/index0</td>
-					<td>gdse2d3d03</td>
-					<td>130000</td>
-				</tr> -->
 				</tbody>
 			</table>
-			<a href="#" class="btn btn-primary">Restore</a>
+			<a href="javascript:void(0);" id="restoreCollection" class="btn btn-primary">Restore</a>
 		</div>
 	</div>
 </div>
