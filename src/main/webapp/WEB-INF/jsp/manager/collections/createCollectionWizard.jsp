@@ -102,6 +102,25 @@ function nextStep(obj, next){
 	form.find("[name='next']").val(next);
 	form.submit();
 }
+$(document).ready(function() {
+	requestProxy("post", {
+		uri:"/management/collections/single-source-reader-list.json",
+	}, "json", function(data) {
+		var options = $("#sourceReaderSelect select")[0].options;
+		for(var inx=options.length;inx>=0;inx--) {
+			options[inx]=null;
+		}
+		var list = data["sourceReaderList"];
+		for(var inx=0;inx<list.length;inx++) {
+			var option = document.createElement("option");
+			option.value = list[inx]["name"];
+			option.text = list[inx]["name"];
+			options.add(option);
+		}
+	}, function() {
+	}, function() {
+	} );
+});
 
 </script>
 </head>
@@ -193,10 +212,10 @@ function nextStep(obj, next){
 							<input type="hidden" name="next" />
 							<div class="row">
 								<div class="col-md-12 form-horizontal">
-									<div class="form-group">
+									<div id = "sourceReaderSelect" class="form-group">
 										<label class="col-md-2 control-label">Source Type:</label>
 										<div class="col-md-10">
-											<select class=" select_flat form-control fcol2">
+											<select class="combobox select_flat form-control fcol2">
 												<option value="mysql">DBMS</option>
 												<option value="oracle">FILE</option>
 											</select>
