@@ -1,11 +1,14 @@
 package org.fastcatsearch.console.web.controller.manager;
 
+import java.io.IOException;
 import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.http.client.ClientProtocolException;
 import org.fastcatsearch.console.web.controller.AbstractController;
+import org.fastcatsearch.console.web.http.Http404Error;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.jdom2.Document;
 import org.json.JSONArray;
@@ -403,51 +406,75 @@ public class CollectionsController extends AbstractController {
 	
 	
 	@RequestMapping("/createCollectionWizard")
-	public ModelAndView createCollectionWizard(@RequestParam(required=false, defaultValue="1") String step, @RequestParam(required=false, defaultValue="") String next) {
+	public ModelAndView createCollectionWizard(HttpSession session, 
+			//파라메터가 동적일 수 있으므로 부득이하게 request 객체를 사용
+			HttpServletRequest request, 
+			@RequestParam(required=false, defaultValue="1") String step, 
+			@RequestParam(required=false, defaultValue="") String next) {
 		ModelAndView mav = new ModelAndView();
+		String requestUrl = null;
+		
+		String collectionId = request.getParameter("collectionId");
 		
 		//페이지 변경사항 저장.
-		if(step.equals("1")){
-			
-			
-		}else if(step.equals("2")){
-			
-			
-		}else if(step.equals("3")){
-			
-			
-		}else if(step.equals("4")){
-			
-			
-		}else if(step.equals("5")){
-			
-			
-		}
-
-		if(next.equals("next")){
+		try {
 			if(step.equals("1")){
-				step = "2";
 			}else if(step.equals("2")){
-				step = "3";
 			}else if(step.equals("3")){
-				step = "4";
 			}else if(step.equals("4")){
-				step = "5";
-			}
-		}else if(next.equals("back")){
-			if(step.equals("2")){
-				step = "1";
-			}else if(step.equals("3")){
-				step = "2";
-			}else if(step.equals("4")){
-				step = "3";
 			}else if(step.equals("5")){
-				step = "4";
 			}
+	
+			if(next.equals("next")){
+				if(step.equals("1")){
+					logger.debug("creating collection..");
+					if(collectionId != null && !"".equals(collectionId)) {
+						requestUrl = "/management/collections/create.json";
+						
+						String collectionName = request.getParameter("collectionName");
+						String indexNode = request.getParameter("indexNode");
+						String searchNodeList = request.getParameter("searchNodeList");
+						String dataNodeList = request.getParameter("dataNodeList");
+						
+						JSONObject collectionInfoList = httpPost(session, requestUrl)
+							.addParameter("collectionId", collectionId)
+							.addParameter("collectionName", collectionName)
+							.addParameter("indexNode", indexNode)
+							.addParameter("searchNodeList", searchNodeList)
+							.addParameter("dataNodeList", dataNodeList)
+							.requestJSON();
+						mav.setViewName("manager/collections/create");
+						if(collectionInfoList != null){
+							//처리내용.
+						}
+						
+					}
+					step = "2";
+				}else if(step.equals("2")){
+					step = "3";
+				}else if(step.equals("3")){
+					step = "4";
+				}else if(step.equals("4")){
+					step = "5";
+				}
+			}else if(next.equals("back")){
+				if(step.equals("2")){
+					step = "1";
+				}else if(step.equals("3")){
+					step = "2";
+				}else if(step.equals("4")){
+					step = "3";
+				}else if(step.equals("5")){
+					step = "4";
+				}
+			}
+			
+			mav.addObject("step", step);
+			mav.setViewName("manager/collections/createCollectionWizard");
+		} catch (Exception e) {
+			logger.error("",e);
+		} finally {
 		}
-		
-		mav.addObject("step", step);
-		mav.setViewName("manager/collections/createCollectionWizard");
 		return mav;
 	}
 
