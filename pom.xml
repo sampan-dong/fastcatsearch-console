@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fastcatsearch-console</groupId>
 	<artifactId>fastcatsearch-console</artifactId>
-	<version>2.14.1</version>
+	<version>2.14.3</version>
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
@@ -89,6 +89,16 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<warName>${project.artifactId}</warName>
+					<outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}</outputDirectory>
+					<webappDirectory>${project.build.directory}/webapp</webappDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
