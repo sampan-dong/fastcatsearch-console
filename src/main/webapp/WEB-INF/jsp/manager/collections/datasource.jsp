@@ -12,8 +12,9 @@
 	
 	Element fullIndexingNode = root.getChild("full-indexing");
 	Element addIndexingNode = root.getChild("add-indexing");
-	Element jdbcSourcesNode = root.getChild("jdbc-sources");
 	
+	Document documentJDBC = (Document) request.getAttribute("jdbcSource");
+	Element jdbcSourcesNode = documentJDBC.getRootElement().getChild("jdbc-sources");
 %>
 <c:set var="ROOT_PATH" value="../.." />
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
@@ -626,7 +627,7 @@ $(document).ready(function(){
 								<tbody>
 								<%
 								List<Element> sourceNodeList = jdbcSourcesNode.getChildren("jdbc-source");
-								for(int i =0; i< sourceNodeList.size(); i++){
+								for(int i =0; i< sourceNodeList.size(); i++) {
 									Element sourceNode = sourceNodeList.get(i);
 									String id = sourceNode.getAttributeValue("id");
 									String name = sourceNode.getAttributeValue("name");

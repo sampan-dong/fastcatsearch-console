@@ -291,10 +291,14 @@ public class CollectionsController extends AbstractController {
 		String requestUrl = "/management/collections/datasource.xml";
 		Document document = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestXML();
 
+		requestUrl = "/management/collections/jdbc-source.xml";
+		Document documentJDBC = httpGet(session, requestUrl).requestXML();
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/datasource");
 		mav.addObject("collectionId", collectionId);
 		mav.addObject("document", document);
+		mav.addObject("jdbcSource", documentJDBC);
 		return mav;
 	}
 

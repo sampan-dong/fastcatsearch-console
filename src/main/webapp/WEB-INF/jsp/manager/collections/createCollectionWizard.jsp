@@ -136,15 +136,24 @@ $(document).ready(function() {
 				}
 				if(confirmed) {
 					var readerId = $(this)[0].value;
-					var param = paramMap[readerId];
+					var params = paramMap[readerId];
 					var htmlStr = "";
-					for(var inx=0;inx<param.length;inx++) {
-						var template = $("div#template div."+param[inx]["type"]).clone();
+					for(var inx=0;inx<params.length;inx++) {
+						var param = params[inx];
+						var template = $("div#template div."+param["type"]).clone();
 						if(!template[0]) {
 							template = $("div#template div._DEFAULT_").clone();
 						}
-						template.find("label.control-label").html(param[inx]["name"]);
-						template.find("span.help-block").html(param[inx]["description"]);
+						template.find("label.control-label").html(param["name"]);
+						template.find("span.help-block").html(param["description"]);
+						if(param["required"]) { 
+							template.find("input, textarea").addClass("required"); 
+							template.find("label.control-label").css("color", "#0066ff");
+						}
+						template.find("input, textarea").attr("name", param["id"]);
+						if(param["defaultValue"]) {
+							template.find("input, textarea").attr("value", param["defaultValue"]);
+						}
 						htmlStr += template.html();
 					}
 					$("div#sourceTypeConfig").html(htmlStr);
@@ -717,7 +726,7 @@ author: 유관순
 	<div class="TEXT">
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
-			<div class="col-md-10"><textarea rows="4" name="dataSQL" class="form-control required"></textarea>
+			<div class="col-md-10"><textarea rows="4" name="" class="form-control"></textarea>
 			<span class="help-block"></span>
 			</div>
 		</div>
@@ -725,7 +734,7 @@ author: 유관순
 	<div class="INT">
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
-			<div class="col-md-10"><input type="text" name="fetchSize" class="form-control required fcol2" value="">
+			<div class="col-md-10"><input type="text" name="" class="form-control fcol2" value="">
 			<span class="help-block"></span>
 			</div>
 		</div>
@@ -733,7 +742,7 @@ author: 유관순
 	<div class="STRING">
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
-			<div class="col-md-10"><input type="text" name="fetchSize" class="form-control required fcol2" value="">
+			<div class="col-md-10"><input type="text" name="" class="form-control fcol2" value="">
 			<span class="help-block"></span>
 			</div>
 		</div>
@@ -741,7 +750,7 @@ author: 유관순
 	<div class="STRING_LONG">
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
-			<div class="col-md-10"><input type="text" name="fetchSize" class="form-control required" value="">
+			<div class="col-md-10"><input type="text" name="" class="form-control" value="">
 			<span class="help-block"></span>
 			</div>
 		</div>
@@ -749,15 +758,11 @@ author: 유관순
 	<div class="_DEFAULT_">
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
-			<div class="col-md-10"><input type="text" name="fetchSize" class="form-control required fcol2" value="">
+			<div class="col-md-10"><input type="text" name="" class="form-control fcol2" value="">
 			<span class="help-block"></span>
 			</div>
 		</div>
 	</div>
 </div>
-
-
-
-					
 </body>
 </html>
