@@ -13,62 +13,62 @@
 .wizard { padding-left: 0px; margin-bottom: 0px; }
 
 .wizard li {
-    padding: 10px 12px 10px;
-    margin-right: 5px;
-    margin-bottom: 10px;
-    background: #efefef;
-    position: relative;
-    display: inline-block;
-    color: #999;
+	padding: 10px 12px 10px;
+	margin-right: 5px;
+	margin-bottom: 10px;
+	background: #efefef;
+	position: relative;
+	display: inline-block;
+	color: #999;
 }
 .wizard li:hover {
 	text-decoration:none;
 }
 .wizard li:before {
-    width: 0;
-    height: 0;
-    border-top: 20px inset transparent;
-    border-bottom: 20px inset transparent;
-    border-left: 20px solid #fff;
-    position: absolute;
-    content: "";
-    top: 0;
-    left: 0;
+	width: 0;
+	height: 0;
+	border-top: 20px inset transparent;
+	border-bottom: 20px inset transparent;
+	border-left: 20px solid #fff;
+	position: absolute;
+	content: "";
+	top: 0;
+	left: 0;
 }
 .wizard li:after {
-    width: 0;
-    height: 0;
-    border-top: 18px inset transparent;
-    border-bottom: 20px inset transparent;
-    border-left: 20px solid #efefef;
-    position: absolute;
-    content: "";
-    top: 0;
-    right: -20px;
-    z-index: 2;
+	width: 0;
+	height: 0;
+	border-top: 18px inset transparent;
+	border-bottom: 20px inset transparent;
+	border-left: 20px solid #efefef;
+	position: absolute;
+	content: "";
+	top: 0;
+	right: -20px;
+	z-index: 2;
 }
 .wizard li:first-child:before,
 .wizard li:last-child:after {
-    border: none;
+	border: none;
 }
 .wizard a:first-child {
 }
 .wizard a:last-child {
 }
 .wizard .badge {
-    margin: 0 5px 0 18px;
-    position: relative;
-    top: -1px;
+	margin: 0 5px 0 18px;
+	position: relative;
+	top: -1px;
 }
 .wizard li:first-child .badge {
-    margin-left: 0;
+	margin-left: 0;
 }
 .wizard .current {
-    background: #007ACC;
-    color: #fff;
+	background: #007ACC;
+	color: #fff;
 }
 .wizard .current:after {
-    border-left-color: #007ACC;
+	border-left-color: #007ACC;
 }
 .wizard .current .badge {
 	color: #007ACC;
@@ -103,23 +103,68 @@ function nextStep(obj, next){
 	form.submit();
 }
 $(document).ready(function() {
-	requestProxy("post", {
-		uri:"/management/collections/single-source-reader-list.json",
-	}, "json", function(data) {
-		var options = $("#sourceReaderSelect select")[0].options;
-		for(var inx=options.length;inx>=0;inx--) {
-			options[inx]=null;
-		}
-		var list = data["sourceReaderList"];
-		for(var inx=0;inx<list.length;inx++) {
-			var option = document.createElement("option");
-			option.value = list[inx]["name"];
-			option.text = list[inx]["name"];
-			options.add(option);
-		}
-	}, function() {
-	}, function() {
-	} );
+	var wizardContent = $(".wizard-content");
+	//step 구분하여 초기화 스크립트를 진행한다.
+	if(wizardContent.hasClass("step_1")) {
+	} else if(wizardContent.hasClass("step_2")) {
+		//데이터소스를 얻어온다.
+		requestProxy("post", {
+			uri:"/management/collections/single-source-reader-list.json",
+		}, "json", function(data) {
+			var selectObj = $("#sourceReaderSelect select") 
+			var options = selectObj[0].options;
+			for(var inx=options.length;inx>=0;inx--) {
+				options[inx]=null;
+			}
+			var list = data["sourceReaderList"];
+			var paramMap = {};
+			options.add(document.createElement("option"));
+			for(var inx=0;inx<list.length;inx++) {
+				var option = document.createElement("option");
+				option.value = list[inx]["name"];
+				option.text = list[inx]["name"];
+				options.add(option);
+				paramMap[list[inx]["name"]] = list[inx]["parameters"];
+			}
+			selectObj.unbind("change").change(function() {
+				var confirmed = false;
+				if( $.trim($("div#sourceTypeConfig").html()).length == 0 ) {
+					confirmed = true;
+				}
+				if(!confirmed && confirm("This form will clear\ndo yon want?")) {
+					confirmed = true;
+				}
+				if(confirmed) {
+					var readerId = $(this)[0].value;
+					var params = paramMap[readerId];
+					var htmlStr = "";
+					for(var inx=0;inx<params.length;inx++) {
+						var param = params[inx];
+						var template = $("div#template div."+param["type"]).clone();
+						if(!template[0]) {
+							template = $("div#template div._DEFAULT_").clone();
+						}
+						template.find("label.control-label").html(param["name"]);
+						template.find("span.help-block").html(param["description"]);
+						if(param["required"]) { 
+							template.find("input, textarea").addClass("required"); 
+							template.find("label.control-label").css("color", "#0066ff");
+						}
+						template.find("input, textarea").attr("name", param["id"]);
+						if(param["defaultValue"]) {
+							template.find("input, textarea").attr("value", param["defaultValue"]);
+						}
+						htmlStr += template.html();
+					}
+					$("div#sourceTypeConfig").html(htmlStr);
+				}
+			});
+		}, function() {
+		}, function() {
+		});
+	} else if(wizardContent.hasClass("step_3")) {
+	} else if(wizardContent.hasClass("step_4")) {
+	}
 });
 
 </script>
@@ -142,12 +187,12 @@ $(document).ready(function() {
 			<div class="widget">
 				<ul class="wizard">
 					<li class="<%=step.equals("1") ? "current" : "" %>"><span class="badge">1</span> Set Collection Information</li>
-				    <li class="<%=step.equals("2") ? "current" : "" %>"><span class="badge">2</span> Data Mapping</li>
-				    <li class="<%=step.equals("3") ? "current" : "" %>"><span class="badge">3</span> Set Field Schema</li>
-				    <li class="<%=step.equals("4") ? "current" : "" %>"><span class="badge">4</span> Confirmation</li>
-				    <li class="<%=step.equals("5") ? "current" : "" %>"><span class="badge">5</span> Finish</li>
+					<li class="<%=step.equals("2") ? "current" : "" %>"><span class="badge">2</span> Data Mapping</li>
+					<li class="<%=step.equals("3") ? "current" : "" %>"><span class="badge">3</span> Set Field Schema</li>
+					<li class="<%=step.equals("4") ? "current" : "" %>"><span class="badge">4</span> Confirmation</li>
+					<li class="<%=step.equals("5") ? "current" : "" %>"><span class="badge">5</span> Finish</li>
 				</ul>
-				<div class="wizard-content">
+				<div class="wizard-content step_${step}">
 				
 					<div class="wizard-card <%=step.equals("1") ? "current" : "" %>">
 						<form id="collection-config-form" action="" method="get">
@@ -210,68 +255,17 @@ $(document).ready(function() {
 						<form id="collection-config-form">
 							<input type="hidden" name="step" value="2" />
 							<input type="hidden" name="next" />
+							<input type="hidden" name="collectionId" value="${collectionId}"/>
 							<div class="row">
 								<div class="col-md-12 form-horizontal">
 									<div id = "sourceReaderSelect" class="form-group">
 										<label class="col-md-2 control-label">Source Type:</label>
 										<div class="col-md-10">
 											<select class="combobox select_flat form-control fcol2">
-												<option value="mysql">DBMS</option>
-												<option value="oracle">FILE</option>
 											</select>
 										</div>
 									</div>
-									<div id="sourceTypeConfig">
-										<div class="form-group">
-											<label class="col-md-2 control-label">JDBC Connection:</label>
-											<div class="col-md-10">
-												<select class=" select_flat form-control fcol2 display-inline">
-													<option value="mysql">book</option>
-													<option value="oracle">book-real</option>
-												</select>
-												<div class="btn"><i class="icon-refresh"></i></div>
-												<div class="btn" data-target="#dataSourceCreate" data-toggle="modal" data-backdrop="static">Create New..</div>
-												<div class="btn" data-target="#testDataSourceModal" data-toggle="modal" data-backdrop="static">Query Test..</div>
-											</div>
-										</div>
-										
-										<div class="form-group">
-											<label class="col-md-2 control-label">FetchSize :</label>
-											<div class="col-md-10"><input type="text" name="fetchSize" class="form-control required fcol2" value="">
-											<span class="help-block">JDBC statement fetch-size. if this value is 0, JDBC uses read-only cursor.</span>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-2 control-label">BulkSize :</label>
-											<div class="col-md-10"><input type="text" name="bulkSize" class="form-control required fcol2" value="100">
-											<span class="help-block">DBReader reads BulkSize amount of data in advance on memory, then provides to consumer.</span>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-2 control-label">DataSQL :</label>
-											<div class="col-md-10"><textarea rows="4" name="dataSQL" class="form-control required"></textarea>
-											<span class="help-block">Query for indexing.</span>
-											</div>
-										</div>
-										<!-- <div class="form-group">
-											<label class="col-md-2 control-label">DeleteIdSQL :</label>
-											<div class="col-md-10"><textarea type="text" rows="2" name="dataSQL" class="form-control required"></textarea>
-											<span class="help-block">Query for deleting previous documents.</span>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-2 control-label">BeforeSQL :</label>
-											<div class="col-md-10"><textarea type="text" rows="2" name="dataSQL" class="form-control required"></textarea>
-											<span class="help-block">Query executing at the beginning of indexing.</span>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-md-2 control-label">AfterSQL :</label>
-											<div class="col-md-10"><textarea type="text" rows="2" name="dataSQL" class="form-control required"></textarea>
-											<span class="help-block">Query executing after indexing.</span>
-											</div>
-										</div> -->
-									</div>
+									<div id="sourceTypeConfig"></div>
 								</div>
 							</div>
 							<div class="wizard-bottom" >
@@ -715,9 +709,60 @@ author: 유관순
 	
 	
 </div>
-
-
-
-					
+<div id="template" class="hidden">
+	<div class="JDBC">
+		<div class="form-group">
+			<label class="col-md-2 control-label">JDBC Connection:</label>
+			<div class="col-md-10">
+				<select class=" select_flat form-control fcol2 display-inline">
+				</select>
+				<div class="btn"><i class="icon-refresh"></i></div>
+				<div class="btn" data-target="#dataSourceCreate" data-toggle="modal" data-backdrop="static">Create New..</div>
+				<div class="btn" data-target="#testDataSourceModal" data-toggle="modal" data-backdrop="static">Query Test..</div>
+				<span class="help-block"></span>
+			</div>
+		</div>
+	</div>
+	<div class="TEXT">
+		<div class="form-group">
+			<label class="col-md-2 control-label"></label>
+			<div class="col-md-10"><textarea rows="4" name="" class="form-control"></textarea>
+			<span class="help-block"></span>
+			</div>
+		</div>
+	</div>
+	<div class="INT">
+		<div class="form-group">
+			<label class="col-md-2 control-label"></label>
+			<div class="col-md-10"><input type="text" name="" class="form-control fcol2" value="">
+			<span class="help-block"></span>
+			</div>
+		</div>
+	</div>
+	<div class="STRING">
+		<div class="form-group">
+			<label class="col-md-2 control-label"></label>
+			<div class="col-md-10"><input type="text" name="" class="form-control fcol2" value="">
+			<span class="help-block"></span>
+			</div>
+		</div>
+	</div>
+	<div class="STRING_LONG">
+		<div class="form-group">
+			<label class="col-md-2 control-label"></label>
+			<div class="col-md-10"><input type="text" name="" class="form-control" value="">
+			<span class="help-block"></span>
+			</div>
+		</div>
+	</div>
+	<div class="_DEFAULT_">
+		<div class="form-group">
+			<label class="col-md-2 control-label"></label>
+			<div class="col-md-10"><input type="text" name="" class="form-control fcol2" value="">
+			<span class="help-block"></span>
+			</div>
+		</div>
+	</div>
+</div>
 </body>
 </html>

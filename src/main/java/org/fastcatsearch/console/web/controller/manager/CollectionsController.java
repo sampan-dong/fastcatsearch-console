@@ -1,14 +1,11 @@
 package org.fastcatsearch.console.web.controller.manager;
 
-import java.io.IOException;
 import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.client.ClientProtocolException;
 import org.fastcatsearch.console.web.controller.AbstractController;
-import org.fastcatsearch.console.web.http.Http404Error;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.jdom2.Document;
 import org.json.JSONArray;
@@ -294,10 +291,14 @@ public class CollectionsController extends AbstractController {
 		String requestUrl = "/management/collections/datasource.xml";
 		Document document = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestXML();
 
+		requestUrl = "/management/collections/jdbc-source.xml";
+		Document documentJDBC = httpGet(session, requestUrl).requestXML();
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/datasource");
 		mav.addObject("collectionId", collectionId);
 		mav.addObject("document", document);
+		mav.addObject("jdbcSource", documentJDBC);
 		return mav;
 	}
 
@@ -413,41 +414,56 @@ public class CollectionsController extends AbstractController {
 			@RequestParam(required=false, defaultValue="") String next) {
 		ModelAndView mav = new ModelAndView();
 		String requestUrl = null;
+		JSONObject collectionInfoList = null;
 		
 		String collectionId = request.getParameter("collectionId");
+		String collectionTmp = null;
+		if(collectionId!=null) {
+				collectionTmp = "."+collectionId+".tmp";
+		}
+		
+		logger.debug("step:{} / next:{} / collectionId:{} / collectionTmp:{}", step, next, collectionId, collectionTmp);
 		
 		//페이지 변경사항 저장.
 		try {
-			if(step.equals("1")){
-			}else if(step.equals("2")){
-			}else if(step.equals("3")){
-			}else if(step.equals("4")){
-			}else if(step.equals("5")){
-			}
-	
 			if(next.equals("next")){
 				if(step.equals("1")){
-					logger.debug("creating collection..");
-					if(collectionId != null && !"".equals(collectionId)) {
-						requestUrl = "/management/collections/create.json";
-						
-						String collectionName = request.getParameter("collectionName");
-						String indexNode = request.getParameter("indexNode");
-						String searchNodeList = request.getParameter("searchNodeList");
-						String dataNodeList = request.getParameter("dataNodeList");
-						
-						JSONObject collectionInfoList = httpPost(session, requestUrl)
-							.addParameter("collectionId", collectionId)
-							.addParameter("collectionName", collectionName)
-							.addParameter("indexNode", indexNode)
-							.addParameter("searchNodeList", searchNodeList)
-							.addParameter("dataNodeList", dataNodeList)
-							.requestJSON();
-						mav.setViewName("manager/collections/create");
-						if(collectionInfoList != null){
-							//처리내용.
+					requestUrl = "/management/collections/collection-info-list.json";
+					collectionInfoList = httpPost(session, requestUrl).requestJSON();
+					JSONArray collectionList = collectionInfoList.optJSONArray("collectionInfoList");
+					boolean found = false;
+					
+					for (int inx = 0; inx < collectionList.length(); inx++) {
+						JSONObject item = collectionList.optJSONObject(inx);
+						if(item.getString("id").equals(collectionTmp)) {
+							found = true;
+							break;
 						}
-						
+					}
+					
+					//만약 같은 이름의 컬렉션이 있는 경우. 허용불가.
+					//차후 엔진 재시작하여 임시 컬렉션 삭제.
+					if(!found) {
+						logger.debug("creating collection..");
+						if(collectionId != null && !"".equals(collectionId)) {
+							requestUrl = "/management/collections/create.json";
+							
+							String collectionName = request.getParameter("collectionName");
+							String indexNode = request.getParameter("indexNode");
+							String searchNodeList = request.getParameter("searchNodeList");
+							String dataNodeList = request.getParameter("dataNodeList");
+							
+							collectionInfoList = httpPost(session, requestUrl)
+								.addParameter("collectionId", collectionTmp)
+								.addParameter("collectionName", collectionName)
+								.addParameter("indexNode", indexNode)
+								.addParameter("searchNodeList", searchNodeList)
+								.addParameter("dataNodeList", dataNodeList)
+								.requestJSON();
+							mav.setViewName("manager/collections/create");
+							mav.addObject("collectionId", collectionId);
+							mav.addObject("collectionTmp", collectionTmp);
+						}
 					}
 					step = "2";
 				}else if(step.equals("2")){
@@ -467,6 +483,15 @@ public class CollectionsController extends AbstractController {
 				}else if(step.equals("5")){
 					step = "4";
 				}
+			}
+			
+			if(step.equals("1")){
+			}else if(step.equals("2")){
+				//설정파일을 읽어들인다. (기초 데이터 소스)
+				
+			}else if(step.equals("3")){
+			}else if(step.equals("4")){
+			}else if(step.equals("5")){
 			}
 			
 			mav.addObject("step", step);
