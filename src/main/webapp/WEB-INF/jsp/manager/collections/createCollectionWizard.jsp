@@ -98,7 +98,6 @@
 <script>
 function nextStep(obj, next){
 	var form = $(obj).parents('form:first');
-	//console.log("nextStep", form.find("[name='next']").val(), next);
 	form.find("[name='next']").val(next);
 	form.submit();
 }
@@ -108,6 +107,30 @@ $(document).ready(function() {
 	if(wizardContent.hasClass("step_1")) {
 	} else if(wizardContent.hasClass("step_2")) {
 		//데이터소스를 얻어온다.
+		var refreshJDBCFunc = function(object) {
+			requestProxy("post", {
+				uri:"/management/collections/jdbc-source.xml",dataType:"xml"
+			}, "xml", function(data) {
+				var jdbcList = data.children[0].children[0].children;
+				var selectObj = $("div.JDBC select");
+				var options = selectObj[0].options;
+	 			options.add(document.createElement("option"));
+	 			for(var jdbcInx=0;jdbcInx<jdbcList.length;jdbcInx++) {
+	 				var element = $(jdbcList[jdbcInx]);
+					var option = document.createElement("option");
+					option.value = element.attr("id");
+					option.text = element.attr("name");
+					options.add(option);
+	 			}
+	 			if(object) {
+					noty({text: "jdbc source refres success ("+jdbcList.length+")", type: "success", layout:"topRight", 
+						timeout: 1000});
+				}
+			});
+		};
+		
+ 		refreshJDBCFunc();
+		
 		requestProxy("post", {
 			uri:"/management/collections/single-source-reader-list.json",
 		}, "json", function(data) {
@@ -157,10 +180,16 @@ $(document).ready(function() {
 						htmlStr += template.html();
 					}
 					$("div#sourceTypeConfig").html(htmlStr);
+					//JDBC 리프레시 버튼의 이벤트를 살려준다.
+					$("div.form-group div.btn").each(function(){
+			 			if($(this).find("i.icon-refresh")[0]) {
+			 				$(this).unbind("click").click(function() {
+						 		refreshJDBCFunc($(this));
+			 				});
+			 			}
+					});
 				}
 			});
-		}, function() {
-		}, function() {
 		});
 	} else if(wizardContent.hasClass("step_3")) {
 	} else if(wizardContent.hasClass("step_4")) {
