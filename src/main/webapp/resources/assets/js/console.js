@@ -28,7 +28,7 @@ function submitForm(url, data, method){
 		method : method,
 		action : url
 	}));
-    
+	
 	for ( var i in data) {
 		$('#jQueryPostItForm').append($('<input/>', {
 			type : 'hidden',
@@ -150,37 +150,37 @@ function startPollingIndexTaskState(collectionId){
 function startPollingIndexTaskState(collectionId, keepPollingFlag){
 	indexingStatePollingFlag = keepPollingFlag;
 	(function poll() {
-	    $.ajax({
-	        url: PROXY_REQUEST_URI,
-	        type: "GET",
-	        data : {
+		$.ajax({
+			url: PROXY_REQUEST_URI,
+			type: "GET",
+			data : {
 				uri : "/indexing/task-state",
 				collectionId : collectionId
 			},
-	        dataType: "json",
-	        complete: function() { if(indexingStatePollingFlag) {setTimeout(function() {poll();}, 2000); } },
-	        timeout: 2000,
-	        success: function(data) {
-	        	console.log("polling ", data, data.indexingState);
-	        	if($.isEmptyObject(data.indexingState)){
-	        		$("#indexing_type").text("");
-	        		$("#indexing_state").text("");
-	        		$("#indexing_document_count").text("");
-	        		$("#indexing_scheduled").text("");
-	        		$("#indexing_start_time").text("");
-	        		$("#indexing_elapsed").text("");
-//	        		stopPollingIndexTaskState();
-	        	} else {
-	        		$("#indexing_type").text(data.indexingState.indexingType);
-	        		$("#indexing_state").html("<i class=\"icon-spinner icon-spin icon-large\"></i> " + data.indexingState.state);
-	        		$("#indexing_document_count").text(data.indexingState.count);
-	        		$("#indexing_scheduled").text(data.indexingState.isScheduled);
-	        		$("#indexing_start_time").text(data.indexingState.startTime);
-	        		$("#indexing_elapsed").text(data.indexingState.elapsed);
-	        		
-	        	}
-	        }
-	    });
+			dataType: "json",
+			complete: function() { if(indexingStatePollingFlag) {setTimeout(function() {poll();}, 2000); } },
+			timeout: 2000,
+			success: function(data) {
+				console.log("polling ", data, data.indexingState);
+				if($.isEmptyObject(data.indexingState)){
+					$("#indexing_type").text("");
+					$("#indexing_state").text("");
+					$("#indexing_document_count").text("");
+					$("#indexing_scheduled").text("");
+					$("#indexing_start_time").text("");
+					$("#indexing_elapsed").text("");
+//					stopPollingIndexTaskState();
+				} else {
+					$("#indexing_type").text(data.indexingState.indexingType);
+					$("#indexing_state").html("<i class=\"icon-spinner icon-spin icon-large\"></i> " + data.indexingState.state);
+					$("#indexing_document_count").text(data.indexingState.count);
+					$("#indexing_scheduled").text(data.indexingState.isScheduled);
+					$("#indexing_start_time").text(data.indexingState.startTime);
+					$("#indexing_elapsed").text(data.indexingState.elapsed);
+					
+				}
+			}
+		});
 	})();
 }
 
@@ -197,51 +197,51 @@ var pollingAllTaskURI = "/management/common/all-task-state.json";
 
 function startPollingAllTaskState(){
 	(function poll() {
-	    $.ajax({
-	        url: PROXY_REQUEST_URI,
-	        type: "GET",
-	        data : {
+		$.ajax({
+			url: PROXY_REQUEST_URI,
+			type: "GET",
+			data : {
 				uri : pollingAllTaskURI
 			},
-	        dataType: "json",
-	        complete: function() { setTimeout(function() {poll();}, pollingInterval);},
-	        timeout: pollingTimeout,
-	        success: function(data) {
-	        	console.log("polling task for page", data, data.taskState);
-	        	//$("#running_tasks_top").find(".count").text(data.taskState.length);
-	        	
-	        	//task페이지가 존재하면.
-	        	if($("#_logs_tasks_table").length > 0){
-	        		$("#_logs_tasks_table").find("tbody tr").remove();
-	        	}
-	        	
-	        	if(data.taskState.length > 0){
-	        		
-	        		for(var i = 0; i < data.taskState.length; i++){
-	        			
-			        	if($("#_logs_tasks_table").length > 0){
-			        		
-			        		var $task = $("<tr><td class=\"_task_num\"></td><td><span class=\"task\"><span class=\"desc\"></span> <span class=\"percent\"></span></span>"
-			        			+"<div class=\"progress progress-small progress-striped active\"><div style=\"width: 20%;\" class=\"progress-bar progress-bar-info\"></div></div>"
-			        			+"</td><td class=\"_task_eclapsed\"></td><td class=\"_task_startTime\">2013-09-10 12:35:00</td></tr>");
-			        		$task.find("._task_num").text(i+1);
-			        		$task.find(".desc").text(data.taskState[i].summary);
-			        		$task.find("._task_eclapsed").text(data.taskState[i].elapsed);
-			        		$task.find("._task_startTime").text(data.taskState[i].startTime);
-			        		if(data.taskState[i].progress != -1){
-				        		$task.find(".percent").text(data.taskState[i].progress+"%");
-				        		$task.find(".progress-bar").css("width", data.taskState[i].progress+"%");
-				        	}else{
-				        		$task.find(".progress-bar").css("width", "50%");
-				        	}
-			        		$("#_logs_tasks_table").append($task);
-			        	}
-			        	
-	        		}
-	        		
-	        	}
-	        }
-	    });
+			dataType: "json",
+			complete: function() { setTimeout(function() {poll();}, pollingInterval);},
+			timeout: pollingTimeout,
+			success: function(data) {
+				console.log("polling task for page", data, data.taskState);
+				//$("#running_tasks_top").find(".count").text(data.taskState.length);
+				
+				//task페이지가 존재하면.
+				if($("#_logs_tasks_table").length > 0){
+					$("#_logs_tasks_table").find("tbody tr").remove();
+				}
+				
+				if(data.taskState.length > 0){
+					
+					for(var i = 0; i < data.taskState.length; i++){
+						
+						if($("#_logs_tasks_table").length > 0){
+							
+							var $task = $("<tr><td class=\"_task_num\"></td><td><span class=\"task\"><span class=\"desc\"></span> <span class=\"percent\"></span></span>"
+								+"<div class=\"progress progress-small progress-striped active\"><div style=\"width: 20%;\" class=\"progress-bar progress-bar-info\"></div></div>"
+								+"</td><td class=\"_task_eclapsed\"></td><td class=\"_task_startTime\">2013-09-10 12:35:00</td></tr>");
+							$task.find("._task_num").text(i+1);
+							$task.find(".desc").text(data.taskState[i].summary);
+							$task.find("._task_eclapsed").text(data.taskState[i].elapsed);
+							$task.find("._task_startTime").text(data.taskState[i].startTime);
+							if(data.taskState[i].progress != -1){
+								$task.find(".percent").text(data.taskState[i].progress+"%");
+								$task.find(".progress-bar").css("width", data.taskState[i].progress+"%");
+							}else{
+								$task.find(".progress-bar").css("width", "50%");
+							}
+							$("#_logs_tasks_table").append($task);
+						}
+						
+					}
+					
+				}
+			}
+		});
 	})();
 }
 
@@ -257,42 +257,42 @@ function startPollingAllTaskStateForTaskBar(){
 	pollingAllTaskStateFlagForTaskBar = true;
 	
 	(function poll() {
-	    $.ajax({
-	        url: PROXY_REQUEST_URI,
-	        type: "GET",
-	        data : {
+		$.ajax({
+			url: PROXY_REQUEST_URI,
+			type: "GET",
+			data : {
 				uri : pollingAllTaskURI
 			},
-	        dataType: "json",
-	        complete: function() { if(pollingAllTaskStateFlagForTaskBar) {setTimeout(function() {poll();}, pollingInterval); } },
-	        timeout: pollingTimeout,
-	        success: function(data) {
-//	        	console.log("polling task for taskbar", data, data.taskState);
-	        	
-	        	$("#running_tasks_top").find("li").not(".title").remove();
-	        	$("#running_tasks_top").find(".count").text(data.taskState.length);
-	        	
-	        	if(data.taskState.length > 0){
-	        		
-	        		for(var i = 0; i < data.taskState.length; i++){
-	        			
-	        			//상단 task 요약.
-			        	var $task = $("<li><a href=\"javascript:void(0);\"><span class=\"task\"><span class=\"desc\">11</span><span class=\"percent\"></span></span>"
+			dataType: "json",
+			complete: function() { if(pollingAllTaskStateFlagForTaskBar) {setTimeout(function() {poll();}, pollingInterval); } },
+			timeout: pollingTimeout,
+			success: function(data) {
+//				console.log("polling task for taskbar", data, data.taskState);
+				
+				$("#running_tasks_top").find("li").not(".title").remove();
+				$("#running_tasks_top").find(".count").text(data.taskState.length);
+				
+				if(data.taskState.length > 0){
+					
+					for(var i = 0; i < data.taskState.length; i++){
+						
+						//상단 task 요약.
+						var $task = $("<li><a href=\"javascript:void(0);\"><span class=\"task\"><span class=\"desc\">11</span><span class=\"percent\"></span></span>"
 								+"<div class=\"progress progress-small progress-striped active\"><div style=\"width: 1%;\" class=\"progress-bar progress-bar-info\"></div>"
 								+"</div></a></li>");
-			        	$task.find(".desc").text(data.taskState[i].summary);
-			        	if(data.taskState[i].progress != -1){
-			        		$task.find(".percent").text(data.taskState[i].progress+"%");
-			        		$task.find(".progress-bar").css("width", data.taskState[i].progress+"%");
-			        	}else{
-			        		$task.find(".progress-bar").css("width", "50%");
-			        	}
-			        	$("#running_tasks_top").append($task);
-	        		}
-	        		
-	        	}
-	        }
-	    });
+						$task.find(".desc").text(data.taskState[i].summary);
+						if(data.taskState[i].progress != -1){
+							$task.find(".percent").text(data.taskState[i].progress+"%");
+							$task.find(".progress-bar").css("width", data.taskState[i].progress+"%");
+						}else{
+							$task.find(".progress-bar").css("width", "50%");
+						}
+						$("#running_tasks_top").append($task);
+					}
+					
+				}
+			}
+		});
 	})();
 }
 
