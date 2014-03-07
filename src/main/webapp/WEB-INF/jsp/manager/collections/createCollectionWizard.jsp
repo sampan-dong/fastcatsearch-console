@@ -114,22 +114,75 @@ $(document).ready(function() {
 				var jdbcList = data.children[0].children[0].children;
 				var selectObj = $("div.JDBC select");
 				var options = selectObj[0].options;
-	 			options.add(document.createElement("option"));
-	 			for(var jdbcInx=0;jdbcInx<jdbcList.length;jdbcInx++) {
-	 				var element = $(jdbcList[jdbcInx]);
+				options.add(document.createElement("option"));
+				for(var jdbcInx=0;jdbcInx<jdbcList.length;jdbcInx++) {
+					var element = $(jdbcList[jdbcInx]);
 					var option = document.createElement("option");
 					option.value = element.attr("id");
 					option.text = element.attr("name");
 					options.add(option);
-	 			}
-	 			if(object) {
+				}
+				if(object) {
 					noty({text: "jdbc source refres success ("+jdbcList.length+")", type: "success", layout:"topRight", 
 						timeout: 1000});
 				}
 			});
 		};
 		
- 		refreshJDBCFunc();
+		refreshJDBCFunc();
+		
+		requestProxy("post", {
+			uri:"/management/collections/jdbc-support.xml",dataType:"xml"
+		}, "xml", function(data) {
+			var jdbcList = data.children[0].children[0].children;
+			var selectObj = $("form#jdbc-create-form div.form-group select");
+			var options = selectObj[0].options;
+			options.add(document.createElement("option"));
+			var paramMap = {};
+			for(var jdbcInx=0;jdbcInx<jdbcList.length;jdbcInx++) {
+				var element = $(jdbcList[jdbcInx]);
+				var option = document.createElement("option");
+				option.value = element.attr("id");
+				option.text = element.attr("name");
+				options.add(option);
+				paramMap[element.attr("id")] = {driver:element.attr("driver"),url:element.attr("urlTemplate")};
+			}
+			
+			selectObj.unbind("change").change(function() {
+				var regexHost = /[$][{]host[}]/g;
+				var regexPort = /[$][{]port([:]([0-9]+))*[}]/;
+				var regexDBName = /[$][{]dbname[}]/g;
+				var paramItem = paramMap[$(this).val()];
+				var form=$("form#jdbc-create-form");
+				var jdbcUrl = paramItem["url"];
+				
+				var jdbcRefreshFunc = function(url) {
+					var jdbcUrl = url;
+					form.find("input[name=driver]").val(paramItem["driver"]);
+					var host = form.find("input[name=host]").val();
+					var port = form.find("input[name=port]").val();
+					var defaultPort = regexPort.exec(jdbcUrl)[2];
+					if(port=="") {
+						port = defaultPort;
+						form.find("input[name=port]").val(port);
+					}
+					var dbName = form.find("input[name=dbName]").val();
+					var parameter = form.find("input[name=parameter]").val();
+					jdbcUrl = jdbcUrl.replace(regexHost,host);
+					jdbcUrl = jdbcUrl.replace(regexPort,port);
+					jdbcUrl = jdbcUrl.replace(regexDBName,dbName);
+					if(parameter!="") {
+						jdbcUrl+="?"+parameter;
+					}
+					form.find("input[name=jdbcUrl]").val(jdbcUrl);
+				};
+				form.find("input[name=host]").unbind("blur").blur(function() { jdbcRefreshFunc(jdbcUrl);});
+				form.find("input[name=port]").unbind("blur").blur(function() { jdbcRefreshFunc(jdbcUrl);});
+				form.find("input[name=dbName]").unbind("blur").blur(function() { jdbcRefreshFunc(jdbcUrl);});
+				form.find("input[name=parameter]").unbind("blur").blur(function() { jdbcRefreshFunc(jdbcUrl);});
+				jdbcRefreshFunc(jdbcUrl);
+			});
+		});
 		
 		requestProxy("post", {
 			uri:"/management/collections/single-source-reader-list.json",
@@ -628,45 +681,41 @@ author: 유관순
 								<label class="col-md-3 control-label">DB Vendor:</label>
 								<div class="col-md-9">
 									<select class=" select_flat form-control fcol2">
-										<option value="mysql">MySQL</option>
-										<option value="oracle">Oracle</option>
-										<option value="mssql">MS-SQL</option>
-										<option value="mssql">Others</option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">JDBC Driver:</label>
-								<div class="col-md-9"><input type="text" name="" class="form-control fcol3" value="com.mysql.driver.Driver"></div>
+								<div class="col-md-9"><input type="text" name="driver" class="form-control fcol3" value="com.mysql.driver.Driver"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">Host:</label>
-								<div class="col-md-9"><input type="text" name="" class="form-control fcol2"></div>
+								<div class="col-md-9"><input type="text" name="host" class="form-control fcol2"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">Port:</label>
-								<div class="col-md-9"><input type="text" name="" class="form-control fcol2"></div>
+								<div class="col-md-9"><input type="text" name="port" class="form-control fcol2"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">DB Name:</label>
-								<div class="col-md-9"><input type="text" name="" class="form-control fcol2"></div>
+								<div class="col-md-9"><input type="text" name="dbName" class="form-control fcol2"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">User:</label>
-								<div class="col-md-9"><input type="text" name="" class="form-control fcol2"></div>
+								<div class="col-md-9"><input type="text" name="user" class="form-control fcol2"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">Password:</label>
-								<div class="col-md-9"><input type="password" name="" class="form-control fcol2"></div>
+								<div class="col-md-9"><input type="password" name="password" class="form-control fcol2"></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">JDBC Parameter:</label>
-								<div class="col-md-9"><input type="text" name="" class="form-control" value="encoding=utf-8"></div>
+								<div class="col-md-9"><input type="text" name="parameter" class="form-control" value=""></div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">JDBC URL:</label>
 								<div class="col-md-9">
-									<input type="text" name="" class="form-control" disabled value="jdbc://192.168.0.8:3306/book?encoding=utf-8">
+									<input type="text" name="jdbcUrl" class="form-control" disabled value="">
 									<p class="help-block">* This is auto-generated url.</p>
 								</div>
 							</div>
