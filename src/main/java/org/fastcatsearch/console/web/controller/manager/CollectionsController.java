@@ -1,7 +1,9 @@
 package org.fastcatsearch.console.web.controller.manager;
 
 import java.net.URLDecoder;
+import java.sql.Types;
 import java.util.Enumeration;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -84,11 +86,10 @@ public class CollectionsController extends AbstractController {
 		//serialize()해서 넘어온 값이기때문에, decode해서 보내준다.
 		queryString = URLDecoder.decode(queryString, "utf-8");
 		
-//		logger.debug("queryString > {}", queryString);
+		logger.debug("queryString > {}", queryString);
 		String[] keyValueList = queryString.split("&");
 
 		JSONObject root = new JSONObject();
-		
 		JSONArray fieldList = new JSONArray();
 		JSONArray primaryKeyList = new JSONArray();
 		JSONArray analyzerList = new JSONArray();
@@ -103,7 +104,6 @@ public class CollectionsController extends AbstractController {
 		root.put("field-index-list", fieldIndexesList);
 		root.put("group-index-list", groupIndexesList);
 		
-		
 		JSONObject target = null;
 		
 		String KEY_NAME = "KEY_NAME";
@@ -115,11 +115,11 @@ public class CollectionsController extends AbstractController {
 		for (String keyValue : keyValueList) {
 			String[] pair = keyValue.split("=");
 			if (pair.length > 1) {
-				// logger.debug("{}] {} = {}",i++ , pair[0], pair[1]);
+				logger.debug("param : {} = {}", pair[0], pair[1]);
 				name = pair[0];
 				value = pair[1];
 			} else if (pair.length > 0) {
-				// logger.debug("{}] {} =", i++, pair[0]);
+				logger.debug("param : {} =", pair[0]);
 				name = pair[0];
 				value = null;
 			} else {
@@ -128,7 +128,6 @@ public class CollectionsController extends AbstractController {
 			}
 
 			if (name.equals(KEY_NAME)) {
-
 				key = value;
 				if (key.startsWith("_fields_")) {
 					target = new JSONObject();
@@ -159,13 +158,10 @@ public class CollectionsController extends AbstractController {
 					} else {
 						// key_name내에 갑자기 다른 이름이 나오면 무시한다.
 						logger.error("name is miss placed. name={}, key={}", key, name);
-
 					}
 				}
 			}
-
 		}
-		
 		
 		String jsonSchemaString = root.toString();
 		logger.debug("jsonSchemaString > {}", jsonSchemaString);
@@ -494,8 +490,31 @@ public class CollectionsController extends AbstractController {
 						.addParameter("autoSchema", "y");
 					result = httpPost.requestJSON();
 					
+					requestUrl = "/management/collections/schema.xml";
+					Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionTmp).addParameter("type", "workSchema")
+							.requestXML();
+					mav.addObject("schemaDocument",document);
+					
+					requestUrl = "/management/collections/data-type-list.json";
+					httpPost = httpPost(session, requestUrl);
+					JSONObject typeList = httpPost.requestJSON();
+					mav.addObject("typeList", typeList);
+					
 					step = "3";
 				}else if(step.equals("3")){
+					String queryString="";
+					Map<String, String[]> parameterMap = request.getParameterMap();
+					for(String key : parameterMap.keySet()) {
+						String[] values = parameterMap.get(key);
+						for(int inx=0;inx < values.length; inx++) {
+							queryString+="&"+key+"="+values[inx];
+						}
+					}
+					
+					if(!"".equals(queryString)) {
+						queryString = queryString.substring(1);
+					}
+					workSchemaSave(session, collectionTmp, queryString);
 					step = "4";
 				}else if(step.equals("4")){
 					step = "5";

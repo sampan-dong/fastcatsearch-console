@@ -2,8 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ROOT_PATH" value="../.." />
+<%@page import="org.jdom2.*"%>
+<%@page import="org.json.*" %>
+<%@page import="java.util.*"%>
 <%
 	String step = (String) request.getAttribute("step");
+	JSONObject typeListObj = (JSONObject) request.getAttribute("typeList");
 %>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
@@ -271,6 +275,8 @@ $(document).ready(function() {
 			});
 		});
 	} else if(wizardContent.hasClass("step_3")) {
+		
+		
 	} else if(wizardContent.hasClass("step_4")) {
 	}
 });
@@ -301,7 +307,7 @@ $(document).ready(function() {
 					<li class="<%=step.equals("5") ? "current" : "" %>"><span class="badge">5</span> Finish</li>
 				</ul>
 				<div class="wizard-content step_${step}">
-				
+					<% if("1".equals(step)) {  %>
 					<div class="wizard-card <%=step.equals("1") ? "current" : "" %>">
 						<form id="collection-config-form" action="" method="get">
 							<input type="hidden" name="step" value="1" />
@@ -358,6 +364,7 @@ $(document).ready(function() {
 						</form>
 					</div>
 					
+					<% } else if ("2".equals(step)) { %>
 					
 					<div class="wizard-card <%=step.equals("2") ? "current" : "" %>">
 						<form id="collection-config-form">
@@ -383,6 +390,12 @@ $(document).ready(function() {
 						</form>
 					</div>
 					
+					<% } else if ("3".equals(step)) { %>
+					<%
+					Document document = (Document) request.getAttribute("schemaDocument");
+					Element root = document.getRootElement();
+					Element el = root.getChild("field-list");
+					%>
 					<div class="wizard-card <%=step.equals("3") ? "current" : "" %>">
 						<form id="collection-config-form">
 							<input type="hidden" name="step" value="3" />
@@ -403,92 +416,78 @@ $(document).ready(function() {
 												<th>Multi Value</th>
 												<th>Multi Value<br>Delimiter</th>
 											</tr>
-										</thead>									
+										</thead>
 										<tbody>
+										<% 
+										JSONArray typeList = typeListObj.optJSONArray("typeList");
+										if(el!=null) { 
+											List<Element> fieldList = el.getChildren();
+											%>
+											<%
+											for(int inx = 0; inx <fieldList.size(); inx++){
+												String fieldKey = "_fields_"+inx;
+												Element field = fieldList.get(inx);
+												String id = field.getAttributeValue("id");
+												String type = field.getAttributeValue("type");
+												String name = field.getAttributeValue("name", "");
+												String source = field.getAttributeValue("source", "");
+												String size = field.getAttributeValue("size", "");
+												String store = field.getAttributeValue("store", "true");
+												String removeTag = field.getAttributeValue("removeTag", "");
+												String multiValue = field.getAttributeValue("multiValue", "false");
+												String multiValueDelimeter = field.getAttributeValue("multiValueDelimeter", "");
+											%>
+											<input type="hidden" name="KEY_NAME" value="<%=fieldKey%>"/>
 											<tr>
-												<td>1</td>
-												<td><input type="text" class="form-control" value="id" /></td>
-												<td><input type="text" class="form-control" value="" /></td>
-												<td><select class="select_flat form-control">
-													<option value="INT" selected>INT</option>
-													<option value="STRING">STRING</option>
-													<option value="ASTRING">ASTRING</option>
-													<option value="DATETIME">DATETIME</option>
+												<td><%=inx+1 %></td>
+												<td><input type="text" class="form-control" name="<%=fieldKey%>-id" value="<%=id %>" /></td>
+												<td><input type="text" class="form-control" name="<%=fieldKey%>-name" value="<%=name %>" /></td>
+												<td><select class="select_flat form-control" name="<%=fieldKey%>-type" >
+													<%
+													for(int typeInx=0;typeInx < typeList.length(); typeInx++) { 
+														String typeStr = typeList.optString(typeInx);
+													%>
+													<option value="<%=typeStr %>" <%=typeStr.equals(type)?"selected":"" %>><%=typeStr %></option>
+													<%
+													}
+													%>
 												</select></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
+												<td><input type="text" class="form-control fcol1-1" name="<%=fieldKey%>-size" value="<%=size %>" /></td>
+												<td><label class="checkbox"><input type="checkbox" value="true" <%="true".equals(removeTag)?"checked":"" %> name="<%=fieldKey%>-removeTag"></label></td>
+												<td><label class="checkbox"><input type="checkbox" value="true" <%="true".equals(multiValue)?"checked":"" %> name="<%=fieldKey%>-multiValue"></label></td>
+												<td><input type="text" class="form-control fcol1-1" value="<%=multiValueDelimeter %>" name="<%=fieldKey%>-multiValueDelimeter"/></td>
 											</tr>
-											<tr>
-												<td>2</td>
-												<td><input type="text" class="form-control" value="title" /></td>
-												<td><input type="text" class="form-control" value="" /></td>
-												<td><select class="select_flat form-control">
-													<option value="INT">INT</option>
-													<option value="STRING" selected>STRING</option>
-													<option value="ASTRING">ASTRING</option>
-													<option value="DATETIME">DATETIME</option>
-												</select></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
-											</tr>
-											<tr>
-												<td>3</td>
-												<td><input type="text" class="form-control" value="body" /></td>
-												<td><input type="text" class="form-control" value="" /></td>
-												<td><select class="select_flat form-control">
-													<option value="INT">INT</option>
-													<option value="STRING" selected>STRING</option>
-													<option value="ASTRING">ASTRING</option>
-													<option value="DATETIME">DATETIME</option>
-												</select></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td><input type="text" class="form-control" value="date" /></td>
-												<td><input type="text" class="form-control" value="" /></td>
-												<td><select class="select_flat form-control">
-													<option value="INT">INT</option>
-													<option value="STRING">STRING</option>
-													<option value="ASTRING">ASTRING</option>
-													<option value="DATETIME" selected>DATETIME</option>
-												</select></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
-											</tr>
-											<tr>
-												<td>5</td>
-												<td><input type="text" class="form-control" value="author" /></td>
-												<td><input type="text" class="form-control" value="" /></td>
-												<td><select class="select_flat form-control">
-													<option value="INT">INT</option>
-													<option value="STRING" selected>STRING</option>
-													<option value="ASTRING">ASTRING</option>
-													<option value="DATETIME">DATETIME</option>
-												</select></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><label class="checkbox"><input type="checkbox" value="true" name=""></label></td>
-												<td><input type="text" class="form-control fcol1-1" value="" /></td>
-											</tr>
-										
-										
+											<% 
+											}
+											%>
+										<%
+										} 
+										%>
 										</tbody>
 									</table>
 									
 									<h3>Primary Keys</h3>
-									<div class="form-group">
-										<input type="text" class="form-control" value="IDX" >
-									</div>
+									<%
+									el = root.getChild("primary-key");
+									if(el!=null) { 
+										List<Element> fieldList = el.getChildren();
+										%>
+										<%
+										for(int inx = 0; inx <fieldList.size(); inx++) {
+											String fieldKey = "_constraints_"+inx;
+											Element field = fieldList.get(inx);
+											String ref = field.getAttributeValue("ref");
+										%>
+										<input type="hidden" name="KEY_NAME" value="<%=fieldKey%>"/>
+										<div class="form-group">
+											<input type="text" class="form-control" name="<%=fieldKey%>-ref" value="<%=ref%>" >
+										</div>
+										<%
+										}
+										%>
+									<%
+									}
+									%>
 									<div class="form-group">
 										<input type="button" value="Test Field Mapping.." class="btn" data-target="#testFieldMapping" data-toggle="modal" data-backdrop="static">
 									</div>
@@ -501,7 +500,7 @@ $(document).ready(function() {
 						</form>
 					</div>
 					
-					
+					<% } else if ("4".equals(step)) { %>
 					
 					<div class="wizard-card <%=step.equals("4") ? "current" : "" %>">
 						<form id="collection-config-form">
@@ -616,6 +615,8 @@ $(document).ready(function() {
 						</form>
 					</div>
 					
+					<% } else if ("5".equals(step)) { %>
+					
 					<div class="wizard-card <%=step.equals("5") ? "current" : "" %>">
 						<form id="collection-config-form">
 							<div class="row">
@@ -632,6 +633,7 @@ $(document).ready(function() {
 							</div>
 						</form>
 					</div>
+					<% } %>
 				</div>
 			</div>
 			<!-- /Page Header -->
