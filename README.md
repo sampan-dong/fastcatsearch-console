@@ -15,17 +15,17 @@ For more information, see <http://www.gnu.org/licenses/gpl-2.0.html>
 
 
 
-## Builing
+## Building
 
-1. download source from github repository
+1. Download source from github repository
 
-2. maven it
+2. Maven it
 
 
     $ cd fastcatsearch-console-{version}   
     $ maven install
 
-3. done
+3. Done
 
     Copy built directory to some where you want to install.
     Now, it's ready to run.
@@ -34,7 +34,7 @@ For more information, see <http://www.gnu.org/licenses/gpl-2.0.html>
 
 ## Settings
 
-Port Check
+* Port Check
     
     Default port is `8080`. If this port is used, you can change it in config file.
     
