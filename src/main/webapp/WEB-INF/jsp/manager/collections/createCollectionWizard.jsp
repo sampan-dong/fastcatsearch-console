@@ -101,7 +101,48 @@ function nextStep(obj, next){
 	form.find("[name='next']").val(next);
 	form.submit();
 }
+function showQueryTestModal(){
+	var jdbcSourceId = $("select.jdbc-select option:selected").val();
+	if(jdbcSourceId != null && jdbcSourceId != ""){
+		$('#testDataSourceModal').modal('show');
+	}else{
+		alert("Please select jdbc source.");
+	}
+}
 $(document).ready(function() {
+	$("#resultLimitSize").tooltip();
+	console.log("$(#queryTestButton)", $("#queryTestButton"));
+	
+	$("#queryTestForm").validate();
+	$("#queryTestForm").submit(function(e){
+		e.preventDefault();
+		
+		var jdbcSourceId = $("select.jdbc-select option:selected").val();
+		var dataSQL = $(this).find("[name='dataSQL']").val();
+		var length = $(this).find("[name='length']").val();
+		
+		if(jdbcSourceId == null){
+			return;
+		}
+		$.ajax({
+			url : PROXY_REQUEST_URI,
+			type: "POST",
+			data : {
+				uri : "/management/collections/execute-jdbc-query.text",
+				jdbcSourceId : jdbcSourceId,
+				query: dataSQL,
+				length: length,
+				dataType: "text"
+			},
+			dataType : "text",
+			success:function(data, textStatus, jqXHR) {
+				$("#queryOutput").text(data);
+			}, error: function(jqXHR, textStatus, errorThrown) {
+				$("#queryOutput").text(errorThrown);
+			}
+		});
+	});
+	
 	var wizardContent = $(".wizard-content");
 	//step 구분하여 초기화 스크립트를 진행한다.
 	if(wizardContent.hasClass("step_1")) {
@@ -643,22 +684,24 @@ $(document).ready(function() {
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title"> Query Test</h4>
+					<h4 class="modal-title">Query Test</h4>
 				</div>
 				<div class="modal-body">
 					<div class="col-md-12 bottom-space-sm">
-						<form>
+						<form id="queryTestForm">
 							<textarea rows="10" name="dataSQL" class="form-control required"></textarea>
-							<p class="help-block">* Only top 100 result can be shown.</p>
+							<p class="help-block">* Max result limit size is 100</p>
 							<p class="help-block">* '--' comment is supported.</p>
-							<input type="button"  value="Run Select" class="btn btn-primary"/>
-							<input type="button"  value="Run Update" class="btn btn-primary"/>
-							<input type="button" value="Close" class="btn" data-dismiss="modal">
+							<div class="form-inline">
+								<input type="text" name="length" id="resultLimitSize" value="10" class="form-control fcol2" data-toggle="tooltip" data-placement="top" title="Result Limit Size">
+								<input type="submit" value="Run Query" class="btn btn-primary"/>
+								<input type="button" value="Close" class="btn" data-dismiss="modal">
+							</div>
 						</form>
 					</div>
 					<div class="col-md-12">
 						<h3>Output</h3>
-						<textarea rows="10" name="" class="form-control">
+						<textarea rows="20" id="queryOutput" class="form-control">
 						</textarea>
 					</div>
 				</div>
@@ -804,7 +847,7 @@ author: 유관순
 				<select class=" select_flat form-control fcol2 display-inline jdbc-select" name=""></select>
 				<div class="btn"><i class="icon-refresh"></i></div>
 				<div class="btn" data-target="#dataSourceCreate" data-toggle="modal" data-backdrop="static">Create New..</div>
-				<div class="btn" data-target="#testDataSourceModal" data-toggle="modal" data-backdrop="static">Query Test..</div>
+				<a href="javascript:showQueryTestModal()" class="btn" >Query Test..</a>
 				<input type="hidden" name="" value=""/>
 				<span class="help-block"></span>
 			</div>
