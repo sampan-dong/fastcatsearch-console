@@ -7,3 +7,5 @@ if [ ! -d "temp" ]; then
 fi
 
 java -jar start.jar > $SERVER_HOME/logs/server.log 2>&1 &
+
+echo fastcatsearch-console start. see logs/server.log file.
