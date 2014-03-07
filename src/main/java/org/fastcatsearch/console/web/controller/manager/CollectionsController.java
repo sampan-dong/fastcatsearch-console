@@ -1,12 +1,14 @@
 package org.fastcatsearch.console.web.controller.manager;
 
 import java.net.URLDecoder;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.fastcatsearch.console.web.http.ResponseHttpClient.PostMethod;
 import org.jdom2.Document;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -456,17 +458,42 @@ public class CollectionsController extends AbstractController {
 							collectionInfoList = httpPost(session, requestUrl)
 								.addParameter("collectionId", collectionTmp)
 								.addParameter("collectionName", collectionName)
+								.addParameter("sourceIndex","0")
 								.addParameter("indexNode", indexNode)
 								.addParameter("searchNodeList", searchNodeList)
 								.addParameter("dataNodeList", dataNodeList)
 								.requestJSON();
 							mav.setViewName("manager/collections/create");
-							mav.addObject("collectionId", collectionId);
-							mav.addObject("collectionTmp", collectionTmp);
 						}
 					}
 					step = "2";
 				}else if(step.equals("2")){
+					//데이터소스 저장.
+					requestUrl = "/management/collections/update-datasource.json";
+					PostMethod httpPost = httpPost(session, requestUrl);
+					Enumeration<String> parameterNames = request.getParameterNames();
+					httpPost.addParameter("collectionId", collectionTmp)
+						.addParameter("indexType", "full")
+						.addParameter("active", "false");
+					for(;parameterNames.hasMoreElements();) {
+						String parameterName = parameterNames.nextElement();
+						//중복되는 파라메터는 제거해 준다.
+						if("collectionId".equals(parameterName)
+							||"indexType".equals(parameterName)	
+							||"active".equals(parameterName) ) {
+							continue;
+						}
+						httpPost.addParameter(parameterName, request.getParameter(parameterName));
+					}
+					JSONObject result = httpPost.requestJSON();
+					
+					//워크스키마 자동생성. 일단 dbreader 일 경우에만 세팅하도록 한다.
+					requestUrl = "/management/collections/schema/update.json";
+					httpPost = httpPost(session, requestUrl);
+					httpPost.addParameter("collectionId", collectionTmp)
+						.addParameter("autoSchema", "y");
+					result = httpPost.requestJSON();
+					
 					step = "3";
 				}else if(step.equals("3")){
 					step = "4";
@@ -495,6 +522,8 @@ public class CollectionsController extends AbstractController {
 			}
 			
 			mav.addObject("step", step);
+			mav.addObject("collectionId", collectionId);
+			mav.addObject("collectionTmp", collectionTmp);
 			mav.setViewName("manager/collections/createCollectionWizard");
 		} catch (Exception e) {
 			logger.error("",e);

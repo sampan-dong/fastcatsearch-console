@@ -17,7 +17,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -92,9 +91,12 @@ public class ResponseHttpClient {
 			this.url = url;
 		}
 
+
 		public abstract String getQueryString();
 
 		public abstract AbstractMethod addParameter(String key, String value);
+		
+		public abstract AbstractMethod addParameters(List<NameValuePair> nvps);
 
 		protected abstract HttpUriRequest getHttpRequest();
 
@@ -215,6 +217,14 @@ public class ResponseHttpClient {
 
 			return this;
 		}
+		
+		@Override
+		public GetMethod addParameters(List<NameValuePair> nvps) {
+			for(NameValuePair nvp : nvps) {
+				addParameter(nvp.getName(), nvp.getValue());
+			}
+			return this;
+		}
 
 		@Override
 		public String getQueryString() {
@@ -224,7 +234,6 @@ public class ResponseHttpClient {
 				return "";
 			}
 		}
-
 	}
 
 	public static class PostMethod extends AbstractMethod {
@@ -260,6 +269,17 @@ public class ResponseHttpClient {
 
 			nvps.add(new BasicNameValuePair(key, value));
 
+			return this;
+		}
+		
+		@Override
+		public PostMethod addParameters(List<NameValuePair> nvps) {
+			if (nvps == null) {
+				nvps = new ArrayList<NameValuePair>();
+			}
+			
+			nvps.addAll(nvps);
+			
 			return this;
 		}
 

@@ -210,7 +210,7 @@ $(document).ready(function() {
 		requestProxy("post", {
 			uri:"/management/collections/single-source-reader-list.json",
 		}, "json", function(data) {
-			var selectObj = $("#sourceReaderSelect select") 
+			var selectObj = $("#sourceReaderSelect select");
 			var options = selectObj[0].options;
 			for(var inx=options.length;inx>=0;inx--) {
 				options[inx]=null;
@@ -223,7 +223,7 @@ $(document).ready(function() {
 				option.value = list[inx]["name"];
 				option.text = list[inx]["name"];
 				options.add(option);
-				paramMap[list[inx]["name"]] = list[inx]["parameters"];
+				paramMap[list[inx]["name"]] = list[inx];
 			}
 			selectObj.unbind("change").change(function() {
 				var confirmed = false;
@@ -235,7 +235,8 @@ $(document).ready(function() {
 				}
 				if(confirmed) {
 					var readerId = $(this)[0].value;
-					var params = paramMap[readerId];
+					var reader = paramMap[readerId]["reader"];
+					var params = paramMap[readerId]["parameters"];
 					var htmlStr = "";
 					for(var inx=0;inx<params.length;inx++) {
 						var param = params[inx];
@@ -249,13 +250,15 @@ $(document).ready(function() {
 							template.find("input, textarea").addClass("required"); 
 							template.find("label.control-label").css("color", "#0066ff");
 						}
-						template.find("input, textarea").attr("name", param["id"]);
+						template.find("input, textarea, select").attr("name", "value"+inx);
 						if(param["defaultValue"]) {
 							template.find("input, textarea").attr("value", param["defaultValue"]);
 						}
+						template.find("input[type=hidden]").attr("name", "key"+inx).attr("value",param["id"]);
 						htmlStr += template.html();
 					}
 					$("div#sourceTypeConfig").html(htmlStr);
+					$(this).parents("form")[0].readerClass.value=reader;
 					//JDBC 리프레시 버튼의 이벤트를 살려준다.
 					$("div.form-group div.btn").each(function(){
 			 			if($(this).find("i.icon-refresh")[0]) {
@@ -361,13 +364,13 @@ $(document).ready(function() {
 							<input type="hidden" name="step" value="2" />
 							<input type="hidden" name="next" />
 							<input type="hidden" name="collectionId" value="${collectionId}"/>
+							<input type="hidden" name="readerClass" value=""/>
 							<div class="row">
 								<div class="col-md-12 form-horizontal">
 									<div id = "sourceReaderSelect" class="form-group">
 										<label class="col-md-2 control-label">Source Type:</label>
 										<div class="col-md-10">
-											<select class="combobox select_flat form-control fcol2">
-											</select>
+											<select class="combobox select_flat form-control fcol2"></select>
 										</div>
 									</div>
 									<div id="sourceTypeConfig"></div>
@@ -384,6 +387,7 @@ $(document).ready(function() {
 						<form id="collection-config-form">
 							<input type="hidden" name="step" value="3" />
 							<input type="hidden" name="next" />
+							<input type="hidden" name="collectionId" value="${collectionId}"/>
 							<div class="row">
 								<div class="col-md-12">
 									<h3>Fields</h3>
@@ -655,33 +659,6 @@ $(document).ready(function() {
 					<div class="col-md-12">
 						<h3>Output</h3>
 						<textarea rows="10" name="" class="form-control">
-#: 1
-id: a0001
-title: 제목1입니다.
-body : 이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.
-date : 2014-03-01 12:00:00.123
-author: 유관순
-
-#: 2
-id: a0002
-title: 제목2입니다.
-body : 이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.
-date : 2014-03-01 12:00:00.123
-author: 유관순
-
-#: 3
-id: a0003
-title: 제목3입니다.
-body : 이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.
-date : 2014-03-01 12:00:00.123
-author: 유관순
-
-#: 4
-id: a0004
-title: 제목4입니다.
-body : 이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.
-date : 2014-03-01 12:00:00.123
-author: 유관순
 						</textarea>
 					</div>
 				</div>
@@ -824,10 +801,11 @@ author: 유관순
 		<div class="form-group">
 			<label class="col-md-2 control-label">JDBC Connection:</label>
 			<div class="col-md-10">
-				<select class=" select_flat form-control fcol2 display-inline jdbc-select"></select>
+				<select class=" select_flat form-control fcol2 display-inline jdbc-select" name=""></select>
 				<div class="btn"><i class="icon-refresh"></i></div>
 				<div class="btn" data-target="#dataSourceCreate" data-toggle="modal" data-backdrop="static">Create New..</div>
 				<div class="btn" data-target="#testDataSourceModal" data-toggle="modal" data-backdrop="static">Query Test..</div>
+				<input type="hidden" name="" value=""/>
 				<span class="help-block"></span>
 			</div>
 		</div>
@@ -836,6 +814,7 @@ author: 유관순
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
 			<div class="col-md-10"><textarea rows="4" name="" class="form-control"></textarea>
+			<input type="hidden" name="" value=""/>
 			<span class="help-block"></span>
 			</div>
 		</div>
@@ -844,6 +823,7 @@ author: 유관순
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
 			<div class="col-md-10"><input type="text" name="" class="form-control fcol2" value="">
+			<input type="hidden" name="" value=""/>
 			<span class="help-block"></span>
 			</div>
 		</div>
@@ -852,6 +832,7 @@ author: 유관순
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
 			<div class="col-md-10"><input type="text" name="" class="form-control fcol2" value="">
+			<input type="hidden" name="" value=""/>
 			<span class="help-block"></span>
 			</div>
 		</div>
@@ -860,6 +841,7 @@ author: 유관순
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
 			<div class="col-md-10"><input type="text" name="" class="form-control" value="">
+			<input type="hidden" name="" value=""/>
 			<span class="help-block"></span>
 			</div>
 		</div>
@@ -868,6 +850,7 @@ author: 유관순
 		<div class="form-group">
 			<label class="col-md-2 control-label"></label>
 			<div class="col-md-10"><input type="text" name="" class="form-control fcol2" value="">
+			<input type="hidden" name="" value=""/>
 			<span class="help-block"></span>
 			</div>
 		</div>
