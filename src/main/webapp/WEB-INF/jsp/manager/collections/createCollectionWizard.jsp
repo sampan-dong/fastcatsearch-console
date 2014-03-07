@@ -112,8 +112,11 @@ $(document).ready(function() {
 				uri:"/management/collections/jdbc-source.xml",dataType:"xml"
 			}, "xml", function(data) {
 				var jdbcList = data.children[0].children[0].children;
-				var selectObj = $("div.JDBC select");
+				var selectObj = $("div.form-group select.jdbc-select");
 				var options = selectObj[0].options;
+				for(var optInx=options.length;optInx >=0;optInx--) {
+					options[optInx]=null;
+				}
 				options.add(document.createElement("option"));
 				for(var jdbcInx=0;jdbcInx<jdbcList.length;jdbcInx++) {
 					var element = $(jdbcList[jdbcInx]);
@@ -131,6 +134,7 @@ $(document).ready(function() {
 		
 		refreshJDBCFunc();
 		
+		//드라이버 생성 관련.
 		requestProxy("post", {
 			uri:"/management/collections/jdbc-support.xml",dataType:"xml"
 		}, "xml", function(data) {
@@ -174,13 +178,32 @@ $(document).ready(function() {
 					if(parameter!="") {
 						jdbcUrl+="?"+parameter;
 					}
-					form.find("input[name=jdbcUrl]").val(jdbcUrl);
+					form.find("input[name=url]").val(jdbcUrl);
 				};
 				form.find("input[name=host]").unbind("blur").blur(function() { jdbcRefreshFunc(jdbcUrl);});
 				form.find("input[name=port]").unbind("blur").blur(function() { jdbcRefreshFunc(jdbcUrl);});
 				form.find("input[name=dbName]").unbind("blur").blur(function() { jdbcRefreshFunc(jdbcUrl);});
 				form.find("input[name=parameter]").unbind("blur").blur(function() { jdbcRefreshFunc(jdbcUrl);});
 				jdbcRefreshFunc(jdbcUrl);
+			});
+		});
+		//jdbc 새로생성 버튼
+		$("form#jdbc-create-form div.form-group input[value=Create]").click(function() {
+			var form = $("form#jdbc-create-form")[0];
+			requestProxy("post", {
+				uri:"/management/collections/update-jdbc-source.json",
+				id:form.id.value,
+				name:form.name.value,
+				driver:form.driver.value,
+				url:form.url.value,
+				user:form.user.value,
+				password:form.password.value,
+				mode:"update"
+			}, "json", function(data) {
+				$("div#dataSourceCreate").modal("hide");
+				noty({text: "jdbc create success ", type: "success", layout:"topRight", 
+					timeout: 1000});
+				refreshJDBCFunc();
 			});
 		});
 		
@@ -677,6 +700,15 @@ author: 유관순
 					<div class="col-md-12 form-horizontal">
 						
 						<form id="jdbc-create-form">
+							<input type="hidden" name="mode" value="update"/>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Id:</label>
+								<div class="col-md-9"><input type="text" name="id" class="form-control fcol2"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Name:</label>
+								<div class="col-md-9"><input type="text" name="name" class="form-control fcol2"></div>
+							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">DB Vendor:</label>
 								<div class="col-md-9">
@@ -715,7 +747,7 @@ author: 유관순
 							<div class="form-group">
 								<label class="col-md-3 control-label">JDBC URL:</label>
 								<div class="col-md-9">
-									<input type="text" name="jdbcUrl" class="form-control" disabled value="">
+									<input type="text" name="url" class="form-control" disabled value="">
 									<p class="help-block">* This is auto-generated url.</p>
 								</div>
 							</div>
@@ -792,8 +824,7 @@ author: 유관순
 		<div class="form-group">
 			<label class="col-md-2 control-label">JDBC Connection:</label>
 			<div class="col-md-10">
-				<select class=" select_flat form-control fcol2 display-inline">
-				</select>
+				<select class=" select_flat form-control fcol2 display-inline jdbc-select"></select>
 				<div class="btn"><i class="icon-refresh"></i></div>
 				<div class="btn" data-target="#dataSourceCreate" data-toggle="modal" data-backdrop="static">Create New..</div>
 				<div class="btn" data-target="#testDataSourceModal" data-toggle="modal" data-backdrop="static">Query Test..</div>
