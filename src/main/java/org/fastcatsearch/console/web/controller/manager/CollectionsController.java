@@ -89,6 +89,7 @@ public class CollectionsController extends AbstractController {
 		String key = null;
 		String paramKey = null;
 		String value = null;
+		String validationLevel = request.getParameter("validationLevel");
 		int keyIndex = 0;
 		
 		@SuppressWarnings("unchecked")
@@ -119,6 +120,7 @@ public class CollectionsController extends AbstractController {
 		String requestUrl = "/management/collections/schema/update.json";
 		JSONObject object = httpPost(session, requestUrl).addParameter("collectionId", collectionId)
 				.addParameter("type", "workSchema") //work schema를 업데이트한다.
+				.addParameter("validationLevel", validationLevel)
 				.addParameter("schemaObject", jsonSchemaString).requestJSON();
 
 		if (object != null) {
@@ -465,10 +467,31 @@ public class CollectionsController extends AbstractController {
 					mav.addObject("typeList", typeList);
 					
 					step = "3";
-				}else if(step.equals("3")){
+				} else if(step.equals("3")){
 					workSchemaSave(session, request, collectionTmp);
+					
+					requestUrl = "/management/collections/collection-info-list.json";
+					JSONObject collectionInfo = httpPost(session, requestUrl).requestJSON();
+					mav.addObject("collectionInfo",collectionInfo);
+					
+					requestUrl = "/management/collections/datasource.xml";
+					Document datasource = httpPost(session, requestUrl)
+						.addParameter("collectionId", collectionTmp).requestXML();
+					mav.addObject("dataSource", datasource);
+					
+					requestUrl = "/management/collections/schema.xml";
+					Document schema = httpPost(session, requestUrl)
+						.addParameter("collectionId", collectionTmp)
+						.addParameter("type", "workSchema").requestXML();
+					mav.addObject("schemaDocument", schema);
 					step = "4";
 				}else if(step.equals("4")){
+					//remove temp to real collection;
+					requestUrl = "/management/collections/operate.json";
+					JSONObject result= httpPost(session, requestUrl)
+						.addParameter("collectionId", collectionId)
+						.addParameter("command", "promote").requestJSON();
+					//TODO: 결과처리
 					step = "5";
 				}
 			}else if(next.equals("back")){

@@ -316,7 +316,30 @@ $(document).ready(function() {
 			});
 		});
 	} else if(wizardContent.hasClass("step_3")) {
-		
+		$("form#collection-config-form div.form-group input.btn[data-target=#testFieldMapping]").click(function() {
+			var form = $("form#collection-config-form")[0];
+			var collectionId=form.collectionId.value;
+			collectionId = "."+collectionId+".tmp";
+			requestProxy("post", {
+				uri:"/management/collections/test-source-reader.json",dataType:"json",collectionId:collectionId
+			}, "json", function(data) {
+				var list = data["mappingResult"];
+				var str = "";
+				for(var inx = 0; inx < list.length; inx++) {
+					var fields = list[inx];
+					str +="#: " +(inx + 1)+"<br/>";
+					
+					for(var finx=0; finx < fields.length; finx++) {
+						var map = fields[finx];
+						str +="<strong>"+map["field"]+"</strong> : "+map["value"]+"<br/>";
+					}
+					
+					str +="<br/><br/>";
+				}
+				$("div#testFieldMapping div.form-control").html(str).css("height","500px").css("overflow","scroll");
+			});
+			
+		});
 		
 	} else if(wizardContent.hasClass("step_4")) {
 	}
@@ -439,6 +462,7 @@ $(document).ready(function() {
 					%>
 					<div class="wizard-card <%=step.equals("3") ? "current" : "" %>">
 						<form id="collection-config-form">
+							<input type="hidden" name="validationLevel" value="0" />
 							<input type="hidden" name="step" value="3" />
 							<input type="hidden" name="next" />
 							<input type="hidden" name="collectionId" value="${collectionId}"/>
@@ -466,7 +490,7 @@ $(document).ready(function() {
 											%>
 											<%
 											for(int inx = 0; inx <fieldList.size(); inx++){
-												String fieldKey = "_fields_"+inx;
+												String fieldKey = "_field-list_"+inx;
 												Element field = fieldList.get(inx);
 												String id = field.getAttributeValue("id");
 												String type = field.getAttributeValue("type");
@@ -479,6 +503,7 @@ $(document).ready(function() {
 												String multiValueDelimeter = field.getAttributeValue("multiValueDelimeter", "");
 											%>
 											<input type="hidden" name="KEY_NAME" value="<%=fieldKey%>"/>
+											<input type="hidden"  name="<%=fieldKey%>-store" value="true"/>
 											<tr>
 												<td><%=inx+1 %></td>
 												<td><input type="text" class="form-control" name="<%=fieldKey%>-id" value="<%=id %>" /></td>
@@ -515,7 +540,7 @@ $(document).ready(function() {
 										%>
 										<%
 										for(int inx = 0; inx <fieldList.size(); inx++) {
-											String fieldKey = "_constraints_"+inx;
+											String fieldKey = "_primary-key_"+inx;
 											Element field = fieldList.get(inx);
 											String ref = field.getAttributeValue("ref");
 										%>
@@ -543,38 +568,64 @@ $(document).ready(function() {
 					
 					<% } else if ("4".equals(step)) { %>
 					
+					<%
+					String collectionId = (String)request.getAttribute("collectionId");
+					String collectionTmp = (String)request.getAttribute("collectionTmp");
+					JSONObject collectionObject = (JSONObject)request.getAttribute("collectionInfo");
+					
+					JSONArray collectionArray = collectionObject.optJSONArray("collectionInfoList");
+					JSONObject collectionInfo = null;
+					
+					for(int inx=0;inx<collectionArray.length();inx++) {
+						JSONObject collectionItem = collectionArray.optJSONObject(inx);
+						if(collectionTmp.equals(collectionItem.optString("id"))) {
+							collectionInfo = collectionItem;
+						}
+					}
+					
+					Document dataSource = (Document) request.getAttribute("dataSource");
+					Element dataSourceRoot = dataSource.getRootElement();
+					Element dataSourceElement = dataSourceRoot.getChild("full-indexing");
+					dataSourceElement = dataSourceElement.getChild("source");
+					dataSourceElement = dataSourceElement.getChild("properties");
+					List<Element> dataSourceProperties = dataSourceElement.getChildren();
+					
+					Document schema = (Document) request.getAttribute("schemaDocument");
+					Element schemaRoot = schema.getRootElement();
+					Element schemaElement = schemaRoot.getChild("field-list");
+					List<Element> fieldList = schemaElement.getChildren();
+					
+					Element primaryElement = schemaRoot.getChild("primary-key");
+					List<Element> primaryList = primaryElement.getChildren();
+					%>
+					
 					<div class="wizard-card <%=step.equals("4") ? "current" : "" %>">
 						<form id="collection-config-form">
 							<input type="hidden" name="step" value="4" />
 							<input type="hidden" name="next" />
+							<input type="hidden" name="collectionId" value="${collectionId}"/>
 							<div class="row">
 								<div class="col-md-12">
 									<h3>Collection Information</h3>
 									<dl class="dl-horizontal">
 										<dt>Collection ID</dt>
-										<dd>vol1</dd>
+										<dd><%=collectionInfo.optString("id")%></dd>
 										<dt>Collection Name</dt>
-										<dd>vol1</dd>
+										<dd><%=collectionInfo.optString("name")%></dd>
 										<dt>Index Node</dt>
-										<dd>node1</dd>
+										<dd><%=collectionInfo.optString("indexNode")%></dd>
 										<dt>Search Node</dt>
-										<dd>node1</dd>
+										<dd><%=collectionInfo.optString("searchNodeList")%></dd>
 										<dt>Data Node List</dt>
-										<dd>node1, node2</dd>
+										<dd><%=collectionInfo.optString("dataNodeList")%></dd>
 									</dl>
 									
 									<h3>Data Mapping</h3>
 									<dl class="dl-horizontal">
-										<dt>Source Type</dt>
-										<dd>DBMS</dd>
-										<dt>JDBC Connection</dt>
-										<dd>book</dd>
-										<dt>FetchSize</dt>
-										<dd>100</dd>
-										<dt>BulkSize</dt>
-										<dd>100</dd>
-										<dt>DataSQL</dt>
-										<dd>select id, title, body, datetime, author from book</dd>
+									<% for(Element prop : dataSourceProperties) { %>
+										<dt><%=prop.getAttributeValue("key") %></dt>
+										<dd><%=prop.getText() %></dd>
+									<% } %>
 									</dl>
 									
 									<h3>Fields</h3>
@@ -590,58 +641,38 @@ $(document).ready(function() {
 												<th>Multi Value</th>
 												<th>Multi Value<br>Delimiter</th>
 											</tr>
-										</thead>									
+										</thead>
 										<tbody>
+										<% 
+										for (int inx=0;inx < fieldList.size(); inx++ ) { 
+											Element field = fieldList.get(inx);
+											
+											String id = field.getAttributeValue("id");
+											String name = field.getAttributeValue("name");
+											String type = field.getAttributeValue("type");
+											String size = field.getAttributeValue("size");
+											String removeTag = field.getAttributeValue("removeTag");
+											String multiValue = field.getAttributeValue("multiValue");
+											String multiValueDelimiter = field.getAttributeValue("multiValueDelimiter");
+											
+											if(size == null) { size = ""; }
+											if(removeTag == null) { removeTag = ""; }
+											if(multiValue == null) { multiValue = ""; }
+											if(multiValueDelimiter == null) { multiValueDelimiter = ""; }
+										%>
 											<tr>
-												<td>1</td>
-												<td>id</td>
-												<td>id</td>
-												<td>INT</td>
-												<td></td>
-												<td>N</td>
-												<td>N</td>
-												<td></td>
+												<td><%=inx+1 %></td>
+												<td><%=id%></td>
+												<td><%=name%></td>
+												<td><%=type%></td>
+												<td><%=size%></td>
+												<td><%=removeTag%></td>
+												<td><%=multiValue%></td>
+												<td><%=multiValueDelimiter%></td>
 											</tr>
-											<tr>
-												<td>2</td>
-												<td>title</td>
-												<td>title</td>
-												<td>STRING</td>
-												<td></td>
-												<td>N</td>
-												<td>N</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>3</td>
-												<td>body</td>
-												<td>body</td>
-												<td>STRING</td>
-												<td></td>
-												<td>Y</td>
-												<td>N</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>date</td>
-												<td>date</td>
-												<td>DATETIME</td>
-												<td></td>
-												<td>Y</td>
-												<td>N</td>
-												<td></td>
-											</tr>
-											<tr>
-												<td>5</td>
-												<td>author</td>
-												<td>author</td>
-												<td>STRING</td>
-												<td></td>
-												<td>N</td>
-												<td>N</td>
-												<td></td>
-											</tr>
+										<%
+										}
+										%>
 										</tbody>
 									</table>
 									<br>
@@ -660,12 +691,13 @@ $(document).ready(function() {
 					
 					<div class="wizard-card <%=step.equals("5") ? "current" : "" %>">
 						<form id="collection-config-form">
+						<input type="hidden" name="collectionId" value="${collectionId}"/>
 							<div class="row">
 								<div class="col-md-12">
 									<h3>Finished!</h3>
 									<p>
 										Collection is created and schema fields exist. But index fields are not created yet. To set up indexes, go to  
-										<a href="${ROOT_PATH}/manager/collections/aaaaa/workSchemaEdit.html" class="show-link">Continue to setting index field</a>.
+										<a href="${ROOT_PATH}/manager/collections/${collectionId}/workSchemaEdit.html" class="show-link">Continue to setting index field</a>.
 									</p>
 									<p>	
 										To create another collection, go to <a href="createCollectionWizard.html" class="show-link">Create another collection</a>.
@@ -787,8 +819,6 @@ $(document).ready(function() {
 		</div>
 	</div>	
 	
-	
-	
 	<div class="modal" id="testFieldMapping" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -797,48 +827,13 @@ $(document).ready(function() {
 					<h4 class="modal-title"> Field Mapping Test</h4>
 				</div>
 				<div class="modal-body">
-					<textarea rows="25" name="" class="form-control">
-#: 1
-id: a0001
-title: 제목1입니다.
-body : 이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.
-date : 2014-03-01 12:00:00.123
-author: 유관순
-
-#: 2
-id: a0002
-title: 제목2입니다.
-body : 이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.
-date : 2014-03-01 12:00:00.123
-author: 유관순
-
-#: 3
-id: a0003
-title: 제목3입니다.
-body : 이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.
-date : 2014-03-01 12:00:00.123
-author: 유관순
-
-#: 4
-id: a0004
-title: 제목4입니다.
-body : 이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.이것은 본문입니다.
-date : 2014-03-01 12:00:00.123
-author: 유관순
-					</textarea>
+					<div class="form-control"></div>
 					<br/>
 					<input type="button" value="Close" class="btn"  data-dismiss="modal">
 				</div>
 			</div>
 		</div>
 	</div>	
-	
-	
-	
-	
-	
-	
-	
 	
 </div>
 <div id="template" class="hidden">
