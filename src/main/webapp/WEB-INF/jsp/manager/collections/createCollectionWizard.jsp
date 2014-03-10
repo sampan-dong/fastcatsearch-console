@@ -150,6 +150,35 @@ $(document).ready(function() {
 	var wizardContent = $(".wizard-content");
 	//step 구분하여 초기화 스크립트를 진행한다.
 	if(wizardContent.hasClass("step_1")) {
+		$("form#collection-config-form select.node-select").change(function() {
+			var inputs = $(this).parents("div.form-group").find("input.node-data")[0];
+			var value = $(this).val().replace(/^\s+|\s+$/g, "");
+			var str = inputs.value;
+			var arr = str.split(",");
+			var found = false;
+			for(var inx=0;inx<arr.length;inx++) {
+				if(arr[inx].replace(/^\s+|\s+$/g, "") == value) {
+					found = true;
+					break;
+				}
+			}
+			
+			if(value && !found) {
+				if(str) {
+					str = str+", ";
+				}
+				str+=$(this).val();
+				inputs.value = str;
+			}
+			
+		});
+		
+		var form = $("form#collection-config-form");
+		var elem = form.find("input[name=collectionId]");
+		if(elem.val()) {
+			elem.attr("readonly", true);
+		}
+		
 	} else if(wizardContent.hasClass("step_2")) {
 		//데이터소스를 얻어온다.
 		var refreshJDBCFunc = function(object) {
@@ -252,9 +281,24 @@ $(document).ready(function() {
 			});
 		});
 		
-		requestProxy("post", {
+		var prevFormData = null;
+		
+		requestSyncProxy("post", {
 			uri:"/management/collections/single-source-reader-list.json",
 		}, "json", function(data) {
+			var form=$("form#collection-config-form");
+			//뒤로 돌아온 경우 이전 폼을 로딩해야 한다.
+			if(form.find("input[name=next]").val()=="back") {
+				requestSyncProxy("post", {
+					uri:"/management/collections/datasource.xml",dataType:"xml",
+					collectionId:form.find("input[name=collectionTmp]").val()
+				}, "xml", function(data) {
+					prevFormData = data;
+				});
+			}
+			
+			//alert(prevFormData);
+			
 			var selectObj = $("#sourceReaderSelect select");
 			var options = selectObj[0].options;
 			for(var inx=options.length;inx>=0;inx--) {
@@ -282,6 +326,7 @@ $(document).ready(function() {
 					var readerId = $(this)[0].value;
 					var reader = paramMap[readerId]["reader"];
 					var params = paramMap[readerId]["parameters"];
+					
 					var htmlStr = "";
 					for(var inx=0;inx<params.length;inx++) {
 						var param = params[inx];
@@ -315,6 +360,24 @@ $(document).ready(function() {
 				}
 			});
 		});
+		
+		if(prevFormData!=null) {
+			
+		}
+		
+		var form=$("form#collection-config-form");
+		
+		if(form.find("input[name=next]").val()=="back") {
+			requestProxy("post", {
+				uri:"/management/collections/datasource",dataType:"text",
+				collectionId:form.find("input[name=collectionTmp]").val()
+			}, "text", function(data) {
+				$("div#datasourceData").html(data);
+			});
+		}
+		
+		
+		
 	} else if(wizardContent.hasClass("step_3")) {
 		$("form#collection-config-form div.form-group input.btn[data-target=#testFieldMapping]").click(function() {
 			var form = $("form#collection-config-form")[0];
@@ -372,6 +435,10 @@ $(document).ready(function() {
 				</ul>
 				<div class="wizard-content step_${step}">
 					<% if("1".equals(step)) {  %>
+					<%
+						JSONObject serverListObject = (JSONObject)request.getAttribute("serverListObject");
+						JSONArray serverList = serverListObject.optJSONArray("nodeList");
+					%>
 					<div class="wizard-card <%=step.equals("1") ? "current" : "" %>">
 						<form id="collection-config-form" action="" method="get">
 							<input type="hidden" name="step" value="1" />
@@ -380,41 +447,73 @@ $(document).ready(function() {
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
 										<label class="col-md-2 control-label">Collection ID:</label>
-										<div class="col-md-10"><input type="text" name="collectionId" class="form-control required fcol2" value=""></div>
+										<div class="col-md-10"><input type="text" name="collectionId" class="form-control required fcol2" value="${collectionId}"></div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Collection Name:</label>
-										<div class="col-md-10"><input type="text" name="collectionName" class="form-control required fcol2" value=""></div>
+										<div class="col-md-10"><input type="text" name="collectionName" class="form-control required fcol2" value="${collectionName}"></div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Index Node:</label>
 										<div class="col-md-10">
-											<select class=" select_flat form-control fcol2">
-												<option value="master">master</option>
-												<option value="slave1">slave1</option>
-												<option value="slave2">slave2</option>
+											<select class=" select_flat form-control fcol2" name="indexNode">
+												<%
+												for(int inx=0;inx<serverList.length();inx++) {
+													JSONObject serverInfo = serverList.optJSONObject(inx);
+													String active = serverInfo.optString("active");
+													String nodeId = serverInfo.optString("id");
+													String nodeName = serverInfo.optString("name");
+												%>
+													<% if("true".equals(active)) { %>
+													<option value="<%=nodeId%>" <%=nodeId.equals(request.getAttribute("indexNode"))?"selected":"" %>><%=nodeName%></option>
+													<% } %>
+												<%
+												}
+												%>
 											</select>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Search Node:</label>
-										<div class="col-md-10">
-											<select class=" select_flat form-control fcol2">
-												<option value="master">master</option>
-												<option value="slave1">slave1</option>
-												<option value="slave2">slave2</option>
+										<label class="col-md-2 control-label">Search Node List :</label>
+										<div class="col-md-10 form-inline">
+											<input type="text" name="searchNodeList" class="form-control fcol2 node-data" value="${searchNodeList}">
+											&nbsp;<select class=" select_flat form-control fcol2 node-select">
+												<option value="">:: Add Node ::</option>
+												<%
+												for(int inx=0;inx<serverList.length();inx++) {
+													JSONObject serverInfo = serverList.optJSONObject(inx);
+													String active = serverInfo.optString("active");
+													String nodeId = serverInfo.optString("id");
+													String nodeName = serverInfo.optString("name");
+												%>
+													<% if("true".equals(active)) { %>
+													<option value="<%=nodeId%>"><%=nodeName%> (<%=nodeId %>)</option>
+													<% } %>
+												<%
+												}
+												%>
 											</select>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Data Node List :</label>
 										<div class="col-md-10 form-inline">
-											<input type="text" name="dataNodeList" class="form-control fcol2" value="">
-											&nbsp;<select class="select_flat form-control fcol2">
+											<input type="text" name="dataNodeList" class="form-control fcol2 node-data" value="${dataNodeList}">
+											&nbsp;<select class="select_flat form-control fcol2 node-select">
 												<option value="">:: Add Node ::</option>
-												<option value="master">master</option>
-												<option value="slave1">slave1</option>
-												<option value="slave2">slave2</option>
+												<%
+												for(int inx=0;inx<serverList.length();inx++) {
+													JSONObject serverInfo = serverList.optJSONObject(inx);
+													String active = serverInfo.optString("active");
+													String nodeId = serverInfo.optString("id");
+													String nodeName = serverInfo.optString("name");
+												%>
+													<% if("true".equals(active)) { %>
+													<option value="<%=nodeId%>"><%=nodeName%> (<%=nodeId %>)</option>
+													<% } %>
+												<%
+												}
+												%>
 											</select>
 										</div>
 									</div>
@@ -433,9 +532,11 @@ $(document).ready(function() {
 					<div class="wizard-card <%=step.equals("2") ? "current" : "" %>">
 						<form id="collection-config-form">
 							<input type="hidden" name="step" value="2" />
-							<input type="hidden" name="next" />
+							<input type="hidden" name="next" value="${next}"/>
 							<input type="hidden" name="collectionId" value="${collectionId}"/>
+							<input type="hidden" name="collectionTmp" value="${collectionTmp}"/>
 							<input type="hidden" name="readerClass" value=""/>
+							<div id="datasourceData" class="hidden"></div>
 							<div class="row">
 								<div class="col-md-12 form-horizontal">
 									<div id = "sourceReaderSelect" class="form-group">

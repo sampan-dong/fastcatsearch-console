@@ -419,8 +419,7 @@ public class CollectionsController extends AbstractController {
 							
 							collectionInfoList = httpPost(session, requestUrl)
 								.addParameter("collectionId", collectionTmp)
-								.addParameter("collectionName", collectionName)
-								.addParameter("sourceIndex","0")
+								.addParameter("name", collectionName)
 								.addParameter("indexNode", indexNode)
 								.addParameter("searchNodeList", searchNodeList)
 								.addParameter("dataNodeList", dataNodeList)
@@ -428,6 +427,7 @@ public class CollectionsController extends AbstractController {
 							mav.setViewName("manager/collections/create");
 						}
 					}
+					
 					step = "2";
 				}else if(step.equals("2")){
 					//데이터소스 저장.
@@ -436,6 +436,7 @@ public class CollectionsController extends AbstractController {
 					Enumeration<String> parameterNames = request.getParameterNames();
 					httpPost.addParameter("collectionId", collectionTmp)
 						.addParameter("indexType", "full")
+						//.addParameter("sourceIndex","0")//소스추가는 무조건 첫번째 (SingleSource only)
 						.addParameter("active", "false");
 					for(;parameterNames.hasMoreElements();) {
 						String parameterName = parameterNames.nextElement();
@@ -449,22 +450,12 @@ public class CollectionsController extends AbstractController {
 					}
 					JSONObject result = httpPost.requestJSON();
 					
-					//워크스키마 자동생성. 일단 dbreader 일 경우에만 세팅하도록 한다.
+					//워크스키마 자동생성. 
 					requestUrl = "/management/collections/schema/update.json";
 					httpPost = httpPost(session, requestUrl);
 					httpPost.addParameter("collectionId", collectionTmp)
 						.addParameter("autoSchema", "y");
 					result = httpPost.requestJSON();
-					
-					requestUrl = "/management/collections/schema.xml";
-					Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionTmp).addParameter("type", "workSchema")
-							.requestXML();
-					mav.addObject("schemaDocument",document);
-					
-					requestUrl = "/management/collections/data-type-list.json";
-					httpPost = httpPost(session, requestUrl);
-					JSONObject typeList = httpPost.requestJSON();
-					mav.addObject("typeList", typeList);
 					
 					step = "3";
 				} else if(step.equals("3")){
@@ -479,11 +470,6 @@ public class CollectionsController extends AbstractController {
 						.addParameter("collectionId", collectionTmp).requestXML();
 					mav.addObject("dataSource", datasource);
 					
-					requestUrl = "/management/collections/schema.xml";
-					Document schema = httpPost(session, requestUrl)
-						.addParameter("collectionId", collectionTmp)
-						.addParameter("type", "workSchema").requestXML();
-					mav.addObject("schemaDocument", schema);
 					step = "4";
 				}else if(step.equals("4")){
 					//remove temp to real collection;
@@ -496,6 +482,19 @@ public class CollectionsController extends AbstractController {
 				}
 			}else if(next.equals("back")){
 				if(step.equals("2")){
+					requestUrl = "/management/collections/collection-info-list.json";
+					JSONObject serverListObject = httpPost(session, requestUrl).requestJSON();
+					JSONArray serverList = serverListObject.optJSONArray("collectionInfoList");
+					for(int inx=0;inx<serverList.length();inx++) {
+						JSONObject serverInfo = serverList.optJSONObject(inx);
+						if(collectionTmp.equals(serverInfo.optString("id"))) {
+							mav.addObject("collectionName", serverInfo.optString("name"));
+							mav.addObject("indexNode", serverInfo.optString("indexNode"));
+							mav.addObject("searchNodeList", serverInfo.optString("searchNodeList"));
+							mav.addObject("dataNodeList", serverInfo.optString("dataNodeList"));
+						}
+					}
+					
 					step = "1";
 				}else if(step.equals("3")){
 					step = "2";
@@ -507,15 +506,32 @@ public class CollectionsController extends AbstractController {
 			}
 			
 			if(step.equals("1")){
+				requestUrl = "/management/servers/list.json";
+				JSONObject serverListObject = httpPost(session, requestUrl).requestJSON();
+				mav.addObject("serverListObject",serverListObject);
 			}else if(step.equals("2")){
-				//설정파일을 읽어들인다. (기초 데이터 소스)
-				
 			}else if(step.equals("3")){
+				requestUrl = "/management/collections/schema.xml";
+				Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionTmp).addParameter("type", "workSchema")
+						.requestXML();
+				mav.addObject("schemaDocument",document);
+				
+				requestUrl = "/management/collections/data-type-list.json";
+				PostMethod httpPost = httpPost(session, requestUrl);
+				JSONObject typeList = httpPost.requestJSON();
+				mav.addObject("typeList", typeList);
+					
+				requestUrl = "/management/collections/schema.xml";
+				Document schema = httpPost(session, requestUrl)
+					.addParameter("collectionId", collectionTmp)
+					.addParameter("type", "workSchema").requestXML();
+				mav.addObject("schemaDocument", schema);
 			}else if(step.equals("4")){
 			}else if(step.equals("5")){
 			}
 			
 			mav.addObject("step", step);
+			mav.addObject("next", next);
 			mav.addObject("collectionId", collectionId);
 			mav.addObject("collectionTmp", collectionTmp);
 			mav.setViewName("manager/collections/createCollectionWizard");
