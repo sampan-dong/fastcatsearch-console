@@ -10,6 +10,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.fastcatsearch.console.web.http.Http404Error;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
+import org.jdom2.Document;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -122,24 +123,44 @@ public class MainController extends AbstractController {
 	}
 
 	@RequestMapping("/main/search")
-	public ModelAndView search() {
+	public ModelAndView search(HttpSession session, @RequestParam(required=false) String keyword) throws Exception {
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("search");
+		
+		if(keyword != null){
+			String getDemoSearchResultURL = "/service/demo/search";
+			JSONObject searchResults = httpGet(session, getDemoSearchResultURL).addParameter("keyword", keyword).requestJSON();
+			mav.addObject("searchResults", searchResults);
+			
+			//TODO 연관어, 인기검색어는 url만 받아서 직접 날린다.
+			
+			//mav.addObject("relateKeywordList", relateKeywordList);
+			//mav.addObject("popularKeywordList", popularKeywordList);
+		}
+		
 		return mav;
 	}
 
 	@RequestMapping("/main/search/config")
-	public ModelAndView searchConfig() {
+	public ModelAndView searchConfig(HttpSession session) throws Exception {
+		
+		String getDemoSearchConfigURL = "/settings/search-config";
+		Document searchConfig = httpGet(session, getDemoSearchConfigURL).requestXML();
+		
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("searchConfig", searchConfig);
 		mav.setViewName("searchConfig");
 		return mav;
 	}
-
-	@RequestMapping("/main/settings")
-	public ModelAndView settings() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("settings");
-		return mav;
+	
+	@RequestMapping("/main/search/configSave")
+	public ModelAndView searchConfigSave(HttpSession session) throws Exception {
+		
+		String updateDemoSearchConfigURL = "/settings/search-config/update";
+		JSONObject result = httpPost(session, updateDemoSearchConfigURL).requestJSON();
+		
+		return searchConfig(session);
 	}
 
 	/**
@@ -152,6 +173,9 @@ public class MainController extends AbstractController {
 
 		String uri = request.getParameter("uri");
 		String dataType = request.getParameter("dataType");
+		String multiple = request.getParameter("_multiple"); //동일한 키의 데이터가 들어올 경우.
+		 
+		boolean isMultiple = (multiple != null && multiple.equalsIgnoreCase("true"));
 		
 		//만약 ? 가 붙어있다면 제거한다.
 		int parameterStart = uri.indexOf('?');
@@ -172,13 +196,24 @@ public class MainController extends AbstractController {
 		Enumeration<String> enumeration = request.getParameterNames();
 		while (enumeration.hasMoreElements()) {
 			String key = enumeration.nextElement();
-			String value = request.getParameter(key);
-			//uri파라미터를 제외한 모든 파라미터를 재전달한다.
-			if(!key.equals("uri")){
+			if(key.equals("uri") || key.equals("dataType")){
+				continue;
+			}
+			
+			if(isMultiple){
+				String[] values = request.getParameterValues(key);
+				for(String value : values){
+					logger.debug("test param > {} > {}", key, value);
+					abstractMethod.addParameter(key, value);
+				}
+			}else{
+				String value = request.getParameter(key);
+				logger.debug("test param > {} > {}", key, value);
 				abstractMethod.addParameter(key, value);
 			}
 		}
 		
+		logger.debug("Main request getQueryString > {}", abstractMethod.getQueryString());
 		if(dataType != null){
 			if(dataType.equalsIgnoreCase("text")){
 				return abstractMethod.requestText();
