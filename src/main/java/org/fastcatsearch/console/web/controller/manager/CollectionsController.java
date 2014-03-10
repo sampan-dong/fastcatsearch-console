@@ -4,6 +4,8 @@ import java.net.URLDecoder;
 import java.sql.Types;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -80,14 +82,9 @@ public class CollectionsController extends AbstractController {
 
 	@RequestMapping("/{collectionId}/workSchemaSave")
 	@ResponseBody
-	public String workSchemaSave(HttpSession session, @PathVariable String collectionId, @RequestParam String queryString) throws Exception {
+	public String workSchemaSave(HttpSession session, HttpServletRequest request, @PathVariable String collectionId) throws Exception {
 
 		// 화면의 저장 값들을 재조정하여 json으로 만든후 서버로 보낸다.
-		//serialize()해서 넘어온 값이기때문에, decode해서 보내준다.
-		queryString = URLDecoder.decode(queryString, "utf-8");
-		
-		logger.debug("queryString > {}", queryString);
-		String[] keyValueList = queryString.split("&");
 
 		JSONObject root = new JSONObject();
 		JSONArray fieldList = new JSONArray();
@@ -105,61 +102,52 @@ public class CollectionsController extends AbstractController {
 		root.put("group-index-list", groupIndexesList);
 		
 		JSONObject target = null;
-		
-		String KEY_NAME = "KEY_NAME";
-
 		String name = null;
-		String value = null;
 		String key = null;
+		String value = null;
+		int keyIndex = 0;
 		
-		for (String keyValue : keyValueList) {
-			String[] pair = keyValue.split("=");
-			if (pair.length > 1) {
-				logger.debug("param : {} = {}", pair[0], pair[1]);
-				name = pair[0];
-				value = pair[1];
-			} else if (pair.length > 0) {
-				logger.debug("param : {} =", pair[0]);
-				name = pair[0];
-				value = null;
-			} else {
-				name = null;
-				value = null;
+		Enumeration<String> keyEnum = request.getParameterNames();
+		
+		Pattern pattern = Pattern.compile("(_[a-zA-Z_]+_)([0-9]+)-([a-zA-Z]+)");
+		Matcher matcher;
+		
+		JSONObject parent = new JSONObject();
+		
+		while (keyEnum.hasMoreElements()) {
+			key = keyEnum.nextElement();
+			matcher = pattern.matcher(key);
+			
+			if(matcher.find()) {
+				key = matcher.group(1);
+				keyIndex = Integer.parseInt(matcher.group(2));
+				name = matcher.group(3);
 			}
-
-			if (name.equals(KEY_NAME)) {
-				key = value;
-				if (key.startsWith("_fields_")) {
-					target = new JSONObject();
-					fieldList.put(target);
-				} else if (key.startsWith("_constraints_")) {
-					target = new JSONObject();
-					primaryKeyList.put(target);
-				} else if (key.startsWith("_analyzers_")) {
-					target = new JSONObject();
-					analyzerList.put(target);
-				} else if (key.startsWith("_search_indexes_")) {
-					target = new JSONObject();
-					searchIndexesList.put(target);
-				} else if (key.startsWith("_field_indexes_")) {
-					target = new JSONObject();
-					fieldIndexesList.put(target);
-				} else if (key.startsWith("_group_indexes_")) {
-					target = new JSONObject();
-					groupIndexesList.put(target);
-				}
-
-			} else {
-				if (target != null) {
-					if (name.startsWith(key)) {
-						name = name.substring(key.length() + 1);
-						// 같은 부류..
-						target.put(name, value);
-					} else {
-						// key_name내에 갑자기 다른 이름이 나오면 무시한다.
-						logger.error("name is miss placed. name={}, key={}", key, name);
-					}
-				}
+			
+			JSONArray array = appendJSONObject(parent, key, keyIndex);
+			
+			
+			if (key.equals("_fields_")) {
+				target = new JSONObject();
+				fieldList.put(target);
+			} else if (key.equals("_constraints_")) {
+				target = new JSONObject();
+				primaryKeyList.put(target);
+			} else if (key.equals("_analyzers_")) {
+				target = new JSONObject();
+				analyzerList.put(target);
+			} else if (key.equals("_search_indexes_")) {
+				target = new JSONObject();
+				searchIndexesList.put(target);
+			} else if (key.equals("_field_indexes_")) {
+				target = new JSONObject();
+				fieldIndexesList.put(target);
+			} else if (key.equals("_group_indexes_")) {
+				target = new JSONObject();
+				groupIndexesList.put(target);
+			}
+			if (target != null) {
+				target.put(key, value);
 			}
 		}
 		
@@ -176,6 +164,21 @@ public class CollectionsController extends AbstractController {
 		} else {
 			return "{}";
 		}
+	}
+	
+	private JSONArray appendJSONObject(JSONObject parent, String key, int putInx) {
+		JSONArray ret = parent.optJSONArray(key);
+		if(ret == null) {
+			ret = new JSONArray();
+			parent.put(key, ret);
+		}
+		
+		if(ret.length() < putInx) {
+			for(int inx=ret.length();inx < putInx; inx++) {
+				ret.put(inx, new JSONObject());
+			}
+		}
+		return ret;
 	}
 
 	@RequestMapping("/{collectionId}/data")
@@ -502,19 +505,7 @@ public class CollectionsController extends AbstractController {
 					
 					step = "3";
 				}else if(step.equals("3")){
-					String queryString="";
-					Map<String, String[]> parameterMap = request.getParameterMap();
-					for(String key : parameterMap.keySet()) {
-						String[] values = parameterMap.get(key);
-						for(int inx=0;inx < values.length; inx++) {
-							queryString+="&"+key+"="+values[inx];
-						}
-					}
-					
-					if(!"".equals(queryString)) {
-						queryString = queryString.substring(1);
-					}
-					workSchemaSave(session, collectionTmp, queryString);
+					workSchemaSave(session, request, collectionTmp);
 					step = "4";
 				}else if(step.equals("4")){
 					step = "5";

@@ -20,17 +20,37 @@ $(document).ready(function(){
 	
 	$("#schemaForm").submit(function(event){
 		event.preventDefault();
+		var form = $(this)[0];
+		var elements = form.elements;
 		
 		if(! $(this).valid()){
 			return;
 		} 
-		var queryString = $(this).serialize();
+		var formData = {};
+		var paramInx = 0;
+		var pattern = /^(_[a-zA-Z_]+_)([0-9]+)(-[a-zA-Z]+)/g;
+		var prevKey = "";
+		for(var inx=0; inx < elements.length; inx++) {
+			if(elements[inx].name=="KEY_NAME") {
+				paramInx ++; 
+			}
+			var matcher = pattern.exec(elements[inx].name);
+			console.log(elements[inx].name+":"+matcher);
+			if(matcher!=null) {
+				var key = matcher[1];
+				if(key!=prevKey) {
+					paramInx = 0;
+				}
+				formData[matcher[1]+paramInx+matcher[3]] = elements[inx].vlaue;
+				prevKey = key;
+			}
+		}
 		
 		$.ajax({
 			url: "workSchemaSave.html",
 			type: "POST",
 			dataType:"json",
-			data:{queryString: queryString},
+			data:formData,
 			success:function(response, status) {
 				if(response.success) {
 					noty({text: "Schema update success", type: "success", layout:"topRight", timeout: 3000});
