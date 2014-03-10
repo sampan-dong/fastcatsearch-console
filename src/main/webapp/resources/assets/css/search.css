@@ -20,4 +20,4 @@ ol.search-result { padding-left: 10px; }
 .margin-space {margin-bottom: 40px !important; }
 
 
-
+.result-pane { min-height: 700px; }
