@@ -28,20 +28,30 @@ $(document).ready(function(){
 		} 
 		var formData = {};
 		var paramInx = 0;
-		var pattern = /^(_[a-zA-Z_]+_)([0-9]+)(-[a-zA-Z]+)/g;
 		var prevKey = "";
 		for(var inx=0; inx < elements.length; inx++) {
 			if(elements[inx].name=="KEY_NAME") {
 				paramInx ++; 
 			}
+			var pattern = /^(_[a-zA-Z_-]+_)([0-9]+)(-[a-zA-Z]+)$/g;
 			var matcher = pattern.exec(elements[inx].name);
-			console.log(elements[inx].name+":"+matcher);
 			if(matcher!=null) {
 				var key = matcher[1];
 				if(key!=prevKey) {
 					paramInx = 0;
 				}
-				formData[matcher[1]+paramInx+matcher[3]] = elements[inx].vlaue;
+				
+				var value = "";
+				if(elements[inx].getAttribute("type").toLowerCase() == "checkbox"
+				|| elements[inx].getAttribute("type").toLowerCase() == "radio") {
+					if(elements[inx].checked) {
+						value = elements[inx].value;
+					}
+				} else {
+					value = elements[inx].value;
+				}
+				
+				formData[(matcher[1]+paramInx+matcher[3])] = value;
 				prevKey = key;
 			}
 		}
@@ -85,7 +95,7 @@ $(document).ready(function(){
 		var trElement = $(this).parents("tr");
 		var clone = trElement.clone();
 		var key = keyId = clone.find("input[name=KEY_NAME]").val();
-		var regex = /([a-zA-Z_]+)([0-9]+)/.exec(key);
+		var regex = /([a-zA-Z_-]+)([0-9]+)/.exec(key);
 		var prefix = regex[1];
 		var index = regex[2];
 		
@@ -94,7 +104,7 @@ $(document).ready(function(){
 		clone.find("input[name=KEY_NAME]").val(prefix+newIndex);
 		clone.find("input").each(function() {
 			if($(this).attr("name").indexOf(prefix+index)==0) {
-				var regex = /([a-zA-Z_]+)([0-9]+)(.+)/.exec($(this).attr("name"));
+				var regex = /([a-zA-Z_-]+)([0-9]+)(.+)/.exec($(this).attr("name"));
 				$(this).attr("name",prefix+newIndex+regex[3]);
 			}
 		});
@@ -251,14 +261,14 @@ $(document).ready(function(){
 											String multiValueDelimeter = field.getAttributeValue("multiValueDelimeter", "");
 										%>
 										<tr>
-											<td><input type="hidden" name="KEY_NAME" value="_fields_<%=i %>" /><input type="text" name="_fields_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-											<td><input type="text" name="_fields_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-											<td><input type="text" name="_fields_<%=i%>-type" class="form-control required" value="<%=type %>"></td>
-											<td><input type="text" name="_fields_<%=i%>-size" class="form-control digit" value="<%=size %>"></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_fields_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
-											<td ><input type="text" class="form-control" name="_fields_<%=i%>-multiValueDelimeter" value="<%=multiValueDelimeter %>"></td>
+											<td><input type="hidden" name="KEY_NAME" value="_field-list_<%=i %>" /><input type="text" name="_field-list_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
+											<td><input type="text" name="_field-list_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
+											<td><input type="text" name="_field-list_<%=i%>-type" class="form-control required" value="<%=type %>"></td>
+											<td><input type="text" name="_field-list_<%=i%>-size" class="form-control digit" value="<%=size %>"></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
+											<td ><input type="text" class="form-control" name="_field-list_<%=i%>-multiValueDelimeter" value="<%=multiValueDelimeter %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -310,8 +320,8 @@ $(document).ready(function(){
 											%>
 											<tr>
 												<td>
-													<input type="hidden" name="KEY_NAME" value="_constraints_<%=i %>" />
-													<input type="text" name="_constraints_<%=i%>-ref" class="fcol2 form-control required" value="<%=ref %>"/>
+													<input type="hidden" name="KEY_NAME" value="_primary-key_<%=i %>" />
+													<input type="text" name="_primary-key_<%=i%>-ref" class="fcol2 form-control required" value="<%=ref %>"/>
 												</td>
 												<td>
 													<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
@@ -329,7 +339,7 @@ $(document).ready(function(){
 						</div>
 						
 					</div>
-					<!--//constraints tab  -->
+					<!--//primary-key tab  -->
 						
 					<!-- analyzer tab  -->
 					<div class="col-md-12">
@@ -376,11 +386,11 @@ $(document).ready(function(){
 											%>
 											<tr>
 												<td>
-													<input type="hidden" name="KEY_NAME" value="_analyzers_<%=i %>" />
-													<input type="text" name="_analyzers_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-												<td><input type="text" name="_analyzers_<%=i%>-corePoolSize" class="form-control required digits" value="<%=corePoolSize %>"></td>
-												<td><input type="text" name="_analyzers_<%=i%>-maximumPoolSize" class="form-control required digits" value="<%=maximumPoolSize %>"></td>
-												<td><input type="text" name="_analyzers_<%=i%>-class" class="form-control required" value="<%=analyzerClass %>"></td>
+													<input type="hidden" name="KEY_NAME" value="_analyzer-list_<%=i %>" />
+													<input type="text" name="_analyzer-list_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
+												<td><input type="text" name="_analyzer-list_<%=i%>-corePoolSize" class="form-control required digits" value="<%=corePoolSize %>"></td>
+												<td><input type="text" name="_analyzer-list_<%=i%>-maximumPoolSize" class="form-control required digits" value="<%=maximumPoolSize %>"></td>
+												<td><input type="text" name="_analyzer-list_<%=i%>-class" class="form-control required" value="<%=analyzerClass %>"></td>
 												<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -462,15 +472,15 @@ $(document).ready(function(){
 										%>
 										<tr>
 											<td>
-												<input type="hidden" name="KEY_NAME" value="_search_indexes_<%=i %>" />
-												<input type="text" name="_search_indexes_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
-											<td><input type="text" name="_search_indexes_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-											<td><input type="text" name="_search_indexes_<%=i%>-refList" class="form-control required" value="<%=fieldRefList %>"></td>
-											<td><input type="text" name="_search_indexes_<%=i%>-indexAnalyzer" class="form-control required" value="<%=indexAnalyzer %>"></td>
-											<td><input type="text" name="_search_indexes_<%=i%>-queryAnalyzer" class="form-control required" value="<%=queryAnalyzer %>"></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_search_indexes_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_search_indexes_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
-											<td ><input type="text" name="_search_indexes_<%=i%>-pig" class="form-control digits" value="<%=positionIncrementGap %>"></td>
+												<input type="hidden" name="KEY_NAME" value="_index-list_<%=i %>" />
+												<input type="text" name="_index-list_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
+											<td><input type="text" name="_index-list_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
+											<td><input type="text" name="_index-list_<%=i%>-refList" class="form-control required" value="<%=fieldRefList %>"></td>
+											<td><input type="text" name="_index-list_<%=i%>-indexAnalyzer" class="form-control required" value="<%=indexAnalyzer %>"></td>
+											<td><input type="text" name="_index-list_<%=i%>-queryAnalyzer" class="form-control required" value="<%=queryAnalyzer %>"></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
+											<td ><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
+											<td ><input type="text" name="_index-list_<%=i%>-pig" class="form-control digits" value="<%=positionIncrementGap %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -485,10 +495,10 @@ $(document).ready(function(){
 							</div>
 						</div>
 					</div>
-					<!-- //search indexes -->
+					<!-- //search-index-list -->
 						
 						
-					<!-- field_indexes tab  -->
+					<!-- field-index-list tab  -->
 					<div class="col-md-12">
 					
 						<div class="widget">
@@ -531,11 +541,12 @@ $(document).ready(function(){
 										%>
 										<tr>
 											<td>
-												<input type="hidden" name="KEY_NAME" value="_field_indexes_<%=i %>" />
-												<input type="text" name="_field_indexes_<%=i%>-id" class="form-control" value="<%=id %>"></td>
-											<td><input type="text" name="_field_indexes_<%=i%>-name" class="form-control" value="<%=name %>"></td>
-											<td><input type="text" name="_field_indexes_<%=i%>-field" class="form-control" value="<%=ref %>"></td>
-											<td><input type="text" name="_field_indexes_<%=i%>-size" class="form-control digits fcol1-1" value="<%=size %>"></td>
+												<input type="hidden" name="KEY_NAME" value="_field-index-list_<%=i %>" />
+												
+												<input type="text" name="_field-index-list_<%=i%>-id" class="form-control" value="<%=id %>"></td>
+											<td><input type="text" name="_field-index-list_<%=i%>-name" class="form-control" value="<%=name %>"></td>
+											<td><input type="text" name="_field-index-list_<%=i%>-field" class="form-control" value="<%=ref %>"></td>
+											<td><input type="text" name="_field-index-list_<%=i%>-size" class="form-control digits fcol1-1" value="<%=size %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -595,10 +606,10 @@ $(document).ready(function(){
 											%>
 											<tr>
 												<td>
-													<input type="hidden" name="KEY_NAME" value="_group_indexes_<%=i %>" />
-													<input type="text" name="_group_indexes_<%=i%>-id" class="form-control" value="<%=id %>"></td>
-												<td><input type="text" name="_group_indexes_<%=i%>-name" class="form-control" value="<%=name %>"></td>
-												<td><input type="text" name="_group_indexes_<%=i%>-ref" class="form-control" value="<%=ref %>"></td>
+													<input type="hidden" name="KEY_NAME" value="_group-index-list_<%=i %>" />
+													<input type="text" name="_group-index-list_<%=i%>-id" class="form-control" value="<%=id %>"></td>
+												<td><input type="text" name="_group-index-list_<%=i%>-name" class="form-control" value="<%=name %>"></td>
+												<td><input type="text" name="_group-index-list_<%=i%>-ref" class="form-control" value="<%=ref %>"></td>
 												<td>
 													<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 													<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -615,7 +626,7 @@ $(document).ready(function(){
 						</div>
 							
 					</div>
-					<!--//group_indexes tab  -->
+					<!--//group-index-list tab  -->
 						
 				</form>
 

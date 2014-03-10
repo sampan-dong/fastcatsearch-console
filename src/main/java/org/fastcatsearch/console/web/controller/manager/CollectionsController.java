@@ -1,9 +1,6 @@
 package org.fastcatsearch.console.web.controller.manager;
 
-import java.net.URLDecoder;
-import java.sql.Types;
 import java.util.Enumeration;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,67 +84,32 @@ public class CollectionsController extends AbstractController {
 		// 화면의 저장 값들을 재조정하여 json으로 만든후 서버로 보낸다.
 
 		JSONObject root = new JSONObject();
-		JSONArray fieldList = new JSONArray();
-		JSONArray primaryKeyList = new JSONArray();
-		JSONArray analyzerList = new JSONArray();
-		JSONArray searchIndexesList = new JSONArray();
-		JSONArray fieldIndexesList = new JSONArray();
-		JSONArray groupIndexesList = new JSONArray();
 		
-		root.put("field-list", fieldList);
-		root.put("primary-key", primaryKeyList);
-		root.put("analyzer-list", analyzerList);
-		root.put("index-list", searchIndexesList);
-		root.put("field-index-list", fieldIndexesList);
-		root.put("group-index-list", groupIndexesList);
-		
-		JSONObject target = null;
 		String name = null;
 		String key = null;
+		String paramKey = null;
 		String value = null;
 		int keyIndex = 0;
 		
+		@SuppressWarnings("unchecked")
 		Enumeration<String> keyEnum = request.getParameterNames();
 		
-		Pattern pattern = Pattern.compile("(_[a-zA-Z_]+_)([0-9]+)-([a-zA-Z]+)");
+		Pattern pattern = Pattern.compile("^_([a-zA-Z_-]+)_([0-9]+)-([a-zA-Z]+)$");
 		Matcher matcher;
 		
-		JSONObject parent = new JSONObject();
-		
 		while (keyEnum.hasMoreElements()) {
-			key = keyEnum.nextElement();
-			matcher = pattern.matcher(key);
+			paramKey = keyEnum.nextElement();
+			matcher = pattern.matcher(paramKey);
 			
 			if(matcher.find()) {
 				key = matcher.group(1);
 				keyIndex = Integer.parseInt(matcher.group(2));
 				name = matcher.group(3);
-			}
-			
-			JSONArray array = appendJSONObject(parent, key, keyIndex);
-			
-			
-			if (key.equals("_fields_")) {
-				target = new JSONObject();
-				fieldList.put(target);
-			} else if (key.equals("_constraints_")) {
-				target = new JSONObject();
-				primaryKeyList.put(target);
-			} else if (key.equals("_analyzers_")) {
-				target = new JSONObject();
-				analyzerList.put(target);
-			} else if (key.equals("_search_indexes_")) {
-				target = new JSONObject();
-				searchIndexesList.put(target);
-			} else if (key.equals("_field_indexes_")) {
-				target = new JSONObject();
-				fieldIndexesList.put(target);
-			} else if (key.equals("_group_indexes_")) {
-				target = new JSONObject();
-				groupIndexesList.put(target);
-			}
-			if (target != null) {
-				target.put(key, value);
+				value = request.getParameter(paramKey);
+				JSONObject item = getIndexedItemMap(root, key, keyIndex);
+				if(item!=null) {
+					item.put(name, value);
+				}
 			}
 		}
 		
@@ -166,19 +128,18 @@ public class CollectionsController extends AbstractController {
 		}
 	}
 	
-	private JSONArray appendJSONObject(JSONObject parent, String key, int putInx) {
-		JSONArray ret = parent.optJSONArray(key);
-		if(ret == null) {
-			ret = new JSONArray();
-			parent.put(key, ret);
+	private JSONObject getIndexedItemMap(JSONObject parent, String key, int putInx) {
+		JSONObject ret = null;
+		JSONArray array = parent.optJSONArray(key);
+		if(array == null) {
+			array = new JSONArray();
+			parent.put(key, array);
 		}
 		
-		if(ret.length() < putInx) {
-			for(int inx=ret.length();inx < putInx; inx++) {
-				ret.put(inx, new JSONObject());
-			}
+		for(int inx=array.length() ;inx <= putInx; inx++) {
+			array.put(inx, new JSONObject());
 		}
-		return ret;
+		return array.getJSONObject(putInx);
 	}
 
 	@RequestMapping("/{collectionId}/data")
