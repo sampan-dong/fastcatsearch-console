@@ -11,6 +11,7 @@ import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.PostMethod;
 import org.jdom2.Document;
+import org.jdom2.Element;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -430,14 +431,24 @@ public class CollectionsController extends AbstractController {
 					
 					step = "2";
 				}else if(step.equals("2")){
+					
+					requestUrl = "/management/collections/datasource.xml";
+					Document datasource = httpPost(session, requestUrl)
+						.addParameter("collectionId", collectionTmp).requestXML();
+					Element root = datasource.getRootElement();
+					Element source = root.getChild("full-indexing");
+					
 					//데이터소스 저장.
 					requestUrl = "/management/collections/update-datasource.json";
 					PostMethod httpPost = httpPost(session, requestUrl);
 					Enumeration<String> parameterNames = request.getParameterNames();
 					httpPost.addParameter("collectionId", collectionTmp)
 						.addParameter("indexType", "full")
-						//.addParameter("sourceIndex","0")//소스추가는 무조건 첫번째 (SingleSource only)
 						.addParameter("active", "false");
+					if(source.getChildren().size() > 0) {
+						httpPost.addParameter("sourceIndex", "0");
+					}
+					
 					for(;parameterNames.hasMoreElements();) {
 						String parameterName = parameterNames.nextElement();
 						//중복되는 파라메터는 제거해 준다.

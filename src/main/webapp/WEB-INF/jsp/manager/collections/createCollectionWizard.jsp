@@ -541,7 +541,6 @@ $(document).ready(function() {
 							<input type="hidden" name="collectionId" value="${collectionId}"/>
 							<input type="hidden" name="collectionTmp" value="${collectionTmp}"/>
 							<input type="hidden" name="readerClass" value=""/>
-							<div id="datasourceData" class="hidden"></div>
 							<div class="row">
 								<div class="col-md-12 form-horizontal">
 									<div id = "sourceReaderSelect" class="form-group">
