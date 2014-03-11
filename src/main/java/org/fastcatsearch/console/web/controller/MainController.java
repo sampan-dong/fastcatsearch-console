@@ -10,6 +10,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.fastcatsearch.console.web.http.Http404Error;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
+import org.fastcatsearch.console.web.http.ResponseHttpClient.GetMethod;
 import org.jdom2.Document;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -123,20 +124,27 @@ public class MainController extends AbstractController {
 	}
 
 	@RequestMapping("/main/search")
-	public ModelAndView search(HttpSession session, @RequestParam(required=false) String keyword) throws Exception {
+	public ModelAndView search(HttpSession session, @RequestParam(required=false) String keyword, @RequestParam(required=false) String category, @RequestParam(required=false) String page) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("search");
 		
 		if(keyword != null){
 			String getDemoSearchResultURL = "/service/demo/search";
-			JSONObject searchResults = httpGet(session, getDemoSearchResultURL).addParameter("keyword", keyword).requestJSON();
-			mav.addObject("searchResults", searchResults);
 			
-			//TODO 연관어, 인기검색어는 url만 받아서 직접 날린다.
-			
-			//mav.addObject("relateKeywordList", relateKeywordList);
-			//mav.addObject("popularKeywordList", popularKeywordList);
+			GetMethod getMethod = httpGet(session, getDemoSearchResultURL);
+			if(keyword != null) {
+				getMethod.addParameter("keyword", keyword);
+				if(category != null) {
+					getMethod.addParameter("category", category);
+				}
+				if(page != null) {
+					getMethod.addParameter("page", page);
+				}
+				JSONObject searchResults = getMethod.requestJSON();
+				mav.addObject("searchPageResult", searchResults);
+				
+			}
 		}
 		
 		return mav;
@@ -150,6 +158,7 @@ public class MainController extends AbstractController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("searchConfig", searchConfig);
+		logger.debug("searchConfig >>>> {}", searchConfig);
 		mav.setViewName("searchConfig");
 		return mav;
 	}

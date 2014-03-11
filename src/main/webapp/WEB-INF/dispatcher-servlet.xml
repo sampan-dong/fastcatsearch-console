@@ -26,6 +26,10 @@
 			<ref bean="authMainInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
+			<mvc:mapping path="/search/**/*.html" />
+			<ref bean="authMainInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
 			<mvc:mapping path="/manager/**/*.html" />
 			<ref bean="authManagerInterceptor" />
 		</mvc:interceptor>
