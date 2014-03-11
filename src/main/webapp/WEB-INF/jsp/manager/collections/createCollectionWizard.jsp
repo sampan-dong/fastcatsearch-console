@@ -185,7 +185,7 @@ $(document).ready(function() {
 			requestProxy("post", {
 				uri:"/management/collections/jdbc-source.xml",dataType:"xml"
 			}, "xml", function(data) {
-				var jdbcList = data.children[0].children[0].children;
+				var jdbcList = $(data).find("jdbc-source");
 				var selectObj = $("div.form-group select.jdbc-select");
 				var options = selectObj[0].options;
 				for(var optInx=options.length;optInx >=0;optInx--) {
@@ -212,7 +212,7 @@ $(document).ready(function() {
 		requestProxy("post", {
 			uri:"/management/collections/jdbc-support.xml",dataType:"xml"
 		}, "xml", function(data) {
-			var jdbcList = data.children[0].children[0].children;
+			var jdbcList = $(data).find("jdbc-driver");
 			var selectObj = $("form#jdbc-create-form div.form-group select");
 			var options = selectObj[0].options;
 			options.add(document.createElement("option"));
@@ -357,8 +357,9 @@ $(document).ready(function() {
 				uri:"/management/collections/datasource.xml",dataType:"xml",
 				collectionId:form.find("input[name=collectionTmp]").val()
 			}, "xml", function(data) {
-				var singleSource = $(data).find("full-indexing source");
-				var reader = $(singleSource).find("reader")[0].textContent;
+				var singleSource = $(data).find("full-indexing source")[0];
+				var reader = $(singleSource).find("reader").text();//[0];//.textContent;
+
 				var properties = $(singleSource).find("property");
 				
 				for(var name in paramMap) {
