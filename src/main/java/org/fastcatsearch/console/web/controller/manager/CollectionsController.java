@@ -521,12 +521,12 @@ public class CollectionsController extends AbstractController {
 				JSONObject typeList = httpPost.requestJSON();
 				mav.addObject("typeList", typeList);
 					
+			}else if(step.equals("4")){
 				requestUrl = "/management/collections/schema.xml";
 				Document schema = httpPost(session, requestUrl)
 					.addParameter("collectionId", collectionTmp)
 					.addParameter("type", "workSchema").requestXML();
 				mav.addObject("schemaDocument", schema);
-			}else if(step.equals("4")){
 			}else if(step.equals("5")){
 			}
 			

@@ -281,31 +281,18 @@ $(document).ready(function() {
 			});
 		});
 		
-		var prevFormData = null;
+		var paramMap = {};
 		
 		requestSyncProxy("post", {
 			uri:"/management/collections/single-source-reader-list.json",
 		}, "json", function(data) {
-			var form=$("form#collection-config-form");
-			//뒤로 돌아온 경우 이전 폼을 로딩해야 한다.
-			if(form.find("input[name=next]").val()=="back") {
-				requestSyncProxy("post", {
-					uri:"/management/collections/datasource.xml",dataType:"xml",
-					collectionId:form.find("input[name=collectionTmp]").val()
-				}, "xml", function(data) {
-					prevFormData = data;
-				});
-			}
-			
-			//alert(prevFormData);
-			
 			var selectObj = $("#sourceReaderSelect select");
 			var options = selectObj[0].options;
 			for(var inx=options.length;inx>=0;inx--) {
 				options[inx]=null;
 			}
 			var list = data["sourceReaderList"];
-			var paramMap = {};
+			paramMap = {};
 			options.add(document.createElement("option"));
 			for(var inx=0;inx<list.length;inx++) {
 				var option = document.createElement("option");
@@ -361,22 +348,34 @@ $(document).ready(function() {
 			});
 		});
 		
-		if(prevFormData!=null) {
-			
-		}
-		
 		var form=$("form#collection-config-form");
+		
+		//alert(JSON.stringify(paramMap));
 		
 		if(form.find("input[name=next]").val()=="back") {
 			requestProxy("post", {
-				uri:"/management/collections/datasource",dataType:"text",
+				uri:"/management/collections/datasource.xml",dataType:"xml",
 				collectionId:form.find("input[name=collectionTmp]").val()
-			}, "text", function(data) {
-				$("div#datasourceData").html(data);
+			}, "xml", function(data) {
+				var singleSource = $(data).find("full-indexing source");
+				var reader = $(singleSource).find("reader")[0].textContent;
+				var properties = $(singleSource).find("property");
+				
+				for(var name in paramMap) {
+					if(reader == paramMap[name]["reader"]) {
+						var elem = form.find("div#sourceReaderSelect select.select_flat");
+						elem.val(name);
+						elem.change();
+						
+						//alert(JSON.stringify(paramMap[name]));
+		 				for(var inx=0;inx<properties.length;inx++) {
+		 					var property = $(properties[inx]);
+		 				}
+						break;
+					}
+				}
 			});
 		}
-		
-		
 		
 	} else if(wizardContent.hasClass("step_3")) {
 		$("form#collection-config-form div.form-group input.btn[data-target=#testFieldMapping]").click(function() {
