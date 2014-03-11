@@ -350,27 +350,32 @@ $(document).ready(function() {
 		
 		var form=$("form#collection-config-form");
 		
-		//alert(JSON.stringify(paramMap));
-		
 		if(form.find("input[name=next]").val()=="back") {
 			requestProxy("post", {
 				uri:"/management/collections/datasource.xml",dataType:"xml",
 				collectionId:form.find("input[name=collectionTmp]").val()
 			}, "xml", function(data) {
 				var singleSource = $(data).find("full-indexing source")[0];
-				var reader = $(singleSource).find("reader").text();//[0];//.textContent;
+				var reader = $(singleSource).find("reader").text();
 
 				var properties = $(singleSource).find("property");
 				
 				for(var name in paramMap) {
 					if(reader == paramMap[name]["reader"]) {
+						
 						var elem = form.find("div#sourceReaderSelect select.select_flat");
 						elem.val(name);
 						elem.change();
-						
-						//alert(JSON.stringify(paramMap[name]));
+						var propElement = $("div#sourceTypeConfig div.form-group");
 		 				for(var inx=0;inx<properties.length;inx++) {
 		 					var property = $(properties[inx]);
+		 					var key = property.attr("key");
+		 					var value = property.text();
+		 					var keyElement = propElement.find("input[value="+key+"]");
+		 					if(keyElement[0]) {
+		 						var keyId = /key([0-9]+)/.exec(keyElement.attr("name"));
+		 						propElement.find("[name=value"+keyId[1]+"]").val(value);
+		 					}
 		 				}
 						break;
 					}
