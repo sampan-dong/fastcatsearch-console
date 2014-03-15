@@ -2,14 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <title>FastcatSearch</title>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!--=== CSS ===-->
 <!-- Bootstrap -->
-<link href="${contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css" />
+<link href="${contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
 <!-- jQuery UI -->
 <!--<link href="${contextPath}/resources/plugins/jquery-ui/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />-->
@@ -33,19 +31,14 @@
 <!--[if IE 8]>
 		<link href="${contextPath}/resources/assets/css/ie8.css" rel="stylesheet" type="text/css" />
 	<![endif]-->
-<link
-	href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700'
-	rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
 	
-<link rel="stylesheet"
-	href="${contextPath}/resources/assets/css/console.css">
-<link rel="stylesheet"
-	href="${contextPath}/resources/assets/css/todc-bootstrap.css">	
+<link rel="stylesheet" href="${contextPath}/resources/assets/css/console.css">
+<link rel="stylesheet" href="${contextPath}/resources/assets/css/todc-bootstrap.css">	
 <!--=== JavaScript ===-->
 
 <script type="text/javascript" src="${contextPath}/resources/assets/js/libs/jquery-1.10.2.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
 
 <script type="text/javascript" src="${contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/assets/js/libs/underscore.min.js"></script>
@@ -56,43 +49,31 @@
 	<![endif]-->
 
 <!-- Smartphone Touch Events -->
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/event.swipe/jquery.event.move.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/event.swipe/jquery.event.swipe.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/event.swipe/jquery.event.move.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/event.swipe/jquery.event.swipe.js"></script>
 
 <!-- General -->
 <script type="text/javascript" src="${contextPath}/resources/assets/js/libs/breakpoints.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/plugins/respond/respond.min.js"></script>
 <!-- Polyfill for min/max-width CSS3 Media Queries (only for IE8) -->
 <script type="text/javascript" src="${contextPath}/resources/plugins/cookie/jquery.cookie.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/slimscroll/jquery.slimscroll.horizontal.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/slimscroll/jquery.slimscroll.horizontal.min.js"></script>
 
 <!-- Page specific plugins -->
 <!-- Charts -->
 <!--[if lt IE 9]>
 		<script type="text/javascript" src="${contextPath}/resources/plugins/flot/excanvas.min.js"></script>
 	<![endif]-->
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/sparkline/jquery.sparkline.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/sparkline/jquery.sparkline.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/plugins/flot/jquery.flot.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/flot/jquery.flot.resize.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/flot/jquery.flot.time.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/flot/jquery.flot.growraf.min.js"></script>
-	<script type="text/javascript"
-	src="${contextPath}/resources/plugins/flot/jquery.flot.stack.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/resources/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/flot/jquery.flot.resize.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/flot/jquery.flot.time.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/flot/jquery.flot.growraf.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/flot/jquery.flot.stack.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
 
 <script type="text/javascript" src="${contextPath}/resources/plugins/daterangepicker/moment.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/plugins/daterangepicker/daterangepicker.js"></script>

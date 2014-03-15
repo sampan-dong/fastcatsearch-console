@@ -320,17 +320,6 @@ $(document).ready(function(){
 														}
 														%>
 														<div class="form-group">
-															<div class="col-md-4"><input type="text" name="key" class="form-control" value="test" placeholder="KEY"></div>
-															<div class="col-md-8">
-																<div class="input-group">
-																	<textarea rows="4" name="value" class="form-control" placeholder="VALUE" >testvalue</textarea>
-																	<span class="input-group-btn valign-top">
-																		<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
-																	</span>
-																</div>
-															</div>
-														</div>
-														<div class="form-group">
 															<div class="col-md-12">
 																<a><i class="icon-plus-sign"></i> Add Property</a>
 															</div>

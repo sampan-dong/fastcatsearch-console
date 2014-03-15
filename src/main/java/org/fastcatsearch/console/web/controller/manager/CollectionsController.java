@@ -1,6 +1,9 @@
 package org.fastcatsearch.console.web.controller.manager;
 
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -376,154 +379,242 @@ public class CollectionsController extends AbstractController {
 			//파라메터가 동적일 수 있으므로 부득이하게 request 객체를 사용
 			HttpServletRequest request, 
 			@RequestParam(required=false, defaultValue="1") String step, 
-			@RequestParam(required=false, defaultValue="") String next) {
+			@RequestParam(required=false, defaultValue="") String next, @RequestParam(required=false) String collectionId) {
 		ModelAndView mav = new ModelAndView();
 		String requestUrl = null;
-		JSONObject collectionInfoList = null;
 		
-		String collectionId = request.getParameter("collectionId");
-		String collectionTmp = null;
-		if(collectionId!=null) {
-				collectionTmp = "."+collectionId+".tmp";
-		}
+//		String collectionTmp = null;
+//		if(collectionId!=null) {
+//			collectionTmp = "."+collectionId+".tmp";
+//		}
+		//페이지 reload 이면, 저장을 하지 않는다.
+		boolean reload = "true".equalsIgnoreCase(request.getParameter("reload"));
 		
-		logger.debug("step:{} / next:{} / collectionId:{} / collectionTmp:{}", step, next, collectionId, collectionTmp);
+		logger.debug("step:{} / next:{} / collectionId:{} / collectionTmp:{}", step, next, collectionId);
 		
-		//페이지 변경사항 저장.
+		String viewStep = null;
+		
 		try {
 			if(next.equals("next")){
-				if(step.equals("1")){
-					requestUrl = "/management/collections/collection-info-list.json";
-					collectionInfoList = httpPost(session, requestUrl).requestJSON();
-					JSONArray collectionList = collectionInfoList.optJSONArray("collectionInfoList");
-					boolean found = false;
-					
-					for (int inx = 0; inx < collectionList.length(); inx++) {
-						JSONObject item = collectionList.optJSONObject(inx);
-						if(item.getString("id").equals(collectionTmp)) {
-							found = true;
-							break;
+//				if(reload){
+//					//reload의 경우 저장을 하지 않는다.
+//					if(step.equals("1")){
+//						viewStep = "2";
+//					}else if(step.equals("2")){
+//						viewStep = "3";
+//					}else if(step.equals("3")){
+//						viewStep = "4";
+//					}else if(step.equals("4")){
+//						viewStep = "5";
+//					}
+//				}else{
+					//페이지 변경사항 저장.
+					if(step.equals("1")){
+						//존재하는 확인.
+						// manage interceptor에서 이미 추가된 데이터 collectionList 를 사용한다. 
+						JSONArray collectionList = (JSONArray) request.getAttribute("collectionList");
+						boolean found = false;
+						for (int inx = 0; inx < collectionList.length(); inx++) {
+							JSONObject item = collectionList.optJSONObject(inx);
+							if(item.getString("id").equals(collectionId)) {
+								found = true;
+								break;
+							}
 						}
-					}
-					
-					//만약 같은 이름의 컬렉션이 있는 경우. 허용불가.
-					//차후 엔진 재시작하여 임시 컬렉션 삭제.
-					if(!found) {
-						logger.debug("creating collection..");
-						if(collectionId != null && !"".equals(collectionId)) {
-							requestUrl = "/management/collections/create.json";
-							
-							String collectionName = request.getParameter("collectionName");
-							String indexNode = request.getParameter("indexNode");
-							String searchNodeList = request.getParameter("searchNodeList");
-							String dataNodeList = request.getParameter("dataNodeList");
-							
-							collectionInfoList = httpPost(session, requestUrl)
-								.addParameter("collectionId", collectionTmp)
-								.addParameter("name", collectionName)
-								.addParameter("indexNode", indexNode)
-								.addParameter("searchNodeList", searchNodeList)
-								.addParameter("dataNodeList", dataNodeList)
-								.requestJSON();
-							mav.setViewName("manager/collections/create");
+						
+						//만약 같은 이름의 컬렉션이 있는 경우. 허용불가.
+						//차후 엔진 재시작하여 임시 컬렉션 삭제.
+						if(!found) {
+							logger.debug("creating collection..");
+							if(collectionId != null && !"".equals(collectionId)) {
+								requestUrl = "/management/collections/create.json";
+								
+								String collectionName = request.getParameter("collectionName");
+								String indexNode = request.getParameter("indexNode");
+								String searchNodeList = request.getParameter("searchNodeList");
+								String dataNodeList = request.getParameter("dataNodeList");
+								
+								JSONObject result = httpPost(session, requestUrl)
+									.addParameter("collectionId", collectionId)
+									.addParameter("name", collectionName)
+									.addParameter("indexNode", indexNode)
+									.addParameter("searchNodeList", searchNodeList)
+									.addParameter("dataNodeList", dataNodeList)
+									.requestJSON();
+							}
 						}
-					}
-					
-					step = "2";
-				}else if(step.equals("2")){
-					
-					requestUrl = "/management/collections/datasource.xml";
-					Document datasource = httpPost(session, requestUrl)
-						.addParameter("collectionId", collectionTmp).requestXML();
-					Element root = datasource.getRootElement();
-					Element source = root.getChild("full-indexing");
-					
-					//데이터소스 저장.
-					requestUrl = "/management/collections/update-datasource.json";
-					PostMethod httpPost = httpPost(session, requestUrl);
-					Enumeration<String> parameterNames = request.getParameterNames();
-					httpPost.addParameter("collectionId", collectionTmp)
-						.addParameter("indexType", "full")
-						.addParameter("active", "false");
-					if(source.getChildren().size() > 0) {
-						httpPost.addParameter("sourceIndex", "0");
-					}
-					
-					for(;parameterNames.hasMoreElements();) {
-						String parameterName = parameterNames.nextElement();
-						//중복되는 파라메터는 제거해 준다.
-						if("collectionId".equals(parameterName)
-							||"indexType".equals(parameterName)	
-							||"active".equals(parameterName) ) {
-							continue;
+						
+						viewStep = "2";
+					}else if(step.equals("2")){
+						
+						requestUrl = "/management/collections/datasource.xml";
+						Document datasource = httpPost(session, requestUrl)
+							.addParameter("collectionId", collectionId).requestXML();
+						Element root = datasource.getRootElement();
+						Element source = root.getChild("full-indexing");
+						
+						//데이터소스 저장.
+						requestUrl = "/management/collections/update-datasource.json";
+						PostMethod httpPost = httpPost(session, requestUrl);
+						Enumeration<String> parameterNames = request.getParameterNames();
+						httpPost.addParameter("collectionId", collectionId)
+							.addParameter("indexType", "full")
+							.addParameter("active", "true")
+							.addParameter("modifierClass", "")
+							.addParameter("name", "DB Source");
+						if(source.getChildren().size() > 0) {
+							httpPost.addParameter("sourceIndex", "0");
 						}
-						httpPost.addParameter(parameterName, request.getParameter(parameterName));
+						
+						for(;parameterNames.hasMoreElements();) {
+							String parameterName = parameterNames.nextElement();
+							//중복되는 파라메터는 제거해 준다.
+							if("collectionId".equals(parameterName)
+								||"indexType".equals(parameterName)	
+								||"active".equals(parameterName) ) {
+								continue;
+							}
+							httpPost.addParameter(parameterName, request.getParameter(parameterName));
+						}
+						JSONObject result = httpPost.requestJSON();
+						
+						//워크스키마 자동생성. 
+						requestUrl = "/management/collections/schema/update.json";
+						httpPost = httpPost(session, requestUrl);
+						httpPost.addParameter("collectionId", collectionId)
+							.addParameter("autoSchema", "y");
+						result = httpPost.requestJSON();
+						
+						viewStep = "3";
+					} else if(step.equals("3")){
+						workSchemaSave(session, request, collectionId);
+						
+						requestUrl = "/management/collections/collection-info-list.json";
+						JSONObject collectionInfo = httpPost(session, requestUrl).requestJSON();
+						mav.addObject("collectionInfo",collectionInfo);
+						
+						requestUrl = "/management/collections/datasource.xml";
+						Document datasource = httpPost(session, requestUrl)
+							.addParameter("collectionId", collectionId).requestXML();
+						mav.addObject("dataSource", datasource);
+						
+						viewStep = "4";
+					}else if(step.equals("4")){
+						//remove temp to real collection;
+						requestUrl = "/management/collections/operate.json";
+						JSONObject result= httpPost(session, requestUrl)
+							.addParameter("collectionId", collectionId)
+							.addParameter("command", "promote").requestJSON();
+						viewStep = "5";
 					}
-					JSONObject result = httpPost.requestJSON();
-					
-					//워크스키마 자동생성. 
-					requestUrl = "/management/collections/schema/update.json";
-					httpPost = httpPost(session, requestUrl);
-					httpPost.addParameter("collectionId", collectionTmp)
-						.addParameter("autoSchema", "y");
-					result = httpPost.requestJSON();
-					
-					step = "3";
-				} else if(step.equals("3")){
-					workSchemaSave(session, request, collectionTmp);
-					
-					requestUrl = "/management/collections/collection-info-list.json";
-					JSONObject collectionInfo = httpPost(session, requestUrl).requestJSON();
-					mav.addObject("collectionInfo",collectionInfo);
-					
-					requestUrl = "/management/collections/datasource.xml";
-					Document datasource = httpPost(session, requestUrl)
-						.addParameter("collectionId", collectionTmp).requestXML();
-					mav.addObject("dataSource", datasource);
-					
-					step = "4";
-				}else if(step.equals("4")){
-					//remove temp to real collection;
-					requestUrl = "/management/collections/operate.json";
-					JSONObject result= httpPost(session, requestUrl)
-						.addParameter("collectionId", collectionId)
-						.addParameter("command", "promote").requestJSON();
-					//TODO: 결과처리
-					step = "5";
-				}
-			}else if(next.equals("back")){
+//				}
+				
+			} else if (next.equals("back")) {
+				//이전을 선택시 저장하지 않는다.
 				if(step.equals("2")){
-					requestUrl = "/management/collections/collection-info-list.json";
-					JSONObject serverListObject = httpPost(session, requestUrl).requestJSON();
-					JSONArray serverList = serverListObject.optJSONArray("collectionInfoList");
-					for(int inx=0;inx<serverList.length();inx++) {
-						JSONObject serverInfo = serverList.optJSONObject(inx);
-						if(collectionTmp.equals(serverInfo.optString("id"))) {
-							mav.addObject("collectionName", serverInfo.optString("name"));
-							mav.addObject("indexNode", serverInfo.optString("indexNode"));
-							mav.addObject("searchNodeList", serverInfo.optString("searchNodeList"));
-							mav.addObject("dataNodeList", serverInfo.optString("dataNodeList"));
-						}
-					}
-					
-					step = "1";
+					viewStep = "1";
 				}else if(step.equals("3")){
-					step = "2";
+					viewStep = "2";
 				}else if(step.equals("4")){
-					step = "3";
+					viewStep = "3";
 				}else if(step.equals("5")){
-					step = "4";
+					viewStep = "4";
 				}
+			} else {
+				//이전 이후가 없으면, 보여주기만 한다.
+				viewStep = step;
 			}
 			
-			if(step.equals("1")){
+			logger.debug("##STEP from {} to {}", step, viewStep);
+			
+			if(viewStep.equals("1")){
+				//서버리스트
 				requestUrl = "/management/servers/list.json";
 				JSONObject serverListObject = httpPost(session, requestUrl).requestJSON();
-				mav.addObject("serverListObject",serverListObject);
-			}else if(step.equals("2")){
-			}else if(step.equals("3")){
+				mav.addObject("serverListObject", serverListObject);
+				
+				//컬렉션 정보.
+				requestUrl = "/management/collections/collection-info-list.json";
+				JSONObject collectionInfoList = httpPost(session, requestUrl).requestJSON();
+				JSONArray collectionList = collectionInfoList.optJSONArray("collectionInfoList");
+				JSONObject collectionInfo = null;
+				for (int inx = 0; inx < collectionList.length(); inx++) {
+					JSONObject item = collectionList.optJSONObject(inx);
+					if(item.getString("id").equals(collectionId)) {
+						collectionInfo = item;
+						break;
+					}
+				}
+				
+				if(collectionInfo != null){
+					mav.addObject("collectionName", collectionInfo.getString("name"));
+					mav.addObject("indexNode", collectionInfo.getString("indexNode"));
+					mav.addObject("searchNodeList", collectionInfo.getString("searchNodeList"));
+					mav.addObject("dataNodeList", collectionInfo.getString("dataNodeList"));
+				}
+				
+				mav.setViewName("manager/collections/createCollectionWizardStep1");
+			}else if(viewStep.equals("2")){
+				
+				requestUrl = "/management/collections/single-source-reader-list.json";
+				JSONObject result = httpPost(session, requestUrl).requestJSON();
+				JSONArray sourceReaderList = result.getJSONArray("sourceReaderList");
+				
+				
+				requestUrl = "/management/collections/datasource.xml";
+				Document datasource = httpPost(session, requestUrl)
+					.addParameter("collectionId", collectionId).requestXML();
+				Element root = datasource.getRootElement();
+				Element fullIndexingSource = root.getChild("full-indexing");
+				Element source = fullIndexingSource.getChild("source");
+
+				String sourceType = request.getParameter("sourceType");
+				
+				String readerClass = null;
+				
+				if(sourceType != null) {
+					//요청한 sourceType이 있다면 셋팅.
+					readerClass = sourceType;
+				}else if (source != null) {
+					readerClass = source.getChildText("reader");
+				}else{
+					//요청도 없고, data source도 셋된 내용이 없다면 무시.
+				}
+				
+				// 소스리더 리스트에서 찾아본다.
+				for (int i = 0; i < sourceReaderList.length(); i++) {
+					JSONObject readerObject = sourceReaderList.getJSONObject(i);
+					String clazz = readerObject.getString("reader");
+					if (clazz.equals(readerClass)) {
+						readerObject.put("_selected", true);
+						
+						if (source != null) {
+							Map<String, String> parameterValues = new HashMap<String, String>();
+							Element properties = source.getChild("properties");
+							List<Element> propertyList = properties.getChildren("property");
+							for (Element e : propertyList) {
+								String key = e.getAttributeValue("key");
+								String value = e.getText();
+								if (value == null) {
+									value = "";
+								}
+								parameterValues.put(key, value);
+							}
+
+							mav.addObject("sourceReaderParameter", parameterValues);
+						}
+					} else {
+						readerObject.put("_selected", false);
+					}
+				}
+				
+				
+				mav.addObject("sourceReaderList", sourceReaderList);
+				mav.setViewName("manager/collections/createCollectionWizardStep2");
+				
+			}else if(viewStep.equals("3")){
 				requestUrl = "/management/collections/schema.xml";
-				Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionTmp).addParameter("type", "workSchema")
+				Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionId).addParameter("type", "workSchema")
 						.requestXML();
 				mav.addObject("schemaDocument",document);
 				
@@ -531,21 +622,23 @@ public class CollectionsController extends AbstractController {
 				PostMethod httpPost = httpPost(session, requestUrl);
 				JSONObject typeList = httpPost.requestJSON();
 				mav.addObject("typeList", typeList);
-					
-			}else if(step.equals("4")){
+				mav.setViewName("manager/collections/createCollectionWizardStep3");
+			}else if(viewStep.equals("4")){
 				requestUrl = "/management/collections/schema.xml";
 				Document schema = httpPost(session, requestUrl)
-					.addParameter("collectionId", collectionTmp)
+					.addParameter("collectionId", collectionId)
 					.addParameter("type", "workSchema").requestXML();
 				mav.addObject("schemaDocument", schema);
-			}else if(step.equals("5")){
+				mav.setViewName("manager/collections/createCollectionWizardStep4");
+			}else if(viewStep.equals("5")){
+				//끝.
+				mav.setViewName("manager/collections/createCollectionWizardStep5");
 			}
 			
-			mav.addObject("step", step);
-			mav.addObject("next", next);
+			mav.addObject("step", viewStep);
+//			mav.addObject("next", next);
 			mav.addObject("collectionId", collectionId);
-			mav.addObject("collectionTmp", collectionTmp);
-			mav.setViewName("manager/collections/createCollectionWizard");
+			
 		} catch (Exception e) {
 			logger.error("",e);
 		} finally {

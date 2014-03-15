@@ -5,6 +5,7 @@
 <%@page import="org.jdom2.*"%>
 <%@page import="org.json.*" %>
 <%@page import="java.util.*"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
 	String step = (String) request.getAttribute("step");
 	JSONObject typeListObj = (JSONObject) request.getAttribute("typeList");
@@ -13,97 +14,14 @@
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
-<style>
-.wizard { padding-left: 0px; margin-bottom: 0px; }
-
-.wizard li {
-	padding: 10px 12px 10px;
-	margin-right: 5px;
-	margin-bottom: 10px;
-	background: #efefef;
-	position: relative;
-	display: inline-block;
-	color: #999;
-}
-.wizard li:hover {
-	text-decoration:none;
-}
-.wizard li:before {
-	width: 0;
-	height: 0;
-	border-top: 20px inset transparent;
-	border-bottom: 20px inset transparent;
-	border-left: 20px solid #fff;
-	position: absolute;
-	content: "";
-	top: 0;
-	left: 0;
-}
-.wizard li:after {
-	width: 0;
-	height: 0;
-	border-top: 18px inset transparent;
-	border-bottom: 20px inset transparent;
-	border-left: 20px solid #efefef;
-	position: absolute;
-	content: "";
-	top: 0;
-	right: -20px;
-	z-index: 2;
-}
-.wizard li:first-child:before,
-.wizard li:last-child:after {
-	border: none;
-}
-.wizard a:first-child {
-}
-.wizard a:last-child {
-}
-.wizard .badge {
-	margin: 0 5px 0 18px;
-	position: relative;
-	top: -1px;
-}
-.wizard li:first-child .badge {
-	margin-left: 0;
-}
-.wizard .current {
-	background: #007ACC;
-	color: #fff;
-}
-.wizard .current:after {
-	border-left-color: #007ACC;
-}
-.wizard .current .badge {
-	color: #007ACC;
-	background-color: #fff;
-}
-
-.wizard-content {
-	padding: 12px;
-	border: 1px solid #efefef;
-	margin-bottom: 0px;
-	
-}
-.wizard-bottom {
-	/*padding: 10px 20px 10px;*/
-	/*background-color: #f5f5f5;*/
-	padding: 10px 20px 0px 0px;
-	border-top: 1px solid #f5f5f5;
-}
-
-.wizard-card {
-	display:none;
-}
-.wizard-card.current {
-	display:block;
-}
-</style>
+<link href="${contextPath}/resources/assets/css/collection-wizard.css" rel="stylesheet" type="text/css" />
 <script>
 function nextStep(obj, next){
-	var form = $(obj).parents('form:first');
-	form.find("[name='next']").val(next);
-	form.submit();
+	var form = $("form#collection-config-form");
+	if(form.valid()){
+		form.find("[name='next']").val(next);
+		form.submit();
+	}
 }
 function showQueryTestModal(){
 	var jdbcSourceId = $("select.jdbc-select option:selected").val();
@@ -114,6 +32,9 @@ function showQueryTestModal(){
 	}
 }
 $(document).ready(function() {
+	
+	$("form#collection-config-form").validate();
+	
 	$("#resultLimitSize").tooltip();
 	console.log("$(#queryTestButton)", $("#queryTestButton"));
 	
@@ -128,6 +49,8 @@ $(document).ready(function() {
 		if(jdbcSourceId == null){
 			return;
 		}
+		
+		$("#queryOutput").text("");
 		$.ajax({
 			url : PROXY_REQUEST_URI,
 			type: "POST",
@@ -191,7 +114,10 @@ $(document).ready(function() {
 				for(var optInx=options.length;optInx >=0;optInx--) {
 					options[optInx]=null;
 				}
-				options.add(document.createElement("option"));
+				option = document.createElement("option");
+				option.value = "";
+				option.text = ":: Select ::";
+				options.add(option);
 				for(var jdbcInx=0;jdbcInx<jdbcList.length;jdbcInx++) {
 					var element = $(jdbcList[jdbcInx]);
 					var option = document.createElement("option");
@@ -293,7 +219,10 @@ $(document).ready(function() {
 			}
 			var list = data["sourceReaderList"];
 			paramMap = {};
-			options.add(document.createElement("option"));
+			var option = document.createElement("option");
+			option.value = "";
+			option.text = ":: Select ::";
+			options.add(option);
 			for(var inx=0;inx<list.length;inx++) {
 				var option = document.createElement("option");
 				option.value = list[inx]["name"];
@@ -428,7 +357,6 @@ $(document).ready(function() {
 				</ul>
 	
 			</div>
-			
 			<h3>Create Collection Wizard</h3>
 			<div class="widget">
 				<ul class="wizard">
@@ -481,7 +409,7 @@ $(document).ready(function() {
 									<div class="form-group">
 										<label class="col-md-2 control-label">Search Node List :</label>
 										<div class="col-md-10 form-inline">
-											<input type="text" name="searchNodeList" class="form-control fcol2 node-data" value="${searchNodeList}">
+											<input type="text" name="searchNodeList" class="form-control fcol2 node-data required" value="${searchNodeList}">
 											&nbsp;<select class=" select_flat form-control fcol2 node-select">
 												<option value="">:: Add Node ::</option>
 												<%
@@ -503,7 +431,7 @@ $(document).ready(function() {
 									<div class="form-group">
 										<label class="col-md-2 control-label">Data Node List :</label>
 										<div class="col-md-10 form-inline">
-											<input type="text" name="dataNodeList" class="form-control fcol2 node-data" value="${dataNodeList}">
+											<input type="text" name="dataNodeList" class="form-control fcol2 node-data required" value="${dataNodeList}">
 											&nbsp;<select class="select_flat form-control fcol2 node-select">
 												<option value="">:: Add Node ::</option>
 												<%
