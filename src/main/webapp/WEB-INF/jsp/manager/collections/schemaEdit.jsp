@@ -42,8 +42,9 @@ $(document).ready(function(){
 				}
 				
 				var value = "";
-				if(elements[inx].getAttribute("type").toLowerCase() == "checkbox"
-				|| elements[inx].getAttribute("type").toLowerCase() == "radio") {
+				if(elements[inx].getAttribute("type") != null && 
+					(elements[inx].getAttribute("type").toLowerCase() == "checkbox"
+					|| elements[inx].getAttribute("type").toLowerCase() == "radio")) {
 					if(elements[inx].checked) {
 						value = elements[inx].value;
 					}

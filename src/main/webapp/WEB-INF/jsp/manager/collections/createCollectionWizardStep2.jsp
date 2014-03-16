@@ -65,11 +65,11 @@ $(document).ready(function() {
 	});
 	
 	
-	$("select[name=sourceType]").change(function(e) {
-		var sourceType = $("select[name=sourceType] option:selected").val();
-		console.log("select value=", sourceType);
+	$("select[name=readerClass]").change(function(e) {
+		var readerClass = $("select[name=readerClass] option:selected").val();
+		console.log("select value=", readerClass);
 		
-		$("#local-form > input[name=sourceType]").val(sourceType);
+		$("#local-form > input[name=readerClass]").val(readerClass);
 		$("#local-form").submit();
 	});
 	
@@ -235,7 +235,7 @@ function loadJdbcCreateModal() {
 	<input type="hidden" name="step" value="2" />
 	<input type="hidden" name="next" value=""/>
 	<input type="hidden" name="collectionId" value="${collectionId}"/>
-	<input type="hidden" name="sourceType" value=""/>
+	<input type="hidden" name="readerClass" value=""/>
 </form>
 
 
@@ -265,13 +265,12 @@ function loadJdbcCreateModal() {
 							<input type="hidden" name="step" value="2" />
 							<input type="hidden" name="next" value="next"/>
 							<input type="hidden" name="collectionId" value="${collectionId}"/>
-							<input type="hidden" name="readerClass" value=""/>
 							<div class="row">
 								<div class="col-md-12 form-horizontal">
-									<div id = "sourceReaderSelect" class="form-group">
+									<div class="form-group">
 										<label class="col-md-2 control-label">Source Type:</label>
 										<div class="col-md-10">
-											<select name="sourceType" class="select_flat form-control fcol2">
+											<select name="readerClass" class="select_flat form-control fcol2 required">
 												<option value="">:: Select ::</option>
 											<%
 											JSONObject selectedSourceReder = null;
@@ -289,7 +288,7 @@ function loadJdbcCreateModal() {
 											</select>
 										</div>
 									</div>
-									<div id="sourceTypeConfig">
+									<div>
 										<%
 										if(selectedSourceReder != null){
 											JSONArray parameters = selectedSourceReder.getJSONArray("parameters");
@@ -320,8 +319,7 @@ function loadJdbcCreateModal() {
 													}else if(type.equalsIgnoreCase("JDBC")){
 														hasJdbcOption = true;
 														%>
-														<select name="<%=parameterId %>" class="select_flat form-control fcol2 display-inline jdbc-select"></select>
-														<!-- div class="btn"><i class="icon-refresh"></i></div> -->
+														<select name="<%=parameterId %>" class="select_flat form-control fcol2 display-inline jdbc-select <%=elementClass %>"></select>
 														<a href="javascript:showJdbcCreateModal()" class="btn">Create New..</a>
 														<a href="javascript:showQueryTestModal()" class="btn">Query Test..</a>
 														<%

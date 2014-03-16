@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.management.relation.InvalidRelationServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -475,24 +476,13 @@ public class CollectionsController extends AbstractController {
 					
 					viewStep = "3";
 				} else if(step.equals("3")){
-					workSchemaSave(session, request, collectionId);
-					
-					requestUrl = "/management/collections/collection-info-list.json";
-					JSONObject collectionInfo = httpPost(session, requestUrl).requestJSON();
-					mav.addObject("collectionInfo",collectionInfo);
-					
-					requestUrl = "/management/collections/datasource.xml";
-					Document datasource = httpPost(session, requestUrl)
-						.addParameter("collectionId", collectionId).requestXML();
-					mav.addObject("dataSource", datasource);
-					
 					viewStep = "4";
 				}else if(step.equals("4")){
 					//remove temp to real collection;
 					requestUrl = "/management/collections/operate.json";
 					JSONObject result= httpPost(session, requestUrl)
 						.addParameter("collectionId", collectionId)
-						.addParameter("command", "promote").requestJSON();
+						.addParameter("command", "start").requestJSON();
 					viewStep = "5";
 				}
 				
@@ -522,24 +512,16 @@ public class CollectionsController extends AbstractController {
 				
 				//컬렉션 정보.
 				requestUrl = "/management/collections/collection-info-list.json";
-				JSONObject collectionInfoList = httpPost(session, requestUrl).requestJSON();
+				JSONObject collectionInfoList = httpPost(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
 				JSONArray collectionList = collectionInfoList.optJSONArray("collectionInfoList");
 				JSONObject collectionInfo = null;
-				for (int inx = 0; inx < collectionList.length(); inx++) {
-					JSONObject item = collectionList.optJSONObject(inx);
-					if(item.getString("id").equals(collectionId)) {
-						collectionInfo = item;
-						break;
-					}
+				if(collectionList.length() > 0){
+					collectionInfo = collectionList.optJSONObject(0);
 				}
 				
 				if(collectionInfo != null){
-					mav.addObject("collectionName", collectionInfo.getString("name"));
-					mav.addObject("indexNode", collectionInfo.getString("indexNode"));
-					mav.addObject("searchNodeList", collectionInfo.getString("searchNodeList"));
-					mav.addObject("dataNodeList", collectionInfo.getString("dataNodeList"));
+					mav.addObject("collectionInfo", collectionInfo);
 				}
-				
 				mav.setViewName("manager/collections/createCollectionWizardStep1");
 			}else if(viewStep.equals("2")){
 				
@@ -555,14 +537,10 @@ public class CollectionsController extends AbstractController {
 				Element fullIndexingSource = root.getChild("full-indexing");
 				Element source = fullIndexingSource.getChild("source");
 
-				String sourceType = request.getParameter("sourceType");
-				
-				String readerClass = null;
-				
-				if(sourceType != null) {
-					//요청한 sourceType이 있다면 셋팅.
-					readerClass = sourceType;
-				}else if (source != null) {
+				String readerClass = request.getParameter("readerClass");
+			
+				//readerClass 가 null이면 select 하지 않은 상태이므로 source의 내용을 보여준다.
+				if (readerClass == null && source != null) {
 					readerClass = source.getChildText("reader");
 				}else{
 					//요청도 없고, data source도 셋된 내용이 없다면 무시.
@@ -601,9 +579,9 @@ public class CollectionsController extends AbstractController {
 				
 			}else if(viewStep.equals("3")){
 				requestUrl = "/management/collections/schema.xml";
-				Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionId).addParameter("type", "workSchema")
+				Document schema = httpPost(session, requestUrl).addParameter("collectionId", collectionId).addParameter("type", "workSchema")
 						.requestXML();
-				mav.addObject("schemaDocument",document);
+				mav.addObject("schemaDocument", schema);
 				
 				requestUrl = "/management/collections/data-type-list.json";
 				PostMethod httpPost = httpPost(session, requestUrl);
@@ -611,19 +589,40 @@ public class CollectionsController extends AbstractController {
 				mav.addObject("typeList", typeList);
 				mav.setViewName("manager/collections/createCollectionWizardStep3");
 			}else if(viewStep.equals("4")){
+				
+				//컬렉션정보.
+				requestUrl = "/management/collections/collection-info-list.json";
+				JSONObject collectionInfoList = httpPost(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
+				JSONArray collectionList = collectionInfoList.optJSONArray("collectionInfoList");
+				JSONObject collectionInfo = null;
+				if(collectionList.length() > 0){
+					collectionInfo = collectionList.optJSONObject(0);
+				}
+				
+				//datasource
+				requestUrl = "/management/collections/datasource.xml";
+				Document datasource = httpPost(session, requestUrl)
+					.addParameter("collectionId", collectionId).requestXML();
+				
+				
+				//스키마
 				requestUrl = "/management/collections/schema.xml";
-				Document schema = httpPost(session, requestUrl)
-					.addParameter("collectionId", collectionId)
-					.addParameter("type", "workSchema").requestXML();
+				Document schema = httpPost(session, requestUrl).addParameter("collectionId", collectionId).addParameter("type", "workSchema")
+						.requestXML();
+				
+				if(collectionInfo != null){
+					mav.addObject("collectionInfo", collectionInfo);
+				}
+				mav.addObject("datasource", datasource);
 				mav.addObject("schemaDocument", schema);
+				
 				mav.setViewName("manager/collections/createCollectionWizardStep4");
 			}else if(viewStep.equals("5")){
 				//끝.
+				
 				mav.setViewName("manager/collections/createCollectionWizardStep5");
 			}
 			
-			mav.addObject("step", viewStep);
-//			mav.addObject("next", next);
 			mav.addObject("collectionId", collectionId);
 			
 		} catch (Exception e) {

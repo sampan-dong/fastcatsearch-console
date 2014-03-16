@@ -11,6 +11,19 @@
 	JSONObject collectionInfo = (JSONObject) request.getAttribute("collectionInfo");
 	JSONObject serverListObject = (JSONObject)request.getAttribute("serverListObject");
 	JSONArray serverList = serverListObject.optJSONArray("nodeList");
+	
+	String collectionName = "";
+	String indexNode = "";
+	String searchNodeList = "";
+	String dataNodeList = "";
+	
+	if(collectionInfo != null){
+		collectionName = collectionInfo.optString("name", "");
+		indexNode = collectionInfo.optString("indexNode", "");
+		searchNodeList = collectionInfo.optString("searchNodeList", "");
+		dataNodeList = collectionInfo.optString("dataNodeList", "");
+	}
+
 %>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
 <html>
@@ -93,7 +106,7 @@ $(document).ready(function() {
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Collection Name:</label>
-										<div class="col-md-10"><input type="text" name="collectionName" class="form-control required fcol2" value="${collectionName}"></div>
+										<div class="col-md-10"><input type="text" name="collectionName" class="form-control required fcol2" value="<%=dataNodeList %>"></div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Index Node:</label>
@@ -107,7 +120,7 @@ $(document).ready(function() {
 													String nodeName = serverInfo.optString("name");
 												%>
 													<% if("true".equals(active)) { %>
-													<option value="<%=nodeId%>" <%=nodeId.equals(request.getAttribute("indexNode"))?"selected":"" %>><%=nodeName%></option>
+													<option value="<%=nodeId%>" <%=nodeId.equals(indexNode)?"selected":"" %>><%=nodeName%></option>
 													<% } %>
 												<%
 												}
@@ -118,7 +131,7 @@ $(document).ready(function() {
 									<div class="form-group">
 										<label class="col-md-2 control-label">Search Node List :</label>
 										<div class="col-md-10 form-inline">
-											<input type="text" name="searchNodeList" class="form-control fcol2 node-data required" value="${searchNodeList}">
+											<input type="text" name="searchNodeList" class="form-control fcol2 node-data required" value="<%=searchNodeList%>">
 											&nbsp;<select class=" select_flat form-control fcol2 node-select">
 												<option value="">:: Add Node ::</option>
 												<%
@@ -140,7 +153,7 @@ $(document).ready(function() {
 									<div class="form-group">
 										<label class="col-md-2 control-label">Data Node List :</label>
 										<div class="col-md-10 form-inline">
-											<input type="text" name="dataNodeList" class="form-control fcol2 node-data required" value="${dataNodeList}">
+											<input type="text" name="dataNodeList" class="form-control fcol2 node-data required" value="<%=dataNodeList%>">
 											&nbsp;<select class="select_flat form-control fcol2 node-select">
 												<option value="">:: Add Node ::</option>
 												<%
