@@ -171,7 +171,7 @@ $(document).ready(function(){
 													String size = field.getAttributeValue("size", "");
 													String removeTag = field.getAttributeValue("removeTag", "");
 													String multiValue = field.getAttributeValue("multiValue", "false");
-													String multiValueDelimeter = field.getAttributeValue("multiValueDelimeter", "");
+													String multiValueDelimiter = field.getAttributeValue("multiValueDelimiter", "");
 													String store = field.getAttributeValue("store", "true");
 												%>
 												<tr id="_field_<%=id%>">
@@ -180,9 +180,9 @@ $(document).ready(function(){
 													<td class=""><%=name %></td>
 													<td class=""><%=type %></td>
 													<td class=""><%=size %></td>
-													<td class=" _field_store " ><strong><%="true".equalsIgnoreCase(store) ? "Y" : "N" %></strong></td>
-													<td class=" _field_multivalue " ><strong><%="true".equalsIgnoreCase(multiValue) ? "Y" : "N" %></strong></td>
-													<td class=" _field_multivalue_delimiter" ><%=multiValueDelimeter %></td>
+													<td class="_field_store " ><strong><%="true".equalsIgnoreCase(store) ? "Y" : "N" %></strong></td>
+													<td class="_field_multivalue " ><strong><%="true".equalsIgnoreCase(multiValue) ? "Y" : "N" %></strong></td>
+													<td class="_field_multivalue_delimiter" ><%=multiValueDelimiter %></td>
 												</tr>														
 												<%
 												}

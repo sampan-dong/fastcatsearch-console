@@ -63,9 +63,10 @@ $(document).ready(function(){
 			data:formData,
 			success:function(response, status) {
 				if(response.success) {
+					$.noty.closeAll();
 					noty({text: "Schema update success", type: "success", layout:"topRight", timeout: 3000});
 				} else {
-					noty({text: "Schema update fail : " + response.errorMessage, type: "error", layout:"topRight", timeout: 0}); //클릭해야 사라진다.
+					noty({text: response.errorMessage, type: "error", layout:"topRight", timeout: 0}); //클릭해야 사라진다.
 				}
 			}, fail:function() {
 				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
@@ -73,12 +74,6 @@ $(document).ready(function(){
 		});
 		return;
 	});
-	
-	var addRowTooltip = {title : "Insert 1 below"};
-	var deleteRowTooltip = {title : "Delete row"};
-	
-	$("a.addRow").tooltip(addRowTooltip);
-	$("a.deleteRow").tooltip(deleteRowTooltip);
 	
 	var inputClearFunction = function() {
 		if($(this).attr("name")!="KEY_NAME") {
@@ -92,42 +87,61 @@ $(document).ready(function(){
 	};
 	
 	var addRowFunction = function(){
-		var trElement = $(this).parents("tr");
-		var clone = trElement.clone();
-		var key = keyId = clone.find("input[name=KEY_NAME]").val();
-		var regex = /([a-zA-Z_-]+)([0-9]+)/.exec(key);
-		var prefix = regex[1];
-		var index = regex[2];
+		var tbody = $(this).parents("tbody");
+		var key = tbody.attr("key"); //_field-list_
+		var pivotTr = $(this).parents("tr");
+		
+		var trTemplate = $("#schema_template tr[key="+key+"]");
+		//var keyName = trTemplate.find("input[name=KEY_NAME]").val(); //_field-list_0
+		var newTr = trTemplate.clone();
 		
 		var newIndex = new Date().getTime();
 		
-		clone.find("input[name=KEY_NAME]").val(prefix+newIndex);
-		clone.find("input").each(function() {
-			if($(this).attr("name").indexOf(prefix+index)==0) {
-				var regex = /([a-zA-Z_-]+)([0-9]+)(.+)/.exec($(this).attr("name"));
-				$(this).attr("name",prefix+newIndex+regex[3]);
+		var newKeyName = key + newIndex;
+		
+		newTr.find("input[name=KEY_NAME]").val(newKeyName);
+		newTr.find("input").each(function() {
+			var name = $(this).attr("name");
+			if(name != "KEY_NAME") {
+				$(this).attr("name", newKeyName + "-" + name);
 			}
 		});
 		
 		//remove tooltip object
-		clone.find("div.tooltip.fade.top.in").remove();
+		newTr.find("div.tooltip.fade.top.in").remove();
 		//clear input
-		clone.find("input").each(inputClearFunction);
+		newTr.find("input").each(inputClearFunction);
 		//link event
-		clone.find("a.addRow").click(addRowFunction).tooltip(addRowTooltip);
-		clone.find("a.deleteRow").click(deleteRowFunction).tooltip(deleteRowTooltip);
-		trElement.after(clone);
+		newTr.find("a.addRow").click(addRowFunction).tooltip(addRowTooltip);
+		newTr.find("a.deleteRow").click(deleteRowFunction).tooltip(deleteRowTooltip);
+		//trElement.after(newTr);
+		pivotTr.after(newTr);
+		
+		var lineCount = tbody.children("tr:not(.no-entry)").length;
+		if(lineCount > 0){
+			tbody.children("tr.no-entry").hide();
+		}
+		
 	};
 	
 	var deleteRowFunction = function() {
 		var trElement = $(this).parents("tr");
-		var trElements = trElement.parents("tbody").find("tr");
-		if(trElements.length>1) {
-			trElement.remove();
-		} else {
-			trElement.find("input").each(inputClearFunction);
+		var tbody = trElement.parents("tbody");
+		
+		trElement.remove();
+		
+		var lineCount = tbody.children("tr:not(.no-entry)").length;
+		if(lineCount == 0){
+			tbody.children("tr.no-entry").show();
 		}
+		
 	};
+	
+	var addRowTooltip = {title : "Insert 1 below"};
+	var deleteRowTooltip = {title : "Delete row"};
+	
+	$("a.addRow").tooltip(addRowTooltip);
+	$("a.deleteRow").tooltip(deleteRowTooltip);
 	
 	$("a.addRow").click(addRowFunction);
 	$("a.deleteRow").click(deleteRowFunction);
@@ -230,24 +244,17 @@ $(document).ready(function(){
 											<th class="fcol1-1"></th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody key="_field-list_">
 									<%
 									root = document.getRootElement();
 									el = root.getChild("field-list");
 									if(el != null){
 										List<Element> fieldList = el.getChildren();
-										if(fieldList.size()==0) {
-											Element element = new Element("field");
-											fieldList.add(element);
-											element.setAttribute("id","")
-												.setAttribute("type","")
-												.setAttribute("name","")
-												.setAttribute("source","")
-												.setAttribute("size","")
-												.setAttribute("store","true")
-												.setAttribute("multiValue","")
-												.setAttribute("multiValueDelimeter","");
-										}
+										%>
+										<tr class="no-entry <%=fieldList.size() > 0 ? "hide2" : ""%>">
+											<td colspan="9"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+										</tr>
+										<%
 										for(int i = 0; i <fieldList.size(); i++){
 											Element field = fieldList.get(i);
 											String id = field.getAttributeValue("id");
@@ -258,17 +265,17 @@ $(document).ready(function(){
 											String store = field.getAttributeValue("store", "true");
 											String removeTag = field.getAttributeValue("removeTag", "");
 											String multiValue = field.getAttributeValue("multiValue", "false");
-											String multiValueDelimeter = field.getAttributeValue("multiValueDelimeter", "");
+											String multiValueDelimiter = field.getAttributeValue("multiValueDelimiter", "");
 										%>
 										<tr>
 											<td><input type="hidden" name="KEY_NAME" value="_field-list_<%=i %>" /><input type="text" name="_field-list_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
 											<td><input type="text" name="_field-list_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
 											<td><input type="text" name="_field-list_<%=i%>-type" class="form-control required" value="<%=type %>"></td>
 											<td><input type="text" name="_field-list_<%=i%>-size" class="form-control digit" value="<%=size %>"></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
-											<td ><input type="text" class="form-control" name="_field-list_<%=i%>-multiValueDelimeter" value="<%=multiValueDelimeter %>"></td>
+											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
+											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
+											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
+											<td><input type="text" class="form-control" name="_field-list_<%=i%>-multiValueDelimiter" value="<%=multiValueDelimiter %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -303,17 +310,17 @@ $(document).ready(function(){
 												<th class="fcol1-1"></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody key="_primary-key_">
 										<%
 										root = document.getRootElement();
 										el = root.getChild("primary-key");
 										if(el != null){
 											List<Element> fieldList = el.getChildren();
-											if(fieldList.size()==0) {
-												Element element = new Element("fild");
-												fieldList.add(element);
-												element.setAttribute("ref","");
-											}
+											%>
+											<tr class="no-entry <%=fieldList.size() > 0 ? "hide2" : ""%>">
+												<td colspan="2"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+											</tr>
+											<%
 											for(int i = 0; i < fieldList.size(); i++){
 												Element field = fieldList.get(i);
 												String ref = field.getAttributeValue("ref");
@@ -321,7 +328,7 @@ $(document).ready(function(){
 											<tr>
 												<td>
 													<input type="hidden" name="KEY_NAME" value="_primary-key_<%=i %>" />
-													<input type="text" name="_primary-key_<%=i%>-ref" class="fcol2 form-control required" value="<%=ref %>"/>
+													<input type="text" name="_primary-key_<%=i%>-ref" class="fcol2 form-control" value="<%=ref %>"/>
 												</td>
 												<td>
 													<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
@@ -361,21 +368,17 @@ $(document).ready(function(){
 												<th class="fcol1-1"></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody key="_analyzer-list_">
 										<%
 										root = document.getRootElement();
 										el = root.getChild("analyzer-list");
 										if(el != null){
 											List<Element> analyzerList = el.getChildren();
-											if(analyzerList.size()==0) {
-												Element element = new Element("analyzer");
-												analyzerList.add(element);
-												element.setAttribute("id","")
-													.setAttribute("corePoolSize","")
-													.setAttribute("maximumPoolSize","")
-													.setAttribute("className","");
-												
-											}
+											%>
+											<tr class="no-entry <%=analyzerList.size() > 0 ? "hide2" : ""%>">
+												<td colspan="5"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+											</tr>
+											<%
 											for(int i = 0; i < analyzerList.size(); i++){
 												Element analyzer = analyzerList.get(i);
 												
@@ -424,7 +427,7 @@ $(document).ready(function(){
 										<tr>
 											<th class="fcol1-2">ID</th>
 											<th class="fcol2">Name</th>
-											<th class="fcol2">Field</th>
+											<th class="fcol2">Field List</th>
 											<th>Index Analyzer</th>
 											<th>Query Analyzer</th>
 											<th class="fcol1">Ignore Case</th>
@@ -434,23 +437,17 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									
-									<tbody>
+									<tbody key="_index-list_">
 									<%
 									root = document.getRootElement();
 									el = root.getChild("index-list");
 									if(el != null){
 										List<Element> indexList = el.getChildren();
-										if(indexList.size()==0) {
-											Element element = new Element("index");
-											indexList.add(element);
-											element.setAttribute("id","")
-												.setAttribute("name","")
-												.setAttribute("indexAnalyzer","")
-												.setAttribute("queryAnalyzer","")
-												.setAttribute("ignoreCase","")
-												.setAttribute("storePosition","")
-												.setAttribute("positionIncrementGap","");
-										}
+										%>
+										<tr class="no-entry <%=indexList.size() > 0 ? "hide2" : ""%>">
+											<td colspan="9"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+										</tr>
+										<%
 										for(int i = 0; i <indexList.size(); i++){
 											Element field = indexList.get(i);
 											List<Element> fieldList = field.getChildren("field");
@@ -478,9 +475,9 @@ $(document).ready(function(){
 											<td><input type="text" name="_index-list_<%=i%>-refList" class="form-control required" value="<%=fieldRefList %>"></td>
 											<td><input type="text" name="_index-list_<%=i%>-indexAnalyzer" class="form-control required" value="<%=indexAnalyzer %>"></td>
 											<td><input type="text" name="_index-list_<%=i%>-queryAnalyzer" class="form-control required" value="<%=queryAnalyzer %>"></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
-											<td ><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
-											<td ><input type="text" name="_index-list_<%=i%>-pig" class="form-control digits" value="<%=positionIncrementGap %>"></td>
+											<td><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
+											<td><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
+											<td><input type="text" name="_index-list_<%=i%>-pig" class="form-control digits" value="<%=positionIncrementGap %>"></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -517,20 +514,17 @@ $(document).ready(function(){
 											<th class="fcol1-1"></th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody key="_field-index-list_">
 									<%
 									root = document.getRootElement();
 									el = root.getChild("field-index-list");
 									if(el != null){
 										List<Element> indexList = el.getChildren();
-										if(indexList.size()==0) {
-											Element element = new Element("index");
-											indexList.add(element);
-											element.setAttribute("id","")
-												.setAttribute("name","")
-												.setAttribute("ref","")
-												.setAttribute("size","");
-										}
+										%>
+										<tr class="no-entry <%=indexList.size() > 0 ? "hide2" : ""%>">
+											<td colspan="5"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+										</tr>
+										<%
 										for(int i = 0; i < indexList.size(); i++){
 											Element fieldIndex = indexList.get(i);
 											
@@ -582,19 +576,17 @@ $(document).ready(function(){
 												<th class="fcol1-1"></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody key="_group-index-list_">
 										<%
 										root = document.getRootElement();
 										el = root.getChild("group-index-list");
 										if(el != null){
 											List<Element> indexList = el.getChildren();
-											if(indexList.size()==0) {
-												Element element = new Element("index");
-												indexList.add(element);
-												element.setAttribute("id","")
-													.setAttribute("name","")
-													.setAttribute("ref","");
-											}
+											%>
+											<tr class="no-entry <%=indexList.size() > 0 ? "hide2" : ""%>">
+												<td colspan="4"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+											</tr>
+											<%
 											for(int i = 0; i<indexList.size(); i++){
 												String id="", name="", ref="";
 												if(indexList.size() > 0) {
@@ -636,5 +628,97 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
+	
+	
+	<div>
+	<!-- template list -->
+	<table id="schema_template" class="hidden">
+		<tr key="_field-list_">
+			<td>
+				<input type="hidden" name="KEY_NAME" />
+				<input type="text" name="id" class="form-control required">
+			</td>
+			<td><input type="text" name="name" class="form-control required"></td>
+			<td><input type="text" name="type" class="form-control required"></td>
+			<td><input type="text" name="size" class="form-control digit"></td>
+			<td><label class="checkbox"><input type="checkbox" value="true" name="store"></label></td>
+			<td><label class="checkbox"><input type="checkbox" value="true" name="removeTag"></label></td>
+			<td><label class="checkbox"><input type="checkbox" value="true" name="multiValue"></label></td>
+			<td><input type="text" class="form-control" name="multiValueDelimiter"></td>
+			<td>
+				<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
+				<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
+			</td>
+		</tr>
+										
+		<tr key="_primary-key_">
+			<td>
+				<input type="hidden" name="KEY_NAME" />
+				<input type="text" name="ref" class="fcol2 form-control"/>
+			</td>
+			<td>
+				<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
+				<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
+			</td>
+		</tr>
+		
+		<tr key="_analyzer-list_">
+			<td>
+				<input type="hidden" name="KEY_NAME" />
+				<input type="text" name="id" class="form-control required"></td>
+			<td><input type="text" name="corePoolSize" class="form-control required digits"></td>
+			<td><input type="text" name="maximumPoolSize" class="form-control required digits"></td>
+			<td><input type="text" name="class" class="form-control required"></td>
+			<td>
+				<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
+				<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
+			</td>
+		</tr>
+		
+		<tr key="_index-list_">
+			<td>
+				<input type="hidden" name="KEY_NAME"/>
+				<input type="text" name="id" class="form-control required"></td>
+			<td><input type="text" name="name" class="form-control required"></td>
+			<td><input type="text" name="refList" class="form-control required"></td>
+			<td><input type="text" name="indexAnalyzer" class="form-control required"></td>
+			<td><input type="text" name="queryAnalyzer" class="form-control required"></td>
+			<td ><label class="checkbox"><input type="checkbox" value="true" name="ignoreCase"></label></td>
+			<td ><label class="checkbox"><input type="checkbox" value="true" name="storePosition"></label></td>
+			<td ><input type="text" name="pig" class="form-control digits"></td>
+			<td>
+				<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
+				<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
+			</td>
+		</tr>
+		
+		<tr key="_field-index-list_">
+			<td>
+				<input type="hidden" name="KEY_NAME"/>
+				<input type="text" name="id" class="form-control"></td>
+			<td><input type="text" name="name" class="form-control"></td>
+			<td><input type="text" name="field" class="form-control"></td>
+			<td><input type="text" name="size" class="form-control digits fcol1-1"></td>
+			<td>
+				<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
+				<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
+			</td>
+		</tr>
+		
+		<tr key="_group-index-list_">
+			<td>
+				<input type="hidden" name="KEY_NAME" />
+				<input type="text" name="id" class="form-control"></td>
+			<td><input type="text" name="name" class="form-control"></td>
+			<td><input type="text" name="ref" class="form-control"></td>
+			<td>
+				<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
+				<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
+			</td>
+		</tr>
+	</table>
+	<!-- // template list -->
+	</div>
+	
 </body>
 </html>

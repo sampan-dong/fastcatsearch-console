@@ -495,7 +495,6 @@ $(document).ready(function() {
 					%>
 					<div class="wizard-card <%=step.equals("3") ? "current" : "" %>">
 						<form id="collection-config-form">
-							<input type="hidden" name="validationLevel" value="0" />
 							<input type="hidden" name="step" value="3" />
 							<input type="hidden" name="next" />
 							<input type="hidden" name="collectionId" value="${collectionId}"/>
