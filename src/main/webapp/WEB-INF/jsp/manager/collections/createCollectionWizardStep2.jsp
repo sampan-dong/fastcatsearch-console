@@ -73,7 +73,7 @@ $(document).ready(function() {
 		$("#local-form").submit();
 	});
 	
-	loadJdbcList();
+//	loadJdbcList();
 	loadJdbcCreateModal();
 	
 });
@@ -261,7 +261,7 @@ function loadJdbcCreateModal() {
 				</ul>
 				<div class="wizard-content">
 					<div class="wizard-card current">
-						<form id="collection-config-form" method="get">
+						<form id="collection-config-form" method="post">
 							<input type="hidden" name="step" value="2" />
 							<input type="hidden" name="next" value="next"/>
 							<input type="hidden" name="collectionId" value="${collectionId}"/>
@@ -322,6 +322,7 @@ function loadJdbcCreateModal() {
 														<select name="<%=parameterId %>" class="select_flat form-control fcol2 display-inline jdbc-select <%=elementClass %>"></select>
 														<a href="javascript:showJdbcCreateModal()" class="btn">Create New..</a>
 														<a href="javascript:showQueryTestModal()" class="btn">Query Test..</a>
+														<script>loadJdbcList('<%=parameterValue%>')</script>
 														<%
 													}else{
 														if(type.equalsIgnoreCase("STRING")){
@@ -347,8 +348,9 @@ function loadJdbcCreateModal() {
 								</div>
 							</div>
 							<div class="wizard-bottom" >
-								<input type="button" value="Back" class="btn" onClick="javascript:prevStep()">
+								<input type="button" value="Back" class="btn" onClick="javascript:prevStep('${collectionId}', 1)">
 								<input type="submit" value="Next" class="btn btn-primary fcol2">
+								<a href="javascript:cancelCollectionWizard('${collectionId}')" class="btn btn-danger pull-right">Cancel collection</a>
 							</div>
 						</form>
 					</div>
@@ -470,5 +472,6 @@ function loadJdbcCreateModal() {
 	<%
 	}
 	%>
+</div>
 </body>
 </html>

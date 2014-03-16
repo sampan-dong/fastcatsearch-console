@@ -574,12 +574,17 @@ function stopCollection(collectionId){
 function operateCollection(collectionId, command){
 	
 	if(confirm(command+" collection " + collectionId + "?")){
-		requestProxy("POST", {uri:"/management/collections/operate", collectionId: collectionId, command: command}, "json"
+		requestSyncProxy("POST", {uri:"/management/collections/operate", collectionId: collectionId, command: command}, "json"
 			, function(){
 				location.href = location.href;
+				return true;
 			}, function(){
 				noty({text: "Cannot "+command+" collection "+collectionId+" : " + response["errorMessage"], type: "error", layout:"topRight", timeout: 5000});
+				return false;
 			});
+		return true;
+	}else{
+		return false;
 	}
 }
 
@@ -834,4 +839,18 @@ function restoreToPreviousCollection(collectionId){
 	}).done(function(){
 		
 	});
+}
+
+function cancelCollectionWizard(collectionId){
+	if(collectionId != ""){
+		if(!operateCollection(collectionId, "remove")){
+			return;
+		}
+	}
+	location = CONTEXT + "/manager/index.html";
+}
+
+
+function prevStep(collectionId, step){
+	submitPost(CONTEXT + "/manager/collections/createCollectionWizard.html", {collectionId: collectionId, step: step});
 }

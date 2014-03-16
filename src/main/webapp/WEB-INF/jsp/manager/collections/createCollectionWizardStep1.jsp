@@ -95,7 +95,7 @@ $(document).ready(function() {
 				</ul>
 				<div class="wizard-content">
 					<div class="wizard-card current">
-						<form id="collection-config-form" action="" method="get">
+						<form id="collection-config-form" action="" method="post">
 							<input type="hidden" name="step" value="1" />
 							<input type="hidden" name="next" value="next"/>
 							<div class="row">
@@ -176,8 +176,8 @@ $(document).ready(function() {
 							</div>
 							
 							<div class="wizard-bottom" >
-								<a href="${ROOT_PATH}/manager/index.html" class="btn">Cancel</a>
 								<input type="submit" value="Next" class="btn btn-primary fcol2">
+								<a href="javascript:cancelCollectionWizard('${collectionId}')" class="btn btn-danger pull-right">Cancel collection</a>
 							</div>
 						</form>
 					</div>

@@ -138,8 +138,9 @@ function nextStep(){
 								<br>
 								
 								<div class="wizard-bottom">
-									<input type="button" value="Back" class="btn" onClick="javascript:prevStep()">
+									<input type="button" value="Back" class="btn" onClick="javascript:prevStep('${collectionId}', 3)">
 									<input type="button" value="Everything is OK, Create Collection" class="btn btn-primary" onClick="javascript:nextStep()">
+									<a href="javascript:cancelCollectionWizard('${collectionId}')" class="btn btn-danger pull-right">Cancel collection</a>
 								</div>
 								
 							</div>

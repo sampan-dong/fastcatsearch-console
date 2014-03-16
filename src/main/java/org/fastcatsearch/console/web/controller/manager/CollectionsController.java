@@ -435,13 +435,7 @@ public class CollectionsController extends AbstractController {
 					
 					viewStep = "2";
 				}else if(step.equals("2")){
-					
-//					requestUrl = "/management/collections/datasource.xml";
-//					Document datasource = httpPost(session, requestUrl)
-//						.addParameter("collectionId", collectionId).requestXML();
-//					Element root = datasource.getRootElement();
-//					Element source = root.getChild("full-indexing");
-					
+
 					//데이터소스 저장.
 					requestUrl = "/management/collections/update-datasource.json";
 					PostMethod httpPost = httpPost(session, requestUrl);
@@ -451,9 +445,6 @@ public class CollectionsController extends AbstractController {
 						.addParameter("modifierClass", "")
 						.addParameter("name", "DB Source")
 						.addParameter("sourceIndex", "0");
-//					if(source.getChildren().size() > 0) {
-//						httpPost.addParameter("sourceIndex", "0");
-//					}
 					
 					Enumeration<String> parameterNames = request.getParameterNames();
 					for(;parameterNames.hasMoreElements();) {
@@ -486,23 +477,10 @@ public class CollectionsController extends AbstractController {
 					viewStep = "5";
 				}
 				
-			} else if (next.equals("back")) {
-				//이전을 선택시 저장하지 않는다.
-				if(step.equals("2")){
-					viewStep = "1";
-				}else if(step.equals("3")){
-					viewStep = "2";
-				}else if(step.equals("4")){
-					viewStep = "3";
-				}else if(step.equals("5")){
-					viewStep = "4";
-				}
 			} else {
 				//이전 이후가 없으면, 보여주기만 한다.
 				viewStep = step;
 			}
-			
-			logger.debug("##STEP from {} to {}", step, viewStep);
 			
 			if(viewStep.equals("1")){
 				//서버리스트

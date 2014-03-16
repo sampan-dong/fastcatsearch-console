@@ -121,7 +121,7 @@ $(document).ready(function() {
 <body>
 <c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 
-<form id="collection-config-form" method="get">
+<form id="collection-config-form" method="post">
 	<input type="hidden" name="step" value="3" />
 	<input type="hidden" name="next" value="next"/>
 	<input type="hidden" name="collectionId" value="${collectionId}"/>
@@ -227,8 +227,9 @@ $(document).ready(function() {
 								</div>
 							</div>
 							<div class="wizard-bottom" >
-								<input type="button" value="Back" class="btn" onClick="javascript:prevStep()">
+								<input type="button" value="Back" class="btn" onClick="javascript:prevStep('${collectionId}', 2)">
 								<input type="button" value="Next" class="btn btn-primary fcol2" onClick="javascript:nextStep()">
+								<a href="javascript:cancelCollectionWizard('${collectionId}')" class="btn btn-danger pull-right">Cancel collection</a>
 							</div>
 						</form>
 					</div>
