@@ -66,7 +66,7 @@ $(document).ready(function() {
 				prevKey = key;
 			}
 		}
-		
+
 		$.ajax({
 			url: "${collectionId}/workSchemaSave.html",
 			type: "POST",

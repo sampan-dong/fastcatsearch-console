@@ -78,17 +78,6 @@ $(document).ready(function(){
 		return;
 	});
 	
-	var inputClearFunction = function() {
-		if($(this).attr("name")!="KEY_NAME") {
-			var type = $(this).attr("type").toLowerCase();
-			if( type=="radio" || type=="checkbox" ) {
-				$(this).removeAttr("checked");
-			} else {
-				$(this).val("");
-			}
-		}
-	};
-	
 	//select 로 필드타입선택시 size를 readonly 로 바꾼다.
 	var selectFieldFunction = function() {
 		var o = $(this).parents("tr").find("input.field-type-size");
@@ -114,7 +103,7 @@ $(document).ready(function(){
 		var newKeyName = key + newIndex;
 		
 		newTr.find("input[name=KEY_NAME]").val(newKeyName);
-		newTr.find("input").each(function() {
+		newTr.find("input, select").each(function() {
 			var name = $(this).attr("name");
 			if(name != "KEY_NAME") {
 				$(this).attr("name", newKeyName + "-" + name);
@@ -123,14 +112,11 @@ $(document).ready(function(){
 		
 		//remove tooltip object
 		newTr.find("div.tooltip.fade.top.in").remove();
-		//clear input
-		newTr.find("input").each(inputClearFunction);
 		//link event
 		newTr.find("a.addRow").click(addRowFunction).tooltip(addRowTooltip);
 		newTr.find("a.deleteRow").click(deleteRowFunction).tooltip(deleteRowTooltip);
 		
 		newTr.find(".select-field-type").change(selectFieldFunction);
-		console.log("newTr.find(.select-field-type)", newTr.find(".select-field-type").html());
 		pivotTr.after(newTr);
 		
 		var lineCount = tbody.children("tr:not(.no-entry)").length;
