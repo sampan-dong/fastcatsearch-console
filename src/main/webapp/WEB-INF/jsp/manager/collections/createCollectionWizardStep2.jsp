@@ -231,7 +231,7 @@ function loadJdbcCreateModal() {
 <body>
 <c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 
-<form id="local-form" method="get">
+<form id="local-form" method="post">
 	<input type="hidden" name="step" value="2" />
 	<input type="hidden" name="next" value=""/>
 	<input type="hidden" name="collectionId" value="${collectionId}"/>
