@@ -139,7 +139,7 @@ $(document).ready(function(){
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form id="newCollectionForm" method="GET">
-					<input type="hidden" name="uri" value="/management/collections/create"/>
+					<input type="hidden" name="uri" value="/management/collections/create-update"/>
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title"> Create Collection</h4>

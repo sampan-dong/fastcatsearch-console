@@ -209,7 +209,7 @@ function loadJdbcCreateModal() {
 					mode:"update"
 				}, "json", function(data) {
 					$("div#createJdbcModal").modal("hide");
-					noty({text: "jdbc create success ", type: "success", layout:"topRight", 
+					noty({text: "JDBC create success", type: "success", layout:"topRight", 
 						timeout: 1000});
 					loadJdbcList(form.id.value);
 				});
@@ -217,9 +217,28 @@ function loadJdbcCreateModal() {
 		});
 		
 		$("#testJdbcConnectionBtn").click(function(){
-			//TODO 
+			if(jdbcCreateForm.valid()) {
+				var form = jdbcCreateForm[0];
+				requestProxy("post", {
+					uri:"/management/collections/test-jdbc-source.json",
+					driver:form.driver.value,
+					url:form.url.value,
+					user:form.user.value,
+					password:form.password.value,
+				}, "json", function(data) {
+					if(data.success){
+						noty({text: "JDBC connection test success", type: "success", layout:"topRight", 
+							timeout: 1000});
+					}else{
+						noty({text: "JDBC connection test fail : " + data.message, type: "error", layout:"topRight", 
+							timeout: 5000});
+					}
+				}, function(data) {
+					noty({text: "JDBC connection test error : " + data, type: "error", layout:"topRight", 
+						timeout: 5000});
+				});
+			}
 			
-			alert("Not implemented yet!");
 		});
 		
 		
@@ -231,7 +250,7 @@ function loadJdbcCreateModal() {
 <body>
 <c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
 
-<form id="local-form" method="get">
+<form id="local-form" method="post">
 	<input type="hidden" name="step" value="2" />
 	<input type="hidden" name="next" value=""/>
 	<input type="hidden" name="collectionId" value="${collectionId}"/>
