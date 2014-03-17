@@ -416,7 +416,7 @@ public class CollectionsController extends AbstractController {
 					if(!found) {
 						logger.debug("creating collection..");
 						if(collectionId != null && !"".equals(collectionId)) {
-							requestUrl = "/management/collections/create.json";
+							requestUrl = "/management/collections/create-update.json";
 							
 							String collectionName = request.getParameter("collectionName");
 							String indexNode = request.getParameter("indexNode");
@@ -489,12 +489,14 @@ public class CollectionsController extends AbstractController {
 				mav.addObject("serverListObject", serverListObject);
 				
 				//컬렉션 정보.
-				requestUrl = "/management/collections/collection-info-list.json";
-				JSONObject collectionInfoList = httpPost(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
-				JSONArray collectionList = collectionInfoList.optJSONArray("collectionInfoList");
 				JSONObject collectionInfo = null;
-				if(collectionList.length() > 0){
-					collectionInfo = collectionList.optJSONObject(0);
+				requestUrl = "/management/collections/collection-info-list.json";
+				if(collectionId != null) {
+					JSONObject collectionInfoList = httpPost(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
+					JSONArray collectionList = collectionInfoList.optJSONArray("collectionInfoList");
+					if(collectionList.length() > 0){
+						collectionInfo = collectionList.optJSONObject(0);
+					}
 				}
 				
 				if(collectionInfo != null){
