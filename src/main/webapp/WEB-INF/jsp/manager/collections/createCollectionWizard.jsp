@@ -8,6 +8,9 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%
 	String step = (String) request.getAttribute("step");
+	if(step==null) {
+		step="1";
+	}
 	JSONObject typeListObj = (JSONObject) request.getAttribute("typeList");
 %>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
