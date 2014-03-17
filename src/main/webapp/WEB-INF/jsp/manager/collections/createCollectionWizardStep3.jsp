@@ -111,6 +111,18 @@ $(document).ready(function() {
 		
 	});
 	
+	var selectFieldFunction = function() {
+		var o = $(this).parents("tr").find("input.field-type-size");
+		if($(this).val() != "ASTRING" && $(this).val() != "STRING") {
+			o.val("");
+			o.prop("readonly", true);
+		}else{
+			o.prop("readonly", false);
+		}
+	};
+	
+	$(".select-field-type").change(selectFieldFunction);
+	
 	
 });
 
@@ -196,8 +208,10 @@ $(document).ready(function() {
 												<td><%=inx+1 %></td>
 												<td><input type="text" class="form-control" name="<%=fieldKey%>-id" value="<%=id %>" /></td>
 												<td><input type="text" class="form-control" name="<%=fieldKey%>-name" value="<%=name %>" /></td>
-												<td><select class="select_flat form-control" name="<%=fieldKey%>-type" >
+												<td><select class="select_flat form-control required select-field-type" name="<%=fieldKey%>-type" >
 													<%
+													boolean isSizeReadonly = !(type.equalsIgnoreCase("STRING") || type.equalsIgnoreCase("ASTRING"));
+													
 													for(int typeInx=0;typeInx < typeList.length(); typeInx++) { 
 														String typeStr = typeList.optString(typeInx);
 													%>
@@ -206,7 +220,7 @@ $(document).ready(function() {
 													}
 													%>
 												</select></td>
-												<td><input type="text" class="form-control fcol1-1" name="<%=fieldKey%>-size" value="<%=size %>" /></td>
+												<td><input type="text" class="form-control fcol1-1 digit field-type-size" name="<%=fieldKey%>-size" value="<%=size %>"  <%=isSizeReadonly?"readonly":"" %>/></td>
 												<td><label class="checkbox"><input type="checkbox" value="true" <%="true".equals(removeTag)?"checked":"" %> name="<%=fieldKey%>-removeTag"></label></td>
 												<td><label class="checkbox"><input type="checkbox" value="true" <%="true".equals(multiValue)?"checked":"" %> name="<%=fieldKey%>-multiValue"></label></td>
 												<td><input type="text" class="form-control fcol1-1" value="<%=multiValueDelimiter %>" name="<%=fieldKey%>-multiValueDelimiter"/></td>
@@ -254,5 +268,6 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
+</div>
 </body>
 </html>
