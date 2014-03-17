@@ -129,19 +129,27 @@ $(document).ready(function(){
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Search Query :</label>
-										<div class="col-md-10"><textarea rows="3" name="searchQuery_<%=i %>" class="form-control required"><%=el.getChildText("search-query")%></textarea></div>
+										<div class="col-md-10"><textarea rows="3" name="searchQuery_<%=i %>" class="form-control required"><%=el.getChildText("search-query")%></textarea>
+											<div class="help-block">ex) cn=news_kor&fl=title,content:150,regdate,username&se={title:#keyword}</div>
+										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Title Field ID :</label>
-										<div class="col-md-10"><input type="text" name="titleField_<%=i %>" class="form-control fcol2 required" value="<%=el.getChildText("title-field")%>"></div>
+										<div class="col-md-10"><input type="text" name="titleField_<%=i %>" class="form-control fcol2 required" value="<%=el.getChildText("title-field")%>">
+											<div class="help-block">ex) title</div>
+										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Body Field ID :</label>
-										<div class="col-md-10"><input type="text" name="bodyField_<%=i %>" class="form-control fcol2 required" value="<%=el.getChildText("body-field")%>"></div>
+										<div class="col-md-10"><input type="text" name="bodyField_<%=i %>" class="form-control fcol2 required" value="<%=el.getChildText("body-field")%>">
+											<div class="help-block">ex) content</div>
+										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">ETC Field ID :</label>
-										<div class="col-md-10"><input type="text" name="etcField_<%=i %>" class="form-control required" value="<%=etcList%>"></div>
+										<div class="col-md-10"><input type="text" name="etcField_<%=i %>" class="form-control required" value="<%=etcList%>">
+											<div class="help-block">ex) regdate, username</div>
+										</div>
 									</div>
 								</div>
 								<%
@@ -164,7 +172,10 @@ $(document).ready(function(){
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
 										<label class="col-md-2 control-label">URL :</label>
-										<div class="col-md-10"><input type="text" name="relateKeywordURL" class="form-control required" value="<%=relateKeywordUrl%>"></div>
+										<div class="col-md-10"><input type="text" name="relateKeywordURL" class="form-control required" value="<%=relateKeywordUrl%>">
+											<div class="help-block">ex) http://demo.fastcatsearch.org:8050/service/keyword/relate.json?keyword=#keyword</div>
+										</div>
+										
 									</div>
 								</div>
 							</div>
@@ -178,7 +189,9 @@ $(document).ready(function(){
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
 										<label class="col-md-2 control-label">URL :</label>
-										<div class="col-md-10"><input type="text" name="realtimePopularKeywordURL" class="form-control required" value="<%=realtimePopularKeywordUrl%>"></div>
+										<div class="col-md-10"><input type="text" name="realtimePopularKeywordURL" class="form-control required" value="<%=realtimePopularKeywordUrl%>">
+											<div class="help-block">ex) http://demo.fastcatsearch.org:8050/service/keyword/popular/rt.json?siteId=total</div>
+										</div>
 									</div>
 								</div>
 							</div>

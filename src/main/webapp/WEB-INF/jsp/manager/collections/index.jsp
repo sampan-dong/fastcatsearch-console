@@ -119,6 +119,7 @@ $(document).ready(function(){
 									<a href="javascript:stopCollection('<%=collectionId%>')">STOP</a>
 									<% } else { %>
 									<a href="javascript:startCollection('<%=collectionId%>')">START</a>
+									 | <a href="javascript:removeCollection('<%=collectionId%>')" class="text-danger">REMOVE</a>
 									<% } %>
 									</td>
 								</tr>

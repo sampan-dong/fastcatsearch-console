@@ -5,6 +5,9 @@
 <%@page import="java.util.*"%>
 <%
 	JSONObject searchPageResult = (JSONObject) request.getAttribute("searchPageResult");
+	JSONObject popularKeywordResult = (JSONObject) request.getAttribute("popularKeywordResult");
+	JSONObject relateKeywordResult = (JSONObject) request.getAttribute("relateKeywordResult");
+
 	boolean hasResult = (searchPageResult != null);
 	
 	String keyword = request.getParameter("keyword");
@@ -42,10 +45,17 @@ $(document).ready(function(){
 });
 
 function searchCategory(categoryId){
-	
 	$("#searchForm").find("[name=category]").val(categoryId);
+	$("#searchForm").find("[name=page]").val("1");
 	$("#searchForm").submit();
 }
+
+function search(keyword){
+	$("#searchForm").find("[name=page]").val("1");
+	$("#searchForm").find("[name=keyword]").val(keyword);
+	$("#searchForm").submit();
+}
+
 </script>
 
 
@@ -68,9 +78,20 @@ function searchCategory(categoryId){
 					<div class="col-xs-10 col-sm-4 col-sm-offset-3" style="padding-right: 5px;">
 						<input type="text" id="searchBox" class="form-control" name="keyword" value="<%=keyword %>" style="border: 5px solid #416cb6;font-size: 18px !important; height:40px;"> 
 						<ul class="relate-keyword">
-							<li><a href="#">원피스</a></li>
-							<li><a href="#">나루토</a></li>
-							<li><a href="#">나는 귀족이다</a></li>
+						<%
+						if(relateKeywordResult != null){
+							JSONArray relateKeywordList =  relateKeywordResult.optJSONArray("relate");
+							if(relateKeywordList != null){
+								int maxCount = Math.min(relateKeywordList.length(), 7);
+								for(int i=0; i < maxCount; i++){
+									String relateKeyword = relateKeywordList.getString(i);
+								%>
+								<li><a href="javascript:search('<%=relateKeyword%>')"><%=relateKeyword %></a></li>
+								<%
+								}
+							}
+						}
+						%>
 						</ul>
 					</div>
 					<div style="padding-left: 0px;">
@@ -259,16 +280,39 @@ function searchCategory(categoryId){
 						</div>
 						<div class="panel-body" style="padding: 10px 2px 0px 10px;">
 							<ol class="popular-keyword">
-								<li><span class="badge badge-sx">1</span> <a href="#">나루토</a><div><i class="icon-arrow-up" style="color:red;"></i> 999</div></li>
-								<li><span class="badge badge-sx">2</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">3</span> <a href="#">가나다</a><div><i class="icon-minus"></i></div></li>
-								<li><span class="badge badge-sx">4</span> <a href="#">아이폰</a><div><i class="icon-arrow-down" style="color:blue;"></i> 5</div></li>
-								<li><span class="badge badge-sx">5</span> <a href="#">mouse</a><div><span class="" style="color:red;">New</span></div></li>
-								<li><span class="badge badge-sx">6</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">7</span> <a href="#">원피스원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">8</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">9</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">10</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
+							
+							<%
+							if(relateKeywordResult != null){
+								JSONArray popularKeywordList =  popularKeywordResult.optJSONArray("list");
+								if(popularKeywordList != null){
+									for(int i=0; i < popularKeywordList.length(); i++){
+										JSONObject popularKeywordObj = popularKeywordList.getJSONObject(i);
+										int rank = popularKeywordObj.getInt("rank");
+										String word = popularKeywordObj.getString("word");
+										String diffType = popularKeywordObj.getString("diffType");
+										int diff = popularKeywordObj.getInt("diff");
+										if(diffType.equals("EQ")){
+											
+										}
+									%>
+									<li><span class="badge badge-sx"><%=rank%></span> <a href="javascript:search('<%=word %>')"><%=word %></a><div>
+										<%
+										if(diffType.equals("EQ")){
+											%><i class="icon-minus"></i> <%=diff %><%
+										}else if(diffType.equals("UP")){
+											%><i class="icon-arrow-up" style="color:red;"></i> <%=diff %><%
+										}else if(diffType.equals("DN")){
+											%><i class="icon-arrow-down" style="color:blue;"></i> <%=diff %><%
+										}else if(diffType.equals("NEW")){
+											%><span class="" style="color:red;">New</span><%
+										}
+										%>
+										</div></li>
+									<%
+									}
+								}
+							}
+							%>
 							</ol>
 						</div>
 						

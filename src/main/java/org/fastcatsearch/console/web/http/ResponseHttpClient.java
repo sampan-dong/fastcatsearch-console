@@ -46,7 +46,11 @@ public class ResponseHttpClient {
 		BasicCookieStore cookieStore = new BasicCookieStore();
 		httpclient = HttpClients.custom().setConnectionManager(cm).setDefaultCookieStore(cookieStore).build();
 		this.host = host;
-		urlPrefix = "http://" + host;
+		if(host != null){
+			urlPrefix = "http://" + host;
+		}else{
+			urlPrefix = "";
+		}
 		isActive = true;
 
 	}
