@@ -27,7 +27,7 @@
 	<div class="form-group">
 		<label class="col-md-2 control-label">Name</label>
 		<div class="col-md-10">
-			<input type="text" name="name" class="form-control fcol2" value="${readerName}">
+			<input type="text" name="name" class="form-control fcol2" value="${name}">
 			<span class="help-block"></span>
 		</div>
 	</div>
@@ -49,10 +49,10 @@
 				<%
 				for (int readerInx = 0; readerInx < sourceReaderList.length(); readerInx++) {
 					JSONObject readerObject = sourceReaderList.optJSONObject(readerInx);
-					String readerName=readerObject.optString("name");
+					String name=readerObject.optString("name");
 					String readerClassStr = readerObject.optString("reader");
 				%>
-				<option value="<%=readerClassStr%>" <%=readerClassStr.equals(readerClass)?"selected":"" %>><%=readerName%></option>
+				<option value="<%=readerClassStr%>" <%=readerClassStr.equals(readerClass)?"selected":"" %>><%=name%></option>
 				<%
 				}
 				%>

@@ -65,6 +65,7 @@ $(document).ready(function(){
 		if(matcher) {
 			var form = modalContent.parents("form");
 			var readerClass = "";
+			var name = "";
 			
 			indexType = matcher[2];
 			if(indexType=="new") {
@@ -74,13 +75,15 @@ $(document).ready(function(){
 					sourceIndex = matcher[4];
 				}
 				readerClass = form[0].readerClass.value;
+				name = form[0].name.value;
 			}
 			
-			var fncSelect = function(readerClass) {
+			var fncSelect = function(readerClass, name) {
 				modalContent.html("loading form ...");
 				var paramData={
 					indexType:indexType,
 					readerClass:readerClass,
+					name:name,
 					sourceIndex:sourceIndex
 				};
 				
@@ -92,14 +95,14 @@ $(document).ready(function(){
 					success: function(response){
 						$(modalContent).html(response);
 						$(modalContent).find("select[name=readerClass]").change(function(){
-							fncSelect($(this).val());
+							fncSelect($(this).val(),$(modalContent).find("input[name=name]").val());
 						});
 					}, fail: function() {
 					}
 				});
 			};
 			
-			fncSelect(readerClass);
+			fncSelect(readerClass, name);
 		}
 	});
 	
@@ -303,6 +306,7 @@ $(document).ready(function(){
 													<div class="row">
 														<div class="col-md-12 form-horizontal">
 														<input type="hidden" name="readerClass" value="<%=reader%>"/>
+														<input type="hidden" name="name" value="<%=name%>"/>
 														</div>
 													</div>
 												</div>
@@ -432,6 +436,7 @@ $(document).ready(function(){
 														<div class="row">
 															<div class="col-md-12 form-horizontal">
 															<input type="hidden" name="readerClass" value="<%=reader%>"/>
+															<input type="hidden" name="name" value="<%=name%>"/>
 															</div>
 														</div>
 													</div>

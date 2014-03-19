@@ -334,8 +334,8 @@ public class CollectionsController extends AbstractController {
 	@RequestMapping("/{collectionId}/datasource/parameter")
 	public ModelAndView datasourceParameter(HttpSession session,
 			@PathVariable String collectionId, @RequestParam String indexType,
-			@RequestParam String readerClass, @RequestParam(required = false) int sourceIndex)
-			throws Exception {
+			@RequestParam(required = false) String name, @RequestParam String readerClass,
+			@RequestParam(required = false) int sourceIndex) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -376,8 +376,7 @@ public class CollectionsController extends AbstractController {
 				String reader = "";
 				String modifier = "";
 				Element subElement = indexingSource.getChild("reader");
-				String name = indexingSource.getAttributeValue("name");
-				mav.addObject("readerName", name);
+				
 				if (subElement != null) {
 					reader = subElement.getText();
 				}
@@ -411,6 +410,7 @@ public class CollectionsController extends AbstractController {
 		}
 		
 		mav.setViewName("manager/collections/datasourceParameter");
+		mav.addObject("name", name);
 		mav.addObject("readerClass", readerClass);
 		mav.addObject("sourceIndex", sourceIndex);
 		mav.addObject("parameterValues", parameterValues);
