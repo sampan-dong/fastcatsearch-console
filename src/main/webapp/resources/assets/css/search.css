@@ -8,13 +8,13 @@ ul.relate-keyword {
 ul.relate-keyword li { display: inline; font-size: 12px; }
 ul.relate-keyword li + li:before {content: "|"; color:#ccc; padding-right: 6px; padding-left: 3px; }
 
-ol.popular-keyword { list-style-type: none; padding-left:0px; font-size: 12px;}
-ol.popular-keyword li { padding-bottom: 4px;}
-ol.popular-keyword li div { padding-bottom: 4px; width:40px; float:right; text-decoration:bold; }
+ul.popular-keyword { list-style-type: none; padding-left:0px; font-size: 12px;}
+ul.popular-keyword li { padding-bottom: 4px;}
+ul.popular-keyword li div { padding-bottom: 4px; width:40px; float:right; text-decoration:bold; }
 .badge-sx {padding: 2px; font-size:11px; width: 16px;}
 
-ol.search-result { padding-left: 10px; }
-
+ul.search-result { padding-left: 10px; list-style-type: none; padding-left: 0px; }
+	
 .category-group { border-bottom: 1px dashed #ddd; margin-bottom: 15px; }
 
 .margin-space {margin-bottom: 40px !important; }

@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="org.json.*"%>
 <%@page import="java.util.*"%>
+<%@page import="java.util.regex.*"%>
+
 <%
 	JSONObject searchPageResult = (JSONObject) request.getAttribute("searchPageResult");
 	JSONObject popularKeywordResult = (JSONObject) request.getAttribute("popularKeywordResult");
@@ -53,6 +55,11 @@ function searchCategory(categoryId){
 function search(keyword){
 	$("#searchForm").find("[name=page]").val("1");
 	$("#searchForm").find("[name=keyword]").val(keyword);
+	$("#searchForm").submit();
+}
+
+function searchPage(uri, pageNo){
+	$("#searchForm").find("[name=page]").val(pageNo);
 	$("#searchForm").submit();
 }
 
@@ -124,6 +131,9 @@ function search(keyword){
 						</ul>
 						<div class="tab-content result-pane">
 							<%
+							
+							Pattern pattern = Pattern.compile("#(\\w+)");
+							
 							if(category == null || category.length() == 0){
 							%>
 							<div class="tab-pane active" id="tab_total_search">
@@ -144,9 +154,11 @@ function search(keyword){
 								<%
 								for(int i = 0 ; i < resultList.length(); i++){
 									JSONObject categoryResult = resultList.getJSONObject(i);
-									
+									String categoryId = categoryResult.getString("id");
+									String categoryName = categoryResult.getString("name");
 									String titleField = categoryResult.getString("titleField");
 									String bodyField = categoryResult.getString("bodyField");
+									String clickLink = categoryResult.getString("clickLink");
 									JSONArray etcFieldList = categoryResult.getJSONArray("etcField");
 									
 									JSONObject searchResult = categoryResult.getJSONObject("result");
@@ -157,11 +169,13 @@ function search(keyword){
 									if(categoryTotalCount == 0){
 										continue;
 									}
+									
+									boolean hasLink = (clickLink != null && clickLink.length() > 0);
 								%>
 								<div class="row col-md-12">
-									<h3 style="border-bottom:1px solid #eee;"><%=categoryResult.getString("name") %></h3>
+									<h3 style="border-bottom:1px solid #eee;"><%=categoryName %></h3>
 									<div class="col-md-10">
-										<ol class="search-result">
+										<ul class="search-result">
 											<%
 											for(int j = 0; j < searchResultList.length(); j++) {
 												JSONObject item = searchResultList.getJSONObject(j);
@@ -173,20 +187,46 @@ function search(keyword){
 													String fieldId = etcFieldList.getString(k);
 													etcData += item.getString(fieldId);
 												}
+												
+												if(hasLink){
+													Matcher matcher = pattern.matcher(clickLink);
+													// check all occurance
+													while (matcher.find()) {
+														String key0 = matcher.group();
+														String key = matcher.group(1).toUpperCase(); //필드명은 대문자이다.
+														String value = item.optString(key);
+														if(value == null){
+															value = "";
+														}
+														clickLink = clickLink.replaceAll(key0, value);
+													}
+												}
 											%>
 											<li>
-												<h3><a href="javascript:void(0);"><%=item.getString(titleField) %></a></h3>
+												<h3>
+												<%
+												if(hasLink){
+												%>
+												<a href="<%=clickLink %>" target="_fastcatsearch_demo"><%=item.getString(titleField) %></a>
+												<%
+												}else{
+												%>
+												<%=item.getString(titleField) %>
+												<%
+												}
+												%>
+												</h3>
 												<div class="r"><%=item.getString(bodyField) %></div>
 												<div class=""><%=etcData %></div>
 											</li>
 											<%
 											}
 											%>
-										</ol>
+										</ul>
 										<%
 										if(categoryTotalCount > searchResultList.length()){
 										%>
-										<div class="pull-right"><a href="#">more results »</a></div>
+										<div class="pull-right"><a href="javascript:searchCategory('<%=categoryId %>');">more results »</a></div>
 										<%
 										}
 										%>
@@ -210,6 +250,8 @@ function search(keyword){
 										
 										String titleField = categoryResult.getString("titleField");
 										String bodyField = categoryResult.getString("bodyField");
+										String clickLink = categoryResult.getString("clickLink");
+										int searchListSize = categoryResult.getInt("searchListSize");
 										JSONArray etcFieldList = categoryResult.getJSONArray("etcField");
 										
 										JSONObject searchResult = categoryResult.getJSONObject("result");
@@ -218,6 +260,7 @@ function search(keyword){
 										
 										int categoryTotalCount = searchResult.getInt("total_count");
 										
+										boolean hasLink = (clickLink != null && clickLink.length() > 0);
 							%>
 								
 								<div class="tab-pane active" id="tab_<%=categoryId %>">
@@ -229,7 +272,7 @@ function search(keyword){
 									</div>
 									<h3 style="border-bottom:1px solid #eee;"><%=categoryName %></h3>
 									<div class="col-md-12 ires">
-										<ol class="search-result">
+										<ul class="search-result">
 										<%
 										for(int j = 0; j < searchResultList.length(); j++) {
 											JSONObject item = searchResultList.getJSONObject(j);
@@ -240,17 +283,52 @@ function search(keyword){
 												}
 												String fieldId = etcFieldList.getString(k);
 												etcData += item.getString(fieldId);
+												
+											}
+											
+											if(hasLink){
+												Matcher matcher = pattern.matcher(clickLink);
+												// check all occurance
+												while (matcher.find()) {
+													String key0 = matcher.group();
+													String key = matcher.group(1).toUpperCase(); //필드명은 대문자이다.
+													String value = item.optString(key);
+													if(value == null){
+														value = "";
+													}
+													clickLink = clickLink.replaceAll(key0, value);
+												}
 											}
 										%>
 										<li>
-											<h3><a href="javascript:void(0);"><%=item.getString(titleField) %></a></h3>
+											<h3>
+												<%
+												if(hasLink){
+												%>
+												<a href="<%=clickLink %>" target="_fastcatsearch_demo"><%=item.getString(titleField) %></a>
+												<%
+												}else{
+												%>
+												<%=item.getString(titleField) %>
+												<%
+												}
+												%>
+											</h3>
 											<div class="r"><%=item.getString(bodyField) %></div>
 											<div class=""><%=etcData %></div>
 										</li>
 										<%
 										}
 										%>
-										</ol>
+										</ul>
+										
+										<jsp:include page="inc/pagenation.jsp" >
+										 	<jsp:param name="pageNo" value="<%=pageNumber %>"/>
+										 	<jsp:param name="totalSize" value="<%=categoryTotalCount %>" />
+											<jsp:param name="pageSize" value="<%=searchListSize %>" />
+											<jsp:param name="width" value="5" />
+											<jsp:param name="callback" value="searchPage" />
+										 </jsp:include>
 									</div>
 									
 									<%

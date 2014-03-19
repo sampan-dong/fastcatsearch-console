@@ -1,13 +1,10 @@
 package org.fastcatsearch.console.web.controller;
 
-import java.io.IOException;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.client.ClientProtocolException;
-import org.fastcatsearch.console.web.http.Http404Error;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.GetMethod;
