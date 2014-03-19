@@ -366,11 +366,13 @@ public class CollectionsController extends AbstractController {
 		if(indexingListNode!=null) {
 			indexingList = indexingListNode.getChildren();
 			logger.debug("indexing list : {} / {}:{}", indexingList, sourceIndex, indexingList.size());
-			if (sourceIndex > 0 && sourceIndex < indexingList.size()) {
+			if (sourceIndex >= 0 && sourceIndex < indexingList.size()) {
 				Element indexingSource = indexingList.get(sourceIndex);
 				String reader = "";
 				String modifier = "";
 				Element subElement = indexingSource.getChild("reader");
+				String name = indexingSource.getAttributeValue("name");
+				mav.addObject("readerName", name);
 				if (subElement != null) {
 					reader = subElement.getText();
 				}

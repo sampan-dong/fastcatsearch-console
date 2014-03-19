@@ -27,11 +27,10 @@
 	<div class="form-group">
 		<label class="col-md-2 control-label">Name</label>
 		<div class="col-md-10">
-			<input type="text" name="modifierClass" class="form-control fcol2" value="<%=modifier%>">
+			<input type="text" name="name" class="form-control fcol2" value="${readerName}">
 			<span class="help-block"></span>
 		</div>
 	</div>
-	
 	<div class="form-group">
 		<label class="col-md-2 control-label">Enabled</label>
 		<div class="col-md-10">
@@ -64,7 +63,7 @@
 	<div class="form-group">
 		<label class="col-md-2 control-label">Modifier Class</label>
 		<div class="col-md-10">
-			<input type="text" name="readerClass" class="form-control fcol2" value="<%=modifier%>">
+			<input type="text" name="modifierClass" class="form-control fcol2" value="<%=modifier%>">
 			<span class="help-block">modifier class (in FQDN)</span>
 		</div>
 	</div>
