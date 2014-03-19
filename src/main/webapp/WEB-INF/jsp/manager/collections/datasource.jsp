@@ -51,6 +51,58 @@ $(document).ready(function(){
 		
 	});
 	
+	$("a[data-toggle=modal]").click(function() {
+		var modalId = $(this).attr("data-target");
+		var modalContent = $($(modalId).find("div.modal-body div.widget-content div.form-horizontal")[0]);
+		
+		var regex = /(#(full|add|new)SourceModal)(_([0-9]))*/;
+		
+		var matcher = regex.exec(modalId);
+		
+		var indexType = "";
+		var sourceIndex = -1;
+		
+		if(matcher) {
+			var form = modalContent.parents("form");
+			var readerClass = "";
+			
+			indexType = matcher[2];
+			if(indexType=="new") {
+				indexType = form[0].indexType.value;
+			} else {
+				if(matcher[4]) {
+					sourceIndex = matcher[4];
+				}
+				readerClass = form[0].readerClass.value;
+			}
+			
+			var fncSelect = function(readerClass) {
+				modalContent.html("loading form ...");
+				var paramData={
+					indexType:indexType,
+					readerClass:readerClass,
+					sourceIndex:sourceIndex
+				};
+				
+				$.ajax({
+					url: "datasource/parameter.html",
+					type: "POST",
+					dataType: "html",
+					data: paramData,
+					success: function(response){
+						$(modalContent).html(response);
+						$(modalContent).find("select[name=readerClass]").change(function(){
+							fncSelect($(this).val());
+						});
+					}, fail: function() {
+					}
+				});
+			};
+			
+			fncSelect(readerClass);
+		}
+	});
+	
 	//property remove
 	var fncRemove = function() {
 		var element = $(this).parent().parent().parent().parent();
@@ -219,7 +271,6 @@ $(document).ready(function(){
 						</table>
 					</div>
 				</div>
-				
 				<%
 				sourceConfigList = fullIndexingNode.getChildren("source");
 				for(int i = 0; i< sourceConfigList.size(); i++){
@@ -251,79 +302,7 @@ $(document).ready(function(){
 												<div class="widget-content">
 													<div class="row">
 														<div class="col-md-12 form-horizontal">
-															<div class="form-group">
-																<label class="col-md-3 control-label">Name:</label>
-																<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" value="<%=name %>"></div>
-															</div>
-															
-															<div class="form-group">
-																<label class="col-md-3 control-label">Enabled:</label>
-																<div class="col-md-9">
-																	<label class="checkbox">
-																		<input type="checkbox" name="active" class="form-control" value="true" <%="true".equalsIgnoreCase(active)? "checked" :"" %>>
-																		Yes
-																	</label>
-																</div>
-															</div>
-															
-															<div class="form-group">
-																<label class="col-md-3 control-label">Reader Class:</label>
-																<div class="col-md-9"><input type="text" name="readerClass" class="form-control required" value="<%=reader %>"></div>
-															</div>
-															
-															<div class="form-group">
-																<label class="col-md-3 control-label">Modifier Class:</label>
-																<div class="col-md-9"><input type="text" name="modifierClass" class="form-control" value="<%=modifier %>"></div>
-															</div>
-														</div>
-														
-													</div>
-												</div>
-											</div> <!-- /.widget -->
-										</div>
-										<div class="col-md-12">
-											<div class="widget">
-												<div class="widget-header">
-													<h4>Properties</h4>
-												</div>
-												<div class="widget-content">
-													<div class="row">
-														<div class="col-md-12 form-horizontal">
-														<%
-														Element properties = sourceConfig.getChild("properties");
-														if(properties != null){
-														%>
-															<%
-															List<Element> propertyList = properties.getChildren("property");
-															for(int j=0; propertyList != null && j<propertyList.size(); j++){
-															%>
-																<%
-																Element property = propertyList.get(j);
-																String key = property.getAttributeValue("key");
-																String value = property.getValue();
-																%>
-																<div class="form-group">
-																	<div class="col-md-4"><input type="text" name="key" class="form-control" value="<%=key %>" placeholder="KEY"></div>
-																	<div class="col-md-8">
-																		<div class="input-group">
-																			<input type="text" name="value" class="form-control" value="<%=value %>" placeholder="VALUE">
-																			<span class="input-group-btn valign-top">
-																				<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
-																			</span>
-																		</div>
-																	</div>
-																</div>
-															<%
-															}
-															%>
-														<%
-														}
-														%>
-														<div class="form-group">
-															<div class="col-md-12">
-																<a><i class="icon-plus-sign"></i> Add Property</a>
-															</div>
-														</div>
+														<input type="hidden" name="readerClass" value="<%=reader%>"/>
 														</div>
 													</div>
 												</div>
@@ -365,51 +344,7 @@ $(document).ready(function(){
 												</div>
 												<div class="widget-content">
 													<div class="row">
-														<div class="col-md-12 form-horizontal">
-															<div class="form-group">
-																<label class="col-md-3 control-label">Name:</label>
-																<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" ></div>
-															</div>
-															
-															<div class="form-group">
-																<label class="col-md-3 control-label">Enabled:</label>
-																<div class="col-md-9">
-																	<label class="checkbox">
-																		<input type="checkbox" name="active" class="form-control" value="true" checked>
-																		Yes
-																	</label>
-																</div>
-															</div>
-															
-															<div class="form-group">
-																<label class="col-md-3 control-label">Reader Class:</label>
-																<div class="col-md-9"><input type="text" name="readerClass" class="form-control required"></div>
-															</div>
-															
-															<div class="form-group">
-																<label class="col-md-3 control-label">Modifier Class:</label>
-																<div class="col-md-9"><input type="text" name="modifierClass" class="form-control"></div>
-															</div>
-														</div>
-														
-													</div>
-												</div>
-											</div> <!-- /.widget -->
-										</div>
-										<div class="col-md-12">
-											<div class="widget">
-												<div class="widget-header">
-													<h4>Properties</h4>
-												</div>
-												<div class="widget-content">
-													<div class="row">
-														<div class="col-md-12 form-horizontal">
-															<div class="form-group">
-																<div class="col-md-12">
-																	<a><i class="icon-plus-sign"></i> Add Property</a>
-																</div>
-															</div>
-														</div>
+														<div class="col-md-12 form-horizontal"></div>
 													</div>
 												</div>
 											</div> <!-- /.widget -->
@@ -496,81 +431,8 @@ $(document).ready(function(){
 													<div class="widget-content">
 														<div class="row">
 															<div class="col-md-12 form-horizontal">
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Name:</label>
-																	<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small" value="<%=name %>"></div>
-																</div>
-																
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Enabled:</label>
-																	<div class="col-md-9">
-																		<label class="checkbox">
-																			<input type="checkbox" name="active" class="form-control" value="true" <%="true".equalsIgnoreCase(active)? "checked" :"" %>>
-																			Yes
-																		</label>
-																	</div>
-																</div>
-																
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Reader Class:</label>
-																	<div class="col-md-9"><input type="text" name="readerClass" class="form-control" value="<%=reader %>"></div>
-																</div>
-																
-																<div class="form-group">
-																	<label class="col-md-3 control-label">Modifier Class:</label>
-																	<div class="col-md-9"><input type="text" name="modifierClass" class="form-control" value="<%=modifier %>"></div>
-																</div>
+															<input type="hidden" name="readerClass" value="<%=reader%>"/>
 															</div>
-															
-														</div>
-													</div>
-												</div> <!-- /.widget -->
-											</div>
-											<div class="col-md-12">
-												<div class="widget">
-													<div class="widget-header">
-														<h4>Properties</h4>
-													</div>
-													<div class="widget-content">
-														<div class="row">
-															<div class="col-md-12 form-horizontal">
-															<%
-															Element properties = sourceConfig.getChild("properties");
-															if(properties != null){
-															%>
-																<%
-																List<Element> propertyList = properties.getChildren("property");
-																for(int j=0; j<propertyList.size(); j++){
-																%>
-																	<%
-																	Element property = propertyList.get(j);
-																	String key = property.getAttributeValue("key");
-																	String value = property.getValue();
-																	%>
-																	<div class="form-group">
-																		<div class="col-md-4"><input type="text" name="key" class="form-control" value="<%=key %>" placeholder="KEY"></div>
-																		<div class="col-md-8">
-																			<div class="input-group">
-																				<input type="text" name="value" class="form-control" value="<%=value %>" placeholder="VALUE">
-																				<span class="input-group-btn">
-																					<button class="btn btn-default" type="button"><i class="icon-minus-sign text-danger"></i></button>
-																				</span>
-																			</div>
-																		</div>
-																	</div>
-																<%
-																}
-																%>
-															<%
-															}
-															%>
-															<div class="form-group">
-																<div class="col-md-12">
-																	<a><i class="icon-plus-sign"></i> Add Property</a>
-																</div>
-															</div>
-															</div>
-															
 														</div>
 													</div>
 												</div> <!-- /.widget -->

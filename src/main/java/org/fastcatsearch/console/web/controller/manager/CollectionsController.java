@@ -7,12 +7,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.management.relation.InvalidRelationServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
-import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.PostMethod;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -256,17 +254,162 @@ public class CollectionsController extends AbstractController {
 
 	@RequestMapping("/{collectionId}/datasource")
 	public ModelAndView datasource(HttpSession session, @PathVariable String collectionId) throws Exception {
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
-		String requestUrl = "/management/collections/datasource.xml";
-		Document document = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestXML();
+		ModelAndView mav = new ModelAndView();
+		
+		String requestUrl = "";
 
 		requestUrl = "/management/collections/jdbc-source.xml";
 		Document documentJDBC = httpGet(session, requestUrl).requestXML();
 		
-		ModelAndView mav = new ModelAndView();
+		requestUrl = "/management/collections/single-source-reader-list.json";
+		JSONObject result = httpPost(session, requestUrl).requestJSON();
+		JSONArray sourceReaderList = result.getJSONArray("sourceReaderList");
+		
+		requestUrl = "/management/collections/datasource.xml";
+		Document datasource = httpPost(session, requestUrl)
+				.addParameter("collectionId", collectionId).requestXML();
+		
+		Element indexingRoot = datasource.getRootElement();
+		List<Element> indexingList = null;
+		final String[] types = {"full","add"};
+		for (int typeInx = 0; typeInx < 2; typeInx++) {
+			logger.debug("datasource - {}-indexing", types[typeInx]);
+			indexingList = indexingRoot.getChild(types[typeInx]+"-indexing").getChildren();
+			//소스리더가 여럿 있는 경우가 있다..
+			logger.debug("indexing list : {}", indexingList);
+			for (int sourceInx = 0; sourceInx < indexingList.size(); sourceInx++) {
+				Element indexingSource = indexingList.get(sourceInx);
+				String readerClass = "";
+				String modifierClass = "";
+				Element subElement = indexingSource.getChild("reader");
+				if (subElement != null) {
+					readerClass = subElement.getText();
+				}
+				subElement = indexingSource.getChild("modifier");
+				if (subElement != null) {
+					modifierClass = subElement.getText();
+				}
+				
+				// 소스리더 리스트에서 찾아본다.
+				Map<String, String> parameterValues = new HashMap<String, String>();
+				parameterValues.put("reader", readerClass);
+				parameterValues.put("modifier", modifierClass);
+				
+				for (int readerInx = 0; readerInx < sourceReaderList.length(); readerInx++) {
+					JSONObject readerObject = sourceReaderList.getJSONObject(readerInx);
+					String clazz = readerObject.getString("reader");
+					if (clazz.equals(readerClass)) {
+						if (indexingSource != null) {
+							Element properties = indexingSource.getChild("properties");
+							List<Element> propertyList = properties.getChildren("property");
+							for (Element e : propertyList) {
+								String key = e.getAttributeValue("key");
+								String value = e.getText();
+								if (value == null) {
+									value = "";
+								}
+								parameterValues.put(key, value);
+							}
+						}
+						break;
+					}
+				}
+				mav.addObject("parameter_"+types[typeInx]+"_"+sourceInx, parameterValues);
+			}
+		}
+		
 		mav.setViewName("manager/collections/datasource");
 		mav.addObject("collectionId", collectionId);
-		mav.addObject("document", document);
+		mav.addObject("sourceReaderList", sourceReaderList);
+		mav.addObject("document", datasource);
+		mav.addObject("jdbcSource", documentJDBC);
+		return mav;
+	}
+	
+	@RequestMapping("/{collectionId}/datasource/parameter")
+	public ModelAndView datasourceParameter(HttpSession session,
+			@PathVariable String collectionId, @RequestParam String indexType,
+			@RequestParam String readerClass, @RequestParam(required = false) int sourceIndex)
+			throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		String requestUrl = "";
+
+		requestUrl = "/management/collections/jdbc-source.xml";
+		Document documentJDBC = httpGet(session, requestUrl).requestXML();
+		
+		requestUrl = "/management/collections/single-source-reader-list.json";
+		JSONObject result = httpPost(session, requestUrl).requestJSON();
+		JSONArray sourceReaderList = result.getJSONArray("sourceReaderList");
+		
+		requestUrl = "/management/collections/datasource.xml";
+		Document datasource = httpPost(session, requestUrl)
+				.addParameter("collectionId", collectionId).requestXML();
+		
+		Element indexingRoot = datasource.getRootElement();
+		List<Element> indexingList = null;
+		
+		logger.debug("datasource - {}-indexing", indexType);
+		Element indexingListNode = indexingRoot.getChild(indexType+"-indexing");
+		Map<String, String> parameterValues = new HashMap<String, String>();
+		JSONObject readerObject = null;
+		for (int readerInx = 0; readerInx < sourceReaderList.length(); readerInx++) {
+			readerObject = sourceReaderList.getJSONObject(readerInx);
+			String clazz = readerObject.getString("reader");
+			if (clazz.equals(readerClass)) {
+				mav.addObject("sourceReaderObject", readerObject);
+				break;
+			}
+		}
+		
+		if(indexingListNode!=null) {
+			indexingList = indexingListNode.getChildren();
+			logger.debug("indexing list : {} / {}:{}", indexingList, sourceIndex, indexingList.size());
+			if (sourceIndex > 0 && sourceIndex < indexingList.size()) {
+				Element indexingSource = indexingList.get(sourceIndex);
+				String reader = "";
+				String modifier = "";
+				Element subElement = indexingSource.getChild("reader");
+				if (subElement != null) {
+					reader = subElement.getText();
+				}
+				subElement = indexingSource.getChild("modifier");
+				if (subElement != null) {
+					modifier = subElement.getText();
+				}
+				
+				// 소스리더 리스트에서 찾아본다.
+				parameterValues.put("reader", reader);
+				parameterValues.put("modifier", modifier);
+				
+				for (int readerInx = 0; readerInx < sourceReaderList.length(); readerInx++) {
+					if (reader.equals(readerObject.optString("reader"))) {
+						if (indexingSource != null) {
+							Element properties = indexingSource.getChild("properties");
+							List<Element> propertyList = properties.getChildren("property");
+							for (Element e : propertyList) {
+								String key = e.getAttributeValue("key");
+								String value = e.getText();
+								if (value == null) {
+									value = "";
+								}
+								parameterValues.put(key, value);
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+		
+		mav.setViewName("manager/collections/datasourceParameter");
+		mav.addObject("readerClass", readerClass);
+		mav.addObject("sourceIndex", sourceIndex);
+		mav.addObject("parameterValues", parameterValues);
+		mav.addObject("collectionId", collectionId);
+		mav.addObject("sourceReaderList", sourceReaderList);
+		mav.addObject("document", datasource);
 		mav.addObject("jdbcSource", documentJDBC);
 		return mav;
 	}
