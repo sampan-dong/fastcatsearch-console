@@ -352,6 +352,9 @@ function searchPage(uri, pageNo){
 				</div>
 
 				<div class="col-md-2" style="padding-left: 0px;">
+					<%
+					if(popularKeywordResult != null){
+					%>
 					<div class="panel panel-default" style="border-left: 0px;">
 						<div class="panel-heading">
 							<h3 class="panel-title">Popular Keyword</h3>
@@ -360,42 +363,40 @@ function searchPage(uri, pageNo){
 							<ol class="popular-keyword">
 							
 							<%
-							if(relateKeywordResult != null){
-								JSONArray popularKeywordList =  popularKeywordResult.optJSONArray("list");
-								if(popularKeywordList != null){
-									for(int i=0; i < popularKeywordList.length(); i++){
-										JSONObject popularKeywordObj = popularKeywordList.getJSONObject(i);
-										int rank = popularKeywordObj.getInt("rank");
-										String word = popularKeywordObj.getString("word");
-										String diffType = popularKeywordObj.getString("diffType");
-										int diff = popularKeywordObj.getInt("diff");
-										if(diffType.equals("EQ")){
-											
-										}
-									%>
-									<li><span class="badge badge-sx"><%=rank%></span> <a href="javascript:search('<%=word %>')"><%=word %></a><div>
-										<%
-										if(diffType.equals("EQ")){
-											%><i class="icon-minus"></i> <%=diff %><%
-										}else if(diffType.equals("UP")){
-											%><i class="icon-arrow-up" style="color:red;"></i> <%=diff %><%
-										}else if(diffType.equals("DN")){
-											%><i class="icon-arrow-down" style="color:blue;"></i> <%=diff %><%
-										}else if(diffType.equals("NEW")){
-											%><span class="" style="color:red;">New</span><%
-										}
-										%>
-										</div></li>
+							JSONArray popularKeywordList =  popularKeywordResult.optJSONArray("list");
+							if(popularKeywordList != null){
+								for(int i=0; i < popularKeywordList.length(); i++){
+									JSONObject popularKeywordObj = popularKeywordList.getJSONObject(i);
+									int rank = popularKeywordObj.getInt("rank");
+									String word = popularKeywordObj.getString("word");
+									String diffType = popularKeywordObj.getString("diffType");
+									int diff = popularKeywordObj.getInt("diff");
+								%>
+								<li>
+									<span class="badge badge-sx"><%=rank%></span> 
+									<a href="javascript:search('<%=word %>')"><%=word %></a>
+									<div class="rank-status">
 									<%
+									if(diffType.equals("NEW")){
+										%><i class="rank-<%=diffType.toLowerCase()%>"></i><%
+									}else if(diffType.equals("EQ")){
+										%><i class="rank-<%=diffType.toLowerCase()%>"></i><%
+									}else{
+										%><i class="rank-<%=diffType.toLowerCase()%>"></i> <span class="_step"><%=diff %></span><%
 									}
+									%>
+									</div>
+								</li>
+								<%
 								}
 							}
 							%>
 							</ol>
 						</div>
-						
-  				
 					</div>
+					<%
+					}
+					%>
 				</div>
 			</div>
 			<%
