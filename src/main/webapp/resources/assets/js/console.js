@@ -570,7 +570,9 @@ function startCollection(collectionId){
 function stopCollection(collectionId){
 	operateCollection(collectionId, "Stop");
 }
-
+function removeCollection(collectionId){
+	operateCollection(collectionId, "Remove");
+}
 function operateCollection(collectionId, command){
 	
 	if(confirm(command+" collection " + collectionId + "?")){

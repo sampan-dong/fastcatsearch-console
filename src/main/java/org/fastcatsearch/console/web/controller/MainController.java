@@ -1,13 +1,10 @@
 package org.fastcatsearch.console.web.controller;
 
-import java.io.IOException;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.client.ClientProtocolException;
-import org.fastcatsearch.console.web.http.Http404Error;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.GetMethod;
@@ -144,6 +141,22 @@ public class MainController extends AbstractController {
 				JSONObject searchResults = getMethod.requestJSON();
 				mav.addObject("searchPageResult", searchResults);
 				
+				String realtimePopularKeywordURL = searchResults.getString("realtimePopularKeywordURL");
+				if(realtimePopularKeywordURL != null && realtimePopularKeywordURL.length() > 0){
+					ResponseHttpClient httpClient = new ResponseHttpClient(null);
+					JSONObject popularKeywordResult = httpClient.httpGet(realtimePopularKeywordURL).requestJSON();
+					httpClient.close();
+					mav.addObject("popularKeywordResult", popularKeywordResult);
+					logger.debug("popularKeywordResult > {}", popularKeywordResult);
+				}
+				String relateKeywordURL = searchResults.getString("relateKeywordURL");
+				if(relateKeywordURL != null && relateKeywordURL.length() > 0){
+					ResponseHttpClient httpClient = new ResponseHttpClient(null);
+					JSONObject relateKeywordResult = httpClient.httpGet(relateKeywordURL).requestJSON();
+					httpClient.close();
+					mav.addObject("relateKeywordResult", relateKeywordResult);
+					logger.debug("relateKeywordResult > {}", relateKeywordResult);
+				}
 			}
 		}
 		

@@ -3,9 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="org.jdom2.*"%>
 <%@page import="java.util.*"%>
+<%@page import="org.json.*" %>
 <%
 	Document document = (Document) request.getAttribute("document");
-
+	JSONObject typeListObj = (JSONObject) request.getAttribute("typeList");
+	JSONArray typeList = typeListObj.optJSONArray("typeList");
 %>
 <c:set var="ROOT_PATH" value="../.." scope="request"/>
 <c:import url="${ROOT_PATH}/inc/common.jsp" />
@@ -76,17 +78,17 @@ $(document).ready(function(){
 		return;
 	});
 	
-	var inputClearFunction = function() {
-		if($(this).attr("name")!="KEY_NAME") {
-			var type = $(this).attr("type").toLowerCase();
-			if( type=="radio" || type=="checkbox" ) {
-				$(this).removeAttr("checked");
-			} else {
-				$(this).val("");
-			}
+	//select 로 필드타입선택시 size를 readonly 로 바꾼다.
+	var selectFieldFunction = function() {
+		var o = $(this).parents("tr").find("input.field-type-size");
+		if($(this).val() != "ASTRING" && $(this).val() != "STRING") {
+			o.val("");
+			o.prop("readonly", true);
+		}else{
+			o.prop("readonly", false);
 		}
 	};
-	
+
 	var addRowFunction = function(){
 		var tbody = $(this).parents("tbody");
 		var key = tbody.attr("key"); //_field-list_
@@ -101,7 +103,7 @@ $(document).ready(function(){
 		var newKeyName = key + newIndex;
 		
 		newTr.find("input[name=KEY_NAME]").val(newKeyName);
-		newTr.find("input").each(function() {
+		newTr.find("input, select").each(function() {
 			var name = $(this).attr("name");
 			if(name != "KEY_NAME") {
 				$(this).attr("name", newKeyName + "-" + name);
@@ -110,12 +112,11 @@ $(document).ready(function(){
 		
 		//remove tooltip object
 		newTr.find("div.tooltip.fade.top.in").remove();
-		//clear input
-		newTr.find("input").each(inputClearFunction);
 		//link event
 		newTr.find("a.addRow").click(addRowFunction).tooltip(addRowTooltip);
 		newTr.find("a.deleteRow").click(deleteRowFunction).tooltip(deleteRowTooltip);
-		//trElement.after(newTr);
+		
+		newTr.find(".select-field-type").change(selectFieldFunction);
 		pivotTr.after(newTr);
 		
 		var lineCount = tbody.children("tr:not(.no-entry)").length;
@@ -146,6 +147,8 @@ $(document).ready(function(){
 	
 	$("a.addRow").click(addRowFunction);
 	$("a.deleteRow").click(deleteRowFunction);
+	
+	$(".select-field-type").change(selectFieldFunction);
 	
 });
 
@@ -271,8 +274,21 @@ $(document).ready(function(){
 										<tr>
 											<td><input type="hidden" name="KEY_NAME" value="_field-list_<%=i %>" /><input type="text" name="_field-list_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
 											<td><input type="text" name="_field-list_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-											<td><input type="text" name="_field-list_<%=i%>-type" class="form-control required" value="<%=type %>"></td>
-											<td><input type="text" name="_field-list_<%=i%>-size" class="form-control digit" value="<%=size %>"></td>
+											
+											<td><select class="select_flat form-control required select-field-type" name="_field-list_<%=i %>-type" >
+											<%
+											boolean isSizeReadonly = !(type.equalsIgnoreCase("STRING") || type.equalsIgnoreCase("ASTRING"));
+
+											for(int typeInx=0;typeInx < typeList.length(); typeInx++) { 
+												String typeStr = typeList.optString(typeInx);
+											%>
+											<option value="<%=typeStr %>" <%=typeStr.equals(type)?"selected":"" %>><%=typeStr %></option>
+											<%
+											}
+											%>
+											</select></td>
+											
+											<td><input type="text" name="_field-list_<%=i%>-size" class="form-control digit field-type-size" value="<%=size %>" <%=isSizeReadonly?"readonly":"" %>></td>
 											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
 											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
 											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
@@ -428,7 +444,7 @@ $(document).ready(function(){
 										<tr>
 											<th class="fcol1-2">ID</th>
 											<th class="fcol2">Name</th>
-											<th class="fcol2">Field List</th>
+											<th class="fcol2-1">Field List</th>
 											<th>Index Analyzer</th>
 											<th>Query Analyzer</th>
 											<th class="fcol1">Ignore Case</th>
@@ -640,8 +656,18 @@ $(document).ready(function(){
 				<input type="text" name="id" class="form-control required">
 			</td>
 			<td><input type="text" name="name" class="form-control required"></td>
-			<td><input type="text" name="type" class="form-control required"></td>
-			<td><input type="text" name="size" class="form-control digit"></td>
+			<td><select class="select_flat form-control required select-field-type" name="type" >
+				<option value="">:: Type ::</option>
+			<%
+			for(int typeInx=0;typeInx < typeList.length(); typeInx++) { 
+				String typeStr = typeList.optString(typeInx);
+			%>
+			<option value="<%=typeStr %>"><%=typeStr %></option>
+			<%
+			}
+			%>
+			</select></td>
+			<td><input type="text" name="size" class="form-control field-type-size digit"></td>
 			<td><label class="checkbox"><input type="checkbox" value="true" name="store"></label></td>
 			<td><label class="checkbox"><input type="checkbox" value="true" name="removeTag"></label></td>
 			<td><label class="checkbox"><input type="checkbox" value="true" name="multiValue"></label></td>

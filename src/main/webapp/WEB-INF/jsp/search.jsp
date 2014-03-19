@@ -3,8 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="org.json.*"%>
 <%@page import="java.util.*"%>
+<%@page import="java.util.regex.*"%>
+
 <%
 	JSONObject searchPageResult = (JSONObject) request.getAttribute("searchPageResult");
+	JSONObject popularKeywordResult = (JSONObject) request.getAttribute("popularKeywordResult");
+	JSONObject relateKeywordResult = (JSONObject) request.getAttribute("relateKeywordResult");
+
 	boolean hasResult = (searchPageResult != null);
 	
 	String keyword = request.getParameter("keyword");
@@ -42,10 +47,22 @@ $(document).ready(function(){
 });
 
 function searchCategory(categoryId){
-	
 	$("#searchForm").find("[name=category]").val(categoryId);
+	$("#searchForm").find("[name=page]").val("1");
 	$("#searchForm").submit();
 }
+
+function search(keyword){
+	$("#searchForm").find("[name=page]").val("1");
+	$("#searchForm").find("[name=keyword]").val(keyword);
+	$("#searchForm").submit();
+}
+
+function searchPage(uri, pageNo){
+	$("#searchForm").find("[name=page]").val(pageNo);
+	$("#searchForm").submit();
+}
+
 </script>
 
 
@@ -68,9 +85,20 @@ function searchCategory(categoryId){
 					<div class="col-xs-10 col-sm-4 col-sm-offset-3" style="padding-right: 5px;">
 						<input type="text" id="searchBox" class="form-control" name="keyword" value="<%=keyword %>" style="border: 5px solid #416cb6;font-size: 18px !important; height:40px;"> 
 						<ul class="relate-keyword">
-							<li><a href="#">원피스</a></li>
-							<li><a href="#">나루토</a></li>
-							<li><a href="#">나는 귀족이다</a></li>
+						<%
+						if(relateKeywordResult != null){
+							JSONArray relateKeywordList =  relateKeywordResult.optJSONArray("relate");
+							if(relateKeywordList != null){
+								int maxCount = Math.min(relateKeywordList.length(), 7);
+								for(int i=0; i < maxCount; i++){
+									String relateKeyword = relateKeywordList.getString(i);
+								%>
+								<li><a href="javascript:search('<%=relateKeyword%>')"><%=relateKeyword %></a></li>
+								<%
+								}
+							}
+						}
+						%>
 						</ul>
 					</div>
 					<div style="padding-left: 0px;">
@@ -103,6 +131,9 @@ function searchCategory(categoryId){
 						</ul>
 						<div class="tab-content result-pane">
 							<%
+							
+							Pattern pattern = Pattern.compile("#(\\w+)");
+							
 							if(category == null || category.length() == 0){
 							%>
 							<div class="tab-pane active" id="tab_total_search">
@@ -123,9 +154,11 @@ function searchCategory(categoryId){
 								<%
 								for(int i = 0 ; i < resultList.length(); i++){
 									JSONObject categoryResult = resultList.getJSONObject(i);
-									
+									String categoryId = categoryResult.getString("id");
+									String categoryName = categoryResult.getString("name");
 									String titleField = categoryResult.getString("titleField");
 									String bodyField = categoryResult.getString("bodyField");
+									String clickLink = categoryResult.getString("clickLink");
 									JSONArray etcFieldList = categoryResult.getJSONArray("etcField");
 									
 									JSONObject searchResult = categoryResult.getJSONObject("result");
@@ -136,11 +169,13 @@ function searchCategory(categoryId){
 									if(categoryTotalCount == 0){
 										continue;
 									}
+									
+									boolean hasLink = (clickLink != null && clickLink.length() > 0);
 								%>
 								<div class="row col-md-12">
-									<h3 style="border-bottom:1px solid #eee;"><%=categoryResult.getString("name") %></h3>
+									<h3 style="border-bottom:1px solid #eee;"><%=categoryName %></h3>
 									<div class="col-md-10">
-										<ol class="search-result">
+										<ul class="search-result">
 											<%
 											for(int j = 0; j < searchResultList.length(); j++) {
 												JSONObject item = searchResultList.getJSONObject(j);
@@ -152,20 +187,46 @@ function searchCategory(categoryId){
 													String fieldId = etcFieldList.getString(k);
 													etcData += item.getString(fieldId);
 												}
+												
+												if(hasLink){
+													Matcher matcher = pattern.matcher(clickLink);
+													// check all occurance
+													while (matcher.find()) {
+														String key0 = matcher.group();
+														String key = matcher.group(1).toUpperCase(); //필드명은 대문자이다.
+														String value = item.optString(key);
+														if(value == null){
+															value = "";
+														}
+														clickLink = clickLink.replaceAll(key0, value);
+													}
+												}
 											%>
 											<li>
-												<h3><a href="javascript:void(0);"><%=item.getString(titleField) %></a></h3>
+												<h3>
+												<%
+												if(hasLink){
+												%>
+												<a href="<%=clickLink %>" target="_fastcatsearch_demo"><%=item.getString(titleField) %></a>
+												<%
+												}else{
+												%>
+												<%=item.getString(titleField) %>
+												<%
+												}
+												%>
+												</h3>
 												<div class="r"><%=item.getString(bodyField) %></div>
-												<div class=""><%=etcData %></div>
+												<div class="etc"><%=etcData %></div>
 											</li>
 											<%
 											}
 											%>
-										</ol>
+										</ul>
 										<%
 										if(categoryTotalCount > searchResultList.length()){
 										%>
-										<div class="pull-right"><a href="#">more results »</a></div>
+										<div class="pull-right"><a href="javascript:searchCategory('<%=categoryId %>');">more results »</a></div>
 										<%
 										}
 										%>
@@ -189,6 +250,8 @@ function searchCategory(categoryId){
 										
 										String titleField = categoryResult.getString("titleField");
 										String bodyField = categoryResult.getString("bodyField");
+										String clickLink = categoryResult.getString("clickLink");
+										int searchListSize = categoryResult.getInt("searchListSize");
 										JSONArray etcFieldList = categoryResult.getJSONArray("etcField");
 										
 										JSONObject searchResult = categoryResult.getJSONObject("result");
@@ -197,6 +260,7 @@ function searchCategory(categoryId){
 										
 										int categoryTotalCount = searchResult.getInt("total_count");
 										
+										boolean hasLink = (clickLink != null && clickLink.length() > 0);
 							%>
 								
 								<div class="tab-pane active" id="tab_<%=categoryId %>">
@@ -208,7 +272,7 @@ function searchCategory(categoryId){
 									</div>
 									<h3 style="border-bottom:1px solid #eee;"><%=categoryName %></h3>
 									<div class="col-md-12 ires">
-										<ol class="search-result">
+										<ul class="search-result">
 										<%
 										for(int j = 0; j < searchResultList.length(); j++) {
 											JSONObject item = searchResultList.getJSONObject(j);
@@ -219,17 +283,52 @@ function searchCategory(categoryId){
 												}
 												String fieldId = etcFieldList.getString(k);
 												etcData += item.getString(fieldId);
+												
+											}
+											
+											if(hasLink){
+												Matcher matcher = pattern.matcher(clickLink);
+												// check all occurance
+												while (matcher.find()) {
+													String key0 = matcher.group();
+													String key = matcher.group(1).toUpperCase(); //필드명은 대문자이다.
+													String value = item.optString(key);
+													if(value == null){
+														value = "";
+													}
+													clickLink = clickLink.replaceAll(key0, value);
+												}
 											}
 										%>
 										<li>
-											<h3><a href="javascript:void(0);"><%=item.getString(titleField) %></a></h3>
+											<h3>
+												<%
+												if(hasLink){
+												%>
+												<a href="<%=clickLink %>" target="_fastcatsearch_demo"><%=item.getString(titleField) %></a>
+												<%
+												}else{
+												%>
+												<%=item.getString(titleField) %>
+												<%
+												}
+												%>
+											</h3>
 											<div class="r"><%=item.getString(bodyField) %></div>
-											<div class=""><%=etcData %></div>
+											<div class="etc"><%=etcData %></div>
 										</li>
 										<%
 										}
 										%>
-										</ol>
+										</ul>
+										
+										<jsp:include page="inc/pagenation.jsp" >
+										 	<jsp:param name="pageNo" value="<%=pageNumber %>"/>
+										 	<jsp:param name="totalSize" value="<%=categoryTotalCount %>" />
+											<jsp:param name="pageSize" value="<%=searchListSize %>" />
+											<jsp:param name="width" value="5" />
+											<jsp:param name="callback" value="searchPage" />
+										 </jsp:include>
 									</div>
 									
 									<%
@@ -253,27 +352,51 @@ function searchCategory(categoryId){
 				</div>
 
 				<div class="col-md-2" style="padding-left: 0px;">
+					<%
+					if(popularKeywordResult != null){
+					%>
 					<div class="panel panel-default" style="border-left: 0px;">
 						<div class="panel-heading">
 							<h3 class="panel-title">Popular Keyword</h3>
 						</div>
 						<div class="panel-body" style="padding: 10px 2px 0px 10px;">
 							<ol class="popular-keyword">
-								<li><span class="badge badge-sx">1</span> <a href="#">나루토</a><div><i class="icon-arrow-up" style="color:red;"></i> 999</div></li>
-								<li><span class="badge badge-sx">2</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">3</span> <a href="#">가나다</a><div><i class="icon-minus"></i></div></li>
-								<li><span class="badge badge-sx">4</span> <a href="#">아이폰</a><div><i class="icon-arrow-down" style="color:blue;"></i> 5</div></li>
-								<li><span class="badge badge-sx">5</span> <a href="#">mouse</a><div><span class="" style="color:red;">New</span></div></li>
-								<li><span class="badge badge-sx">6</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">7</span> <a href="#">원피스원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">8</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">9</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
-								<li><span class="badge badge-sx">10</span> <a href="#">원피스</a><div><i class="icon-arrow-up" style="color:red;"></i> 5</div></li>
+							
+							<%
+							JSONArray popularKeywordList =  popularKeywordResult.optJSONArray("list");
+							if(popularKeywordList != null){
+								for(int i=0; i < popularKeywordList.length(); i++){
+									JSONObject popularKeywordObj = popularKeywordList.getJSONObject(i);
+									int rank = popularKeywordObj.getInt("rank");
+									String word = popularKeywordObj.getString("word");
+									String diffType = popularKeywordObj.getString("diffType");
+									int diff = popularKeywordObj.getInt("diff");
+								%>
+								<li>
+									<span class="badge badge-sx"><%=rank%></span> 
+									<a href="javascript:search('<%=word %>')"><%=word %></a>
+									<div class="rank-status">
+									<%
+									if(diffType.equals("NEW")){
+										%><i class="rank-<%=diffType.toLowerCase()%>"></i><%
+									}else if(diffType.equals("EQ")){
+										%><i class="rank-<%=diffType.toLowerCase()%>"></i><%
+									}else{
+										%><i class="rank-<%=diffType.toLowerCase()%>"></i> <span class="_step"><%=diff %></span><%
+									}
+									%>
+									</div>
+								</li>
+								<%
+								}
+							}
+							%>
 							</ol>
 						</div>
-						
-  				
 					</div>
+					<%
+					}
+					%>
 				</div>
 			</div>
 			<%

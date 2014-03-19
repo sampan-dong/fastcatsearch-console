@@ -72,10 +72,15 @@ public class CollectionsController extends AbstractController {
 		Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionId).addParameter("type", "workSchema").addParameter("mode", "copyCurrentSchema")
 				.requestXML();
 
+		requestUrl = "/management/collections/data-type-list.json";
+		PostMethod httpPost = httpPost(session, requestUrl);
+		JSONObject typeList = httpPost.requestJSON();
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/schemaEdit");
 		mav.addObject("collectionId", collectionId);
 		mav.addObject("document", document);
+		mav.addObject("typeList", typeList);
 		mav.addObject("schemaType", "workSchema");
 		return mav;
 	}

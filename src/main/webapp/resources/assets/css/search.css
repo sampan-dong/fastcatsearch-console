@@ -1,3 +1,4 @@
+
 ul.relate-keyword { 
 	list-style-type: none;
 	padding-left: 0px;
@@ -11,13 +12,23 @@ ul.relate-keyword li + li:before {content: "|"; color:#ccc; padding-right: 6px; 
 ol.popular-keyword { list-style-type: none; padding-left:0px; font-size: 12px;}
 ol.popular-keyword li { padding-bottom: 4px;}
 ol.popular-keyword li div { padding-bottom: 4px; width:40px; float:right; text-decoration:bold; }
-.badge-sx {padding: 2px; font-size:11px; width: 16px;}
+ol.popular-keyword ._step {font-family: tahoma,geneva,sans-serif; font-size: 11px; }
+.badge-sx {padding: 2px; font-size: 11px; width: 16px; background-color: #fff; border: 1px solid #ddd; color: #222; margin-right: 2px;}
 
-ol.search-result { padding-left: 10px; }
-
+ul.search-result { padding-left: 10px; list-style-type: none; padding-left: 0px; }
+	
 .category-group { border-bottom: 1px dashed #ddd; margin-bottom: 15px; }
 
 .margin-space {margin-bottom: 40px !important; }
 
-
 .result-pane { min-height: 700px; }
+
+.search-result .etc {padding-top: 5px; color: #666;}
+
+.rank-up, .rank-dn, .rank-eq, .rank-new {background: url(../img/popular_ico_rank.gif) no-repeat;
+display:block;float:none !important;position:absolute;right:37px;width:33px !important;height:14px !important;margin:0 !important;font-family:tahoma,geneva,sans-serif;font-size:10px;line-height:17px;text-align:center;text-decoration:none
+}
+.rank-up { background-position:-40px 4px;}
+.rank-dn {background-position:-80px 4px;*background-position:-80px 6px}
+.rank-eq {background-position:-119px 7px}
+.rank-new {overflow:hidden;background-position:0 6px;text-indent:-900px}
