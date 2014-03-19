@@ -152,6 +152,7 @@ $(document).ready(function(){
 													<th class="">Type</th>
 													<th class="">Length</th>
 													<th class="fcol1">Store</th>
+													<th class="fcol1">Remove Tags</th>
 													<th class="fcol1">Multi Value</th>
 													<th class="fcol1">Multi Value Delimiter</th>
 												</tr>
@@ -180,8 +181,9 @@ $(document).ready(function(){
 													<td class=""><%=name %></td>
 													<td class=""><%=type %></td>
 													<td class=""><%=size %></td>
-													<td class="_field_store " ><strong><%="true".equalsIgnoreCase(store) ? "Y" : "N" %></strong></td>
-													<td class="_field_multivalue " ><strong><%="true".equalsIgnoreCase(multiValue) ? "Y" : "N" %></strong></td>
+													<td class="_field_store " ><%="true".equalsIgnoreCase(store) ? "&#x2714;" : "" %></td>
+													<td class="" ><%="true".equalsIgnoreCase(removeTag) ? "&#x2714;" : "" %></td>
+													<td class="_field_multivalue "><%="true".equalsIgnoreCase(multiValue) ? "&#x2714;" : "" %></td>
 													<td class="_field_multivalue_delimiter" ><%=multiValueDelimiter %></td>
 												</tr>														
 												<%
@@ -354,8 +356,8 @@ $(document).ready(function(){
 													<td class=""><%=fieldRefList %></td>
 													<td class="fcol2"><%=indexAnalyzer %></td>
 													<td class="fcol2"><%=queryAnalyzer %></td>
-													<td class="_search_indexes_ignorecase" ><%=ignoreCase %></td>
-													<td class="_search_indexes_store_position" ><%=storePosition %></td>
+													<td class="_search_indexes_ignorecase" ><%="true".equalsIgnoreCase(ignoreCase) ? "&#x2714;" : "" %></td>
+													<td class="_search_indexes_store_position" ><%="true".equalsIgnoreCase(storePosition) ? "&#x2714;" : "" %></td>
 													<td class="_search_indexes_positionIncrementGap" ><%=positionIncrementGap %></td>
 												</tr>														
 												<%
