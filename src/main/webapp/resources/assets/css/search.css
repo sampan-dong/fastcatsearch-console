@@ -1,3 +1,4 @@
+
 ul.relate-keyword { 
 	list-style-type: none;
 	padding-left: 0px;
@@ -19,5 +20,6 @@ ul.search-result { padding-left: 10px; list-style-type: none; padding-left: 0px;
 
 .margin-space {margin-bottom: 40px !important; }
 
-
 .result-pane { min-height: 700px; }
+
+.search-result .etc {padding-top: 5px; color: #666;}

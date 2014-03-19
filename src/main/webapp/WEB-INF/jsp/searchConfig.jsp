@@ -190,7 +190,7 @@ $(document).ready(function(){
 									<div class="form-group">
 										<label class="col-md-2 control-label">Click Link :</label>
 										<div class="col-md-10"><input type="text" name="clickLink_<%=i %>" class="form-control" value="<%=el.getChildText("click-link") %>">
-											<div class="help-block">ex) http://view.page.com/view?id=#id&user=#username</div>
+											<div class="help-block">ex) http://your.domain.com/view?id=#id&user=#username</div>
 										</div>
 									</div>
 								</div>
@@ -215,7 +215,7 @@ $(document).ready(function(){
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
 										<label class="col-md-2 control-label">URL :</label>
-										<div class="col-md-10"><input type="text" name="relateKeywordURL" class="form-control required" value="<%=relateKeywordUrl%>">
+										<div class="col-md-10"><input type="text" name="relateKeywordURL" class="form-control" value="<%=relateKeywordUrl%>">
 											<div class="help-block">ex) http://demo.fastcatsearch.org:8050/service/keyword/relate.json?keyword=#keyword</div>
 										</div>
 										
@@ -232,7 +232,7 @@ $(document).ready(function(){
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
 										<label class="col-md-2 control-label">URL :</label>
-										<div class="col-md-10"><input type="text" name="realtimePopularKeywordURL" class="form-control required" value="<%=realtimePopularKeywordUrl%>">
+										<div class="col-md-10"><input type="text" name="realtimePopularKeywordURL" class="form-control" value="<%=realtimePopularKeywordUrl%>">
 											<div class="help-block">ex) http://demo.fastcatsearch.org:8050/service/keyword/popular/rt.json?siteId=total</div>
 										</div>
 									</div>
@@ -296,7 +296,7 @@ $(document).ready(function(){
 				<div class="form-group">
 					<label class="col-md-2 control-label">Click Link :</label>
 					<div class="col-md-10"><input type="text" name="clickLink" class="form-control" value="">
-						<div class="help-block">ex) http://view.page.com/view?id=#id&user=#username</div>
+						<div class="help-block">ex) http://your.domain.com/view?id=#id&user=#username</div>
 					</div>
 				</div>
 			</div>

@@ -217,7 +217,7 @@ function searchPage(uri, pageNo){
 												%>
 												</h3>
 												<div class="r"><%=item.getString(bodyField) %></div>
-												<div class=""><%=etcData %></div>
+												<div class="etc"><%=etcData %></div>
 											</li>
 											<%
 											}
@@ -315,7 +315,7 @@ function searchPage(uri, pageNo){
 												%>
 											</h3>
 											<div class="r"><%=item.getString(bodyField) %></div>
-											<div class=""><%=etcData %></div>
+											<div class="etc"><%=etcData %></div>
 										</li>
 										<%
 										}
