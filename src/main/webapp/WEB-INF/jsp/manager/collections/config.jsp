@@ -170,7 +170,6 @@ $(document).ready(function(){
 						</div>
 						
 						<div class="form-actions">
-							<input type="button" value="Remove Collection" class="btn btn-danger">
 							<input type="submit" value="Update Settings" class="btn btn-primary pull-right">
 						</div>
 					</div>
