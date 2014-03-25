@@ -121,9 +121,9 @@ function searchPage(uri, pageNo){
 							JSONArray categoryList = searchPageResult.getJSONArray("category-list");
 							for(int i = 0 ; i < categoryList.length(); i++){
 								JSONObject categoryInfo = categoryList.getJSONObject(i);
-								String categoryId = categoryInfo.getString("id");
+								String categoryId = categoryInfo.optString("id");
 							%>
-							<li class="<%=(categoryId.equals(category)) ? "active" : "" %>"><a href="javascript:searchCategory('<%=categoryInfo.getString("id") %>')" ><strong><%=categoryInfo.getString("name") %></strong></a></li>
+							<li class="<%=(categoryId.equals(category)) ? "active" : "" %>"><a href="javascript:searchCategory('<%=categoryInfo.optString("id") %>')" ><strong><%=categoryInfo.optString("name") %></strong></a></li>
 							<%
 							}
 							%>
@@ -147,7 +147,7 @@ function searchPage(uri, pageNo){
 								}
 								%>
 								<div class="">
-								<%=totalCount %> results (<%=searchPageResult.getString("time") %>s) 
+								<%=totalCount %> results (<%=searchPageResult.optString("time") %>s) 
 								</div>
 								
 								
@@ -185,7 +185,7 @@ function searchPage(uri, pageNo){
 														etcData += " | ";
 													}
 													String fieldId = etcFieldList.getString(k);
-													etcData += item.getString(fieldId);
+													etcData += item.optString(fieldId);
 												}
 												
 												if(hasLink){
@@ -207,16 +207,16 @@ function searchPage(uri, pageNo){
 												<%
 												if(hasLink){
 												%>
-												<a href="<%=clickLink %>" target="_fastcatsearch_demo"><%=item.getString(titleField) %></a>
+												<a href="<%=clickLink %>" target="_fastcatsearch_demo"><%=item.optString(titleField) %></a>
 												<%
 												}else{
 												%>
-												<%=item.getString(titleField) %>
+												<%=item.optString(titleField) %>
 												<%
 												}
 												%>
 												</h3>
-												<div class="r"><%=item.getString(bodyField) %></div>
+												<div class="r"><%=item.optString(bodyField) %></div>
 												<div class="etc"><%=etcData %></div>
 											</li>
 											<%
@@ -281,8 +281,8 @@ function searchPage(uri, pageNo){
 												if(k > 0){
 													etcData += " | ";
 												}
-												String fieldId = etcFieldList.getString(k);
-												etcData += item.getString(fieldId);
+												String fieldId = etcFieldList.optString(k);
+												etcData += item.optString(fieldId);
 												
 											}
 											
@@ -305,16 +305,16 @@ function searchPage(uri, pageNo){
 												<%
 												if(hasLink){
 												%>
-												<a href="<%=clickLink %>" target="_fastcatsearch_demo"><%=item.getString(titleField) %></a>
+												<a href="<%=clickLink %>" target="_fastcatsearch_demo"><%=item.optString(titleField) %></a>
 												<%
 												}else{
 												%>
-												<%=item.getString(titleField) %>
+												<%=item.optString(titleField) %>
 												<%
 												}
 												%>
 											</h3>
-											<div class="r"><%=item.getString(bodyField) %></div>
+											<div class="r"><%=item.optString(bodyField) %></div>
 											<div class="etc"><%=etcData %></div>
 										</li>
 										<%
@@ -368,8 +368,8 @@ function searchPage(uri, pageNo){
 								for(int i=0; i < popularKeywordList.length(); i++){
 									JSONObject popularKeywordObj = popularKeywordList.getJSONObject(i);
 									int rank = popularKeywordObj.getInt("rank");
-									String word = popularKeywordObj.getString("word");
-									String diffType = popularKeywordObj.getString("diffType");
+									String word = popularKeywordObj.optString("word");
+									String diffType = popularKeywordObj.optString("diffType");
 									int diff = popularKeywordObj.getInt("diff");
 								%>
 								<li>
