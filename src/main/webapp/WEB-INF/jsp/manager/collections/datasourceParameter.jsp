@@ -63,7 +63,7 @@
 	<div class="form-group">
 		<label class="col-md-2 control-label">Modifier Class</label>
 		<div class="col-md-10">
-			<input type="text" name="modifierClass" class="form-control fcol2" value="<%=modifier%>">
+			<input type="text" name="modifierClass" class="form-control" value="<%=modifier%>">
 			<span class="help-block">modifier class (in FQDN)</span>
 		</div>
 	</div>
