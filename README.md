@@ -2,6 +2,9 @@
 
 Fastcatsearch-console is a tool for managing fastcatsearch. You can make collections on fastcatsearch, edit configs, and index documents.
 
+## Notice
+
+This is a managment tool on embedded web server jetty. Fastcatsearch-console cannot privide search features by itself, and you must install [fastcatsearch](https://github.com/fastcatsearch/fastcatsearch) too.
 
 ## License
 
