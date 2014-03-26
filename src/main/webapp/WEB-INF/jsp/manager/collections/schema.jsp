@@ -334,16 +334,18 @@ $(document).ready(function(){
 													Element field = indexList.get(i);
 													List<Element> fieldList = field.getChildren("field");
 													String fieldRefList = "";
+													String indexAnalyzerList = "";
 													for(int j = 0; j < fieldList.size(); j++){
 														if(fieldRefList.length() > 0){
-															fieldRefList += ", ";
+															fieldRefList += "<br/>";
+															indexAnalyzerList += "<br/>";
 														}
 														Element fieldRef = fieldList.get(j);
 														fieldRefList += fieldRef.getAttributeValue("ref");
+														indexAnalyzerList += fieldRef.getAttributeValue("indexAnalyzer");
 													}
 													String id = field.getAttributeValue("id");
 													String name = field.getAttributeValue("name", "");
-													String indexAnalyzer = field.getAttributeValue("indexAnalyzer", "");
 													String queryAnalyzer = field.getAttributeValue("queryAnalyzer", "");
 													String ignoreCase = field.getAttributeValue("ignoreCase", "");
 													String storePosition = field.getAttributeValue("storePosition", "");
@@ -354,7 +356,7 @@ $(document).ready(function(){
 													<td class="fcol1-2"><%=id %></td>
 													<td class="fcol2"><%=name %></td>
 													<td class=""><%=fieldRefList %></td>
-													<td class="fcol2"><%=indexAnalyzer %></td>
+													<td class="fcol2"><%=indexAnalyzerList %></td>
 													<td class="fcol2"><%=queryAnalyzer %></td>
 													<td class="_search_indexes_ignorecase" ><%="true".equalsIgnoreCase(ignoreCase) ? "&#x2714;" : "" %></td>
 													<td class="_search_indexes_store_position" ><%="true".equalsIgnoreCase(storePosition) ? "&#x2714;" : "" %></td>

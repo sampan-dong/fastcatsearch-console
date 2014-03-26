@@ -14,6 +14,9 @@
 <html>
 <head>
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
+<style>
+tbody[key=_index-list_] textarea {height: 30px}
+</style>
 <script>
 
 $(document).ready(function(){
@@ -103,7 +106,7 @@ $(document).ready(function(){
 		var newKeyName = key + newIndex;
 		
 		newTr.find("input[name=KEY_NAME]").val(newKeyName);
-		newTr.find("input, select").each(function() {
+		newTr.find("input, select, textarea").each(function() {
 			var name = $(this).attr("name");
 			if(name != "KEY_NAME") {
 				$(this).attr("name", newKeyName + "-" + name);
@@ -469,16 +472,18 @@ $(document).ready(function(){
 											Element field = indexList.get(i);
 											List<Element> fieldList = field.getChildren("field");
 											String fieldRefList = "";
+											String indexAnalyzerList = "";
 											for(int j = 0; j < fieldList.size(); j++){
 												if(fieldRefList.length() > 0){
-													fieldRefList += ", ";
+													fieldRefList += "\n";
+													indexAnalyzerList += "\n";
 												}
 												Element fieldRef = fieldList.get(j);
 												fieldRefList += fieldRef.getAttributeValue("ref");
+												indexAnalyzerList += fieldRef.getAttributeValue("indexAnalyzer");
 											}
 											String id = field.getAttributeValue("id");
 											String name = field.getAttributeValue("name", "");
-											String indexAnalyzer = field.getAttributeValue("indexAnalyzer", "");
 											String queryAnalyzer = field.getAttributeValue("queryAnalyzer", "");
 											String ignoreCase = field.getAttributeValue("ignoreCase", "");
 											String storePosition = field.getAttributeValue("storePosition", "");
@@ -487,10 +492,15 @@ $(document).ready(function(){
 										<tr>
 											<td>
 												<input type="hidden" name="KEY_NAME" value="_index-list_<%=i %>" />
-												<input type="text" name="_index-list_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
+												<input type="text" name="_index-list_<%=i%>-id" class="form-control required" value="<%=id %>">
+											</td>
 											<td><input type="text" name="_index-list_<%=i%>-name" class="form-control required" value="<%=name %>"></td>
-											<td><input type="text" name="_index-list_<%=i%>-refList" class="form-control required" value="<%=fieldRefList %>"></td>
-											<td><input type="text" name="_index-list_<%=i%>-indexAnalyzer" class="form-control required" value="<%=indexAnalyzer %>"></td>
+											<td>
+												<textarea name="_index-list_<%=i%>-refList" class="form-control required"><%=fieldRefList %></textarea>
+											</td>
+											<td>
+												<textarea name="_index-list_<%=i%>-indexAnalyzer" class="form-control required"><%=indexAnalyzerList %></textarea>
+											</td>
 											<td><input type="text" name="_index-list_<%=i%>-queryAnalyzer" class="form-control required" value="<%=queryAnalyzer %>"></td>
 											<td><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
 											<td><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
@@ -707,8 +717,8 @@ $(document).ready(function(){
 				<input type="hidden" name="KEY_NAME"/>
 				<input type="text" name="id" class="form-control required"></td>
 			<td><input type="text" name="name" class="form-control required"></td>
-			<td><input type="text" name="refList" class="form-control required"></td>
-			<td><input type="text" name="indexAnalyzer" class="form-control required"></td>
+			<td><textarea name="refList" class="form-control required"></textarea></td>
+			<td><textarea name="indexAnalyzer" class="form-control required"></textarea></td>
 			<td><input type="text" name="queryAnalyzer" class="form-control required"></td>
 			<td ><label class="checkbox"><input type="checkbox" value="true" name="ignoreCase"></label></td>
 			<td ><label class="checkbox"><input type="checkbox" value="true" name="storePosition"></label></td>

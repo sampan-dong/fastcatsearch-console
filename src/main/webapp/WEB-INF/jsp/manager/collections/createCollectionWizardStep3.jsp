@@ -198,6 +198,7 @@ $(document).ready(function() {
 												String source = field.getAttributeValue("source", "");
 												String size = field.getAttributeValue("size", "");
 												String store = field.getAttributeValue("store", "true");
+												
 												String removeTag = field.getAttributeValue("removeTag", "");
 												String multiValue = field.getAttributeValue("multiValue", "false");
 												String multiValueDelimiter = field.getAttributeValue("multiValueDelimiter", "");
