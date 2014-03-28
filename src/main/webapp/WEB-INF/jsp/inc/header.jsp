@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <title>FastcatSearch</title>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<link rel="SHORTCUT ICON" HREF="${contextPath}/resources/assets/img/fastcatsearch-favicon.ico" />
 <!--=== CSS ===-->
 <!-- Bootstrap -->
 <link href="${contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -12,8 +13,8 @@
 <!-- jQuery UI -->
 <!--<link href="${contextPath}/resources/plugins/jquery-ui/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />-->
 <!--[if lt IE 9]>
-		<link rel="stylesheet" type="text/css" href="plugins/jquery-ui/jquery.ui.1.10.2.ie.css"/>
-	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="plugins/jquery-ui/jquery.ui.1.10.2.ie.css"/>
+<![endif]-->
 
 
 <!-- Theme -->
