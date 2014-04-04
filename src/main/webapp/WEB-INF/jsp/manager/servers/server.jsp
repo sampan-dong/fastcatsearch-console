@@ -522,7 +522,7 @@ function hideAllThreadStacktrace(){
 								</tr>
 								<tr id="st-<%=thread.optString("tid") %>" class="stacktrace">
 									<td>&nbsp;</td>
-									<td colspan = "9" ><%=thread.optString("stacktrace") %></td>
+									<td colspan = "9"><pre><%=thread.optString("stacktrace") %></pre></td>
 								</tr>
 							<%
 							}
