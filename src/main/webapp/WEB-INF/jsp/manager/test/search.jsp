@@ -203,6 +203,24 @@ $(document).ready(function(){
 										</div>
 									</div>
 									<div class="form-group">
+										<label for="query_qm" class="col-sm-2 control-label">QUERY MODIFIER</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" name="qm" placeholder="SO">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="query_rm" class="col-sm-2 control-label">RESULT MODIFIER</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" name="rm" placeholder="SO">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="query_sp" class="col-sm-2 control-label">STORED PROCEDURE</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" name="sp" placeholder="SO">
+										</div>
+									</div>
+									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">USER DATA</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" name="ud" placeholder="UD"></textarea>

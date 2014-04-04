@@ -29,7 +29,8 @@ public class TestController extends AbstractController {
 	public ModelAndView searchResult(HttpSession session, @RequestParam(required = false) String host, @RequestParam String requestUri
 			, @RequestParam String cn, @RequestParam String fl, @RequestParam String se, @RequestParam String ft
 			, @RequestParam String gr, @RequestParam String ra, @RequestParam String ht, @RequestParam String sn
-			, @RequestParam String ln, @RequestParam String so, @RequestParam String timeout, @RequestParam String ud) throws Exception {
+			, @RequestParam String ln, @RequestParam String so, @RequestParam String timeout, @RequestParam String ud
+			, @RequestParam String qm, @RequestParam String rm, @RequestParam String sp) throws Exception {
 		
 		ResponseHttpClient tmpHttpClient = null;
 		try {
@@ -53,6 +54,9 @@ public class TestController extends AbstractController {
 			postMethod.addParameter("so", so.trim());
 			postMethod.addParameter("timeout", timeout.trim());
 			postMethod.addParameter("ud", ud.trim());
+			postMethod.addParameter("qm", qm.trim());
+			postMethod.addParameter("rm", rm.trim());
+			postMethod.addParameter("sp", sp.trim());
 
 			return searchResult(postMethod);
 		} finally {
