@@ -1,5 +1,7 @@
 package org.fastcatsearch.console.web.controller.manager;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.http.client.ClientProtocolException;
@@ -45,7 +47,7 @@ public class AnalysisController extends AbstractController {
 		mav.setViewName("manager/analysis/index");
 		mav.addObject("analysisId", analysisId);
 		mav.addObject("setting",rootElement);
-		logger.debug("rootElement >> {}", rootElement);
+		logger.debug("rootElement {} >> {}", analysisId, rootElement);
 		return mav;
 	}
 	

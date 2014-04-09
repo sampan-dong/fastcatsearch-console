@@ -270,6 +270,7 @@ if(rootElement!=null) {
 								%>		
 										
 								<%
+								boolean hasAnalysisDetailTools = false; //상세분석툴 action이 있는지 여부.
 								if(actionList!=null) {
 								%>		
 								<div class="widget">
@@ -295,6 +296,7 @@ if(rootElement!=null) {
 													String actionClass = action.getAttributeValue("className");
 													String actionMethod = action.getAttributeValue("methods").toUpperCase();
 													String actionUri = action.getAttributeValue("uri");
+													hasAnalysisDetailTools = "/analysis-tools-detail".equals(actionUri);
 													if(actionUri == null){
 														actionUri = "";
 													}else{
@@ -400,12 +402,18 @@ if(rootElement!=null) {
 												<input type="radio" name="type" class="form-control" value="simple" checked> Simple
 											</label>
 										</div>
+										<%
+										if(hasAnalysisDetailTools) {
+										%>
 										&nbsp;
 										<div class="form-group">
 											<label class="radio">
 												<input type="radio" name="type" class="form-control" value="detail"> Detail
 											</label>
 										</div>
+										<%
+										}
+										%>
 										&nbsp;
 										
 										<select name="analyzerId" class="select_flat form-control fcol2-1">
