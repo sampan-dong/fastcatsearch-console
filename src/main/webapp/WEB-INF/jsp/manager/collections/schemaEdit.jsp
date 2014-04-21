@@ -678,7 +678,7 @@ $(document).ready(function(){
 			%>
 			</select></td>
 			<td><input type="text" name="size" class="form-control field-type-size digit"></td>
-			<td><label class="checkbox"><input type="checkbox" value="true" name="store"></label></td>
+			<td><label class="checkbox"><input type="checkbox" value="true" name="store" checked></label></td>
 			<td><label class="checkbox"><input type="checkbox" value="true" name="removeTag"></label></td>
 			<td><label class="checkbox"><input type="checkbox" value="true" name="multiValue"></label></td>
 			<td><input type="text" class="form-control" name="multiValueDelimiter"></td>
