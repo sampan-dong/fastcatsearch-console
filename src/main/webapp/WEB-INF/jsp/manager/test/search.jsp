@@ -17,9 +17,6 @@ $(document).ready(function(){
 	
 	$("#querySearchTest").validate();
 	
-	$("#searchStructuredButton").on("click", function(){
-		$("#structuredSearchTest").submit();
-	});
 	$("#searchQueryButton").on("click", function(){
 		
 		if(! $("#querySearchTest").valid()){
@@ -27,29 +24,16 @@ $(document).ready(function(){
 		}
 		
 		$(this).button('loading');
-		$.ajax({
-			url : "searchQueryResult.html",
-			type: "POST",
-			data : {
-				host: $("#requestHost2").val(),
-				requestUri: $("#requestUri2").val(),
-				queryString: $("#searchQueryText").val()
-			},
-			dataType : "html",
-			success:function(data, textStatus, jqXHR) {
-				try {
-					//console.log("search success.", data);
-					$("#searchResultModalBody").html(data);
-					$("#searchResultModal").modal({show:true, backdrop:'static'});
-				} catch (e) { 
-					alert("Abnormal result "+data);
-				}
-			}, error: function(jqXHR, textStatus, errorThrown) {
-				alert("ERROR" + textStatus + " : " + errorThrown);
-			}, complete: function(){
-				$("#searchQueryButton").button("reset");
-			}
-		});
+		searchQuery(false);
+	});
+	$("#explainQueryButton").on("click", function(){
+		
+		if(! $("#querySearchTest").valid()){
+			return;
+		}
+		
+		$(this).button('loading');
+		searchQuery(true);
 	});
 	
 	$("#clearStructuredButton").on("click", function(){
@@ -61,46 +45,91 @@ $(document).ready(function(){
 	
 	$("#structuredSearchTest").validate();
 	
-	$("#structuredSearchTest").submit(function(e) {
-		if(! $(this).valid()){
+	$("#searchStructuredButton").on("click", function(){
+		
+		if(! $("#structuredSearchTest").valid()){
 			return;
 		}
-		$("#searchStructuredButton").button('loading');
-		var array = $(this).serializeArray();
-		console.log("array > ", array);
-		params = {};
-		//requestUri: $("#requestUri1").val()
 		
-		for(var i=0;i<array.length; i++){
-			var name = array[i].name;
-			var value = array[i].value;
-			console.log("name > ", name, value);	
-			params[name] = value; 
+		$(this).button('loading');
+		var array = $("#structuredSearchTest").serializeArray();
+		searchStructuredQuery(array, false);
+	});
+	$("#explainStructuredButton").on("click", function(){
+		
+		if(! $("#structuredSearchTest").valid()){
+			return;
 		}
 		
-		$.ajax({
-				url : "searchResult.html",
-				type: "POST",
-				data : params,
-				dataType : "html",
-				success:function(data, textStatus, jqXHR) {
-					try {
-						//console.log("search success.", data);
-						$("#searchResultModalBody").html(data);
-						$("#searchResultModal").modal({show:true, backdrop:'static'});
-					} catch (e) { 
-						alert("Abnormal result "+data);
-					}
-				}, error: function(jqXHR, textStatus, errorThrown) {
-					alert("ERROR" + textStatus + " : " + errorThrown);
-				}, complete: function(){
-					$("#searchStructuredButton").button("reset");
-				}
-		});
-		e.preventDefault(); //STOP default page load submit
+		$(this).button('loading');
+		var array = $("#structuredSearchTest").serializeArray();
+		searchStructuredQuery(array, true);
 	});
 	
 });
+function searchStructuredQuery(array, isExplain){
+	console.log("array > ", array);
+	params = {};
+	//requestUri: $("#requestUri1").val()
+	
+	for(var i=0;i<array.length; i++){
+		var name = array[i].name;
+		var value = array[i].value;
+		console.log("name > ", name, value);	
+		params[name] = value; 
+	}
+	if(isExplain) {
+		params['requestExplain'] = true;
+	}
+	
+	$.ajax({
+		url : "searchResult.html",
+		type: "POST",
+		data : params,
+		dataType : "html",
+		success:function(data, textStatus, jqXHR) {
+			try {
+				//console.log("search success.", data);
+				$("#searchResultModalBody").html(data);
+				$("#searchResultModal").modal({show:true, backdrop:'static'});
+			} catch (e) { 
+				alert("Abnormal result "+data);
+			}
+		}, error: function(jqXHR, textStatus, errorThrown) {
+			alert("ERROR" + textStatus + " : " + errorThrown);
+		}, complete: function(){
+			$("#searchStructuredButton").button("reset");
+			$("#explainStructuredButton").button("reset");
+		}
+	});
+}
+function searchQuery(isExplain){
+	$.ajax({
+		url : "searchQueryResult.html",
+		type: "POST",
+		data : {
+			host: $("#requestHost2").val(),
+			requestUri: $("#requestUri2").val(),
+			queryString: $("#searchQueryText").val(),
+			requestExplain: isExplain
+		},
+		dataType : "html",
+		success:function(data, textStatus, jqXHR) {
+			try {
+				//console.log("search success.", data);
+				$("#searchResultModalBody").html(data);
+				$("#searchResultModal").modal({show:true, backdrop:'static'});
+			} catch (e) { 
+				alert("Abnormal result "+data);
+			}
+		}, error: function(jqXHR, textStatus, errorThrown) {
+			alert("ERROR" + textStatus + " : " + errorThrown);
+		}, complete: function(){
+			$("#searchQueryButton").button("reset");
+			$("#explainQueryButton").button("reset");
+		}
+	});
+}
 
 </script>
 </head>
@@ -252,6 +281,7 @@ $(document).ready(function(){
 												<option value="/service/search-single/group.json">Grouping (Single)</option>
 											</select>
 											&nbsp;<a href="javascript:void(0);" id="searchStructuredButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
+											&nbsp;<a href="javascript:void(0);" id="explainStructuredButton" class="btn" data-loading-text="Explaining..">Explain</a>
 											&nbsp;<a href="javascript:void(0);" id="clearStructuredButton" class="btn btn-default">Clear</a>
 										</div>
 									</div>
@@ -289,6 +319,7 @@ $(document).ready(function(){
 												<option value="/service/search-single/group.json">Grouping (Single)</option>
 											</select>
 											&nbsp;<a href="javascript:void(0);" id="searchQueryButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
+											&nbsp;<a href="javascript:void(0);" id="explainQueryButton" class="btn" data-loading-text="Explaining..">Explain</a>
 											&nbsp;<a href="javascript:void(0);" id="clearQueryButton" class="btn btn-default">Clear</a>
 										</div>
 									</div>

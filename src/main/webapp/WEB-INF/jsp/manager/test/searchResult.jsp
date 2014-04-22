@@ -6,7 +6,11 @@
 <%
 	JSONObject searchResult = (JSONObject) request.getAttribute("searchResult");
 	String queryString = (String) request.getAttribute("queryString");
-
+	Boolean isExplain = (Boolean) request.getAttribute("isExplain");
+	if(isExplain == null) {
+		isExplain = false;
+	}
+	
 	JSONArray resultList = null;
 	JSONArray fieldNameList = null;
 	JSONArray groupResultList = null;
@@ -17,6 +21,7 @@
 	int start = 0;
 	String time = "";
 	String errorMessage = null;
+	Object explainObject = null; 
 	if (searchResult != null){
 		status = searchResult.optInt("status");
 		time = searchResult.optString("time");
@@ -29,6 +34,7 @@
 			fieldCount = searchResult.optInt("field_count");
 			fieldNameList = searchResult.optJSONArray("fieldname_list");
 			groupResultList = searchResult.optJSONArray("group_result");
+			explainObject = searchResult.opt("_explain");
 		}else{
 			errorMessage = searchResult.optString("error_msg");
 		}
@@ -82,8 +88,21 @@ function selectRawFieldValue(value){
 						}
 					%>
 				</div>
+				<div class="col-md-12 ">
+					
+				</div>
 			</div>
-			
+			<%
+			if(isExplain) {
+			%>
+			<div class="dataTables_header clearfix">
+				<div class="col-md-12">
+					<textarea style="width:100%"><%=explainObject %></textarea>
+				</div>
+			</div>
+			<%
+			}
+			%>
 			<div style="overflow: scroll; height: 400px;">
 
 				<%
@@ -98,6 +117,11 @@ function selectRawFieldValue(value){
 							%>
 							<th class="dataWidth"><%=fieldNameList.getString(i)%></th>
 							<%
+								}
+								if(isExplain) {
+								%>
+								<th class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())">_EXPLAIN</th>
+								<%	
 								}
 							%>
 						</tr>
@@ -116,6 +140,25 @@ function selectRawFieldValue(value){
 							%>
 							<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())"><%=value%></td>
 							<%
+								}
+							
+								if(isExplain) {
+									JSONArray explainList = row.optJSONArray("_explain");
+									StringBuffer sb = new StringBuffer();
+									for(int k = 0; k < explainList.length(); k++){
+										if(k > 0){
+											sb.append("<br/>");
+										}
+										JSONObject obj = explainList.getJSONObject(k);
+										sb.append(obj.optString("score"));
+										sb.append(" : ");
+										sb.append(obj.optString("id"));
+										sb.append(" : ");
+										sb.append(obj.optString("detail"));
+									}
+									%>
+									<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())"><%=sb.toString() %></td>
+									<%		
 								}
 							%>
 						</tr>

@@ -30,7 +30,17 @@ public class TestController extends AbstractController {
 			, @RequestParam String cn, @RequestParam String fl, @RequestParam String se, @RequestParam String ft
 			, @RequestParam String gr, @RequestParam String ra, @RequestParam String ht, @RequestParam String sn
 			, @RequestParam String ln, @RequestParam String so, @RequestParam String timeout, @RequestParam String ud
-			, @RequestParam String qm, @RequestParam String rm, @RequestParam String sp) throws Exception {
+			, @RequestParam String qm, @RequestParam String rm, @RequestParam String sp, @RequestParam(required = false) String requestExplain) throws Exception {
+
+		boolean isExplain = requestExplain != null && requestExplain.equalsIgnoreCase("true");
+		if(isExplain) {
+			if(!so.contains("explain")){
+				if(so.trim().length() > 0){
+					so += ",";
+				}
+				so += "explain";
+			}
+		}
 		
 		ResponseHttpClient tmpHttpClient = null;
 		try {
@@ -58,7 +68,7 @@ public class TestController extends AbstractController {
 			postMethod.addParameter("rm", rm.trim());
 			postMethod.addParameter("sp", sp.trim());
 
-			return searchResult(postMethod);
+			return searchResult(postMethod, isExplain);
 		} finally {
 			if (tmpHttpClient != null) {
 				tmpHttpClient.close();
@@ -67,7 +77,9 @@ public class TestController extends AbstractController {
 	}
 	
 	@RequestMapping("searchQueryResult")
-	public ModelAndView searchQueryResult(HttpSession session, @RequestParam(required = false) String host, @RequestParam String requestUri, @RequestParam String queryString) throws Exception {
+	public ModelAndView searchQueryResult(HttpSession session, @RequestParam(required = false) String host, @RequestParam String requestUri, @RequestParam String queryString, @RequestParam(required = false) String requestExplain) throws Exception {
+		boolean isExplain = requestExplain != null && requestExplain.equalsIgnoreCase("true");
+		
 		ResponseHttpClient tmpHttpClient = null;
 		try {
 			PostMethod postMethod = null;
@@ -86,6 +98,16 @@ public class TestController extends AbstractController {
 					// key=value
 					String key = pair.substring(0, eq);
 					String value = pair.substring(eq + 1);
+					
+					if(isExplain && key.equalsIgnoreCase("SO")) {
+						if(!value.contains("explain")){
+							if(value.trim().length() > 0){
+								value += ",";
+							}
+							value += "explain";
+						}
+					}
+					
 					try {
 						String decodedValue = URLDecoder.decode(value, "utf-8");
 						postMethod.addParameter(key, decodedValue);
@@ -95,7 +117,7 @@ public class TestController extends AbstractController {
 
 				}
 			}
-			return searchResult(postMethod);
+			return searchResult(postMethod, isExplain);
 		} finally {
 			if (tmpHttpClient != null) {
 				tmpHttpClient.close();
@@ -103,7 +125,7 @@ public class TestController extends AbstractController {
 		}
 	}
 	
-	public ModelAndView searchResult(AbstractMethod method) throws Exception {
+	public ModelAndView searchResult(AbstractMethod method, boolean isExplain) throws Exception {
 		
 		JSONObject jsonObj = method.requestJSON();
 		
@@ -118,7 +140,7 @@ public class TestController extends AbstractController {
 			}else{
 				//fail
 			}
-			
+			logger.debug("jsonObj > {}", jsonObj);
 			mav.addObject("queryString", method.getQueryString());
 			mav.addObject("searchResult", jsonObj);
 			
@@ -126,7 +148,7 @@ public class TestController extends AbstractController {
 			//Exception
 		}
 		
-		
+		mav.addObject("isExplain", isExplain);
 		mav.setViewName("manager/test/searchResult");
 		return mav;
 	}
