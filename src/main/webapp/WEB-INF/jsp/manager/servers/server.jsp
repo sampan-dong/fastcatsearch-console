@@ -259,7 +259,7 @@ function hideAllThreadStacktrace(){
 				</div>
 				<div class="widget">
 					<div class="widget-header">
-						<h4>Running Tasks</h4>
+						<h4>Task Status</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered table-highlight-head">
@@ -267,6 +267,7 @@ function hideAllThreadStacktrace(){
 								<tr>
 									<th>#</th>
 									<th>Task</th>
+									<th>State</th>
 									<th>Elapsed</th>
 									<th>Start</th>
 								</tr>
@@ -282,6 +283,7 @@ function hideAllThreadStacktrace(){
 								<tr>
 									<td><%=inx+1 %></td>
 									<td><%=taskData.optString("summary") %></td>
+									<td><%=taskData.optString("state") %></td>
 									<td><%=taskData.optString("elapsed") %></td>
 									<td><%=taskData.optString("startTime") %></td>
 								</tr>

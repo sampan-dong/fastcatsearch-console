@@ -169,15 +169,21 @@ function startPollingIndexTaskState(collectionId, keepPollingFlag){
 					$("#indexing_scheduled").text("");
 					$("#indexing_start_time").text("");
 					$("#indexing_elapsed").text("");
-//					stopPollingIndexTaskState();
 				} else {
 					$("#indexing_type").text(data.indexingState.indexingType);
-					$("#indexing_state").html("<i class=\"icon-spinner icon-spin icon-large\"></i> " + data.indexingState.state);
+					var icon = "";
+					console.log(data.indexingState.state);
+					if(data.indexingState.state == "RUNNING") {
+						icon = "<i class=\"icon-spinner icon-spin icon-large\"></i> ";
+					}
+					$("#indexing_state").html(icon + data.indexingState.state);
 					$("#indexing_document_count").text(data.indexingState.count);
 					$("#indexing_scheduled").text(data.indexingState.isScheduled);
 					$("#indexing_start_time").text(data.indexingState.startTime);
 					$("#indexing_elapsed").text(data.indexingState.elapsed);
-					
+					if(data.indexingState.state == "SUCCESS" || data.indexingState.state == "FAIL" || data.indexingState.state == "CANCEL") {
+						stopPollingIndexTaskState();
+					}
 				}
 			}
 		});

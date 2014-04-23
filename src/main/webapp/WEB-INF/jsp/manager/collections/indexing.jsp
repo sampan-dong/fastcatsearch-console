@@ -143,7 +143,7 @@ function reloadIndexingSchdulePage(){
 								
 								<div class="widget ">
 									<div class="widget-header">
-										<h4>Running Indexing Tasks</h4>
+										<h4>Indexing Task Status</h4>
 									</div>
 									<div class="widget-content">
 										<span class="checkbox"><label><input type="checkbox" id="autoUpdate"> Auto Update <i class="icon-refresh"></i></label></span>
