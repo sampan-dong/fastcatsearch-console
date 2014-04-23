@@ -290,7 +290,7 @@
 									,node["name"]
 									,node["host"]
 									,node["port"]
-									,(node["active"]==true?"Alive":"Gone")
+									,(node["active"]==true?"Alive":"Stop")
 									,diskPrint
 									,info["jvmCpuUse"]
 									,info["systemCpuUse"]
@@ -350,7 +350,7 @@
 			var table1 = $("#task_info_table");
 			requestProxy("post", {
 					uri:"/management/common/all-task-state",
-					start:0, end:5
+					start:0, end:5, state:"ALL"
 				}, "json", function(taskInfo) {
 					var table2 = $(document.createElement("table"));
 					
@@ -360,8 +360,10 @@
 						appendTableRecord(table2, Array(
 							inx+1
 							,task["summary"]
+							,task["state"]
 							,task["elapsed"]
 							,task["startTime"]
+							,task["endTime"]
 						));
 					}
 					
@@ -572,7 +574,7 @@
 					<div class="col-md-6">
 						<div class="widget box">
 							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> Running Tasks</h4>
+								<h4><i class="icon-reorder"></i> Task Status</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
 										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
@@ -586,8 +588,10 @@
 										<tr>
 											<th>#</th>
 											<th>Task</th>
+											<th>Status</th>
 											<th>Elapsed</th>
 											<th>Start Time</th>
+											<th>End Time</th>
 										</tr>
 									</thead>
 									<tbody>

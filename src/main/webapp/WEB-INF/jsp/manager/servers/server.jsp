@@ -270,6 +270,7 @@ function hideAllThreadStacktrace(){
 									<th>State</th>
 									<th>Elapsed</th>
 									<th>Start</th>
+									<th>End</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -286,6 +287,7 @@ function hideAllThreadStacktrace(){
 									<td><%=taskData.optString("state") %></td>
 									<td><%=taskData.optString("elapsed") %></td>
 									<td><%=taskData.optString("startTime") %></td>
+									<td><%=taskData.optString("endTime") %></td>
 								</tr>
 							<%
 							}
