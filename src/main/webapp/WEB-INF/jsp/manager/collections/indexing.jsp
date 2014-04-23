@@ -155,6 +155,7 @@ function reloadIndexingSchdulePage(){
 													<th>Document Count</th>
 													<th>Schedule</th>
 													<th>Start</th>
+													<th>End</th>
 													<th>Duration</th>
 												</tr>
 											</thead>
@@ -165,6 +166,7 @@ function reloadIndexingSchdulePage(){
 													<td><div id="indexing_document_count"></div></td>
 													<td><div id="indexing_scheduled"></div></td>
 													<td><div id="indexing_start_time"></div></td>
+													<td><div id="indexing_end_time"></div></td>
 													<td><div id="indexing_elapsed"></div></td>
 												</tr>
 											</tbody>

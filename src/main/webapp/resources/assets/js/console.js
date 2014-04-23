@@ -168,6 +168,7 @@ function startPollingIndexTaskState(collectionId, keepPollingFlag){
 					$("#indexing_document_count").text("");
 					$("#indexing_scheduled").text("");
 					$("#indexing_start_time").text("");
+					$("#indexing_end_time").text("");
 					$("#indexing_elapsed").text("");
 				} else {
 					$("#indexing_type").text(data.indexingState.indexingType);
@@ -180,6 +181,7 @@ function startPollingIndexTaskState(collectionId, keepPollingFlag){
 					$("#indexing_document_count").text(data.indexingState.count);
 					$("#indexing_scheduled").text(data.indexingState.isScheduled);
 					$("#indexing_start_time").text(data.indexingState.startTime);
+					$("#indexing_end_time").text(data.indexingState.endTime);
 					$("#indexing_elapsed").text(data.indexingState.elapsed);
 					if(data.indexingState.state == "SUCCESS" || data.indexingState.state == "FAIL" || data.indexingState.state == "CANCEL") {
 						stopPollingIndexTaskState();
