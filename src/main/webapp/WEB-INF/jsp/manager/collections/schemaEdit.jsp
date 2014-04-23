@@ -240,8 +240,8 @@ $(document).ready(function(){
 									
 									<thead>
 										<tr>
-											<th>ID</th>
-											<th>Name</th>
+											<th class="fcol2">ID</th>
+											<th class="fcol2">Name</th>
 											<th class="fcol2">Type</th>
 											<th class="fcol2">Length</th>
 											<th class="fcol1">Store</th>
@@ -445,7 +445,7 @@ $(document).ready(function(){
 								<table id="schema_table_search_indexes" class="table table-bordered table-hover table-highlight-head table-condensed">
 									<thead>
 										<tr>
-											<th class="fcol1-2">ID</th>
+											<th class="fcol2">ID</th>
 											<th class="fcol2">Name</th>
 											<th class="fcol2-1">Field List</th>
 											<th>Index Analyzer</th>
