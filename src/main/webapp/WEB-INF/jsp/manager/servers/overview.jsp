@@ -79,7 +79,7 @@
 								String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
 								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
 							%>
-								<tr>
+								<tr class="<%=active ? "" : "danger"%>">
 									<td><%=i+1 %></td>
 									<td><strong><%=id %></strong></td>
 									<td><%=name %></td>
