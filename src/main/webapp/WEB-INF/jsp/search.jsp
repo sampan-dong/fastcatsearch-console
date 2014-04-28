@@ -142,8 +142,10 @@ function searchPage(uri, pageNo){
 								JSONArray resultList = searchPageResult.getJSONArray("result-list");
 								for(int i = 0 ; i < resultList.length(); i++){
 									JSONObject categoryResult = resultList.getJSONObject(i);
-									JSONObject searchResult = categoryResult.getJSONObject("result");
-									totalCount += searchResult.getInt("total_count");
+									JSONObject searchResult = categoryResult.optJSONObject("result");
+									if(searchResult != null) {
+										totalCount += searchResult.getInt("total_count");
+									}
 								}
 								%>
 								<div class="">
@@ -161,9 +163,11 @@ function searchPage(uri, pageNo){
 									String clickLink = categoryResult.getString("clickLink");
 									JSONArray etcFieldList = categoryResult.getJSONArray("etcField");
 									
-									JSONObject searchResult = categoryResult.getJSONObject("result");
-									
-									JSONArray searchResultList = searchResult.getJSONArray("result");
+									JSONObject searchResult = categoryResult.optJSONObject("result");
+									if(searchResult == null) {
+										continue;
+									}
+									JSONArray searchResultList = searchResult.optJSONArray("result");
 									
 									int categoryTotalCount = searchResult.getInt("total_count");
 									if(categoryTotalCount == 0){
@@ -254,9 +258,11 @@ function searchPage(uri, pageNo){
 										int searchListSize = categoryResult.getInt("searchListSize");
 										JSONArray etcFieldList = categoryResult.getJSONArray("etcField");
 										
-										JSONObject searchResult = categoryResult.getJSONObject("result");
-										
-										JSONArray searchResultList = searchResult.getJSONArray("result");
+										JSONObject searchResult = categoryResult.optJSONObject("result");
+										if(searchResult == null) {
+											continue;
+										}
+										JSONArray searchResultList = searchResult.optJSONArray("result");
 										
 										int categoryTotalCount = searchResult.getInt("total_count");
 										
