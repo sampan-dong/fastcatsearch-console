@@ -2,6 +2,7 @@ package org.fastcatsearch.console.web.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.fastcatsearch.console.web.http.IllegalOperationException;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.GetMethod;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.PostMethod;
@@ -25,9 +26,11 @@ public class AbstractController {
 		logger.error("",ex);
 		
 		ModelAndView model = null;
-		logger.trace("ex : [{}],{}", ex instanceof InvalidAuthenticationException, ex);
 		
-		if(ex instanceof InvalidAuthenticationException) {
+		if(ex instanceof IllegalOperationException) {
+			model = new ModelAndView("illegalOperationError");
+			model.addObject("message", ex.getMessage());
+		} else if(ex instanceof InvalidAuthenticationException) {
 			logger.debug("not authorized!!");
 			model = new ModelAndView("error");
 			model.addObject("message", "Not Authorized User");

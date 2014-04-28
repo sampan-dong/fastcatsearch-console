@@ -1,12 +1,12 @@
 package org.fastcatsearch.console.web.controller;
 
 import java.io.StringWriter;
-import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.fastcatsearch.console.web.http.IllegalOperationException;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.GetMethod;
@@ -216,6 +216,10 @@ public class MainController extends AbstractController {
 					mav.addObject("relateKeywordResult", relateKeywordResult);
 					logger.debug("relateKeywordResult > {}", relateKeywordResult);
 				}
+				
+				mav.addObject("javascript", searchResults.optString("javascript"));
+				mav.addObject("css", searchResults.optString("css"));
+				logger.debug(">>> css > {}", searchResults.optString("css"));
 			}
 		}
 		
@@ -225,9 +229,12 @@ public class MainController extends AbstractController {
 	@RequestMapping("/main/search/config")
 	public ModelAndView searchConfig(HttpSession session) throws Exception {
 		
-		String getDemoSearchConfigURL = "/settings/search-config";
+		String getDemoSearchConfigURL = "/settings/search-config.xml";
 		Document searchConfig = httpGet(session, getDemoSearchConfigURL).requestXML();
-		
+		String error= searchConfig.getRootElement().getChildText("error");
+		if(error != null) {
+			throw new IllegalOperationException(error);
+		}
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("searchConfig", searchConfig);
 		logger.debug("searchConfig >>>> {}", searchConfig);

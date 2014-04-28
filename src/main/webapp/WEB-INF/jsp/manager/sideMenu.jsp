@@ -26,7 +26,7 @@
 			</a>
 				<ul class="sub-menu">
 					<%
-					for(int i=0;i<analysisPluginList.length(); i++){
+					for(int i=0;analysisPluginList != null && i<analysisPluginList.length(); i++){
 						JSONObject pluginObject = analysisPluginList.getJSONObject(i);
 						String id = pluginObject.getString("id");
 						boolean hasDictionary = pluginObject.getBoolean("hasDictionary");
@@ -51,7 +51,7 @@
 				<ul class="sub-menu">
 					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/index.html"/>"> <i class="icon-angle-right"></i> Overview</a></li>
 					<%
-					for(int i=0;i<collectionList.length(); i++){
+					for(int i=0;collectionList != null && i<collectionList.length(); i++){
 						String id = collectionList.getJSONObject(i).getString("id");
 						boolean maybeCurrent = lcatCurrent && id.equals(mcat);
 					%>
@@ -93,7 +93,7 @@
 							class="icon-cogs"></i> Plugin
 					</a></li>
 					<%
-					for(int i=0;i<analysisPluginList.length(); i++){
+					for(int i=0;analysisPluginList != null && i<analysisPluginList.length(); i++){
 						String id = analysisPluginList.getJSONObject(i).getString("id");
 					%>
 					<li class="<%=(lcatCurrent && id.equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/analysis/"/><%=id %>/index.html"> <i
@@ -116,7 +116,7 @@
 							class="icon-dashboard"></i> Overview
 					</a></li>
 					<%
-					for(int i=0;i<serverList.length(); i++){
+					for(int i=0;serverList != null && i<serverList.length(); i++){
 						JSONObject nodeObject = serverList.getJSONObject(i);
 						String id = nodeObject.getString("id");
 						String name = nodeObject.getString("name");

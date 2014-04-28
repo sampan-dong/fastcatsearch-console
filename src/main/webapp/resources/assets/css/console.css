@@ -109,6 +109,9 @@ body.error .buttons { text-align: center; margin-top:30px;}
 body.error .trace {
 	height:200px; border: 1px solid #fff; overflow: scroll; text-align: left; color: #fff;
 }
+body.error .trace_title {
+	color: #fff;
+}
 
 form.searchTest input, form.searchTest textarea, input.largeText {font-size: 18px !important;}
 

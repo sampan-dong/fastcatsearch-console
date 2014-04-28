@@ -17,17 +17,17 @@ public class AuthManagerInterceptor extends AuthMainInterceptor {
 			ResponseHttpClient httpClient = (ResponseHttpClient) request.getSession().getAttribute("httpclient");
 			String getCollectionListURL = "/management/collections/collection-list";
 			JSONObject collectionList = httpClient.httpGet(getCollectionListURL).requestJSON();
-			request.setAttribute("collectionList", collectionList.getJSONArray("collectionList"));
+			request.setAttribute("collectionList", collectionList.optJSONArray("collectionList"));
 			
 			//TODO:json 내용을 체크한다.
 			
 			String getAnalysisPluginListURL = "/management/analysis/plugin-list";
 			JSONObject analysisPluginList = httpClient.httpGet(getAnalysisPluginListURL).requestJSON();
-			request.setAttribute("analysisPluginList", analysisPluginList.getJSONArray("pluginList"));
+			request.setAttribute("analysisPluginList", analysisPluginList.optJSONArray("pluginList"));
 			
 			String getServerListURL = "/management/servers/list";
 			JSONObject serverList = httpClient.httpGet(getServerListURL).requestJSON();
-			request.setAttribute("serverList", serverList.getJSONArray("nodeList"));
+			request.setAttribute("serverList", serverList.optJSONArray("nodeList"));
 			
 			return true;
 		} catch (Exception e) {

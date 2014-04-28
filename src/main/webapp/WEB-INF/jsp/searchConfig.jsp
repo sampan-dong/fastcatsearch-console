@@ -109,6 +109,8 @@ $(document).ready(function(){
 						String relateKeywordUrl = root.getChildText("relate-keyword-url");
 						Element searchCategoryList = root.getChild("search-category-list");
 						List<Element> searchCategoryElList = searchCategoryList.getChildren("search-category");
+						String css = root.getChildText("css");
+						String js = root.getChildText("javascript");
 						%>
 
 						<div class="widget margin-space">
@@ -141,14 +143,6 @@ $(document).ready(function(){
 								<%
 								for(int i = 0; i < searchCategoryElList.size(); i++){
 									Element el = searchCategoryElList.get(i);
-									String etcList = "";
-									List<Element> etcFieldList = el.getChild("etc-field-list").getChildren("etc-field");
-									for(int j = 0; j < etcFieldList.size(); j++){
-										if(etcList.length() > 0){
-											etcList += ", ";
-										}
-										etcList += etcFieldList.get(j).getText();
-									}
 								%>
 								<div class="category-group col-md-12 form-horizontal">
 									<div class="form-group">
@@ -161,36 +155,29 @@ $(document).ready(function(){
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Category ID :</label>
-										<div class="col-md-10"><input type="text" name="categoryId_<%=i %>" class="form-control fcol2 required" value="<%=el.getAttributeValue("id")%>"></div>
+										<div class="col-md-10">
+											<input type="text" name="categoryId_<%=i %>" class="form-control fcol2 required" value="<%=el.getAttributeValue("id")%>">
+										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Search Query :</label>
-										<div class="col-md-10"><textarea rows="3" name="searchQuery_<%=i %>" class="form-control required"><%=el.getChildText("search-query")%></textarea>
-											<div class="help-block">ex) cn=news_kor&fl=title,content:150,regdate,username&se={title:#keyword}</div>
+										<div class="col-md-10">
+											<textarea rows="3" name="searchQuery_<%=i %>" class="form-control required"><%=el.getChildText("search-query")%></textarea>
+											<div class="help-block">ex) cn=news_kor&fl=title,content:150,regdate,username&se={title:#keyword}&ud=keyword:#keyword</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Title Field ID :</label>
-										<div class="col-md-10"><input type="text" name="titleField_<%=i %>" class="form-control fcol2 required" value="<%=el.getChildText("title-field")%>">
-											<div class="help-block">ex) title</div>
+										<label class="col-md-2 control-label">Title Field :</label>
+										<div class="col-md-10">
+											<textarea rows="3" name="titleField_<%=i %>" class="form-control required"><%=el.getChildText("title-field")%></textarea>
+											<div class="help-block">ex) $title</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Body Field ID :</label>
-										<div class="col-md-10"><input type="text" name="bodyField_<%=i %>" class="form-control fcol2 required" value="<%=el.getChildText("body-field")%>">
-											<div class="help-block">ex) content</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-md-2 control-label">ETC Field ID :</label>
-										<div class="col-md-10"><input type="text" name="etcField_<%=i %>" class="form-control" value="<%=etcList%>">
-											<div class="help-block">ex) regdate, username</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-md-2 control-label">Click Link :</label>
-										<div class="col-md-10"><input type="text" name="clickLink_<%=i %>" class="form-control" value="<%=el.getChildText("click-link") %>">
-											<div class="help-block">ex) http://your.domain.com/view?id=#id&user=#username</div>
+										<label class="col-md-2 control-label">Body Field :</label>
+										<div class="col-md-10">
+											<textarea rows="3" name="bodyField_<%=i %>" class="form-control"><%=el.getChildText("body-field")%></textarea>
+											<div class="help-block">ex) $content</div>
 										</div>
 									</div>
 								</div>
@@ -215,7 +202,8 @@ $(document).ready(function(){
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
 										<label class="col-md-2 control-label">URL :</label>
-										<div class="col-md-10"><input type="text" name="relateKeywordURL" class="form-control" value="<%=relateKeywordUrl%>">
+										<div class="col-md-10">
+											<input type="text" name="relateKeywordURL" class="form-control" value="<%=relateKeywordUrl%>">
 											<div class="help-block">ex) http://demo.fastcatsearch.org:8050/service/keyword/relate.json?keyword=#keyword</div>
 										</div>
 										
@@ -232,7 +220,8 @@ $(document).ready(function(){
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
 										<label class="col-md-2 control-label">URL :</label>
-										<div class="col-md-10"><input type="text" name="realtimePopularKeywordURL" class="form-control" value="<%=realtimePopularKeywordUrl%>">
+										<div class="col-md-10">
+											<input type="text" name="realtimePopularKeywordURL" class="form-control" value="<%=realtimePopularKeywordUrl%>">
 											<div class="help-block">ex) http://demo.fastcatsearch.org:8050/service/keyword/popular/rt.json?siteId=total</div>
 										</div>
 									</div>
@@ -240,7 +229,27 @@ $(document).ready(function(){
 							</div>
 						</div>
 						
-						
+						<div class="widget margin-space">
+							<div class="widget-header">
+								<h4>UI Customizing</h4>
+							</div>
+							<div class="widget-content">
+								<div class="col-md-12 form-horizontal">
+									<div class="form-group">
+										<label class="col-md-2 control-label">Stylesheet :</label>
+										<div class="col-md-10">
+											<textarea rows="5" name="css" class="form-control"><%=css != null ? css : ""%></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">Javascript :</label>
+										<div class="col-md-10">
+											<textarea rows="5" name="js" class="form-control"><%=js != null ? js : ""%></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						
 						<div class="form-actions">
 							<button type="submit" class="btn btn-primary fcol2" >Save Changes</button>
