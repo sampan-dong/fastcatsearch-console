@@ -1,5 +1,7 @@
 package org.fastcatsearch.console.web.controller;
 
+import java.io.StringWriter;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.GetMethod;
 import org.jdom2.Document;
 import org.json.JSONObject;
+import org.json.JSONWriter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,34 +48,90 @@ public class MainController extends AbstractController {
 			mav.setViewName("redirect:login.html");
 			return mav;
 		}
-
-		ResponseHttpClient httpClient = new ResponseHttpClient(host);
-		JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("id", userId).addParameter("password", password)
-				.requestJSON();
-		logger.debug("loginResult > {}", loginResult);
-		if (loginResult != null && loginResult.getInt("status") == 0) {
-			// 로그인이 올바를 경우 메인 화면으로 이동한다.
-			
-			ModelAndView mav = new ModelAndView();
-			if(redirect != null && redirect.length() > 0){
-				mav.setViewName("redirect:"+redirect);
-			}else{
-				// 로그인되었다면 바로 start.html로 간다.
-				mav.setViewName("redirect:main/start.html");	
+		
+		try{
+			ResponseHttpClient httpClient = new ResponseHttpClient(host);
+			/*
+			 * 1. check server is alive
+			 * */
+			JSONObject aliveResult = httpClient.httpPost("/service/isAlive")
+					.requestJSON();
+			logger.debug("aliveResult > {}", aliveResult);
+			if(aliveResult == null || !aliveResult.optString("status").equals("ok")) {
+				//서버 상태 불가.
+				ModelAndView mav = new ModelAndView();
+				mav.setViewName("redirect:login.html?e=server is not alive");
+				return mav;
+				
 			}
 			
-			String userName = loginResult.getString("name");
-			session.setAttribute(USERNAME_ID, userName);
-			session.setAttribute(HTTPCLIENT_ID, httpClient);
+			/*
+			 * 2. proceed login action
+			 * */
+			JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("id", userId).addParameter("password", password)
+					.requestJSON();
+			logger.debug("loginResult > {}", loginResult);
+			if (loginResult != null && loginResult.getInt("status") == 0) {
+				// 로그인이 올바를 경우 메인 화면으로 이동한다.
+				
+				ModelAndView mav = new ModelAndView();
+				if(redirect != null && redirect.length() > 0){
+					mav.setViewName("redirect:"+redirect);
+				}else{
+					// 로그인되었다면 바로 start.html로 간다.
+					mav.setViewName("redirect:main/start.html");	
+				}
+				
+				String userName = loginResult.getString("name");
+				session.setAttribute(USERNAME_ID, userName);
+				session.setAttribute(HTTPCLIENT_ID, httpClient);
+				return mav;
+			}
+	
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("login");
 			return mav;
-		}
-
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("login");
-		return mav;
+		} catch (Throwable t) {
+			t.printStackTrace();
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("redirect:login.html?e="+t.toString());
+			return mav;
+		} 
 
 	}
 
+	@RequestMapping(value = "/checkAlive", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String checkAlive(HttpSession session, @RequestParam("host") String host) throws Exception {
+
+		logger.debug("checkAlive {}");
+
+		String message = null;
+		
+		try{
+			ResponseHttpClient httpClient = new ResponseHttpClient(host);
+			/*
+			 * 1. check server is alive
+			 * */
+			JSONObject aliveResult = httpClient.httpPost("/service/isAlive")
+					.requestJSON();
+			logger.debug("aliveResult > {}", aliveResult);
+			if(aliveResult == null || !aliveResult.optString("status").equals("ok")) {
+				//서버 상태 불가.
+				message = "Server is not alive.";
+			}
+		}catch(Throwable t){
+			message = t.toString();
+		}
+		StringWriter w = new StringWriter();
+		JSONWriter result = new JSONWriter(w);
+		result.object();
+		result.key("success").value(message == null);
+		result.key("message").value(message == null ? "" : message);
+		result.endObject();
+		return w.toString();
+	}
+	
 	@RequestMapping("/main/logout")
 	public ModelAndView logout(HttpSession session) throws Exception {
 

@@ -17,7 +17,35 @@ if(redirect == null){
 <script>
 
 $(document).ready(function(){
-	$("#login-form").validate();
+	$("#login-form").validate({
+		onkeyup: function(element) {
+			var element_id = $(element).attr('id');
+			if (this.settings.rules[element_id] && this.settings.rules[element_id].onkeyup != false) {
+				$.validator.defaults.onkeyup.apply(this, arguments);
+			}
+		},
+		rules: {
+			host: {
+				hostAlive: true,
+				onkeyup: false
+            }
+		}
+	});
+	
+	$.validator.addMethod("hostAlive", function(value, element) {
+        var ret = false;
+    	$.ajax({
+    		url : CONTEXT + "/checkAlive.html",
+    		async: false,
+    		dataType : "json",
+    		data : {host: $(element).val() + ""},
+    		type : "POST",
+    		success : function(response) {
+    			ret = response.success; 
+    		}
+    	});
+    	return ret; 
+	}, "Host is not alive.");
 });
 
 </script>
@@ -44,9 +72,9 @@ $(document).ready(function(){
 							<!-- Input Fields -->
 							<div class="form-group">
 								<div class="input-icon">
-									<i class="icon-globe"></i> <input type="text" name="host"
+									<i class="icon-globe"></i> <input type="text" name="host" id="host"
 										class="form-control required" placeholder="Address:Port"
-										autofocus="autofocus" value="localhost:8090"/>
+										autofocus="autofocus" autocomplete=off value="localhost:8090"/>
 								</div>
 							</div>
 							<div class="form-group">
