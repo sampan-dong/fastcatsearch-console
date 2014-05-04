@@ -13,9 +13,8 @@
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 <script>
 $(document).ready(function(){
-	$("a[data-toggle=modal]").css("cursor","pointer");
 	//remove button
-	$("div.modal div.modal-footer button.btn-danger.pull-left ").click(function() {
+	$(".removeBtn").click(function() {
 		var form = $(this).parents("form")[0];
 		form.mode.value="delete";
 		$(form).submit();
@@ -135,7 +134,7 @@ $(document).ready(function(){
 									<td><%=port %></td>
 									<td><%=enabledStatus %></td>
 									<td><%=activeStatus %></td>
-									<td><a data-toggle="modal" data-target="#serverInfoModal_<%=i %>" href="javascript:void(0);">Edit</a></td>
+									<td><a href="#" data-toggle="modal" data-target="#serverInfoModal_<%=i %>">Edit</a></td>
 								</tr>
 							<%
 							}
@@ -207,9 +206,7 @@ $(document).ready(function(){
 									</div>
 								</div>
 								<div class="modal-footer">
-									<% if(!enabled) { %>	
-									<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
-									<% } %>
+									<button type="button" class="removeBtn btn btn-danger pull-left">Remove</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 									<button type="submit" class="btn btn-primary">Save changes</button>
 								</div>
