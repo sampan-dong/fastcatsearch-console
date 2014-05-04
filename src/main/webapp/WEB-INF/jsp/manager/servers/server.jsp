@@ -343,6 +343,7 @@ function hideAllThreadStacktrace(){
 						<table class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
+									<th>Name</th>
 									<th>Document Size</th>
 									<th>Data Path</th>
 									<th>Data Disk Size</th>
@@ -358,6 +359,7 @@ function hideAllThreadStacktrace(){
 									JSONObject indexData = indexStatusList.getJSONObject(inx);
 								%>
 								<tr>
+									<td><%=indexData.optString("collectionName", "") %></td>
 									<td><%=indexData.optInt("documentSize", -1) %></td>
 									<td><%=indexData.optString("dataPath", "-") %></td>
 									<td><%=indexData.optString("diskSize", "-") %></td>

@@ -44,7 +44,7 @@
 	<div class="form-group">
 		<label class="col-md-2 control-label">Reader Class</label>
 		<div class="col-md-10">
-			<select name="readerClass" class="select_flat form-control fcol2 display-inline jdbc-select required">
+			<select name="readerClass" class="select_flat form-control display-inline jdbc-select required">
 				<option value="">::Select::</option>
 				<%
 				for (int readerInx = 0; readerInx < sourceReaderList.length(); readerInx++) {
