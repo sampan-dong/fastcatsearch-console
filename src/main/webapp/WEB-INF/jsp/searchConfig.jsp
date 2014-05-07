@@ -285,27 +285,17 @@ $(document).ready(function(){
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Title Field ID :</label>
-					<div class="col-md-10"><input type="text" name="titleField" class="form-control fcol2 required" value="">
-						<div class="help-block">ex) title</div>
+					<label class="col-md-2 control-label">Title Field :</label>
+					<div class="col-md-10">
+						<textarea rows="3" name="titleField" class="form-control required"></textarea>
+						<div class="help-block">ex) $title</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Body Field ID :</label>
-					<div class="col-md-10"><input type="text" name="bodyField" class="form-control fcol2 required" value="">
-						<div class="help-block">ex) content</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">ETC Field ID :</label>
-					<div class="col-md-10"><input type="text" name="etcField" class="form-control" value="">
-						<div class="help-block">ex) regdate, username</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Click Link :</label>
-					<div class="col-md-10"><input type="text" name="clickLink" class="form-control" value="">
-						<div class="help-block">ex) http://your.domain.com/view?id=#id&user=#username</div>
+					<label class="col-md-2 control-label">Body Field :</label>
+					<div class="col-md-10">
+						<textarea rows="3" name="bodyField" class="form-control"></textarea>
+						<div class="help-block">ex) $content</div>
 					</div>
 				</div>
 			</div>
