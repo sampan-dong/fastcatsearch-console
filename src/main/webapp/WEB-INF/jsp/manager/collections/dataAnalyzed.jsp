@@ -12,10 +12,6 @@ function goIndexDataAnalyzedPage(url, pageNo){
 	loadDataAnalyzedTab("${collectionId}", pageNo, "#tab_analyzed_data");
 }
 
-/* function selectRawFieldValue(value){
-	$("#selectedDataRawPanel").text(value);
-} */
-
 </script>
 <div class="col-md-12">
 	
@@ -31,7 +27,6 @@ function goIndexDataAnalyzedPage(url, pageNo){
 					&nbsp;
 					<%
 					JSONArray indexDataList = indexDataResult.getJSONArray("indexData");
-					JSONArray primaryKeyList = indexDataResult.getJSONArray("primaryKeyList");
 					JSONArray fieldList = indexDataResult.getJSONArray("fieldList");
 					
 					if(indexDataList.length() > 0){
@@ -80,12 +75,12 @@ function goIndexDataAnalyzedPage(url, pageNo){
 						JSONObject indexData = indexDataList.getJSONObject(i);
 						
 						JSONObject primaryKeys = indexData.getJSONObject("primaryKeys");
-						
-						for(int j = 0; j < primaryKeyList.length() ; j++){
+						Iterator iterator = primaryKeys.keys();
+						while(iterator.hasNext()){
 						%>
 						<tr class="active">
 							<%
-							String id = primaryKeyList.getString(j);
+							String id = (String) iterator.next();
 							String value = primaryKeys.getString(id);
 							%>
 							<td>* <%=id %></td>
