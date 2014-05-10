@@ -192,7 +192,7 @@ public class CollectionsController extends AbstractController {
 	}
 	
 	@RequestMapping("/{collectionId}/dataAnalyzed")
-	public ModelAndView dataAnalyzed(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId)
+	public ModelAndView dataAnalyzed(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam(required = false) String pkValue, @RequestParam String targetId)
 			throws Exception {
 
 		int PAGE_SIZE = 10;
@@ -206,13 +206,14 @@ public class CollectionsController extends AbstractController {
 
 		String requestUrl = "/management/collections/index-data-analyzed.json";
 		JSONObject indexData = httpGet(session, requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
-				.addParameter("end", String.valueOf(end)).requestJSON();
+				.addParameter("end", String.valueOf(end)).addParameter("pkValue", pkValue).requestJSON();
 		JSONArray list = indexData.getJSONArray("indexData");
 		int realSize = list.length();
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/dataAnalyzed");
 		mav.addObject("collectionId", collectionId);
+		mav.addObject("pkValue", pkValue);
 		mav.addObject("start", start + 1);
 		mav.addObject("end", start + realSize);
 		mav.addObject("pageNo", pageNo);

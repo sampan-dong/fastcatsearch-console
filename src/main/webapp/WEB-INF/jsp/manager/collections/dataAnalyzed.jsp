@@ -9,20 +9,38 @@ JSONObject indexDataResult = (JSONObject) request.getAttribute("indexDataResult"
 <script>
 
 function goIndexDataAnalyzedPage(url, pageNo){
-	loadDataAnalyzedTab("${collectionId}", pageNo, "#tab_analyzed_data");
+	loadDataAnalyzedTab("${collectionId}", "${pkValue}", pageNo, "#tab_analyzed_data");
 }
 
+$(document).ready(function(){
+	$("#idSearchForm").on("submit", function(e){
+		var pkValue = $(this).find("textarea[name=searchID]").val();
+		pkValue = pkValue.replace(/\n+/g, " ");
+		loadDataAnalyzedTab("${collectionId}", pkValue, 1, "#tab_analyzed_data");
+		e.preventDefault();
+	});
+	$("#idSearchForm").find("textarea[name=searchID]").focus();
+});
 </script>
 <div class="col-md-12">
-	
+	<div class="form-group">
+		<form method="post" id="idSearchForm">
+			<div class="row col-md-12">
+				<div style="float:left; width:600px">
+					<textarea class="form-control" name="searchID" placeholder="ID">${pkValue }</textarea>
+				</div>
+				<div style="float:left;margin-left:10px">
+					<button class="btn btn-sm">Search ID</button>
+				</div>
+			</div>
+		</form>
+	</div>
 	<div class="widget box">
 
 		<div class="widget-content no-padding">
 			<div class="dataTables_header clearfix">
 				<div class="col-md-7 form-inline">
-					<div class="form-group">
-						<input type="text" class="form-control fcol2-1" name="se" placeholder="ID">
-					</div>
+					
 					<div class="form-group">
 					&nbsp;
 					<%
