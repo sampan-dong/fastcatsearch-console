@@ -91,12 +91,15 @@ $(document).ready(function(){
 					<%
 					for( int i = 0 ; i < indexDataList.length() ; i++ ){
 						JSONObject indexData = indexDataList.getJSONObject(i);
+						JSONObject row = indexData.getJSONObject("row");
+						boolean isDeleted = row.getBoolean("isDeleted");
 						
+						String idColor = isDeleted ? "danger" : "success";
 						JSONObject primaryKeys = indexData.getJSONObject("primaryKeys");
 						Iterator iterator = primaryKeys.keys();
 						while(iterator.hasNext()){
 						%>
-						<tr class="active">
+						<tr class="<%=idColor %>">
 							<%
 							String id = (String) iterator.next();
 							String value = primaryKeys.getString(id);
@@ -109,8 +112,6 @@ $(document).ready(function(){
 						}
 						%>
 							<%
-							JSONObject row = indexData.getJSONObject("row");
-							
 							for( int j = 0 ; j < fieldList.length() ; j++ ){
 								String fieldName = fieldList.getString(j);
 								String value = row.getString(fieldName).replaceAll("<", "&lt;").replaceAll(">", "&gt;");

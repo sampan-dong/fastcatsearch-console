@@ -161,7 +161,7 @@ public class CollectionsController extends AbstractController {
 	}
 
 	@RequestMapping("/{collectionId}/dataRaw")
-	public ModelAndView dataRaw(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam String targetId)
+	public ModelAndView dataRaw(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam(required = false) String pkValue, @RequestParam(required = false) String targetId)
 			throws Exception {
 
 		int PAGE_SIZE = 10;
@@ -175,13 +175,14 @@ public class CollectionsController extends AbstractController {
 
 		String requestUrl = "/management/collections/index-data.json";
 		JSONObject indexData = httpGet(session, requestUrl).addParameter("collectionId", collectionId).addParameter("start", String.valueOf(start))
-				.addParameter("end", String.valueOf(end)).requestJSON();
+				.addParameter("end", String.valueOf(end)).addParameter("pkValue", pkValue).requestJSON();
 		JSONArray list = indexData.getJSONArray("indexData");
 		int realSize = list.length();
-
+logger.debug("indexData > {}", indexData);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/dataRaw");
 		mav.addObject("collectionId", collectionId);
+		mav.addObject("pkValue", pkValue);
 		mav.addObject("start", start + 1);
 		mav.addObject("end", start + realSize);
 		mav.addObject("pageNo", pageNo);
@@ -192,7 +193,7 @@ public class CollectionsController extends AbstractController {
 	}
 	
 	@RequestMapping("/{collectionId}/dataAnalyzed")
-	public ModelAndView dataAnalyzed(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam(required = false) String pkValue, @RequestParam String targetId)
+	public ModelAndView dataAnalyzed(HttpSession session, @PathVariable String collectionId, @RequestParam(defaultValue = "1") Integer pageNo, @RequestParam(required = false) String pkValue, @RequestParam(required = false) String targetId)
 			throws Exception {
 
 		int PAGE_SIZE = 10;

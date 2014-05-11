@@ -11,24 +11,43 @@ JSONObject indexDataResult = (JSONObject) request.getAttribute("indexDataResult"
 <script>
 
 function goIndexDataRawPage(url, pageNo){
-	loadDataRawTab("${collectionId}", pageNo, "#tab_raw_data");
+	loadDataRawTab("${collectionId}", "${pkValue}", pageNo, "#tab_raw_data");
 }
 
 function selectRawFieldValue(value){
 	$("#selectedDataRawPanel").text(value);
 }
 
+$(document).ready(function(){
+	$("#idRawSearchForm").on("submit", function(e){
+		var pkValue = $(this).find("textarea[name=searchID]").val();
+		pkValue = pkValue.replace(/\n+/g, " ");
+		loadDataRawTab("${collectionId}", pkValue, 1, "#tab_raw_data");
+		e.preventDefault();
+	});
+	$("#idRawSearchForm").find("textarea[name=searchID]").focus();
+});
+
 </script>
 <div class="col-md-12">
-	
+	<div class="form-group">
+		<form method="post" id="idRawSearchForm">
+			<div class="row col-md-12">
+				<div style="float:left; width:600px">
+					<textarea class="form-control" name="searchID" placeholder="ID">${pkValue }</textarea>
+				</div>
+				<div style="float:left;margin-left:10px">
+					<button class="btn btn-sm">Search ID</button>
+				</div>
+			</div>
+		</form>
+	</div>
 	<div class="widget box">
 
 		<div class="widget-content no-padding">
 			<div class="dataTables_header clearfix">
 				<div class="col-md-7 form-inline">
-					<div class="form-group">
-						<input type="text" class="form-control fcol2-1" name="se" placeholder="ID">
-					</div>
+
 					<div class="form-group">
 					&nbsp;
 					<%
@@ -81,11 +100,12 @@ function selectRawFieldValue(value){
 					<%
 					for( int i = 0 ; i < indexDataList.length() ; i++ ){
 						JSONObject indexData = indexDataList.getJSONObject(i);
+						JSONObject row = indexData.getJSONObject("row");
+						boolean isDeleted = row.getBoolean("isDeleted");
+						String idColor = isDeleted ? "danger" : "";
 					%>
-						<tr>
+						<tr class="<%=idColor %>">
 							<%
-							JSONObject row = indexData.getJSONObject("row");
-							
 							for( int j = 0 ; j < fieldList.length() ; j++ ){
 								String fieldName = fieldList.getString(j);
 								String value = row.getString(fieldName).replaceAll("<", "&lt;").replaceAll(">", "&gt;");

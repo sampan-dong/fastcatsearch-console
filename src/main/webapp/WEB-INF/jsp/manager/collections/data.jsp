@@ -15,9 +15,7 @@ $(document).ready(function(){
 		var targetId = e.target.hash;
 		console.log("targetId > ",targetId);
 		if(targetId == "#tab_raw_data"){
-			loadDataRawTab("${collectionId}", 1, "#tab_raw_data");
-		}else if(targetId == "#tab_search_data"){
-			loadToTab('dataSearch.html', {collectionId: "${collectionId}", targetId: "#tab_search_data"}, "#tab_search_data");
+			loadDataRawTab("${collectionId}", "", 1, "#tab_raw_data");
 		}else if(targetId == "#tab_analyzed_data"){
 			loadToTab('dataAnalyzed.html', {collectionId: "${collectionId}", targetId: "#tab_analyzed_data"}, "#tab_analyzed_data");
 		}else {
@@ -32,7 +30,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	loadDataRawTab("${collectionId}", 1, "#tab_raw_data");
+	loadDataRawTab("${collectionId}", "", 1, "#tab_raw_data");
 });
 </script>
 </head>

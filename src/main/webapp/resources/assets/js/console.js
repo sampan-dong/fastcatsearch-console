@@ -481,9 +481,9 @@ function hideModalSpinner(){
 
 
 /////////////////////////// collection data 
-function loadDataRawTab(collectionId, pageNo, targetId){
-	console.log("loadDataRawTab", collectionId, pageNo, targetId);
-	loadToTab('dataRaw.html', {collectionId: collectionId, pageNo: pageNo, targetId: targetId}, targetId);
+function loadDataRawTab(collectionId, pkValue, pageNo, targetId){
+	console.log("loadDataRawTab>", collectionId, pkValue, pageNo, targetId);
+	loadToTab('dataRaw.html', {collectionId: collectionId, pkValue: pkValue, pageNo: pageNo, targetId: targetId}, targetId);
 }
 
 function loadDataAnalyzedTab(collectionId, pkValue, pageNo, targetId){
