@@ -17,6 +17,11 @@ function goIndexDataRawPage(url, pageNo){
 function selectRawFieldValue(value){
 	$("#selectedDataRawPanel").text(value);
 }
+function selectLine(obj){
+	obj.addClass("checked-background-color");
+	obj.siblings().removeClass("checked-background-color");
+	//console.log(obj.addClass("check-background-color"));
+}
 
 $(document).ready(function(){
 	$("#idRawSearchForm").on("submit", function(e){
@@ -79,18 +84,18 @@ $(document).ready(function(){
 					 </div>
 				</div>
 			</div>
-			<div style="overflow: scroll; height: 400px;">
+			<div style="overflow-x: scroll; height: 420px;">
 
 				<%
 				if(indexDataList.length() > 0){
 				%>
 				<table class="table table-hover table-bordered" style="white-space:nowrap;table-layout:fixed; ">
-					<thead>
+					<thead style="white-space:normal;word-break:break-all">
 						<tr>
 							<%
 							for( int i = 0 ; i < fieldList.length() ; i++ ){
 							%>
-							<th class="dataWidth"><%=fieldList.getString(i) %></th>
+							<th class="dataWidth" style="vertical-align: text-top;"><%=fieldList.getString(i) %></th>
 							<%
 							}
 							%>
@@ -104,7 +109,7 @@ $(document).ready(function(){
 						boolean isDeleted = row.getBoolean("isDeleted");
 						String idColor = isDeleted ? "danger" : "";
 					%>
-						<tr class="<%=idColor %>">
+						<tr class="<%=idColor %>" onclick="javascript:selectLine($(this))">
 							<%
 							for( int j = 0 ; j < fieldList.length() ; j++ ){
 								String fieldName = fieldList.getString(j);

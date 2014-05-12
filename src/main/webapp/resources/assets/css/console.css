@@ -175,3 +175,5 @@ a.transparent,a.transparent:hover {color: #fff}
 .thick-left {border-left : 2px solid #bbb; }
 
 .hide2 {display:none;}
+
+.checked-background-color {background-color: rgba(147, 175, 236, 0.13)};
