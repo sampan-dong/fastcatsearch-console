@@ -234,19 +234,19 @@ function searchQuery(isExplain){
 									<div class="form-group">
 										<label for="query_qm" class="col-sm-2 control-label">QUERY MODIFIER</label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control" name="qm" placeholder="SO">
+											<input type="text" class="form-control" name="qm" placeholder="QM">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="query_rm" class="col-sm-2 control-label">RESULT MODIFIER</label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control" name="rm" placeholder="SO">
+											<input type="text" class="form-control" name="rm" placeholder="RM">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="query_sp" class="col-sm-2 control-label">STORED PROCEDURE</label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control" name="sp" placeholder="SO">
+											<input type="text" class="form-control" name="sp" placeholder="SP">
 										</div>
 									</div>
 									<div class="form-group">
