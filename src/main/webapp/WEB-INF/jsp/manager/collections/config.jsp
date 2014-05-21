@@ -78,6 +78,7 @@ $(document).ready(function(){
 				Element root = document.getRootElement();
 				String collectionName = root.getChildText("name");
 				String indexNode = root.getChildText("index-node");
+				String fullIndexingSegmentSize = root.getChildText("fullIndexingSegmentSize");
 				Element searchNodeList = root.getChild("search-node-list");
 				Element dataNodeList = root.getChild("data-node-list");
 				Element dataPlanConfig = root.getChild("data-plan");
@@ -163,6 +164,10 @@ $(document).ready(function(){
 										<div class="form-group">
 											<label class="col-md-3 control-label">Segment-document-limit :</label>
 											<div class="col-md-9"><input type="text" name="segmentDocumentLimit" class="form-control required digits fcol2" value="<%=dataPlanConfig.getChildText("segment-document-limit") %>"></div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-3 control-label">Full-Indexing Segment-size :</label>
+											<div class="col-md-9"><input type="text" name="fullIndexingSegmentSize" class="form-control required digits fcol2" value="<%=fullIndexingSegmentSize %>"></div>
 										</div>
 									</div>
 								</div>
