@@ -78,7 +78,7 @@ $(document).ready(function(){
 				Element root = document.getRootElement();
 				String collectionName = root.getChildText("name");
 				String indexNode = root.getChildText("index-node");
-				String fullIndexingSegmentSize = root.getChildText("fullIndexingSegmentSize");
+				String fullIndexingSegmentSize = root.getChildText("full-indexing-segment-size");
 				Element searchNodeList = root.getChild("search-node-list");
 				Element dataNodeList = root.getChild("data-node-list");
 				Element dataPlanConfig = root.getChild("data-plan");
