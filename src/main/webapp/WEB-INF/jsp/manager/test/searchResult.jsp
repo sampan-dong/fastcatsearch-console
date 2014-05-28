@@ -102,6 +102,8 @@ function selectRawFieldValue(value){
 			</div>
 			<%
 			}
+			
+			if(resultList != null && fieldNameList != null) {
 			%>
 			<div style="overflow: scroll; height: 400px;">
 
@@ -178,7 +180,9 @@ function selectRawFieldValue(value){
 					<div id="selectedDataRawPanel" class="panel"></div>
 				</div>
 			</div>
-			
+			<%
+			}
+			%>
 		</div>
 	</div>
 	<!-- //wiget -->

@@ -277,8 +277,8 @@ function searchQuery(isExplain){
 											<select name="requestUri" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>
-												<option value="/service/search-single.json">Search (Single)</option>
-												<option value="/service/search-single/group.json">Grouping (Single)</option>
+												<!-- <option value="/service/search-single.json">Search (Single)</option>
+												<option value="/service/search-single/group.json">Grouping (Single)</option> -->
 											</select>
 											&nbsp;<a href="javascript:void(0);" id="searchStructuredButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
 											&nbsp;<a href="javascript:void(0);" id="explainStructuredButton" class="btn" data-loading-text="Explaining..">Explain</a>
@@ -315,8 +315,8 @@ function searchQuery(isExplain){
 											<select id="requestUri2" class="form-control select_flat fcol2-1" >
 												<option value="/service/search.json">Search</option>
 												<option value="/service/search/group.json">Grouping</option>
-												<option value="/service/search-single.json">Search (Single)</option>
-												<option value="/service/search-single/group.json">Grouping (Single)</option>
+												<!-- <option value="/service/search-single.json">Search (Single)</option>
+												<option value="/service/search-single/group.json">Grouping (Single)</option> -->
 											</select>
 											&nbsp;<a href="javascript:void(0);" id="searchQueryButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
 											&nbsp;<a href="javascript:void(0);" id="explainQueryButton" class="btn" data-loading-text="Explaining..">Explain</a>
