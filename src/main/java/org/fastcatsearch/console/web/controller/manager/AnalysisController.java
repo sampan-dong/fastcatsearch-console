@@ -54,8 +54,8 @@ public class AnalysisController extends AbstractController {
 	
 	
 	@RequestMapping("/{analysisId}/analyzeTools")
-	public ModelAndView analyzeTools(HttpSession session, @PathVariable String analysisId, @RequestParam String type, @RequestParam String analyzerId, @RequestParam String queryWords) throws Exception {
-		
+	public ModelAndView analyzeTools(HttpSession session, @PathVariable String analysisId, @RequestParam String type, @RequestParam(required=false) String isForQuery, @RequestParam String analyzerId, @RequestParam String queryWords) throws Exception {
+		System.out.println("isForQuery . "+ isForQuery);
 		String getAnalysisToolsURL = null;
 		
 		JSONObject jsonObj = null;
@@ -63,7 +63,10 @@ public class AnalysisController extends AbstractController {
 			if("detail".equalsIgnoreCase(type)){
 				getAnalysisToolsURL = "/_plugin/"+analysisId+"/analysis-tools-detail.json";
 				try{
-					jsonObj = httpPost(session, getAnalysisToolsURL).addParameter("analyzerId", analyzerId).addParameter("queryWords", queryWords).requestJSON();
+					jsonObj = httpPost(session, getAnalysisToolsURL)
+							.addParameter("analyzerId", analyzerId)
+							.addParameter("queryWords", queryWords)
+							.addParameter("forQuery", isForQuery).requestJSON();
 				}catch(ClientProtocolException e){
 					jsonObj = AnalyzeToolsDetailNotImplementedResult;
 					jsonObj.put("query", queryWords);
@@ -73,7 +76,9 @@ public class AnalysisController extends AbstractController {
 				jsonObj = httpPost(session, getAnalysisToolsURL)
 						.addParameter("pluginId", analysisId)
 						.addParameter("analyzerId", analyzerId)
-						.addParameter("queryWords", queryWords).requestJSON();
+						.addParameter("queryWords", queryWords)
+						.addParameter("forQuery", isForQuery).requestJSON();
+				
 			}
 		}
 		ModelAndView mav = new ModelAndView();

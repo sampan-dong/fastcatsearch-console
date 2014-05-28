@@ -393,7 +393,7 @@ if(rootElement!=null) {
 									
 									<div class="form-group">
 										<label for="words" class="control-label">Query Words:</label>
-										<input type="text" class="form-control required largeText" name="queryWords" placeholder="Query Words" value="Sandisk Extream 원조교제 Z80 USB 16gb 가격비교"/>
+										<input type="text" class="form-control required largeText" name="queryWords" placeholder="Query Words" value="Sandisk Extream Z80 USB 16gb"/>
 									</div>
 									
 									<div class="form-inline">
@@ -415,7 +415,12 @@ if(rootElement!=null) {
 										}
 										%>
 										&nbsp;
-										
+										<div class="form-group">
+											<label class="checkbox">
+												<input type="checkbox" name="isForQuery" class="" value="true" > For Query
+											</label>
+										</div>
+										&nbsp;
 										<select name="analyzerId" class="select_flat form-control fcol2-1">
 											<%
 											for(int rowInx=0;rowInx<analyzerList.size();rowInx++) {
