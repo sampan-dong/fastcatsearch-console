@@ -9,7 +9,7 @@ function br2nl(str){
 }
 
 function toSafeString(str){
-	return $.trim(str).replace(/'/gi, "").replace(/"/gi, "").replace(/\\/gi, "");
+	return $.trim(str).replace(/'/gi, "\'").replace(/"/gi, "\"").replace(/\\/gi, "");
 }
 
 (function($){
