@@ -101,28 +101,29 @@ function loadJdbcList(defaultId) {
 			uri:"/management/collections/jdbc-source.xml",dataType:"xml"
 		}, "xml", function(data) {
 			var jdbcList = $(data).find("jdbc-source");
-			
-			var options = selectObj[0].options;
-			for(var optInx=options.length;optInx >=0;optInx--) {
-				options[optInx]=null;
-			}
-			option = document.createElement("option");
-			option.value = "";
-			option.text = ":: Select ::";
-			options.add(option);
-			for(var jdbcInx=0;jdbcInx<jdbcList.length;jdbcInx++) {
-				var element = $(jdbcList[jdbcInx]);
-				var option = document.createElement("option");
-				option.value = element.attr("id");
-				if(option.value == defaultId){
-					option.selected = true;
+			for(var sourceInx=0;sourceInx<selectObj.length;sourceInx++) {
+				var options = selectObj[sourceInx].options;
+				for(var optInx=options.length;optInx >=0;optInx--) {
+					options[optInx]=null;
 				}
-				if(element.attr("url").length <= 50) {
-					option.text = element.attr("name") + " - " + element.attr("url");
-				}else{
-					option.text = element.attr("name") + " - " + element.attr("url").substring(0, 50) + "..";
-				}
+				option = document.createElement("option");
+				option.value = "";
+				option.text = ":: Select ::";
 				options.add(option);
+				for(var jdbcInx=0;jdbcInx<jdbcList.length;jdbcInx++) {
+					var element = $(jdbcList[jdbcInx]);
+					var option = document.createElement("option");
+					option.value = element.attr("id");
+					if(option.value == defaultId){
+						option.selected = true;
+					}
+					if(element.attr("url").length <= 50) {
+						option.text = element.attr("name") + " - " + element.attr("url");
+					}else{
+						option.text = element.attr("name") + " - " + element.attr("url").substring(0, 50) + "..";
+					}
+					options.add(option);
+				}
 			}
 		});
 	}
