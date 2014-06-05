@@ -140,7 +140,7 @@ public class TestController extends AbstractController {
 			}else{
 				//fail
 			}
-			logger.debug("jsonObj > {}", jsonObj);
+//			logger.debug("jsonObj > {}", jsonObj);
 			mav.addObject("queryString", method.getQueryString());
 			mav.addObject("searchResult", jsonObj);
 			
