@@ -50,6 +50,9 @@
 function selectRawFieldValue(value){
 	$("#selectedDataRawPanel").text(value);
 }
+function toggleJsonFormat() {
+	$("#rawResult").toggle();
+}
 </script>
 <div class="col-md-12">
 	<%-- <%=searchResult %> --%>
@@ -87,22 +90,19 @@ function selectRawFieldValue(value){
 					<%
 						}
 					%>
+					<span class="pull-right"><a href="javascript:toggleJsonFormat()">JSON Format</a></span>
 				</div>
 				<div class="col-md-12 ">
 					
 				</div>
 			</div>
-			<%
-			if(isExplain) {
-			%>
-			<div class="dataTables_header clearfix">
+			
+			<div id="rawResult" class="dataTables_header clearfix hide2" >
 				<div class="col-md-12">
-					<textarea style="width:100%"><%=explainObject %></textarea>
+					<textarea style="width:100%; height:400px"><%=searchResult.toString(4) %></textarea>
 				</div>
 			</div>
 			<%
-			}
-			
 			if(resultList != null && fieldNameList != null) {
 			%>
 			<div style="overflow: scroll; height: 400px;">
