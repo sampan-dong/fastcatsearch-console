@@ -48,7 +48,7 @@
 <script>
 
 function selectRawFieldValue(value){
-	$("#selectedDataRawPanel").text(value);
+	$("#selectedDataRawPanel").html(value);
 }
 function toggleJsonFormat() {
 	$("#rawResult").toggle();
@@ -122,7 +122,7 @@ function toggleJsonFormat() {
 								}
 								if(isExplain) {
 								%>
-								<th class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())">_EXPLAIN</th>
+								<th class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).html())">_EXPLAIN</th>
 								<%	
 								}
 							%>
@@ -140,7 +140,7 @@ function toggleJsonFormat() {
 									String fieldName = fieldNameList.getString(j);
 									String value = row.getString(fieldName).replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 							%>
-							<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())"><%=value%></td>
+							<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).html())"><%=value%></td>
 							<%
 								}
 							
@@ -159,7 +159,7 @@ function toggleJsonFormat() {
 										sb.append(obj.optString("detail"));
 									}
 									%>
-									<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).text())"><%=sb.toString() %></td>
+									<td class="dataWidth" style="overflow:hidden; cursor:pointer" onclick="javascript:selectRawFieldValue($(this).html())"><%=sb.toString() %></td>
 									<%		
 								}
 							%>
