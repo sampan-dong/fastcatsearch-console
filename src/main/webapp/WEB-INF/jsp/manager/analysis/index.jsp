@@ -417,7 +417,7 @@ if(rootElement!=null) {
 										&nbsp;
 										<div class="form-group">
 											<label class="checkbox">
-												<input type="checkbox" name="isForQuery" class="" value="true" > For Query
+												<input type="checkbox" name="isForQuery" class="" value="true" checked > For Query
 											</label>
 										</div>
 										&nbsp;
