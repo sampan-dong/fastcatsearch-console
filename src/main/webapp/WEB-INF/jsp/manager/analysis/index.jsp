@@ -292,16 +292,17 @@ if(rootElement!=null) {
 												for(int rowInx=0;rowInx<actionList.size();rowInx++) {
 												%>
 													<%
-													Element action = actionList.get(rowInx);
-													String actionClass = action.getAttributeValue("className");
-													String actionMethod = action.getAttributeValue("methods").toUpperCase();
-													String actionUri = action.getAttributeValue("uri");
-													hasAnalysisDetailTools = "/analysis-tools-detail".equals(actionUri);
-													if(actionUri == null){
-														actionUri = "";
-													}else{
-														actionUri = "/_plugin/" + analysisId + actionUri;
-													}
+													try {
+														Element action = actionList.get(rowInx);
+														String actionClass = action.getAttributeValue("className");
+														String actionMethod = action.getAttributeValue("methods").toUpperCase();
+														String actionUri = action.getAttributeValue("uri");
+														hasAnalysisDetailTools = "/analysis-tools-detail".equals(actionUri);
+														if(actionUri == null){
+															actionUri = "";
+														}else{
+															actionUri = "/_plugin/" + analysisId + actionUri;
+														}
 													%>
 													<tr>
 														<td><%=rowInx+1 %></td>
@@ -309,6 +310,9 @@ if(rootElement!=null) {
 														<td><%=actionMethod %></td>
 														<td><i><%=actionClass %></i></td>
 													</tr>
+													<%
+													} catch (Exception e) { }
+													%>
 												<%
 												}
 												%>
