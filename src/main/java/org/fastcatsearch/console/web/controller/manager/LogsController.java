@@ -39,7 +39,7 @@ public class LogsController extends AbstractController {
 					.addParameter("start", String.valueOf(start))
 					.addParameter("end", String.valueOf(end))
 					.requestJSON();
-		logger.debug("notificationData >> {}",notificationData);
+//		logger.debug("notificationData >> {}",notificationData);
 		JSONArray list = notificationData.getJSONArray("notifications");
 		int realSize = list.length();
 		
@@ -99,7 +99,7 @@ public class LogsController extends AbstractController {
 					.addParameter("start", String.valueOf(start))
 					.addParameter("end", String.valueOf(end))
 					.requestJSON();
-		logger.debug("exceptionData >> {}",exceptionData);
+//		logger.debug("exceptionData >> {}",exceptionData);
 		JSONArray list = exceptionData.getJSONArray("exceptions");
 		int realSize = list.length();
 		
