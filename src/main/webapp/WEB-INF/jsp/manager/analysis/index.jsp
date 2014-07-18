@@ -290,29 +290,26 @@ if(rootElement!=null) {
 											<tbody>
 												<%
 												for(int rowInx=0;rowInx<actionList.size();rowInx++) {
-												%>
-													<%
-													try {
-														Element action = actionList.get(rowInx);
-														String actionClass = action.getAttributeValue("className");
-														String actionMethod = action.getAttributeValue("methods").toUpperCase();
-														String actionUri = action.getAttributeValue("uri");
-														hasAnalysisDetailTools = "/analysis-tools-detail".equals(actionUri);
-														if(actionUri == null){
-															actionUri = "";
-														}else{
-															actionUri = "/_plugin/" + analysisId + actionUri;
-														}
+													Element action = actionList.get(rowInx);
+													String actionClass = action.getAttributeValue("className");
+													String methods = action.getAttributeValue("methods");
+													String actionMethod = methods != null ? methods.toUpperCase() : "";
+													String actionUri = action.getAttributeValue("uri");
+													hasAnalysisDetailTools = "/analysis-tools-detail".equals(actionUri);
+													String cssClass = "";
+													if(actionUri == null){
+														actionUri = "[Not Available]";
+														cssClass = "danger";
+													}else{
+														actionUri = "/_plugin/" + analysisId + actionUri;
+													}
 													%>
-													<tr>
+													<tr class="<%=cssClass %>">
 														<td><%=rowInx+1 %></td>
 														<td><%=actionUri %></td>
 														<td><%=actionMethod %></td>
 														<td><i><%=actionClass %></i></td>
 													</tr>
-													<%
-													} catch (Exception e) { }
-													%>
 												<%
 												}
 												%>
