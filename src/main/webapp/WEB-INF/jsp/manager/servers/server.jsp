@@ -13,6 +13,7 @@
 	JSONObject pluginStatus = (JSONObject) request.getAttribute("pluginStatus");
 	JSONObject moduleStatus = (JSONObject) request.getAttribute("moduleStatus");
 	JSONObject threadStatus = (JSONObject) request.getAttribute("threadStatus");
+	JSONObject runningJobList = (JSONObject) request.getAttribute("runningJobList");
 	String nodeId = (String) request.getAttribute("nodeId");
 	String[] serviceClasses = (String[]) request.getAttribute("serviceClasses");
 	String nodeName = "";
@@ -36,6 +37,7 @@
 div#nodeStatus table td a { cursor:pointer; }
 div#moduleStatus table td a { cursor:pointer; }
 .stacktrace {display:none;}
+.jobArgument {display:none;}
 </style>
 <script>
 $(document).ready(function(){
@@ -110,6 +112,22 @@ function hideAllThreadStacktrace(){
 		$(element).hide();
 	});
 }
+
+function toggleJob(jobId){
+	var el = $("#job-"+jobId);
+	el.toggle();
+}
+
+function showAllJobArgs(){
+	$("#job-list").find(".jobArgument").each(function( index, element ) {
+		$(element).show();
+	});
+}
+function hideAllJobArgs(){
+	$("#job-list").find(".jobArgument").each(function( index, element ) {
+		$(element).hide();
+	});
+}
 </script>
 </head>
 <body>
@@ -177,7 +195,7 @@ function hideAllThreadStacktrace(){
 								String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
 								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
 								%>
-								<tr>
+								<tr class="<%=active ? "" : "danger"%>">
 									<td><strong><%=id %></strong></td>
 									<td><%=name %></td>
 									<td><%=host %></td>
@@ -538,6 +556,63 @@ function hideAllThreadStacktrace(){
 						</div>
 					</div>
 				</div>
+				
+				
+				
+				<div class="widget">
+					<div class="widget-header">
+						<h4>Running Jobs</h4>
+					</div>
+					<div class="widget-content">
+						<p>Job Size : <%=runningJobList.optInt("size", 0) %>
+						&nbsp;&nbsp;&nbsp;<a href="javascript:showAllJobArgs();" class="show-link">Show all job arguments</a>
+						&nbsp; | &nbsp;&nbsp;<a href="javascript:hideAllJobArgs();" class="show-link">Collapse all job arguments</a>
+						</p>
+						<div style="height:400px; overflow-y:scroll">
+						<table id="job-list" class="table table-hover table-bordered table-highlight-head">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Job ID</th>
+									<th>ClassName</th>
+									<th>Schedule</th>
+									<th>HasResult</th>
+									<th>Start Time</th>
+									<th>&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+							<%
+							JSONArray jobList = runningJobList.optJSONArray("list");
+							for(int inx=0; jobList!=null && inx < jobList.length(); inx++) {
+							%>
+								<%
+								JSONObject job = jobList.optJSONObject(inx);
+								String args = job.optString("args");
+								%>
+								<tr>
+									<td><%=inx + 1 %></td>
+									<td><%=job.optInt("jobId") %></td>
+									<td><%=job.optString("className") %></td>
+									<td><%=job.optBoolean("isScheduled", false) ? "Scheduled" : "Not Scheduled" %></td>
+									<td><%=job.optBoolean("noResult", false) ? "No result" : "Has result" %></td>
+									<td><%=job.optString("startTime") %></td>
+									<td><a href="javascript:toggleJob(<%=job.optInt("jobId") %>)">Argument</a></td>
+								</tr>
+								<tr id="job-<%=job.optInt("jobId") %>" class="jobArgument">
+									<td>&nbsp;</td>
+									<td colspan = "7"><pre><%=args != null && args.length() > 0 ? args : "[Empty]" %></pre></td>
+								</tr>
+							<%
+							}
+							%>
+							</tbody>
+						</table>
+						</div>
+					</div>
+				</div>
+				
+				
 				<%
 				}//system is active
 				%>
