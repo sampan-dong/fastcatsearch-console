@@ -28,7 +28,7 @@ public class TestController extends AbstractController {
 	@RequestMapping("searchResult")
 	public ModelAndView searchResult(HttpSession session, @RequestParam(required = false) String host, @RequestParam String requestUri
 			, @RequestParam String cn, @RequestParam String fl, @RequestParam String se, @RequestParam String ft
-			, @RequestParam String gr, @RequestParam String ra, @RequestParam String ht, @RequestParam String sn
+			, @RequestParam String gr, @RequestParam String ra, @RequestParam(required = false) String bd, @RequestParam String ht, @RequestParam String sn
 			, @RequestParam String ln, @RequestParam String so, @RequestParam String timeout, @RequestParam String ud
 			, @RequestParam String qm, @RequestParam String rm, @RequestParam String sp, @RequestParam(required = false) String requestExplain) throws Exception {
 
@@ -58,6 +58,7 @@ public class TestController extends AbstractController {
 			postMethod.addParameter("ft", ft.trim());
 			postMethod.addParameter("gr", gr.trim());
 			postMethod.addParameter("ra", ra.trim());
+			postMethod.addParameter("bd", bd.trim());
 			postMethod.addParameter("ht", ht.trim());
 			postMethod.addParameter("sn", sn.trim());
 			postMethod.addParameter("ln", ln.trim());

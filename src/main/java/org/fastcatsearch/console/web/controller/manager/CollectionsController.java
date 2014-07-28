@@ -123,7 +123,7 @@ public class CollectionsController extends AbstractController {
 		}
 		
 		String jsonSchemaString = root.toString();
-		logger.debug("jsonSchemaString > {}", jsonSchemaString);
+//		logger.debug("jsonSchemaString > {}", jsonSchemaString);
 
 		String requestUrl = "/management/collections/schema/update.json";
 		JSONObject object = httpPost(session, requestUrl).addParameter("collectionId", collectionId)
@@ -178,7 +178,7 @@ public class CollectionsController extends AbstractController {
 				.addParameter("end", String.valueOf(end)).addParameter("pkValue", pkValue).requestJSON();
 		JSONArray list = indexData.getJSONArray("indexData");
 		int realSize = list.length();
-logger.debug("indexData > {}", indexData);
+//		logger.debug("indexData > {}", indexData);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/dataRaw");
 		mav.addObject("collectionId", collectionId);
@@ -234,14 +234,14 @@ logger.debug("indexData > {}", indexData);
 
 		String requestUrl = "/management/collections/index-data-status.json";
 		JSONObject indexDataStatus = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
-		logger.debug("indexDataStatus >> {}", indexDataStatus);
+//		logger.debug("indexDataStatus >> {}", indexDataStatus);
 
 		requestUrl = "/service/search.json";
 		JSONObject searchResult = httpGet(session, requestUrl).addParameter("cn", collectionId).addParameter("fl", "Title")
 				// FIXME
 				.addParameter("se", se).addParameter("ft", ft).addParameter("gr", gr).addParameter("sn", String.valueOf(start)).addParameter("ln", String.valueOf(PAGE_SIZE))
 				.requestJSON();
-		logger.debug("searchResult >> {}", searchResult);
+//		logger.debug("searchResult >> {}", searchResult);
 		JSONArray list = searchResult.getJSONArray("result");
 		int realSize = list.length();
 		// TODO group_result.group_list
@@ -280,10 +280,10 @@ logger.debug("indexData > {}", indexData);
 		List<Element> indexingList = null;
 		final String[] types = {"full","add"};
 		for (int typeInx = 0; typeInx < 2; typeInx++) {
-			logger.debug("datasource - {}-indexing", types[typeInx]);
+//			logger.debug("datasource - {}-indexing", types[typeInx]);
 			indexingList = indexingRoot.getChild(types[typeInx]+"-indexing").getChildren();
 			//소스리더가 여럿 있는 경우가 있다..
-			logger.debug("indexing list : {}", indexingList);
+//			logger.debug("indexing list : {}", indexingList);
 			for (int sourceInx = 0; sourceInx < indexingList.size(); sourceInx++) {
 				Element indexingSource = indexingList.get(sourceInx);
 				String readerClass = "";
@@ -357,7 +357,7 @@ logger.debug("indexData > {}", indexData);
 		Element indexingRoot = datasource.getRootElement();
 		List<Element> indexingList = null;
 		
-		logger.debug("datasource - {}-indexing", indexType);
+//		logger.debug("datasource - {}-indexing", indexType);
 		Element indexingListNode = indexingRoot.getChild(indexType+"-indexing");
 		Map<String, String> parameterValues = new HashMap<String, String>();
 		JSONObject readerObject = null;
@@ -372,7 +372,7 @@ logger.debug("indexData > {}", indexData);
 		
 		if(indexingListNode!=null) {
 			indexingList = indexingListNode.getChildren();
-			logger.debug("indexing list : {} / {}:{}", indexingList, sourceIndex, indexingList.size());
+//			logger.debug("indexing list : {} / {}:{}", indexingList, sourceIndex, indexingList.size());
 			if (sourceIndex >= 0 && sourceIndex < indexingList.size()) {
 				Element indexingSource = indexingList.get(sourceIndex);
 				String reader = "";
@@ -442,11 +442,11 @@ logger.debug("indexData > {}", indexData);
 		} catch (Exception e) {
 			logger.error("", e);
 		}
-		logger.debug("indexingStatus >> {}", indexingStatus);
+//		logger.debug("indexingStatus >> {}", indexingStatus);
 
 		requestUrl = "/management/collections/indexing-result.json";
 		JSONObject indexingResult = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestJSON();
-		logger.debug("indexingResult >> {}", indexingResult);
+//		logger.debug("indexingResult >> {}", indexingResult);
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/indexingStatus");
@@ -460,7 +460,7 @@ logger.debug("indexData > {}", indexData);
 	public ModelAndView indexingSchedule(HttpSession session, @PathVariable String collectionId) throws Exception {
 		String requestUrl = "/management/collections/indexing-schedule.xml";
 		Document indexingSchedule = httpGet(session, requestUrl).addParameter("collectionId", collectionId).requestXML();
-		logger.debug("indexingSchedule >> {}", indexingSchedule);
+//		logger.debug("indexingSchedule >> {}", indexingSchedule);
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/indexingSchedule");
@@ -505,7 +505,7 @@ logger.debug("indexData > {}", indexData);
 		} catch (Exception e) {
 			logger.error("", e);
 		}
-		logger.debug("indexingManagementStatus >> {}", indexingManagementStatus);
+//		logger.debug("indexingManagementStatus >> {}", indexingManagementStatus);
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("manager/collections/indexingManagement");

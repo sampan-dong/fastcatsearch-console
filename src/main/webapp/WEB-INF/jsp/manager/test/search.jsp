@@ -208,6 +208,12 @@ function searchQuery(isExplain){
 										</div>
 									</div>
 									<div class="form-group">
+										<label for="query_se" class="col-sm-2 control-label">BUNDLE</label>
+										<div class="col-sm-10">
+											<textarea class="form-control" name="bd" placeholder="BD"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
 										<label for="query_se" class="col-sm-2 control-label">START</label>
 										<div class="col-sm-2">
 											<input type="text" class="form-control required digits" name="sn" placeholder="SN" value="1">
