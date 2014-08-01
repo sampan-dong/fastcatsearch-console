@@ -180,6 +180,13 @@ $(document).ready(function(){
 											<div class="help-block">ex) $content</div>
 										</div>
 									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">Bundle Field :</label>
+										<div class="col-md-10">
+											<textarea rows="3" name="bundleField_<%=i %>" class="form-control"><%=el.getChildText("bundle-field")%></textarea>
+											<div class="help-block">ex) $title - $content</div>
+										</div>
+									</div>
 								</div>
 								<%
 								}
@@ -296,6 +303,13 @@ $(document).ready(function(){
 					<div class="col-md-10">
 						<textarea rows="3" name="bodyField" class="form-control"></textarea>
 						<div class="help-block">ex) $content</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Bundle Field :</label>
+					<div class="col-md-10">
+						<textarea rows="3" name="bundleField" class="form-control"></textarea>
+						<div class="help-block">ex) $title - $content</div>
 					</div>
 				</div>
 			</div>

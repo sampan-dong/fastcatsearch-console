@@ -187,6 +187,21 @@ function searchPage(uri, pageNo){
 											<li>
 												<div class="_title"><%=item.optString("title") %></div>
 												<div class="_body"><%=item.optString("body") %></div>
+												<div class="_bundles">
+													<%
+													JSONArray bundleList = item.optJSONArray("bundle");
+													if(bundleList != null) {
+													%><ul><%
+													for(int k = 0; k < bundleList.length(); k++) {
+													%>
+														<li><%=bundleList.optString(k) %></li>
+													<%
+													}
+													%></ul><%
+													}
+													%>
+													
+												</div>
 											</li>
 											<%
 											}
@@ -244,6 +259,21 @@ function searchPage(uri, pageNo){
 										<li>
 											<div class="_title"><%=item.optString("title") %></div>
 											<div class="_body"><%=item.optString("body") %></div>
+											<div class="_bundles">
+												<%
+												JSONArray bundleList = item.optJSONArray("bundle");
+												if(bundleList != null) {
+												%><ul><%
+												for(int k = 0; k < bundleList.length(); k++) {
+												%>
+													<li><%=bundleList.optString(k) %></li>
+												<%
+												}
+												%></ul><%
+												}
+												%>
+												
+											</div>
 										</li>
 										<%
 										}
