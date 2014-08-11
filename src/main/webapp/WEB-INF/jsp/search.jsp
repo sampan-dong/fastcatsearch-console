@@ -183,8 +183,16 @@ function searchPage(uri, pageNo){
 											<%
 											for(int j = 0; j < searchResultList.length(); j++) {
 												JSONObject item = searchResultList.getJSONObject(j);
+												String thumbnailString = item.optString("thumbnail");
 											%>
 											<li>
+												<%
+												if(thumbnailString != null) {
+												%>
+												<div class="_thumbnail"><%=thumbnailString %></div>
+												<%
+												}
+												%>
 												<div class="_title"><%=item.optString("title") %></div>
 												<div class="_body"><%=item.optString("body") %></div>
 												<div class="_bundles">

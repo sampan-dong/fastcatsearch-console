@@ -6,7 +6,15 @@
 <%
 Document searchConfig = (Document) request.getAttribute("searchConfig");
 %>
-
+<%!
+String getString(String str) {
+	if(str == null) {
+		return "";
+	}else{
+		return str;
+	}
+}
+%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <link rel="stylesheet" href="${contextPath}/resources/assets/css/search.css">	
 <c:import url="inc/common.jsp" />
@@ -167,23 +175,30 @@ $(document).ready(function(){
 										</div>
 									</div>
 									<div class="form-group">
+										<label class="col-md-2 control-label">Thumbnail Field :</label>
+										<div class="col-md-10">
+											<textarea rows="3" name="thumbnailField_<%=i %>" class="form-control"><%=getString(el.getChildText("thumbnail-field")) %></textarea>
+											<div class="help-block">ex) &lt;img src="path/to/img/$img_src" /&gt;</div>
+										</div>
+									</div>
+									<div class="form-group">
 										<label class="col-md-2 control-label">Title Field :</label>
 										<div class="col-md-10">
-											<textarea rows="3" name="titleField_<%=i %>" class="form-control required"><%=el.getChildText("title-field")%></textarea>
+											<textarea rows="3" name="titleField_<%=i %>" class="form-control required"><%=getString(el.getChildText("title-field"))%></textarea>
 											<div class="help-block">ex) $title</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Body Field :</label>
 										<div class="col-md-10">
-											<textarea rows="3" name="bodyField_<%=i %>" class="form-control"><%=el.getChildText("body-field")%></textarea>
+											<textarea rows="3" name="bodyField_<%=i %>" class="form-control"><%=getString(el.getChildText("body-field"))%></textarea>
 											<div class="help-block">ex) $content</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">Bundle Field :</label>
 										<div class="col-md-10">
-											<textarea rows="3" name="bundleField_<%=i %>" class="form-control"><%=el.getChildText("bundle-field")%></textarea>
+											<textarea rows="3" name="bundleField_<%=i %>" class="form-control"><%=getString(el.getChildText("bundle-field")) %></textarea>
 											<div class="help-block">ex) $title - $content</div>
 										</div>
 									</div>
@@ -289,6 +304,13 @@ $(document).ready(function(){
 					<label class="col-md-2 control-label">Search Query :</label>
 					<div class="col-md-10"><textarea rows="3" name="searchQuery" class="form-control required"></textarea>
 						<div class="help-block">ex) cn=news_kor&fl=title,content:150,regdate,username&se={title:#keyword}</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Thumbnail Field :</label>
+					<div class="col-md-10">
+						<textarea rows="3" name="thumbnailField" class="form-control"></textarea>
+						<div class="help-block">ex) &lt;img src="path/to/img/$img_src" /&gt;</div>
 					</div>
 				</div>
 				<div class="form-group">
