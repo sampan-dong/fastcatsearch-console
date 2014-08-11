@@ -167,20 +167,33 @@
 	
 	var dashboardGraph = new DashboardGraph();
 	
-	function startGraphUpdate(){
+	function toggleGraphUpdate(){
+		var toggleButton = $("#graph-toggle > i");
+		if(toggleButton.hasClass("icon-play")){
+			toggleButton.removeClass("icon-play");
+			toggleButton.addClass("icon-pause");
+			dashboardGraph.startUpdate();
+		}else{
+			toggleButton.removeClass("icon-pause");
+			toggleButton.addClass("icon-play");
+			dashboardGraph.stopUpdate();
+		}
+	}
+	
+	/* function startGraphUpdate(){
 		dashboardGraph.startUpdate();
 	}
 	function stopGraphUpdate(){
 		dashboardGraph.stopUpdate();
-	}
+	} */
 	function clearGraph(){
 		dashboardGraph.init();
 	}
 	
 	$(document).ready(function() {
 		dashboardGraph.init();
-		$("#graph-play").on("click", startGraphUpdate);
-		$("#graph-pause").on("click", stopGraphUpdate);
+		$("#graph-toggle").on("click", toggleGraphUpdate);
+		//$("#graph-pause").on("click", stopGraphUpdate);
 		$("#graph-clear").on("click", clearGraph);
 		
 		var fnRefreshCollectionInfo = function() {
@@ -411,8 +424,7 @@
 								<h4><i class="icon-reorder"></i> Realtime Query Request</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
-										<span class="btn btn-xs" id="graph-play">&nbsp;<i class="icon-play"></i>&nbsp;</span>
-										<span class="btn btn-xs" id="graph-pause">&nbsp;<i class="icon-pause"></i>&nbsp;</span>
+										<span class="btn btn-xs" id="graph-toggle">&nbsp;<i class="icon-play"></i>&nbsp;</span>
 										<span class="btn btn-xs" id="graph-clear">&nbsp;<i class="icon-ban-circle"></i>&nbsp;</span>
 									</div>
 								</div>
