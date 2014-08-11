@@ -193,22 +193,24 @@ function searchPage(uri, pageNo){
 												<%
 												}
 												%>
-												<div class="_title"><%=item.optString("title") %></div>
-												<div class="_body"><%=item.optString("body") %></div>
-												<div class="_bundles">
-													<%
-													JSONArray bundleList = item.optJSONArray("bundle");
-													if(bundleList != null) {
-													%><ul><%
-													for(int k = 0; k < bundleList.length(); k++) {
-													%>
-														<li><%=bundleList.optString(k) %></li>
-													<%
-													}
-													%></ul><%
-													}
-													%>
-													
+												<div class="_item">
+													<div class="_title"><%=item.optString("title") %></div>
+													<div class="_body"><%=item.optString("body") %></div>
+													<div class="_bundles">
+														<%
+														JSONArray bundleList = item.optJSONArray("bundle");
+														if(bundleList != null) {
+														%><ul><%
+														for(int k = 0; k < bundleList.length(); k++) {
+														%>
+															<li><%=bundleList.optString(k) %></li>
+														<%
+														}
+														%></ul><%
+														}
+														%>
+														
+													</div>
 												</div>
 											</li>
 											<%
@@ -260,32 +262,42 @@ function searchPage(uri, pageNo){
 									<h3 style="border-bottom:1px solid #eee;"><%=categoryName %></h3>
 									<div class="col-md-12 ires">
 										<ul class="search-result">
-										<%
-										for(int j = 0; j < searchResultList.length(); j++) {
-											JSONObject item = searchResultList.getJSONObject(j);
-										%>
-										<li>
-											<div class="_title"><%=item.optString("title") %></div>
-											<div class="_body"><%=item.optString("body") %></div>
-											<div class="_bundles">
+											<%
+											for(int j = 0; j < searchResultList.length(); j++) {
+												JSONObject item = searchResultList.getJSONObject(j);
+												String thumbnailString = item.optString("thumbnail");
+											%>
+											<li>
 												<%
-												JSONArray bundleList = item.optJSONArray("bundle");
-												if(bundleList != null) {
-												%><ul><%
-												for(int k = 0; k < bundleList.length(); k++) {
+												if(thumbnailString != null) {
 												%>
-													<li><%=bundleList.optString(k) %></li>
+												<div class="_thumbnail"><%=thumbnailString %></div>
 												<%
 												}
-												%></ul><%
-												}
 												%>
-												
-											</div>
-										</li>
-										<%
-										}
-										%>
+												<div class="_item">
+													<div class="_title"><%=item.optString("title") %></div>
+													<div class="_body"><%=item.optString("body") %></div>
+													<div class="_bundles">
+														<%
+														JSONArray bundleList = item.optJSONArray("bundle");
+														if(bundleList != null) {
+														%><ul><%
+														for(int k = 0; k < bundleList.length(); k++) {
+														%>
+															<li><%=bundleList.optString(k) %></li>
+														<%
+														}
+														%></ul><%
+														}
+														%>
+														
+													</div>
+												</div>
+											</li>
+											<%
+											}
+											%>
 										</ul>
 										
 										<jsp:include page="inc/pagenation.jsp" >

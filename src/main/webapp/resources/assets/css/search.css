@@ -16,12 +16,13 @@ ol.popular-keyword ._step {font-family: tahoma,geneva,sans-serif; font-size: 11p
 .badge-sx {padding: 2px; font-size: 11px; width: 16px; background-color: #fff; border: 1px solid #ddd; color: #222; margin-right: 2px;}
 
 ul.search-result { padding-left: 10px; list-style-type: none; padding-left: 0px; }
-ul.search-result>li { margin-bottom: 20px; clear:both; }
-ul.search-result ._thumbnail { float:left; }
-ul.search-result ._title {font-size: 18px; font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; margin-top: 10px; }
+ul.search-result>li {margin-top: 20px; }
+ul.search-result ._thumbnail { float:left; padding: 5px 10px 0 0; }
+ul.search-result ._item { float:left; width:600px; }
+ul.search-result ._title {font-size: 18px; font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 ul.search-result ._body { margin-bottom: 5px; line-height: 1.7; word-wrap: break-word;}
 .category-group { border-bottom: 1px dashed #ddd; margin-bottom: 15px; }
-
+ul.search-result>li:after { display: block; clear: both; content: ''; }
 .margin-space {margin-bottom: 40px !important; }
 
 .result-pane { min-height: 700px; }
