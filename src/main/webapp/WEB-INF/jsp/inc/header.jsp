@@ -103,6 +103,7 @@
 <script type="text/javascript" src="${contextPath}/resources/assets/js/plugins.form-components.js"></script>
 
 <script type="text/javascript" src="${contextPath}/resources/assets/js/console.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/assets/js/node-select-helper.js"></script>
 
 <script>
 	$(document).ready(function() {

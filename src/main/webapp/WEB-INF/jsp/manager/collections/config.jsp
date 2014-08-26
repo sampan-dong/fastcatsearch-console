@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="org.json.*"%>
 <%@page import="org.jdom2.*"%>
 <%@page import="java.util.*"%>
 <%
 	Document document = (Document) request.getAttribute("document");
+	JSONObject serverListObject = (JSONObject)request.getAttribute("serverListObject");
+	JSONArray serverList = serverListObject.optJSONArray("nodeList");
 
 %>
 <c:set var="ROOT_PATH" value="../.." />
@@ -14,9 +17,11 @@
 <c:import url="${ROOT_PATH}/inc/header.jsp" />
 <script>
 $(document).ready(function(){
-	$("#collection-config-form").validate();
+	var form = $("form#collection-config-form");
 	
-	$("#collection-config-form").submit(function(e) {
+	form.validate();
+	
+	form.submit(function(e) {
 		var postData = $(this).serializeArray();
 		$.ajax({
 				url : PROXY_REQUEST_URI,
@@ -40,6 +45,8 @@ $(document).ready(function(){
 		});
 		e.preventDefault(); //STOP default action
 	});
+	
+	nodeSelectHelper(form);
 });
 
 </script>
@@ -124,15 +131,49 @@ $(document).ready(function(){
 									<div class="col-md-12 form-horizontal">
 										<div class="form-group">
 											<label class="col-md-3 control-label">Index Node:</label>
-											<div class="col-md-9"><input type="text" name="indexNode" class="form-control required fcol2" value="<%=indexNode %>"></div>
+											<div class="col-md-9">
+											<select class=" select_flat form-control fcol2" name="indexNode">
+												<%
+												for(int inx=0;inx<serverList.length();inx++) {
+													JSONObject serverInfo = serverList.optJSONObject(inx);
+													String active = serverInfo.optString("active");
+													String nodeId = serverInfo.optString("id");
+													String nodeName = serverInfo.optString("name");
+												%>
+													<% if("true".equals(active)) { %>
+													<option value="<%=nodeId%>" <%=nodeId.equals(indexNode)?"selected":"" %>><%=nodeName%></option>
+													<% } %>
+												<%
+												}
+												%>
+											</select>
+											</div>
 										</div>
 									</div>
 									<div class="col-md-12 form-horizontal">
 										<div class="form-group">
-											<label class="col-md-3 control-label">Search Node:</label>
-											<div class="col-md-9"><input type="text" name="searchNodeList" class="form-control required" value="<%=searchNodeListString %>">
+											<label class="col-md-3 control-label">Search Node List :</label>
+											<div class="col-md-9 form-inline">
+												<input type="text" name="searchNodeList" class="form-control fcol5 node-data required" value="<%=searchNodeListString%>">
+												&nbsp;<select class=" select_flat form-control fcol2 node-select">
+													<option value="">:: Add Node ::</option>
+													<%
+													for(int inx=0;inx<serverList.length();inx++) {
+														JSONObject serverInfo = serverList.optJSONObject(inx);
+														String active = serverInfo.optString("active");
+														String nodeId = serverInfo.optString("id");
+														String nodeName = serverInfo.optString("name");
+													%>
+														<% if("true".equals(active)) { %>
+														<option value="<%=nodeId%>"><%=nodeName%> (<%=nodeId %>)</option>
+														<% } %>
+													<%
+													}
+													%>
+												</select>
 											</div>
 										</div>
+										
 									</div>
 								</div>
 							</div>
@@ -150,8 +191,27 @@ $(document).ready(function(){
 										
 										<div class="form-group">
 											<label class="col-md-3 control-label">Data Node List :</label>
-											<div class="col-md-9"><input type="text" name="dataNodeList" class="form-control required" value="<%=dataNodeListString %>"></div>
+											<div class="col-md-9 form-inline">
+												<input type="text" name="dataNodeList" class="form-control fcol5 node-data required" value="<%=dataNodeListString%>">
+												&nbsp;<select class="select_flat form-control fcol2 node-select">
+													<option value="">:: Add Node ::</option>
+													<%
+													for(int inx=0;inx<serverList.length();inx++) {
+														JSONObject serverInfo = serverList.optJSONObject(inx);
+														String active = serverInfo.optString("active");
+														String nodeId = serverInfo.optString("id");
+														String nodeName = serverInfo.optString("name");
+													%>
+														<% if("true".equals(active)) { %>
+														<option value="<%=nodeId%>"><%=nodeName%> (<%=nodeId %>)</option>
+														<% } %>
+													<%
+													}
+													%>
+												</select>
+											</div>
 										</div>
+										
 										<div class="form-group">
 											<label class="col-md-3 control-label">Data-sequence-cycle :</label>
 											<div class="col-md-9"><input type="text" name="dataSequenceCycle" class="form-control required digits fcol1" value="<%=dataPlanConfig.getChildText("data-sequence-cycle") %>" maxlength="1" minlength="1"></div>

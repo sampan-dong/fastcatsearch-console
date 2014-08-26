@@ -37,6 +37,11 @@ public class CollectionsController extends AbstractController {
 		if(collectionInfoList != null){
 			mav.addObject("collectionInfoList", collectionInfoList.optJSONArray("collectionInfoList"));
 		}
+		
+		requestUrl = "/management/servers/list.json";
+		JSONObject serverListObject = httpPost(session, requestUrl).requestJSON();
+		mav.addObject("serverListObject", serverListObject);
+		
 		return mav;
 	}
 	
@@ -520,6 +525,11 @@ public class CollectionsController extends AbstractController {
 		Document document = httpPost(session, requestUrl).addParameter("collectionId", collectionId).requestXML();
 
 		ModelAndView mav = new ModelAndView();
+		
+		requestUrl = "/management/servers/list.json";
+		JSONObject serverListObject = httpPost(session, requestUrl).requestJSON();
+		mav.addObject("serverListObject", serverListObject);
+		
 		mav.setViewName("manager/collections/config");
 		mav.addObject("collectionId", collectionId);
 		mav.addObject("document", document);
