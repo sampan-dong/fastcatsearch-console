@@ -2,3 +2,5 @@
 /build
 .svn
 .svn/*
+.idea
+fastcatsearch-console.iml
