@@ -203,6 +203,18 @@ $(document).ready(function(){
 	
 	$(".newJdbcSourceForm").submit(fnJdbcSubmit);
 	$(".jdbcSourceForm").submit(fnJdbcSubmit);
+	
+	var jdbcCreateForm = $("#newJdbcSourceForm");
+	jdbcCreateHelper(jdbcCreateForm);
+	
+ 	$(".modal").each(function() {
+ 		var id = $(this).attr("id");
+ 		if(id.startsWith("jdbcSourceModal_")) {
+ 			var form = $(this).find("form");
+ 			jdbcCreateHelper(form);
+ 		}
+ 	});
+	
 });
 
 </script>
@@ -586,7 +598,6 @@ $(document).ready(function(){
 						</div>
 						<!-- /.modal-dialog -->
 					</div>
-					
 					<%
 					}
 					%>	
@@ -621,15 +632,31 @@ $(document).ready(function(){
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">Driver:</label>
-																<div class="col-md-9"><input type="text" name="driver" class="form-control required" placeholder="DRIVER"></div>
+																<label class="col-md-3 control-label">DB Vendor:</label>
+																<div class="col-md-9">
+																	<select class=" select_flat form-control fcol2 required">
+																	</select>
+																</div>
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">Url:</label>
-																<div class="col-md-9"><input type="text" name="url" class="form-control required" placeholder="URL"></div>
+																<label class="col-md-3 control-label">Driver:</label>
+																<div class="col-md-9"><input type="text" name="driver" class="form-control required" placeholder="DRIVER"></div>
+																
 															</div>
 															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Host:</label>
+																<div class="col-md-9"><input type="text" name="host" class="form-control fcol2 required"></div>
+															</div>
+															<div class="form-group">
+																<label class="col-md-3 control-label">Port:</label>
+																<div class="col-md-9"><input type="text" name="port" class="form-control fcol2 required number"></div>
+															</div>
+															<div class="form-group">
+																<label class="col-md-3 control-label">DB Name:</label>
+																<div class="col-md-9"><input type="text" name="dbName" class="form-control fcol2 required"></div>
+															</div>
 															<div class="form-group">
 																<label class="col-md-3 control-label">User:</label>
 																<div class="col-md-9"><input type="text" name="user" class="form-control" placeholder="USER"></div>
@@ -639,6 +666,16 @@ $(document).ready(function(){
 																<label class="col-md-3 control-label">Password:</label>
 																<div class="col-md-9"><input type="text" name="password" class="form-control" placeholder="PASSWORD"></div>
 															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">JDBC Parameter:</label>
+																<div class="col-md-9"><input type="text" name="parameter" class="form-control" value=""></div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-md-3 control-label">Url:</label>
+																<div class="col-md-9"><input type="text" name="url" class="form-control required" placeholder="URL"></div>
+															</div>
 														</div>
 														
 													</div>
@@ -647,8 +684,9 @@ $(document).ready(function(){
 										</div>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-primary">Save changes</button>
+										<input type="button" value="Close" class="btn btn-default" data-dismiss="modal"/>
+										<input type="button" value="Test Connection" id="testJdbcConnectionBtn" class="btn">
+										<input type="submit" value="Save changes" class="btn btn-primary"/>
 									</div>
 								</form>
 							</div>
