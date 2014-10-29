@@ -79,11 +79,17 @@
 		JSONObject parameter = paramArray.getJSONObject(paramInx);
 		String parameterId = parameter.getString("id");
 		String parameterValue = null;
+		String defaultValue = parameter.getString("defaultValue");
 		if(parameterValues != null){
 			parameterValue = parameterValues.get(parameterId);
 		}
 		if(parameterValue == null){
-			parameterValue = parameter.getString("defaultValue");
+			if("ENUM".equals(parameter.getString("type"))) {
+				//take first element as default value
+				parameterValue = "";
+			} else {
+				parameterValue = defaultValue;
+			}
 		}
 	%>
 		<div class="form-group">
@@ -121,6 +127,34 @@
 				-->
 				<script>loadJdbcList('<%=parameterValue%>')</script>
 				<%
+			}else if(type.equalsIgnoreCase("CHECK")) {
+				%>
+				<div class="col-md-10">
+					<label class="checkbox">
+						<input type="checkbox" name="<%=parameterId %>" class="form-control" value="true" <%="true".equalsIgnoreCase(parameterValue)?"checked":""%> />
+						<%=parameter.getString("description") %>
+					</label>
+				</div>
+				<%
+			}else if(type.equalsIgnoreCase("ENUM")) {
+					if(defaultValue == null || "".equals(defaultValue)) {
+						defaultValue = "[[]]";
+					}
+					JSONArray optArray = new JSONArray(defaultValue);
+				%>
+				<select name="<%=parameterId %>" class="form-control">
+					<% 
+					for ( int optInx = 0 ; optInx < optArray.length() ; optInx++ ) { 
+						JSONArray option = optArray.optJSONArray(optInx);
+						String optValue = option.optString(0, "");
+						String optText = option.optString(1, "");
+					%>
+					<option value="<%=optValue %>" <%=optValue.equalsIgnoreCase(parameterValue)?"selected":"" %>><%=optText %></option>
+					<% 
+					} 
+					%>
+				</select>
+				<%
 			}else{
 				if(type.equalsIgnoreCase("STRING")){
 					elementClass += "fcol2";
@@ -134,7 +168,9 @@
 				<%
 			}
 			%>
+			<% if(!type.equalsIgnoreCase("CHECK")) {%>
 				<span class="help-block"><%=parameter.getString("description") %></span>
+			<% } %>
 			</div>
 		</div>
 	<%
