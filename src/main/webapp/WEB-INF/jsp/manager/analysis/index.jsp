@@ -424,15 +424,17 @@ if(rootElement!=null) {
 										&nbsp;
 										<select name="analyzerId" class="select_flat form-control fcol2-1">
 											<%
-											for(int rowInx=0;rowInx<analyzerList.size();rowInx++) {
-											%>
-												<%
-												Element analyzer = analyzerList.get(rowInx);
-												String id = analyzer.getAttributeValue("id");
-												String name = analyzer.getAttributeValue("name");
-												%>
-												<option value="<%=id %>"><%=name %></option>
-											<%
+                                            if(analyzerList != null) {
+                                                for(int rowInx=0;rowInx<analyzerList.size();rowInx++) {
+                                                %>
+                                                    <%
+                                                    Element analyzer = analyzerList.get(rowInx);
+                                                    String id = analyzer.getAttributeValue("id");
+                                                    String name = analyzer.getAttributeValue("name");
+                                                    %>
+                                                    <option value="<%=id %>"><%=name %></option>
+                                                <%
+                                                }
 											}
 											%>
 										</select>
