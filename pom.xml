@@ -3,9 +3,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>fastcatsearch-console</groupId>
+	<groupId>org.fastcatsearch</groupId>
 	<artifactId>fastcatsearch-console</artifactId>
-	<version>2.20.2-SNAPSHOT</version>
+	<version>2.20.2</version>
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
