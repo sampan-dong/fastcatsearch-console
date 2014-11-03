@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.fastcatsearch</groupId>
 	<artifactId>fastcatsearch-console</artifactId>
-	<version>2.20.3-SNAPSHOT</version>
+	<version>2.20.3</version>
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
@@ -124,7 +124,7 @@
         <connection>scm:git:https://github.com/fastcatsearch/fastcatsearch-console</connection>
         <developerConnection>scm:git:https://github.com/fastcatsearch/fastcatsearch-console</developerConnection>
         <url>scm:git:https://github.com/fastcatsearch/fastcatsearch-console</url>
-        <tag>HEAD</tag>
+        <tag>v2.20.3</tag>
     </scm>
 
     <ciManagement>
