@@ -1,7 +1,4 @@
 /target
 /build
-.svn
-.svn/*
-.idea
-fastcatsearch-console.iml
 /bin/
+.DS_Store
