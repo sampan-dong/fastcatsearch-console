@@ -64,7 +64,7 @@ $(document).ready(function(){
 					<div class="pull-right">
 						<jsp:include page="../../inc/pagenationTop.jsp" >
 						 	<jsp:param name="pageNo" value="${pageNo }"/>
-						 	<jsp:param name="totalSize" value="<%=indexDataResult.getInt("documentSize") %>" />
+						 	<jsp:param name="totalSize" value="<%=indexDataResult.getInt(\"documentSize\") %>" />
 							<jsp:param name="pageSize" value="${pageSize }" />
 							<jsp:param name="width" value="5" />
 							<jsp:param name="callback" value="goIndexDataAnalyzedPage" />
