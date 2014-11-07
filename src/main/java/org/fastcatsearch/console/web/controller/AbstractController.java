@@ -41,7 +41,6 @@ public class AbstractController {
 		}
 		
 		return model;
- 
 	}
 	
 	protected PostMethod httpPost(HttpSession session, String uri) {
