@@ -537,7 +537,8 @@ $(document).ready(function(){
 											<th class="fcol2">ID</th>
 											<th>Name</th>
 											<th class="fcol2">Field</th>
-											<th class="fcol2">Size</th>
+											<th class="fcol1">Size</th>
+											<th class="fcol1">Ignore Case</th>
 											<th class="fcol1-1"></th>
 										</tr>
 									</thead>
@@ -549,7 +550,7 @@ $(document).ready(function(){
 										List<Element> indexList = el.getChildren();
 										%>
 										<tr class="no-entry <%=indexList.size() > 0 ? "hide2" : ""%>">
-											<td colspan="5"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+											<td colspan="6"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
 										</tr>
 										<%
 										for(int i = 0; i < indexList.size(); i++){
@@ -559,6 +560,7 @@ $(document).ready(function(){
 											String name = fieldIndex.getAttributeValue("name", "");
 											String ref = fieldIndex.getAttributeValue("ref", "");
 											String size = fieldIndex.getAttributeValue("size", "");
+											String ignoreCase = fieldIndex.getAttributeValue("ignoreCase", "");
 										%>
 										<tr>
 											<td>
@@ -568,6 +570,7 @@ $(document).ready(function(){
 											<td><input type="text" name="_field-index-list_<%=i%>-name" class="form-control" value="<%=name %>"></td>
 											<td><input type="text" name="_field-index-list_<%=i%>-field" class="form-control" value="<%=ref %>"></td>
 											<td><input type="text" name="_field-index-list_<%=i%>-size" class="form-control digits fcol1-1" value="<%=size %>"></td>
+											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-index-list_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -611,11 +614,11 @@ $(document).ready(function(){
 											List<Element> indexList = el.getChildren();
 											%>
 											<tr class="no-entry <%=indexList.size() > 0 ? "hide2" : ""%>">
-												<td colspan="4"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+												<td colspan="5"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
 											</tr>
 											<%
 											for(int i = 0; i<indexList.size(); i++){
-												String id="", name="", ref="";
+												String id="", name="", ref="", ignoreCase="";
 												if(indexList.size() > 0) {
 													Element groupIndex = indexList.get(i);
 													id = groupIndex.getAttributeValue("id");
@@ -736,6 +739,7 @@ $(document).ready(function(){
 			<td><input type="text" name="name" class="form-control"></td>
 			<td><input type="text" name="field" class="form-control"></td>
 			<td><input type="text" name="size" class="form-control digits fcol1-1"></td>
+			<td><label class="checkbox"><input type="checkbox" value="true"/></label></td>
 			<td>
 				<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 				<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>

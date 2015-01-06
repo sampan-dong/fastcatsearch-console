@@ -395,6 +395,7 @@ $(document).ready(function(){
 													<th class="fcol2">Name</th>
 													<th class="fcol2">Field</th>
 													<th class="fcol2">Size</th>
+													<th class="fcol1">Ignore Case</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -410,6 +411,7 @@ $(document).ready(function(){
 													String name = fieldIndex.getAttributeValue("name", "");
 													String ref = fieldIndex.getAttributeValue("ref", "");
 													String size = fieldIndex.getAttributeValue("size", "");
+													String ignoreCase = fieldIndex.getAttributeValue("ignoreCase", "");
 												%>
 												<tr id="_row_<%=id%>">
 													<td class="fcol1"><%=i+1 %></td>
@@ -417,7 +419,8 @@ $(document).ready(function(){
 													<td class="fcol2"><%=name %></td>
 													<td class="fcol2"><%=ref %></td>
 													<td class="fcol2"><%=size %></td>
-												</tr>														
+													<td class="fcol1" ><%="true".equalsIgnoreCase(ignoreCase) ? "&#x2714;" : "" %></td>
+												</tr>
 												<%
 												}
 											}
