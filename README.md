@@ -4,7 +4,7 @@ Fastcatsearch-console is a tool for managing fastcatsearch. You can make collect
 
 ## Notice
 
-This is a managment tool on embedded web server jetty. Fastcatsearch-console cannot privide search features by itself, and you must install [fastcatsearch](https://github.com/fastcatsearch/fastcatsearch) too.
+This is a managment tool on embedded web server jetty. Fastcatsearch-console cannot privide search features by itself, and you must install [fastcatsearch](https://github.com/fastcat-co/fastcatsearch) too.
 
 ## License
 
@@ -73,4 +73,4 @@ For more information, see <http://www.gnu.org/licenses/old-licenses/lgpl-2.1.htm
 
 ## Need Help?
 
-You can find manuals and tutorials on the <http://fastcatsearch.org> site.
+You can find manuals and tutorials on the <http://www.fastcat.co> site.
