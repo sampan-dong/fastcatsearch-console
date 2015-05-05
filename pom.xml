@@ -112,7 +112,7 @@
                 <version>2.5</version>
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
-                    <tagBase>https://github.com/fastcatsearch/fastcatsearch-console/tags</tagBase>
+                    <tagBase>https://github.com/fastcat-co/fastcatsearch-console/tags</tagBase>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <goals>deploy</goals>
                 </configuration>
