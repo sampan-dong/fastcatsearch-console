@@ -323,6 +323,7 @@ function hideAllJobArgs(){
 							<thead>
 								<tr>
 									<th>Engine Path</th>
+                                    <th>Server ID</th>
 									<th>OS Name</th>
 									<th>OS Arch</th>
 									<th>Java Path</th>
@@ -337,6 +338,7 @@ function hideAllJobArgs(){
 								%>
 								<tr>
 									<td><%=systemInfo.optString("homePath") %></td>
+                                    <td><%=systemInfo.optString("serverId") %></td>
 									<td><%=systemInfo.optString("osName") %></td>
 									<td><%=systemInfo.optString("osArch") %></td>
 									<td><%=systemInfo.optString("javaHome") %></td>
@@ -410,7 +412,7 @@ function hideAllJobArgs(){
 									<th>Name</th>
 									<th>ID</th>
 									<th>Namespace</th>
-									<th>Class</th>
+									<th>License</th>
 									<th>Version</th>
 									<th>Decription</th>
 								</tr>
@@ -437,7 +439,7 @@ function hideAllJobArgs(){
 								<td><%=plugin.optString("name") %></td>
 								<td><%=plugin.optString("id") %></td>
 								<td><%=analyzerNameStr %></td>
-								<td style="word-break:break-word;"><%=plugin.optString("className") %></td>
+								<td style="word-break:break-word;"><%=plugin.optString("licenseStatus") %></td>
 								<td><%=plugin.optString("version") %></td>
 								<td><%=plugin.optString("description") %></td>
 								</tr>
