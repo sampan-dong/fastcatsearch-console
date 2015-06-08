@@ -411,7 +411,7 @@ function hideAllJobArgs(){
 								<tr>
 									<th>Name</th>
 									<th>ID</th>
-									<th>Namespace</th>
+									<th>Analyzers</th>
 									<th>License</th>
 									<th>Version</th>
 									<th>Decription</th>
