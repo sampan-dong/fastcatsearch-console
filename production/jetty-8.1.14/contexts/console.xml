@@ -27,7 +27,7 @@ detected.
   <Set name="extractWAR">true</Set>
   <Set name="copyWebDir">false</Set>
   <Set name="defaultsDescriptor"><SystemProperty name="jetty.home" default="."/>/etc/webdefault.xml</Set>
-  
+  <Set name="maxFormKeys">2000</Set>
   
   <!-- virtual hosts
   <Set name="virtualHosts">
