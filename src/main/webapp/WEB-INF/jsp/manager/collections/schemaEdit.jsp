@@ -180,6 +180,10 @@ $(document).ready(function(){
 	function backToSchema(){
 		submitGet("workSchema.html", {});
 	}
+
+	function toggleExtraColumn() {
+		$(".extra-column").toggle();
+	}
 </script>
 
 </head>
@@ -226,12 +230,14 @@ $(document).ready(function(){
 				Element root = document.getRootElement();
 				Element el = root.getChild("field-list");
 				%>
+
 				<form id="schemaForm">
 				
 					<div class="col-md-12">
 						<div class="widget">
 							<div class="widget-header">
 								<h4>Fields</h4>
+								<p><a href="javascript:toggleExtraColumn()">Show/Hide Extra Column</a></p>
 							</div>
 			
 							<div class="widget-content">
@@ -245,9 +251,13 @@ $(document).ready(function(){
 											<th class="fcol2">Type</th>
 											<th class="fcol2">Length</th>
 											<th class="fcol1">Store</th>
-											<th class="fcol1">Remove Tags</th>
-											<th class="fcol1">Multi Value</th>
-											<th class="fcol1">Multi Value Delimiter</th>
+											<th class="fcol1 extra-column">Source</th>
+											<th class="fcol1 extra-column">Remove Tags</th>
+											<th class="fcol1 extra-column">Multi Value</th>
+											<th class="fcol1 extra-column">Multi Value Delimiter</th>
+											<%--<th class="fcol1 extra-column">Function</th>--%>
+											<%--<th class="fcol1 extra-column">Param</th>--%>
+											<%--<th class="fcol1 extra-column">Compress</th>--%>
 											<th class="fcol1-1"></th>
 										</tr>
 									</thead>
@@ -273,6 +283,9 @@ $(document).ready(function(){
 											String removeTag = field.getAttributeValue("removeTag", "");
 											String multiValue = field.getAttributeValue("multiValue", "false");
 											String multiValueDelimiter = field.getAttributeValue("multiValueDelimiter", "");
+											String param = "";
+											String compress = "";
+
 										%>
 										<tr>
 											<td><input type="hidden" name="KEY_NAME" value="_field-list_<%=i %>" /><input type="text" name="_field-list_<%=i%>-id" class="form-control required" value="<%=id %>"></td>
@@ -293,9 +306,20 @@ $(document).ready(function(){
 											
 											<td><input type="text" name="_field-list_<%=i%>-size" class="form-control digit field-type-size" value="<%=size %>" <%=isSizeReadonly?"readonly":"" %>></td>
 											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-store" <%="true".equalsIgnoreCase(store) ? "checked" : "" %>></label></td>
-											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
-											<td><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
-											<td><input type="text" class="form-control" name="_field-list_<%=i%>-multiValueDelimiter" value="<%=multiValueDelimiter %>"></td>
+											<td class="extra-column"><input type="text" class="form-control" name="_field-list_<%=i%>-source" value="<%=source %>"></td>
+											<td class="extra-column"><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-removeTag" <%="true".equalsIgnoreCase(removeTag) ? "checked" : "" %>></label></td>
+											<td class="extra-column"><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-multiValue" <%="true".equalsIgnoreCase(multiValue) ? "checked" : "" %>></label></td>
+											<td class="extra-column"><input type="text" class="form-control" name="_field-list_<%=i%>-multiValueDelimiter" value="<%=multiValueDelimiter %>"></td>
+
+											<%--<td class="extra-column">--%>
+												<%--<select class="select_flat form-control required" name="_field-list_<%=i %>-function" >--%>
+													<%--<option>None</option>--%>
+													<%--<option>FileFilter</option>--%>
+													<%--<option>AutoComplete</option>--%>
+												<%--</select>--%>
+											<%--</td>--%>
+											<%--<td class="extra-column"><input type="text" class="form-control" name="_field-list_<%=i%>-param" value="<%=param %>"></td>--%>
+											<%--<td class="extra-column"><label class="checkbox"><input type="checkbox" value="true" name="_field-list_<%=i%>-compress" <%="true".equalsIgnoreCase(compress) ? "checked" : "" %>></label></td>--%>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>

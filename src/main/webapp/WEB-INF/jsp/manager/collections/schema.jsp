@@ -31,6 +31,10 @@ $(document).ready(function(){
 	function editWorkSchema(){
 		submitGet("workSchemaEdit.html", {});
 	}
+
+	function toggleExtraColumn() {
+		$(".extra-column").toggle();
+	}
 </script>
 </head>
 <body>
@@ -138,6 +142,7 @@ $(document).ready(function(){
 								<div class="widget">
 									<div class="widget-header">
 										<h4>Fields</h4>
+										<p><a href="javascript:toggleExtraColumn()">Show/Hide Extra Column</a></p>
 									</div>
 
 									<div class="widget-content">
@@ -152,9 +157,10 @@ $(document).ready(function(){
 													<th class="">Type</th>
 													<th class="">Length</th>
 													<th class="fcol1">Store</th>
-													<th class="fcol1">Remove Tags</th>
-													<th class="fcol1">Multi Value</th>
-													<th class="fcol1">Multi Value Delimiter</th>
+													<th class="fcol1 extra-column">Source</th>
+													<th class="fcol1 extra-column">Remove Tags</th>
+													<th class="fcol1 extra-column">Multi Value</th>
+													<th class="fcol1 extra-column">Multi Value Delimiter</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -181,10 +187,11 @@ $(document).ready(function(){
 													<td class=""><%=name %></td>
 													<td class=""><%=type %></td>
 													<td class=""><%=size %></td>
-													<td class="_field_store " ><%="true".equalsIgnoreCase(store) ? "&#x2714;" : "" %></td>
-													<td class="" ><%="true".equalsIgnoreCase(removeTag) ? "&#x2714;" : "" %></td>
-													<td class="_field_multivalue "><%="true".equalsIgnoreCase(multiValue) ? "&#x2714;" : "" %></td>
-													<td class="_field_multivalue_delimiter" ><%=multiValueDelimiter %></td>
+													<td class="_field_store" ><%="true".equalsIgnoreCase(store) ? "&#x2714;" : "" %></td>
+													<td class="extra-column"><%=source %></td>
+													<td class="extra-column" ><%="true".equalsIgnoreCase(removeTag) ? "&#x2714;" : "" %></td>
+													<td class="_field_multivalue extra-column"><%="true".equalsIgnoreCase(multiValue) ? "&#x2714;" : "" %></td>
+													<td class="_field_multivalue_delimiter extra-column" ><%=multiValueDelimiter %></td>
 												</tr>														
 												<%
 												}

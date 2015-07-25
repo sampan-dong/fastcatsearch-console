@@ -176,4 +176,8 @@ a.transparent,a.transparent:hover {color: #fff}
 
 .hide2 {display:none;}
 
-.checked-background-color {background-color: rgba(147, 175, 236, 0.13)};
+.checked-background-color {background-color: rgba(147, 175, 236, 0.13)}
+
+.extra-column {display:none;}
+th.extra-column { background-color: cornsilk; }
+
