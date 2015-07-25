@@ -87,7 +87,7 @@
 			<li class="<%=lcatCurrent ? "current" :"" %>">
 				<a href="javascript:void(0);"> <i class="icon-desktop"></i> Ranking</a>
 				<ul class="sub-menu">
-					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/ranking/index.html"/>"> <i class="icon-angle-right"></i> Overview</a></li>
+					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/ranking/overview.html"/>"> <i class="icon-angle-right"></i> Overview</a></li>
 					<%
 						for(int i=0;profileList != null && i<profileList.length(); i++){
 							String id = profileList.getJSONObject(i).getString("id");
