@@ -55,7 +55,6 @@ public class AnalysisController extends AbstractController {
 	
 	@RequestMapping("/{analysisId}/analyzeTools")
 	public ModelAndView analyzeTools(HttpSession session, @PathVariable String analysisId, @RequestParam String type, @RequestParam(required=false) String isForQuery, @RequestParam String analyzerId, @RequestParam String queryWords) throws Exception {
-		System.out.println("isForQuery . "+ isForQuery);
 		String getAnalysisToolsURL = null;
 		
 		JSONObject jsonObj = null;
