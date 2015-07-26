@@ -6,7 +6,8 @@
 <%
 	String collectionId = (String) request.getAttribute("collectionId");
 	JSONArray collectionList = (JSONArray) request.getAttribute("collectionList");
-	JSONArray profileList = (JSONArray) request.getAttribute("profileList");
+	JSONArray queryProfileList = (JSONArray) request.getAttribute("queryProfile");
+    JSONArray rankingProfileList = (JSONArray) request.getAttribute("rankingProfile");
 	JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginList");
 	JSONArray serverList = (JSONArray) request.getAttribute("serverList");
 	String lcat = request.getParameter("lcat");
@@ -82,24 +83,48 @@
 					
 				</ul></li>
 			<%
-				lcatCurrent = "ranking".equals(lcat);
+				lcatCurrent = "profile".equals(lcat);
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>">
-				<a href="javascript:void(0);"> <i class="icon-desktop"></i> Ranking</a>
+				<a href="javascript:void(0);"> <i class="icon-desktop"></i> Profile</a>
 				<ul class="sub-menu">
-					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/ranking/overview.html"/>"> <i class="icon-angle-right"></i> Overview</a></li>
-					<%
-						for(int i=0;profileList != null && i<profileList.length(); i++){
-							String id = profileList.getJSONObject(i).getString("id");
-							boolean maybeCurrent = lcatCurrent && id.equals(mcat);
-					%>
-					<li class="<%=maybeCurrent ? "current" :"" %>">
-						<a href="<c:url value="/manager/ranking/"/><%=id %>/index.html"> <i class="icon-leaf"></i><%=id %></a>
-					</li>
+					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/profile/overview.html"/>"> <i class="icon-angle-right"></i> Overview</a></li>
+                    <%
+                        boolean maybeCurrent = lcatCurrent && mcat.equals("query");
+                    %>
+                    <li class="<%=maybeCurrent ? "current" :"" %>"><a href="javascript:void(0);"> <i class="icon-table"></i>
+                        Query
+                    </a>
+                        <ul class="sub-menu">
+                            <%
+                                for(int i=0;queryProfileList != null && i<queryProfileList.length(); i++){
+                                    String id = queryProfileList.getJSONObject(i).getString("id");
+                            %>
+                            <li class="<%=(maybeCurrent && id.equals(scat)) ? "current" : "" %>">
+                                <a href="<c:url value="/manager/profile/query"/><%=id %>/index.html"> <i class="icon-angle-right"></i> <%=id %></a>
+                            </li>
+                        </ul></li>
 					<%
 						}
 					%>
-
+                    <%
+                    maybeCurrent = lcatCurrent && mcat.equals("ranking");
+                    %>
+                    <li class="<%=maybeCurrent ? "current" :"" %>"><a href="javascript:void(0);"> <i class="icon-table"></i>
+                        Query
+                    </a>
+                        <ul class="sub-menu">
+                            <%
+                                for(int i=0;rankingProfileList != null && i<rankingProfileList.length(); i++){
+                                    String id = rankingProfileList.getJSONObject(i).getString("id");
+                            %>
+                            <li class="<%=(maybeCurrent && id.equals(scat)) ? "current" : "" %>">
+                                <a href="<c:url value="/manager/profile/ranking"/><%=id %>/index.html"> <i class="icon-angle-right"></i> <%=id %></a>
+                            </li>
+                        </ul></li>
+                    <%
+                        }
+                    %>
 				</ul></li>
 			<%
 				lcatCurrent = "analysis".equals(lcat);
