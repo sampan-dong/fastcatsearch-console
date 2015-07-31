@@ -112,7 +112,9 @@ public class DictionaryController extends AbstractController {
 			dictionaryOption = "2WAY";
 		}else if(dictionaryType.equalsIgnoreCase("SPACE")){
 			dictionaryPrefix = "SET";
-		}
+		}else if(dictionaryType.equalsIgnoreCase("INVERT_MAP")){
+            dictionaryPrefix = "MAP";
+        }
 		int start = 0;
 		
 		if(pageNo > 0){
