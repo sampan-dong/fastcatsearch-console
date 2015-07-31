@@ -107,9 +107,10 @@ public class MainController extends AbstractController {
 		logger.debug("checkAlive {}");
 
 		String message = null;
-		
-		try{
-			ResponseHttpClient httpClient = new ResponseHttpClient(host);
+        ResponseHttpClient httpClient = null;
+        try{
+			httpClient = new ResponseHttpClient(host, 1);
+
 			/*
 			 * 1. check server is alive
 			 * */
@@ -122,8 +123,10 @@ public class MainController extends AbstractController {
 			}
 		}catch(Throwable t){
 			message = t.toString();
-		}
-		StringWriter w = new StringWriter();
+		} finally {
+            httpClient.close();
+        }
+        StringWriter w = new StringWriter();
 		JSONWriter result = new JSONWriter(w);
 		result.object();
 		result.key("success").value(message == null);
@@ -132,7 +135,7 @@ public class MainController extends AbstractController {
 		return w.toString();
 	}
 	
-	@RequestMapping("/main/logout")
+	@RequestMapping("/logout")
 	public ModelAndView logout(HttpSession session) throws Exception {
 
 		//세션삭제를 처리한다.
@@ -143,7 +146,7 @@ public class MainController extends AbstractController {
 		session.invalidate();
 		// 로긴 화면으로 이동한다.
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("login");
+		mav.setViewName("redirect:login.html");
 		return mav;
 	}
 

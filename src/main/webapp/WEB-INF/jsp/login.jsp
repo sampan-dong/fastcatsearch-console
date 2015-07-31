@@ -41,11 +41,21 @@ $(document).ready(function(){
     		data : {host: $(element).val() + ""},
     		type : "POST",
     		success : function(response) {
-    			ret = response.success; 
+    			ret = response.success;
     		}
     	});
     	return ret; 
 	}, "Host is not alive.");
+
+    $("#login-form").on("submit", function(){
+        setCookie("hostAddress", $("form#login-form").find("input[name='host']").val(), 7);
+    });
+    var hostAddress = getCookie("hostAddress");
+    if(hostAddress != null) {
+        $("form#login-form").find("input[name='host']").val(hostAddress);
+    } else {
+        $("form#login-form").find("input[name='host']").val("localhost:8090");
+    }
 });
 
 </script>
@@ -110,8 +120,8 @@ $(document).ready(function(){
 	<div class="footer">
 		<div class="copy">
 			<p class="address">
-				Copyright(c) Fastcatsearch. All rights reserved.<br /> <i
-					class="icon-envelope-alt"></i> contact@fastcatsearch.org<br /> <i
+				Copyright(c) Fastcat. All rights reserved.<br /> <i
+					class="icon-envelope-alt"></i> support@fastcat.co<br /> <i
 					class="glyphicon glyphicon-phone-alt"></i> +82-2-508-1151<br /> 2F
 				Samseong-dong 122-30 Gangnam-gu Seoul, Korea<br />
 			</p>

@@ -121,7 +121,7 @@ $(document).ready(function(){
 				<ul class="dropdown-menu">
 					<li><a href="<c:url value="/main/profile.html"/>"><i class="icon-user"></i>
 							My Profile</a></li>
-					<li><a href="<c:url value="/main/logout.html" />"><i class="icon-key"></i> Log Out</a></li>
+					<li><a href="<c:url value="/logout.html" />"><i class="icon-key"></i> Log Out</a></li>
 				</ul>
 			</li>
 			<li><span id="hostString" class="host" data-toggle="tooltip" data-placement="bottom" title="Connected server : ${_hostString}"><i class="icon-globe"></i> ${_hostString}</span></li>

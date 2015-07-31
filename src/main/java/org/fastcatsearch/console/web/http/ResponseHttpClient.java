@@ -11,6 +11,7 @@ import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -18,6 +19,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -39,13 +41,27 @@ public class ResponseHttpClient {
 	private static final ResponseHandler<Document> xmlResponseHandler = new XMLResponseHandler();
 	private static final ResponseHandler<String> textResponseHandler = new TextResponseHandler();
 
-	public ResponseHttpClient(String host) {
+    public ResponseHttpClient(String host) {
+        this(host, 0);
+    }
+
+	public ResponseHttpClient(String host, int timeout) {
 
 		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
 		cm.setMaxTotal(100);
 		BasicCookieStore cookieStore = new BasicCookieStore();
-		httpclient = HttpClients.custom().setConnectionManager(cm).setDefaultCookieStore(cookieStore).build();
-		this.host = host;
+        HttpClientBuilder clientBuilder = HttpClients.custom().setConnectionManager(cm).setDefaultCookieStore(cookieStore);
+        if(timeout > 0) {
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setSocketTimeout(timeout * 1000)
+                    .setConnectTimeout(timeout * 1000)
+                    .build();
+
+            clientBuilder = clientBuilder.setDefaultRequestConfig(requestConfig);
+        }
+		httpclient = clientBuilder.build();
+
+        this.host = host;
 		if(host != null){
 			urlPrefix = "http://" + host;
 		}else{
