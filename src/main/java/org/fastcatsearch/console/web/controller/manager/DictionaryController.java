@@ -1,15 +1,5 @@
 package org.fastcatsearch.console.web.controller.manager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.Iterator;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.fastcatsearch.console.web.controller.AbstractController;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.util.Iterator;
 
 @Controller
 @RequestMapping("/manager/dictionary/{analysisId}")
@@ -269,10 +264,10 @@ public class DictionaryController extends AbstractController {
 			
 			try {
 				// just temporary save file info into ufile
-				logger.debug("len {}", multipartFile.getBytes().length);
-				logger.debug("getBytes {}", new String(multipartFile.getBytes()));
-				logger.debug("getContentType {}", multipartFile.getContentType());
-				logger.debug("getOriginalFilename {}", multipartFile.getOriginalFilename());
+//				logger.debug("len {}", multipartFile.getBytes().length);
+//				logger.debug("getBytes {}", new String(multipartFile.getBytes()));
+//				logger.debug("getContentType {}", multipartFile.getContentType());
+//				logger.debug("getOriginalFilename {}", multipartFile.getOriginalFilename());
 	
 				String contentType = multipartFile.getContentType();
 				
