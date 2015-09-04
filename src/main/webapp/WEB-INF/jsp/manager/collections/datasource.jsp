@@ -207,14 +207,6 @@ $(document).ready(function(){
 	var jdbcCreateForm = $("#newJdbcSourceForm");
 	jdbcCreateHelper(jdbcCreateForm);
 	
- 	$(".modal").each(function() {
- 		var id = $(this).attr("id");
- 		if(id.startsWith("jdbcSourceModal_")) {
- 			var form = $(this).find("form");
- 			jdbcCreateHelper(form);
- 		}
- 	});
-	
 });
 
 </script>

@@ -83,7 +83,7 @@ function jdbcCreateHelper(jdbcCreateForm) {
 					$("div#createJdbcModal").modal("hide");
 					noty({text: "JDBC create success", type: "success", layout:"topRight", 
 						timeout: 1000});
-					loadJdbcList(form.id.value);
+					//loadJdbcList(form.id.value);
 				});
 			}
 		});

@@ -125,7 +125,6 @@
 				<a href="javascript:showJdbcCreateModal()" class="btn">Create New..</a>
 				<a href="javascript:showQueryTestModal()" class="btn">Query Test..</a>
 				-->
-				<script>loadJdbcList('<%=parameterValue%>')</script>
 				<%
 			}else if(type.equalsIgnoreCase("CHECK")) {
 				%>
