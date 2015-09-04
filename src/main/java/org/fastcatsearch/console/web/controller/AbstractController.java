@@ -17,6 +17,7 @@ public class AbstractController {
 	
 	protected static final String HTTPCLIENT_ID = "httpclient";
 	protected static final String USERNAME_ID = "_username";
+    protected static final String SUBMENU_ID = "_subMenu";
 	/*
 	 * exception페이지로 이동한다.
 	 * */

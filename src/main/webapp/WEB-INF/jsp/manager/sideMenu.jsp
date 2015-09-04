@@ -11,6 +11,8 @@
 	String lcat = request.getParameter("lcat");
 	String mcat = request.getParameter("mcat");
 	String scat = request.getParameter("scat");
+
+    JSONObject subMenuMap = (JSONObject) session.getAttribute("_subMenu");
 %>
 	
 
@@ -20,6 +22,7 @@
 		<ul id="nav">
 			<%
 				boolean lcatCurrent = "dictionary".equals(lcat);
+                //TODO subMenuMap.getString("dictionary") => NONE이면 감춘다. if else
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>"><a href="javascript:void(0);"> <i class="icon-edit"></i>
 					Dictionary <%-- <span class="label label-info pull-right"><%=analysisPluginList.length() %></span> --%>

@@ -73,7 +73,13 @@ public class MainController extends AbstractController {
 			logger.debug("loginResult > {}", loginResult);
 			if (loginResult != null && loginResult.getInt("status") == 0) {
 				// 로그인이 올바를 경우 메인 화면으로 이동한다.
-				
+
+                /*
+                * 메뉴 리스트를 받아온다.
+                * */
+                JSONObject authorityMap = loginResult.getJSONObject("authority");
+                session.setAttribute(SUBMENU_ID, authorityMap);
+
 				ModelAndView mav = new ModelAndView();
 				if(redirect != null && redirect.length() > 0){
 					mav.setViewName("redirect:"+redirect);
