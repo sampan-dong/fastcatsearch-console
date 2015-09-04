@@ -22,7 +22,16 @@
 		<ul id="nav">
 			<%
 				boolean lcatCurrent = "dictionary".equals(lcat);
-                //TODO subMenuMap.getString("dictionary") => NONE이면 감춘다. if else
+				boolean checkDictionaryAuthority = "NONE".equals(subMenuMap.getString("dictionary"));
+				boolean checkCollectionsAuthority = "NONE".equals(subMenuMap.getString("collections"));
+				boolean checkAnalysisAuthority = "NONE".equals(subMenuMap.getString("analysis"));
+				boolean checkServersAuthority = "NONE".equals(subMenuMap.getString("servers"));
+				boolean checkLogsAuthority = "NONE".equals(subMenuMap.getString("logs"));
+				boolean checkSettingsAuthority = "NONE".equals(subMenuMap.getString("settings"));
+                //subMenuMap.getString("dictionary") => NONE이면 감춘다.
+
+				// 2015-09-04 전제현 : 권한체크 시 NONE이 아닐 경우에만 Dictionary 메뉴를 화면에 뿌려준다.
+				if (!checkDictionaryAuthority) {
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>"><a href="javascript:void(0);"> <i class="icon-edit"></i>
 					Dictionary <%-- <span class="label label-info pull-right"><%=analysisPluginList.length() %></span> --%>
@@ -47,7 +56,13 @@
 					
 				</ul></li>
 			<%
+				} // 권한체크 시 NONE이 아닐 경우에만 Dictionary 메뉴를 화면에 뿌려준다.
+			%>
+			<%
 				lcatCurrent = "collections".equals(lcat);
+
+				// 2015-09-04 전제현 : 권한체크 시 NONE이 아닐 경우에만 Collections 메뉴를 화면에 뿌려준다.
+				if (!checkCollectionsAuthority) {
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>">
 				<a href="javascript:void(0);"> <i class="icon-desktop"></i> Collections</a>
@@ -82,10 +97,17 @@
 					}
 					%>
 					
-				</ul></li>
+				</ul>
+			</li>
+			<%
+				}	// 권한체크 시 NONE이 아닐 경우에만 Collections 메뉴를 화면에 뿌려준다.
+			%>
 				
 			<%
 				lcatCurrent = "analysis".equals(lcat);
+
+				// 2015-09-04 전제현 : 권한체크 시 NONE이 아닐 경우에만 Analysis 메뉴를 화면에 뿌려준다.
+				if (!checkAnalysisAuthority) {
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>">
 				<a href="javascript:void(0);"> <i class="icon-edit"></i>
@@ -107,9 +129,15 @@
 					%>
 				</ul>
 			</li>
+			<%
+				}	// 권한체크 시 NONE이 아닐 경우에만 Analysis 메뉴를 화면에 뿌려준다.
+			%>
 			
 			<%
 				lcatCurrent = "servers".equals(lcat);
+
+				// 2015-09-04 전제현 : 권한체크 시 NONE이 아닐 경우에만 Servers 메뉴를 화면에 뿌려준다.
+				if (!checkServersAuthority) {
 			%>
 			<li class="<%="servers".equals(lcat) ? "current" :"" %>">
 				<a href="javascript:void(0);"> <i class="icon-globe"></i>Servers <!-- <span class="label label-info pull-right">3</span> -->
@@ -135,9 +163,15 @@
 					</a></li>
 				</ul>
 			</li>
+			<%
+				}	// 권한체크 시 NONE이 아닐 경우에만 Servers 메뉴를 화면에 뿌려준다.
+			%>
 			
 			<%
 				lcatCurrent = "logs".equals(lcat);
+
+				// 2015-09-04 전제현 : 권한체크 시 NONE이 아닐 경우에만 Logs 메뉴를 화면에 뿌려준다.
+				if (!checkLogsAuthority) {
 			%>
 			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-list-ol"></i>
 							Logs
@@ -153,9 +187,15 @@
 							<i class="icon-angle-right"></i> Running Tasks <span class="arrow"></span>
 					</a></li>
 				</ul></li>
+			<%
+				}	// 권한체크 시 NONE이 아닐 경우에만 Logs 메뉴를 화면에 뿌려준다.
+			%>
 				
 			<%
 				lcatCurrent = "test".equals(lcat);
+
+				// 2015-09-04 전제현 : 권한체크 시 NONE이 아닐 경우에만 Settings 메뉴를 화면에 뿌려준다.
+				if (!checkSettingsAuthority) {
 			%>
 			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-fire"></i>
 							Test
@@ -168,6 +208,9 @@
 							<i class="icon-angle-right"></i> SYSTEM DB <span class="arrow"></span>
 					</a></li>
 				</ul></li>
+			<%
+				}	// 권한체크 시 NONE이 아닐 경우에만 Settings 메뉴를 화면에 뿌려준다.
+			%>
 		</ul>
 	
 		<!-- /Navigation -->

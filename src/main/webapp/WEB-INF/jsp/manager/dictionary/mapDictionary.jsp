@@ -142,21 +142,23 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 		%>
 		<div class="table-footer">
 			<div class="col-md-12">
-			Rows 
-			<% if(entryList.length() > 0) { %>
-			<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> (filtered from <%=totalSize %> total entries)<% } %>
-			<% } else { %>
-			Empty
-			<% } %>
-			
-			<jsp:include page="../../inc/pagenation.jsp" >
-			 	<jsp:param name="pageNo" value="${pageNo }"/>
-			 	<jsp:param name="totalSize" value="<%=filteredSize %>" />
-				<jsp:param name="pageSize" value="${pageSize }" />
-				<jsp:param name="width" value="5" />
-				<jsp:param name="callback" value="go${dictionaryId }DictionaryPage" />
-				<jsp:param name="requestURI" value="" />
-			 </jsp:include>
+				<jsp:include page="../../inc/pagenation.jsp" >
+					<jsp:param name="pageNo" value="${pageNo }"/>
+					<jsp:param name="totalSize" value="<%=filteredSize %>" />
+					<jsp:param name="pageSize" value="${pageSize }" />
+					<jsp:param name="width" value="5" />
+					<jsp:param name="callback" value="go${dictionaryId }DictionaryPage" />
+					<jsp:param name="requestURI" value="" />
+				</jsp:include>
+				<div class="pagination-info">
+					&nbsp;&nbsp;&nbsp;
+					Rows
+					<% if(entryList.length() > 0) { %>
+					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> (filtered from <%=totalSize %> total entries)<% } %>
+					<% } else { %>
+					Empty
+					<% } %>
+				</div>
 			</div>
 		</div>	
 	</div>

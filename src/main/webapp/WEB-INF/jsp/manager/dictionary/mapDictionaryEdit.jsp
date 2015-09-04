@@ -286,10 +286,6 @@ function <%=dictionaryId%>deleteSelectWord(){
 			
 			<div class="col-md-5">
 				<div class="pull-right">
-					<a href="javascript:<%=dictionaryId%>Truncate();"  class="btn btn-danger btn-sm">
-						<span class="glyphicon glyphicon-ban-circle"></span> Clean
-					</a>
-					&nbsp;
 					<div class="btn-group">
 						<a href="#<%=dictionaryId%>WordInsertModal" role="button" data-toggle="modal" class="btn btn-sm" rel="tooltip"><i class="icon-plus"></i></a>
 						<a href="javascript:<%=dictionaryId%>deleteSelectWord()" class="btn btn-sm" rel="tooltip"><i class="icon-minus"></i></a>
@@ -346,22 +342,29 @@ function <%=dictionaryId%>deleteSelectWord(){
 		}
 		%>
 		<div class="table-footer">
-			<div class="col-md-12">
-			Rows 
-			<% if(entryList.length() > 0) { %>
-			<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> (filtered from <%=totalSize %> total entries)<% } %>
-			<% } else { %>
-			Empty
-			<% } %>
-			
-			<jsp:include page="../../inc/pagenation.jsp" >
-			 	<jsp:param name="pageNo" value="${pageNo }"/>
-			 	<jsp:param name="totalSize" value="<%=filteredSize %>" />
-				<jsp:param name="pageSize" value="${pageSize }" />
-				<jsp:param name="width" value="5" />
-				<jsp:param name="callback" value="go${dictionaryId }DictionaryPage" />
-				<jsp:param name="requestURI" value="" />
-			 </jsp:include>
+			<div class="col-md-8">
+				<jsp:include page="../../inc/pagenation.jsp" >
+					<jsp:param name="pageNo" value="${pageNo }"/>
+					<jsp:param name="totalSize" value="<%=filteredSize %>" />
+					<jsp:param name="pageSize" value="${pageSize }" />
+					<jsp:param name="width" value="5" />
+					<jsp:param name="callback" value="go${dictionaryId }DictionaryPage" />
+					<jsp:param name="requestURI" value="" />
+				</jsp:include>
+				<div class="pagination-info">
+					&nbsp;&nbsp;&nbsp;
+					Rows
+					<% if(entryList.length() > 0) { %>
+					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> (filtered from <%=totalSize %> total entries)<% } %>
+					<% } else { %>
+					Empty
+					<% } %>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<a href="javascript:<%=dictionaryId%>Truncate();" class="btn btn-default btn-md btn-clear">
+					<span class="glyphicon glyphicon-trash"></span> Clean
+				</a>
 			</div>
 		</div>	
 	</div>
