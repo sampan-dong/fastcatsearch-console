@@ -2585,7 +2585,7 @@ label > span.required {
 /* 2015-09-04 전제현: .pagination-info */
 .pagination-info {
   float: left;
-  padding: 7px 0px 0 10px;
+  padding: 7px 20px 0 0;
 }
 
 /* 2015-09-04 전제현: .btn-clear: clear 버튼을 right 정렬한다. */

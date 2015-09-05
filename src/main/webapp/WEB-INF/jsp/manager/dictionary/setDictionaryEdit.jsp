@@ -172,26 +172,35 @@ function <%=dictionaryId%>deleteSelectWord(){
 <div class="col-md-12">
 <div class="widget box">
 	<div class="widget-content no-padding">
-		<div class="dataTables_header clearfix">
-			
-			<div class="form-inline col-md-6">
-				<div class="form-group " style="width:240px">
-			        <div class="input-group" >
-			            <span class="input-group-addon"><i class="icon-search"></i></span>
-			            <input type="text" class="form-control" placeholder="Search" id="search_input_<%=dictionaryId%>" value="${keyword}">
-			        </div>
-			    </div>
-			    <div class="form-group">
-			    	&nbsp;
-			    	<div class="checkbox">
-			    	<label>
-			    		<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Exact Match
-			    	</label>
-			    	</div>
-			    </div>
-			</div>
-			
-			<div class="col-md-6">
+		<div class="col-md-12">
+			<div class="dataTables_header clearfix">
+				<div class="pagination-info pull-left">
+					&nbsp;&nbsp;&nbsp;
+					Rows
+					<% if(entryList.length() > 0) { %>
+					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> ( <i class="icon-filter"></i> <%=filteredSize %> / <%=totalSize %> )<% } %>
+					<% } else { %>
+					Empty
+					<% } %>
+				</div>
+
+				<div class="form-inline" style="float:left;">
+					<div class="form-group" style="width:240px">
+						<div class="input-group" >
+							<span class="input-group-addon"><i class="icon-search"></i></span>
+							<input type="text" class="form-control" placeholder="Search" id="search_input_<%=dictionaryId%>" value="${keyword}">
+						</div>
+					</div>
+					<div class="form-group">
+						&nbsp;
+						<div class="checkbox">
+						<label>
+							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Exact Match
+						</label>
+						</div>
+					</div>
+				</div>
+
 				<div class="pull-right">
 					<div class="btn-group">
 						<a href="#<%=dictionaryId%>WordInsertModal" role="button" data-toggle="modal" class="btn btn-sm" rel="tooltip"><i class="icon-plus"></i></a>
@@ -293,15 +302,6 @@ function <%=dictionaryId%>deleteSelectWord(){
 					<jsp:param name="callback" value="go${dictionaryId }DictionaryPage" />
 					<jsp:param name="requestURI" value="" />
 				</jsp:include>
-				<div class="pagination-info">
-					&nbsp;&nbsp;&nbsp;
-					Rows
-					<% if(entryList.length() > 0) { %>
-					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> (filtered from <%=totalSize %> total entries)<% } %>
-					<% } else { %>
-					Empty
-					<% } %>
-				</div>
 			</div>
 			<div class="col-md-4">
 				<a href="javascript:<%=dictionaryId%>Truncate();" class="btn btn-default btn-md btn-clear">
