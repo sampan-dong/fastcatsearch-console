@@ -185,7 +185,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 				</div>
 
 				<div class="form-inline" style="float:left;">
-					<div class="form-group" style="width:200px">
+					<div class="form-group" style="width:240px">
 						<div class="input-group" >
 							<span class="input-group-addon"><i class="icon-search"></i></span>
 							<input type="text" class="form-control" placeholder="Search" id="search_input_<%=dictionaryId%>" value="${keyword}">
@@ -195,7 +195,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 						&nbsp;
 						<div class="checkbox">
 						<label>
-							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Words
+							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Exact Match
 						</label>
 						</div>
 					</div>
