@@ -62,46 +62,55 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 <div class="col-md-12">
 <div class="widget box">
 	<div class="widget-content no-padding">
-		<div class="dataTables_header clearfix">
-			<div class="form-inline col-md-7">
-				<%
-				if(is2Way){
-				%>
-					<input type="hidden" id="<%=dictionaryId %>SearchColumn" value="_ALL" />
-				<% }else{ %>
-				<div class="form-group">
-					<select id="<%=dictionaryId %>SearchColumn" class="select_flat form-control">
-						<option value="_ALL">ALL</option>
-						<%
-						for(int i=0; i < searchableColumnList.length(); i++){
-							String columnName = searchableColumnList.getString(i);
-						%>
-						<option value="<%=columnName %>" <%=(columnName.equals(searchColumn)) ? "selected" : "" %>><%=columnName %></option>
-						<%
-						}
-						 %>
-					</select>
+		<div class="col-md-12">
+			<div class="dataTables_header clearfix">
+				<div class="pagination-info pull-left">
+					&nbsp;&nbsp;&nbsp;
+					Rows
+					<% if(entryList.length() > 0) { %>
+					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> ( <i class="icon-filter"></i> <%=filteredSize %> / <%=totalSize %> )<% } %>
+					<% } else { %>
+					Empty
+					<% } %>
 				</div>
-				<%
-				}
-				%>
-				<div class="form-group " style="width:240px">
-			        <div class="input-group" >
-			            <span class="input-group-addon"><i class="icon-search"></i></span>
-			            <input type="text" class="form-control" placeholder="Search" id="search_input_<%=dictionaryId%>" value="${keyword}">
-			        </div>
-			    </div>
-			    <div class="form-group">
-			    	&nbsp;
-			    	<div class="checkbox">
-			    	<label>
-			    		<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Exact Match
-			    	</label>
-			    	</div>
-			    </div>
-			</div>
-				
-			<div class="col-md-5">
+				<div class="form-inline" style="float:left;">
+					<%
+					if(is2Way){
+					%>
+					<input type="hidden" id="<%=dictionaryId %>SearchColumn" value="_ALL" />
+					<% }else{ %>
+					<div class="form-group">
+						<select id="<%=dictionaryId %>SearchColumn" class="select_flat form-control">
+							<option value="_ALL">ALL</option>
+							<%
+							for(int i=0; i < searchableColumnList.length(); i++){
+								String columnName = searchableColumnList.getString(i);
+							%>
+							<option value="<%=columnName %>" <%=(columnName.equals(searchColumn)) ? "selected" : "" %>><%=columnName %></option>
+							<%
+							}
+							 %>
+						</select>
+					</div>
+					<%
+					}
+					%>
+					<div class="form-group " style="width:200px">
+						<div class="input-group" >
+							<span class="input-group-addon"><i class="icon-search"></i></span>
+							<input type="text" class="form-control" placeholder="Search" id="search_input_<%=dictionaryId%>" value="${keyword}">
+						</div>
+					</div>
+					<div class="form-group">
+						&nbsp;
+						<div class="checkbox">
+						<label>
+							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Words
+						</label>
+						</div>
+					</div>
+				</div>
+
 				<div class="pull-right">
 					<a href="javascript:downloadDictionary('synonym', '<%=dictionaryId%>')"  class="btn btn-default btn-sm">
 						<span class="icon icon-download"></span> Download
@@ -173,15 +182,6 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 					<jsp:param name="callback" value="go${dictionaryId }DictionaryPage" />
 					<jsp:param name="requestURI" value="" />
 				</jsp:include>
-				<div class="pagination-info">
-					&nbsp;&nbsp;&nbsp;
-					Rows
-					<% if(entryList.length() > 0) { %>
-					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> (filtered from <%=totalSize %> total entries)<% } %>
-					<% } else { %>
-					Empty
-					<% } %>
-				</div>
 			</div>
 		</div>	
 	</div>
