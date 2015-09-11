@@ -51,8 +51,8 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 <div class="col-md-12">
 <div class="widget box">
 	<div class="widget-content no-padding">
-		<div class="col-md-12">
-			<div class="dataTables_header clearfix">
+		<div class="dataTables_header clearfix">
+			<div class="col-md-12">
 				<div class="pagination-info pull-left">
 					&nbsp;&nbsp;&nbsp;
 					Rows
