@@ -129,7 +129,7 @@
         <connection>scm:git:https://github.com/fastcat-co/fastcatsearch-console</connection>
         <developerConnection>scm:git:https://github.com/fastcat-co/fastcatsearch-console</developerConnection>
         <url>scm:git:https://github.com/fastcat-co/fastcatsearch-console</url>
-        <tag>HEAD</tag>
+        <tag>v2.21.9</tag>
     </scm>
 
     <licenses>
