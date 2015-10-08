@@ -705,10 +705,11 @@ $(document).ready(function(){
 			%>
 			</select></td>
 			<td><input type="text" name="size" class="form-control field-type-size digit"></td>
-			<td><label class="checkbox"><input type="checkbox" value="true" name="store" checked></label></td>
-			<td><label class="checkbox"><input type="checkbox" value="true" name="removeTag"></label></td>
-			<td><label class="checkbox"><input type="checkbox" value="true" name="multiValue"></label></td>
-			<td><input type="text" class="form-control" name="multiValueDelimiter"></td>
+			<td ><label class="checkbox"><input type="checkbox" value="true" name="store" checked></label></td>
+			<td class="extra-column"><input type="text" class="form-control" name="source" value=""></td>
+			<td class="extra-column"><label class="checkbox"><input type="checkbox" value="true" name="removeTag"></label></td>
+			<td class="extra-column"><label class="checkbox"><input type="checkbox" value="true" name="multiValue"></label></td>
+			<td class="extra-column"><input type="text" class="form-control" name="multiValueDelimiter"></td>
 			<td>
 				<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 				<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
