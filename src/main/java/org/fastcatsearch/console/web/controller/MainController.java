@@ -110,7 +110,7 @@ public class MainController extends AbstractController {
 	@ResponseBody
 	public String checkAlive(HttpSession session, @RequestParam("host") String host) throws Exception {
 
-		logger.debug("checkAlive {}");
+		logger.debug("checkAlive {}", host);
 
 		String message = null;
         ResponseHttpClient httpClient = null;
