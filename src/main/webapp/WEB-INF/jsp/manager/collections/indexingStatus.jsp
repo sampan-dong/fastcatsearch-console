@@ -27,6 +27,8 @@
 				<dd><%=indexNodeStatus.getString("dataPath") %></dd>
 				<dt>Total Document Size : </dt>
 				<dd><%=indexNodeStatus.getInt("documentSize") %></dd>
+                <dt>Total Delete Size : </dt>
+                <dd><%=indexNodeStatus.getInt("deleteSize") %></dd>
 				<dt>Total Disk Size : </dt>
 				<dd><%=indexNodeStatus.getString("diskSize") %></dd>
 				<dt>Create Time : </dt>
@@ -102,7 +104,7 @@
 					%>
 					<tr>
 						<td><strong>FullIndexing</strong></td>
-						<% if(fullIndexingResult != null) { %> 
+                        <% if(fullIndexingResult != null) { %>
 						<td><%=fullIndexingResult.optString("status") %></td>
 						<td><%=fullIndexingResult.optString("isScheduled") %></td>
 						<td><%=fullIndexingResult.optInt("docSize") %></td>
