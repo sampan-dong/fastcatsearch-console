@@ -25,9 +25,9 @@
 				<dd><%=indexNodeStatus.getString("nodeName") %> (<%=indexNodeStatus.getString("nodeId") %>)</dd>
 				<dt>Data Path : </dt>
 				<dd><%=indexNodeStatus.getString("dataPath") %></dd>
-				<dt>Total Document Size : </dt>
-				<dd><%=indexNodeStatus.getInt("documentSize") %></dd>
-                <dt>Total Delete Size : </dt>
+				<dt>Live Document Size : </dt>
+				<dd><%=indexNodeStatus.getInt("documentSize") - indexNodeStatus.getInt("deleteSize") %></dd>
+                <dt>Delete Size : </dt>
                 <dd><%=indexNodeStatus.getInt("deleteSize") %></dd>
 				<dt>Total Disk Size : </dt>
 				<dd><%=indexNodeStatus.getString("diskSize") %></dd>

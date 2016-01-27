@@ -129,6 +129,7 @@ $(document).ready(function(){
             <h4>Index Truncate</h4>
         </div>
         <div class="widget-content">
+            <h5 class="text-danger">This will delete all data in a collection.</h5>
             <a href="javascript:void(0);" id="truncateCollection" class="btn btn-danger btn-lg">Truncate</a>
         </div>
 </div>
