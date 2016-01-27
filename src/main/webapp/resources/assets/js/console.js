@@ -606,6 +606,9 @@ function stopCollection(collectionId){
 function removeCollection(collectionId){
 	operateCollection(collectionId, "Remove");
 }
+function truncateCollection(collectionId) {
+    operateCollection(collectionId, "Truncate");
+}
 function operateCollection(collectionId, command){
 	
 	if(confirm(command+" collection " + collectionId + "?")){
