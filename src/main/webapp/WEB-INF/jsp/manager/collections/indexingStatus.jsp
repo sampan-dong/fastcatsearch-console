@@ -26,9 +26,9 @@
 				<dt>Data Path : </dt>
 				<dd><%=indexNodeStatus.getString("dataPath") %></dd>
 				<dt>Live Document Size : </dt>
-				<dd><%=indexNodeStatus.getInt("documentSize") - indexNodeStatus.getInt("deleteSize") %></dd>
+				<dd><%=indexNodeStatus.getInt("documentSize") - indexNodeStatus.optInt("deleteSize") %></dd>
                 <dt>Delete Size : </dt>
-                <dd><%=indexNodeStatus.getInt("deleteSize") %></dd>
+                <dd><%=indexNodeStatus.optInt("deleteSize") %></dd>
 				<dt>Total Disk Size : </dt>
 				<dd><%=indexNodeStatus.getString("diskSize") %></dd>
 				<dt>Create Time : </dt>
@@ -52,8 +52,8 @@
 					<tr>
 						<td><%=1 %></td>
 						<td>* <%=indexNodeStatus.getString("nodeName") %> (<%=indexNodeStatus.getString("nodeId") %>)</td>
-						<td><%=indexNodeStatus.optInt("documentSize", 0) -  indexNodeStatus.optInt("deleteSize", 0)%>
-                            (<%=indexNodeStatus.optInt("documentSize", 0)%> - <%=indexNodeStatus.optInt("deleteSize", 0)%>)</td>
+						<td><%=indexNodeStatus.optInt("documentSize", 0) -  indexNodeStatus.optInt("deleteSize")%>
+                            (<%=indexNodeStatus.optInt("documentSize", 0)%> - <%=indexNodeStatus.optInt("deleteSize")%>)</td>
 						<td><%=indexNodeStatus.optString("dataPath", "-") %></td>
 						<td><%=indexNodeStatus.optString("diskSize", "-") %></td>
 						<td><%=indexNodeStatus.optInt("segmentSize", -1) %></td>
@@ -66,8 +66,8 @@
 					<tr>
 						<td><%=i+2 %></td>
 						<td><%=dataNodeStatus.getString("nodeName") %> (<%=dataNodeStatus.getString("nodeId") %>)</td>
-                        <td><%=dataNodeStatus.optInt("documentSize", 0) -  dataNodeStatus.optInt("deleteSize", 0)%>
-                            (<%=dataNodeStatus.optInt("documentSize", 0)%> - <%=dataNodeStatus.optInt("deleteSize", 0)%>)</td>
+                        <td><%=dataNodeStatus.optInt("documentSize", 0) -  dataNodeStatus.optInt("deleteSize")%>
+                            (<%=dataNodeStatus.optInt("documentSize", 0)%> - <%=dataNodeStatus.optInt("deleteSize")%>)</td>
 						<td><%=dataNodeStatus.optString("dataPath", "-") %></td>
 						<td><%=dataNodeStatus.optString("diskSize", "-") %></td>
 						<td><%=dataNodeStatus.optInt("segmentSize", -1) %></td>
