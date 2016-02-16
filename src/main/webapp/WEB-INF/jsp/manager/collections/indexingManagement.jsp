@@ -17,6 +17,9 @@ $(document).ready(function(){
 	$("#restoreCollection").on("click", function(){
 		restoreToPreviousCollection('<%=collectionId%>');
 	});
+    $("#truncateCollection").on("click", function(){
+        truncateCollection('<%=collectionId%>');
+    });
 });
 
 </script>
@@ -121,4 +124,12 @@ $(document).ready(function(){
 			<a href="javascript:void(0);" id="restoreCollection" class="btn btn-primary">Restore</a>
 		</div>
 	</div>
+    <div class="widget ">
+        <div class="widget-header">
+            <h4>Index Truncate</h4>
+        </div>
+        <div class="widget-content">
+            <h5 class="text-danger">This will delete all data in a collection.</h5>
+            <a href="javascript:void(0);" id="truncateCollection" class="btn btn-danger btn-lg">Truncate</a>
+        </div>
 </div>

@@ -1,4 +1,4 @@
-# Fastcatsearch-console
+# Fastcatsearch-console [![Build Status](https://travis-ci.org/fastcat-co/fastcatsearch-console.png)](https://travis-ci.org/fastcat-co/fastcatsearch-console)
 
 Fastcatsearch-console is a tool for managing fastcatsearch. You can make collections on fastcatsearch, edit configs, and index documents.
 

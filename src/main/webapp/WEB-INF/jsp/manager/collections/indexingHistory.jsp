@@ -30,8 +30,6 @@ function goIndexingHistoryPage(ignore, pageNo){
 						<th>Step</th>
 						<th>Status</th>
 						<th>Documents</th>
-						<th>Inserts</th>
-						<th>Updates</th>
 						<th>Deletes</th>
 						<th>Schedule</th>
 						<th>Start</th>
@@ -51,8 +49,6 @@ function goIndexingHistoryPage(ignore, pageNo){
 						<td><%=obj.optString("step") %></td>
 						<td><%=obj.getString("status") %></td>
 						<td><%=obj.getInt("docSize") %></td>
-						<td><%=obj.getInt("insertSize") %></td>
-						<td><%=obj.getInt("updateSize") %></td>
 						<td><%=obj.getInt("deleteSize") %></td>
 						<td><%=obj.getString("isScheduled") %></td>
 						<td><%=obj.getString("startTime") %></td>

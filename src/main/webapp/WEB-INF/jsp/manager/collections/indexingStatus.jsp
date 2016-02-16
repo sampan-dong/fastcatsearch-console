@@ -25,16 +25,16 @@
 				<dd><%=indexNodeStatus.getString("nodeName") %> (<%=indexNodeStatus.getString("nodeId") %>)</dd>
 				<dt>Data Path : </dt>
 				<dd><%=indexNodeStatus.getString("dataPath") %></dd>
-				<dt>Total Document Size : </dt>
-				<dd><%=indexNodeStatus.getInt("documentSize") %></dd>
+				<dt>Live Document Size : </dt>
+				<dd><%=indexNodeStatus.getInt("documentSize") - indexNodeStatus.optInt("deleteSize") %></dd>
+                <dt>Delete Size : </dt>
+                <dd><%=indexNodeStatus.optInt("deleteSize") %></dd>
 				<dt>Total Disk Size : </dt>
 				<dd><%=indexNodeStatus.getString("diskSize") %></dd>
 				<dt>Create Time : </dt>
 				<dd><%=indexNodeStatus.getString("createTime") %></dd>
 				<dt>Segment Size : </dt>
 				<dd><%=indexNodeStatus.getInt("segmentSize") %></dd>
-				<dt>Revision UUID : </dt>
-				<dd><%=indexNodeStatus.getString("revisionUUID") %></dd>
 			</dl>
 			<table class="table table-hover table-bordered">
 				<thead>
@@ -45,7 +45,6 @@
 						<th>Data Path</th>
 						<th>Data Disk Size</th>
 						<th>Segment Size</th>
-						<th>Revision UUID</th>
 						<th>Update Time</th>
 					</tr>
 				</thead>
@@ -53,17 +52,11 @@
 					<tr>
 						<td><%=1 %></td>
 						<td>* <%=indexNodeStatus.getString("nodeName") %> (<%=indexNodeStatus.getString("nodeId") %>)</td>
-						<td><%=indexNodeStatus.optInt("documentSize", -1) %></td>
+						<td><%=indexNodeStatus.optInt("documentSize", 0) -  indexNodeStatus.optInt("deleteSize")%>
+                            (<%=indexNodeStatus.optInt("documentSize", 0)%> - <%=indexNodeStatus.optInt("deleteSize")%>)</td>
 						<td><%=indexNodeStatus.optString("dataPath", "-") %></td>
 						<td><%=indexNodeStatus.optString("diskSize", "-") %></td>
 						<td><%=indexNodeStatus.optInt("segmentSize", -1) %></td>
-						<%
-						String revisionUUID = indexNodeStatus.optString("revisionUUID", "-");
-						if(revisionUUID.length() > 10){
-							revisionUUID = revisionUUID.substring(0, 10);
-						}
-						%>
-						<td><%=revisionUUID %></td>
 						<td><%=indexNodeStatus.optString("createTime", "-") %></td>
 					</tr>
 				<%
@@ -73,17 +66,11 @@
 					<tr>
 						<td><%=i+2 %></td>
 						<td><%=dataNodeStatus.getString("nodeName") %> (<%=dataNodeStatus.getString("nodeId") %>)</td>
-						<td><%=dataNodeStatus.optInt("documentSize", -1) %></td>
+                        <td><%=dataNodeStatus.optInt("documentSize", 0) -  dataNodeStatus.optInt("deleteSize")%>
+                            (<%=dataNodeStatus.optInt("documentSize", 0)%> - <%=dataNodeStatus.optInt("deleteSize")%>)</td>
 						<td><%=dataNodeStatus.optString("dataPath", "-") %></td>
 						<td><%=dataNodeStatus.optString("diskSize", "-") %></td>
 						<td><%=dataNodeStatus.optInt("segmentSize", -1) %></td>
-						<%
-						revisionUUID = dataNodeStatus.optString("revisionUUID", "-");
-						if(revisionUUID.length() > 10){
-							revisionUUID = revisionUUID.substring(0, 10);
-						}
-						%>
-						<td><%=revisionUUID %></td>
 						<td><%=dataNodeStatus.optString("createTime", "-") %></td>
 					</tr>
 				<%
@@ -106,8 +93,6 @@
 						<th>Result</th>
 						<th>Scheduled</th>
 						<th>Documents</th>
-						<th>Inserts</th>
-						<th>Updates</th>
 						<th>Deletes</th>
 						<th>Start</th>
 						<th>End</th>
@@ -121,16 +106,14 @@
 					%>
 					<tr>
 						<td><strong>FullIndexing</strong></td>
-						<% if(fullIndexingResult != null) { %> 
-						<td><%=fullIndexingResult.getString("status") %></td>
-						<td><%=fullIndexingResult.getString("isScheduled") %></td>
-						<td><%=fullIndexingResult.getInt("docSize") %></td>
-						<td><%=fullIndexingResult.getInt("insertSize") %></td>
-						<td><%=fullIndexingResult.getInt("updateSize") %></td>
-						<td><%=fullIndexingResult.getInt("deleteSize") %></td>
-						<td><%=fullIndexingResult.getString("startTime") %></td>
-						<td><%=fullIndexingResult.getString("endTime") %></td>
-						<td><%=fullIndexingResult.getString("duration") %></td>
+                        <% if(fullIndexingResult != null) { %>
+						<td><%=fullIndexingResult.optString("status") %></td>
+						<td><%=fullIndexingResult.optString("isScheduled") %></td>
+						<td><%=fullIndexingResult.optInt("docSize") %></td>
+						<td><%=fullIndexingResult.optInt("deleteSize") %></td>
+						<td><%=fullIndexingResult.optString("startTime") %></td>
+						<td><%=fullIndexingResult.optString("endTime") %></td>
+						<td><%=fullIndexingResult.optString("duration") %></td>
 						<% } else { %>
 						<td colspan="9">No full indexing result.</td>
 						<% } %>
@@ -144,15 +127,13 @@
 					<tr>
 						<td><strong>AddIndexing</strong></td>
 						<% if(addIndexingResult != null) { %> 
-						<td><%=addIndexingResult.getString("status") %></td>
-						<td><%=addIndexingResult.getString("isScheduled") %></td>
-						<td><%=addIndexingResult.getInt("docSize") %></td>
-						<td><%=addIndexingResult.getInt("insertSize") %></td>
-						<td><%=addIndexingResult.getInt("updateSize") %></td>
-						<td><%=addIndexingResult.getInt("deleteSize") %></td>
-						<td><%=addIndexingResult.getString("startTime") %></td>
-						<td><%=addIndexingResult.getString("endTime") %></td>
-						<td><%=addIndexingResult.getString("duration") %></td>
+						<td><%=addIndexingResult.optString("status") %></td>
+						<td><%=addIndexingResult.optString("isScheduled") %></td>
+						<td><%=addIndexingResult.optInt("docSize") %></td>
+						<td><%=addIndexingResult.optInt("deleteSize") %></td>
+						<td><%=addIndexingResult.optString("startTime") %></td>
+						<td><%=addIndexingResult.optString("endTime") %></td>
+						<td><%=addIndexingResult.optString("duration") %></td>
 						<% } else { %>
 						<td colspan="9">No add indexing result.</td>
 						<% } %>
