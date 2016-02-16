@@ -1,6 +1,7 @@
 package org.fastcatsearch.console.web.controller;
 
 import java.io.StringWriter;
+import java.net.URLEncoder;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -199,6 +200,23 @@ public class MainController extends AbstractController {
 			
 			GetMethod getMethod = httpGet(session, getDemoSearchResultURL);
 			if(keyword != null) {
+
+				if (keyword.contains("$")) {
+					String encodingCharacter = URLEncoder.encode("$", "UTF-8");
+					keyword = keyword.replace("$", encodingCharacter);
+				}
+				if (keyword.contains("\\")) {
+					String encodingCharacter = URLEncoder.encode("\\", "UTF-8");
+					keyword = keyword.replace("\\", encodingCharacter);
+				}
+				if (keyword.contains("&")) {
+					String encodingCharacter = URLEncoder.encode("&", "UTF-8");
+					keyword = keyword.replace("&", encodingCharacter);
+				}
+				if (keyword.contains(":")) {
+					keyword = keyword.replace(":", "\\\\:");
+				}
+
 				getMethod.addParameter("keyword", keyword);
 				if(category != null) {
 					getMethod.addParameter("category", category);
