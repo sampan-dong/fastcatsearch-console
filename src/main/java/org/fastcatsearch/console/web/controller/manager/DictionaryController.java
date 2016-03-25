@@ -171,7 +171,7 @@ public class DictionaryController extends AbstractController {
 		String requestUrl = "/management/dictionary/list.json";
 		
 		int totalReadSize = 0;
-		int PAGE_SIZE = 100;
+		int PAGE_SIZE = 100000;
 		
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("utf-8");
