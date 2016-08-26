@@ -295,7 +295,8 @@ if(rootElement!=null) {
 													String methods = action.getAttributeValue("methods");
 													String actionMethod = methods != null ? methods.toUpperCase() : "";
 													String actionUri = action.getAttributeValue("uri");
-													hasAnalysisDetailTools = "/analysis-tools-detail".equals(actionUri);
+                                                    //한번 True이면 계속 True를 유지한다.
+													hasAnalysisDetailTools = "/analysis-tools-detail".equals(actionUri) || hasAnalysisDetailTools;
 													String cssClass = "";
 													if(actionUri == null){
 														actionUri = "[Not Available]";
