@@ -1,12 +1,5 @@
 package org.fastcatsearch.console.web.http;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.SocketException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -29,6 +22,15 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.SocketException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class ResponseHttpClient {
 	private static Logger logger = LoggerFactory.getLogger(ResponseHttpClient.class);
 
@@ -41,25 +43,30 @@ public class ResponseHttpClient {
 	private static final ResponseHandler<Document> xmlResponseHandler = new XMLResponseHandler();
 	private static final ResponseHandler<String> textResponseHandler = new TextResponseHandler();
 
+    private static Map<String, CloseableHttpClient> clientMap = new ConcurrentHashMap<String, CloseableHttpClient>();
     public ResponseHttpClient(String host) {
-        this(host, 0);
+        this(host, 10 * 60, 2); //10분.
     }
 
-	public ResponseHttpClient(String host, int timeout) {
+	public ResponseHttpClient(String host, int socketTimeout, int connectTimeout) {
 
-		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-		cm.setMaxTotal(100);
-		BasicCookieStore cookieStore = new BasicCookieStore();
-        HttpClientBuilder clientBuilder = HttpClients.custom().setConnectionManager(cm).setDefaultCookieStore(cookieStore);
-        if(timeout > 0) {
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setSocketTimeout(timeout * 1000)
-                    .setConnectTimeout(timeout * 1000)
-                    .build();
+        httpclient  = clientMap.get(host);
+        if(httpclient == null) {
+            PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+            cm.setMaxTotal(10);
+            BasicCookieStore cookieStore = new BasicCookieStore();
+            HttpClientBuilder clientBuilder = HttpClients.custom().setConnectionManager(cm).setDefaultCookieStore(cookieStore);
+            if (socketTimeout > 0 || connectTimeout > 0) {
+                RequestConfig requestConfig = RequestConfig.custom()
+                        .setSocketTimeout(socketTimeout * 1000)
+                        .setConnectTimeout(connectTimeout * 1000)
+                        .build();
 
-            clientBuilder = clientBuilder.setDefaultRequestConfig(requestConfig);
+                clientBuilder = clientBuilder.setDefaultRequestConfig(requestConfig);
+            }
+            httpclient = clientBuilder.build();
+            clientMap.put(host, httpclient);
         }
-		httpclient = clientBuilder.build();
 
         this.host = host;
 		if(host != null){
@@ -92,12 +99,7 @@ public class ResponseHttpClient {
 
 	public void close() {
 		if (httpclient != null) {
-			try {
-				httpclient.close();
-			} catch (IOException e) {
-				logger.error("error close httpclient", e);
-			}
-			httpclient = null;
+            httpclient = null;
 		}
 		isActive = false;
 	}

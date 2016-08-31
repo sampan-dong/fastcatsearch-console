@@ -116,7 +116,7 @@ public class MainController extends AbstractController {
 		String message = null;
         ResponseHttpClient httpClient = null;
         try{
-			httpClient = new ResponseHttpClient(host, 1);
+			httpClient = new ResponseHttpClient(host, 1, 1);
 
 			/*
 			 * 1. check server is alive
