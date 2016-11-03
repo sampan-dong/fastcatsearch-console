@@ -275,6 +275,7 @@ public class CollectionsController extends AbstractController {
 		
 		requestUrl = "/management/collections/single-source-reader-list.json";
 		JSONObject result = httpPost(session, requestUrl).requestJSON();
+		logger.info("[Datasource] Request {} => {}", requestUrl, result);
 		JSONArray sourceReaderList = result.getJSONArray("sourceReaderList");
 		
 		requestUrl = "/management/collections/datasource.xml";

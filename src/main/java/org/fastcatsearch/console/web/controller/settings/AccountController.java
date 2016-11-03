@@ -52,6 +52,7 @@ public class AccountController extends AbstractController {
 		JSONObject jsonObj = null;
 		jsonObj = httpPost(session, requestUrl)
 				.addParameter("mode", "all").requestJSON();
+		logger.info("[Group] Request {} => {}", requestUrl, jsonObj);
 		modelAndView.addObject("groupAuthorityList",jsonObj);
 		
 		requestUrl = "/settings/authority/get-group-authority-list.json";
