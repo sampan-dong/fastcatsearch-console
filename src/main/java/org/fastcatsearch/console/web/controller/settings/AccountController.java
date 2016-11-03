@@ -52,12 +52,13 @@ public class AccountController extends AbstractController {
 		JSONObject jsonObj = null;
 		jsonObj = httpPost(session, requestUrl)
 				.addParameter("mode", "all").requestJSON();
-		logger.info("[Group] Request {} => {}", requestUrl, jsonObj);
+		logger.info("[Group] Request1 {} => {}", requestUrl, jsonObj);
 		modelAndView.addObject("groupAuthorityList",jsonObj);
 		
 		requestUrl = "/settings/authority/get-group-authority-list.json";
 		jsonObj = httpPost(session, requestUrl)
 				.addParameter("groupId", "-1").requestJSON();
+		logger.info("[Group] Request2 {} => {}", requestUrl, jsonObj);
 		modelAndView.addObject("authorityList",jsonObj);
 		
 		return modelAndView;
