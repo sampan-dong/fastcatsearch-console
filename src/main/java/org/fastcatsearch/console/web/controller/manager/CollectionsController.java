@@ -410,6 +410,8 @@ public class CollectionsController extends AbstractController {
 								}
 								parameterValues.put(key, value);
 							}
+							// 2017-03-08 전제현 추가 Datasource source active 값을 모델에 넣는다.
+							parameterValues.put(indexingSource.getAttribute("active").getName(), indexingSource.getAttribute("active").getValue());
 						}
 						break;
 					}

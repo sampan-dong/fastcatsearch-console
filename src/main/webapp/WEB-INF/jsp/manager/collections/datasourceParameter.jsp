@@ -35,7 +35,7 @@
 		<label class="col-md-2 control-label">Enabled</label>
 		<div class="col-md-10">
 			<label class="checkbox">
-				<input type="checkbox" name="active" class="form-control" value="true" checked>
+				<input type="checkbox" name="active" class="form-control" value="true"<c:if test="${parameterValues.get('active') == 'true'}"> checked</c:if>>
 				Yes
 			</label>
 		</div>
