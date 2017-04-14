@@ -304,7 +304,6 @@ public class DictionaryController extends AbstractController {
 								break;
 							}
 						}
-						dictionarySet.clear();
 						
 						if(count > 0){
 							try {
@@ -329,7 +328,7 @@ public class DictionaryController extends AbstractController {
 						}
 						
 					} while(line != null);
-					
+					dictionarySet.clear();
 				}
 				
 				isSuccess = true;
