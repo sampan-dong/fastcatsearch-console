@@ -20,7 +20,11 @@
 var searchInputObj;
 var searchColumnObj;
 var exactMatchObj;
-
+function downloadDictionary(dictionaryType, dictionaryId){
+	//location.href = dictionaryType+"/download.html?dictionaryId="+dictionaryId;
+	console.log("dictionaryId" , dictionaryId);
+	submitGet(dictionaryType+"/download.html", {dictionaryId : dictionaryId});
+}
 $(document).ready(function(){
 	
 	searchInputObj = $("#search_input_${dictionaryId}");
