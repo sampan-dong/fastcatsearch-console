@@ -276,7 +276,7 @@ public class CollectionsController extends AbstractController {
 		requestUrl = "/management/collections/single-source-reader-list.json";
 		JSONObject result = httpPost(session, requestUrl).requestJSON();
 		logger.info("[Datasource] Request {} => {}", requestUrl, result);
-		JSONArray sourceReaderList = result.getJSONArray("sourceReaderList");
+		JSONArray sourceReaderList = result.optJSONArray("sourceReaderList");
 		
 		requestUrl = "/management/collections/datasource.xml";
 		Document datasource = httpPost(session, requestUrl)
@@ -308,7 +308,7 @@ public class CollectionsController extends AbstractController {
 				parameterValues.put("reader", readerClass);
 				parameterValues.put("modifier", modifierClass);
 				
-				for (int readerInx = 0; readerInx < sourceReaderList.length(); readerInx++) {
+				for (int readerInx = 0; sourceReaderList != null && readerInx < sourceReaderList.length(); readerInx++) {
 					JSONObject readerObject = sourceReaderList.getJSONObject(readerInx);
 					String clazz = readerObject.getString("reader");
 					if (clazz.equals(readerClass)) {
