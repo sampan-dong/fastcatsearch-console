@@ -209,6 +209,11 @@ $(document).ready(function(){
 	
 });
 
+/* 2017-04-18 지앤클라우드 전제현 추가: datasource.xml 다운로드 */
+function downloadDatasource() {
+	submitGet("datasource/download.html");
+}
+
 </script>
 </head>
 <body>
@@ -242,6 +247,9 @@ $(document).ready(function(){
 				<!-- /Page Header -->
 				<div class="widget">
 					<div class="widget-header">
+						<a href="javascript:downloadDatasource()">Datasource Download</a>
+					</div>
+					<div class="widget-header">
 						<h4>Full Indexing</h4>
 					</div>
 					<div class="widget-content">
@@ -269,7 +277,9 @@ $(document).ready(function(){
 									<td class="._name"><%=name %></td>
 									<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
 									<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
-									<td class=""><a data-toggle="modal" data-target="#fullSourceModal_<%=i%>">Edit</a></td>
+									<td class="">
+										<a data-toggle="modal" data-target="#fullSourceModal_<%=i%>">Edit</a>
+									</td>
 								</tr>
 								<%
 								}

@@ -35,6 +35,16 @@ $(document).ready(function(){
 	function toggleExtraColumn() {
 		$(".extra-column").toggle();
 	}
+
+	/* 2017-04-14 지앤클라우드 전제현 추가: schema.xml 다운로드 */
+	function downloadSchemaConfig(){
+		submitGet("schema/normal/download.html");
+	}
+
+	function downloadWorkSchemaConfig(){
+		submitGet("schema/workSchema/download.html");
+	}
+
 </script>
 </head>
 <body>
@@ -71,6 +81,8 @@ $(document).ready(function(){
 					</div>
 					<div class="btn-group" style="float:right; padding: 25px 0;">
 						<a href="javascript:reloadSchema();" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
+						<!-- 2017-04-14 지앤클라우드 전제현 추가: schema.xml 다운로드 -->
+						<a href="javascript:downloadSchemaConfig()" class="btn btn-sm">Download</a>
 						<a href="workSchema.html" class="btn btn-sm">View Work Schema</a>
 					</div>
 				</div>
@@ -82,6 +94,8 @@ $(document).ready(function(){
 					<div class="btn-group" style="float:right; padding: 25px 0;">
 						<a href="javascript:reloadSchema();" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
 						<a href="schema.html" class="btn btn-sm">View Schema</a>
+						<!-- 2017-04-14 지앤클라우드 전제현 추가: schema.work.xml 다운로드 -->
+						<a href="javascript:downloadWorkSchemaConfig()" class="btn btn-sm">Download</a>
 						<a href="javascript:editWorkSchema();" class="btn btn-sm"><span class="icon-edit"></span> Edit Work Schema</a>
 					</div>
 				</div>

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.util.HashSet;
 import java.util.Iterator;
 
 @Controller
@@ -282,17 +283,22 @@ public class DictionaryController extends AbstractController {
 					int bulkSize = 100;
 					
 					reader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
-					
+
 					StringBuilder list = new StringBuilder();
+					// 2017-04-14 지앤클라우드 전제현: 중복되는 단어를 제거하기 위해 HashSet을 사용
+					// 파일로 등록 시 파일 용량에 따라 메모리가 필요
+					HashSet<String> dictionarySet = new HashSet<String>();
 					int count = 0;
 					
 					String line = null;
 					do {
 						while((line = reader.readLine()) != null){
-							if(list.length() > 0){
-								list.append("\n");
+							if (dictionarySet.add(line) && (line.length() != 0)) {
+								if (list.length() > 0) {
+									list.append("\n");
+								}
+								list.append(line);
 							}
-							list.append(line);
 							count++;
 							if(count == bulkSize){
 								break;
@@ -322,7 +328,7 @@ public class DictionaryController extends AbstractController {
 						}
 						
 					} while(line != null);
-					
+					dictionarySet.clear();
 				}
 				
 				isSuccess = true;

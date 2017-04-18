@@ -1,5 +1,7 @@
 package org.fastcatsearch.console.web.controller.manager;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.fastcatsearch.console.web.controller.AbstractController;
@@ -777,4 +780,72 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
+	// 스키마 xml 다운로드
+	@RequestMapping("/{collectionId}/schema/{type}/download")
+	public void downloadSchemaXml(HttpSession session, HttpServletResponse response, @PathVariable String collectionId, @PathVariable String type) throws Exception {
+
+		String xmlDocument = "";
+
+		String requestUrl = "/management/collections/schema.xml";
+
+		response.setContentType("text/plain");
+		response.setCharacterEncoding("utf-8");
+		if ("workSchema".equalsIgnoreCase(type)) {
+			response.setHeader("Content-disposition", "attachment; filename=\"schema.work.xml\"");
+		} else {
+			response.setHeader("Content-disposition", "attachment; filename=\"schema.xml\"");
+		}
+		PrintWriter writer = null;
+		try{
+			writer = response.getWriter();
+			try {
+				xmlDocument = httpPost(session, requestUrl)
+						.addParameter("collectionId", collectionId)
+						.addParameter("type", type)
+						.requestText();
+			} catch (Exception e) {
+				logger.error("", e);
+				throw new IOException(e);
+			}
+			writer.append(xmlDocument);
+		}catch(IOException e){
+			logger.error("download error", e);
+		} finally {
+			if(writer != null){
+				writer.close();
+			}
+		}
+	}
+
+	// 데이터소스 xml 다운로드
+	@RequestMapping("/{collectionId}/datasource/download")
+	public void downloadDatasourceXml(HttpSession session, HttpServletResponse response, @PathVariable String collectionId) throws Exception {
+
+		String xmlDocument = "";
+
+		String requestUrl = "/management/collections/datasource.xml";
+
+		response.setContentType("text/plain");
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Content-disposition", "attachment; filename=\"datasource.xml\"");
+		PrintWriter writer = null;
+		try{
+			writer = response.getWriter();
+			try {
+				xmlDocument = httpPost(session, requestUrl)
+						.addParameter("collectionId", collectionId)
+						.requestText();
+			} catch (Exception e) {
+				logger.error("", e);
+				throw new IOException(e);
+			}
+			writer.append(xmlDocument);
+		}catch(IOException e){
+			logger.error("download error", e);
+		} finally {
+			if(writer != null){
+				writer.close();
+			}
+		}
+	}
 }
