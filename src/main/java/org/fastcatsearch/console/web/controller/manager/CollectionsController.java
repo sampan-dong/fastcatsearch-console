@@ -780,8 +780,9 @@ public class CollectionsController extends AbstractController {
 		return mav;
 	}
 
+	// 스키마 xml 다운로드
 	@RequestMapping("/{collectionId}/schema/{type}/download")
-	public void downloadDictionary(HttpSession session, HttpServletResponse response, @PathVariable String collectionId, @PathVariable String type) throws Exception {
+	public void downloadSchemaXml(HttpSession session, HttpServletResponse response, @PathVariable String collectionId, @PathVariable String type) throws Exception {
 
 		String xmlDocument = "";
 
@@ -801,6 +802,38 @@ public class CollectionsController extends AbstractController {
 				xmlDocument = httpPost(session, requestUrl)
 						.addParameter("collectionId", collectionId)
 						.addParameter("type", type)
+						.requestText();
+			} catch (Exception e) {
+				logger.error("", e);
+				throw new IOException(e);
+			}
+			writer.append(xmlDocument);
+		}catch(IOException e){
+			logger.error("download error", e);
+		} finally {
+			if(writer != null){
+				writer.close();
+			}
+		}
+	}
+
+	// 데이터소스 xml 다운로드
+	@RequestMapping("/{collectionId}/datasource/download")
+	public void downloadDatasourceXml(HttpSession session, HttpServletResponse response, @PathVariable String collectionId) throws Exception {
+
+		String xmlDocument = "";
+
+		String requestUrl = "/management/collections/datasource.xml";
+
+		response.setContentType("text/plain");
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Content-disposition", "attachment; filename=\"datasource.xml\"");
+		PrintWriter writer = null;
+		try{
+			writer = response.getWriter();
+			try {
+				xmlDocument = httpPost(session, requestUrl)
+						.addParameter("collectionId", collectionId)
 						.requestText();
 			} catch (Exception e) {
 				logger.error("", e);
