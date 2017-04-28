@@ -98,6 +98,8 @@ $(document).ready(function(){
 											%><div><i class="glyphicon glyphicon-phone"></i> <%=userId %></div><%
 										}else if(type.equalsIgnoreCase("TELEGRAM")){
 											%><div><i class="fa fa-telegram" aria-hidden="true"></i> <%=userId %></div><%
+											}else if(type.equalsIgnoreCase("SLACK")){
+											%><div><i class="fa fa-slack" aria-hidden="true"></i> <%=userId %></div><%
 										}
 									}
 								}
@@ -155,7 +157,7 @@ for(int i=0;i < settingList.length() ;i++){
 										<div class="form-group">
 											<label class="col-md-3 control-label">Alert To:</label>
 											<div class="col-md-9">
-												<textarea name="alertTo" class="form-control required" placeholder="SMS:swsong, EMAIL:swsong, EMAIL:johndoe"><%=setting.optString("alertTo") %></textarea>
+												<textarea name="alertTo" class="form-control required" placeholder="SMS:swsong,EMAIL:swsong,EMAIL:johndoe,TELEGRAM:jhjeon,TELEGRAM:swsong,SLACK:channelname"><%=setting.optString("alertTo") %></textarea>
 											</div>
 										</div>
 										
@@ -215,7 +217,7 @@ for(int i=0;i < settingList.length() ;i++){
 										<div class="form-group">
 											<label class="col-md-3 control-label">Alert To:</label>
 											<div class="col-md-9">
-												<textarea name="alertTo" class="form-control required" placeholder="SMS:swsong, EMAIL:swsong, EMAIL:johndoe"></textarea>
+												<textarea name="alertTo" class="form-control required" placeholder="SMS:swsong,EMAIL:swsong,EMAIL:johndoe,TELEGRAM:jhjeon,TELEGRAM:swsong,SLACK:channelname"></textarea>
 											</div>
 										</div>
 										

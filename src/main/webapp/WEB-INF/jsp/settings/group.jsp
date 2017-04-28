@@ -95,9 +95,9 @@ $(document).ready(function() {
 				<!--=== Page Content ===-->
 			
 				<div class="tabbable tabbable-custom tabs-left">
-					<c:import url="/WEB-INF/jsp/settings/sideMenu.jsp" >
+					<c:import url="${ROOT_PATH}/settings/sideMenu.jsp">
 					 	<c:param name="menuId" value="<%=menuId %>"/>
-					 </c:import>
+					</c:import>
 					 
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab_3_1">
