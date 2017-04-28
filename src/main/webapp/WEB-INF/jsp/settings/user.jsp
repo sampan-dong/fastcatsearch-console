@@ -48,6 +48,7 @@ function showUpdateUserModal(id){
 			var userId = userInfo["userId"];
 			var email = userInfo["email"];
 			var sms = userInfo["sms"];
+			var telegram = userInfo["telegram"];
 			console.log("userInfo>", userInfo);
  			$("div#userEdit input[name|=name]").val(userName);
  			$("div#userEdit input[name|=id]").val(id);
@@ -56,6 +57,7 @@ function showUpdateUserModal(id){
  			$("div#userEdit select[name|=groupId]").val(groupId);
  			$("div#userEdit input[name|=email]").val(email);
  			$("div#userEdit input[name|=sms]").val(sms);
+			$("div#userEdit input[name|=telegram]").val(telegram);
 			
 			$("#userEdit").modal({show: true, backdrop: 'static'});
 		}, 
@@ -91,7 +93,7 @@ function showUpdateUserModal(id){
 				<!-- /Page Header -->
 				<!--=== Page Content ===-->
 				<div class="tabbable tabbable-custom tabs-left">
-					<c:import url="${ROOT_PATH}/settings/sideMenu.jsp" >
+					<c:import url="/WEB-INF/jsp/settings/sideMenu.jsp" >
 					 	<c:param name="menuId" value="<%=menuId %>"/>
 					 </c:import>
 					 
@@ -115,6 +117,7 @@ function showUpdateUserModal(id){
 													<th>Group</th>
 													<th>Email</th>
 													<th>Sms</th>
+													<th>Telegram</th>
 													<th></th>
 												</tr>
 											</thead>	
@@ -128,6 +131,7 @@ function showUpdateUserModal(id){
 												String userName = userRecord.optString("name");
 												String email = userRecord.optString("email");
 												String sms = userRecord.optString("sms");
+												String telegram = userRecord.optString("telegram");
 												String groupName="";
 												
 												if(groupMap.containsKey(groupId)) {
@@ -140,6 +144,7 @@ function showUpdateUserModal(id){
 													<td><%=groupName %></td>
 													<td><%=email %></td>
 													<td><%=sms %></td>
+													<td><%=telegram %></td>
 													<td><a href="javascript:showUpdateUserModal('<%=id%>')">Edit</a></td>
 												</tr>
 											<%
@@ -231,6 +236,12 @@ function showUpdateUserModal(id){
 								<input type="text" class="form-control number" id="sms" name="sms" placeholder="SMS">
 							</div>
 						</div>
+						<div class="form-group">
+							<label for="telegram" class="col-sm-3 control-label">Telegram</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control number" id="telegram" name="telegram" placeholder="Telegram">
+							</div>
+						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -302,6 +313,12 @@ function showUpdateUserModal(id){
 							<label for="sms" class="col-sm-3 control-label">SMS</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control number" id="sms" name="sms" placeholder="SMS">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="telegram" class="col-sm-3 control-label">Telegram</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control number" id="telegram" name="telegram" placeholder="Telegram">
 							</div>
 						</div>
 						<div class="form-group">

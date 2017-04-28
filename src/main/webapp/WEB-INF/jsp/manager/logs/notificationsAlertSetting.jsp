@@ -96,6 +96,8 @@ $(document).ready(function(){
 											%><div><i class="icon-envelope"></i> <%=userId %></div><%
 										}else if(type.equalsIgnoreCase("SMS")){
 											%><div><i class="glyphicon glyphicon-phone"></i> <%=userId %></div><%
+										}else if(type.equalsIgnoreCase("TELEGRAM")){
+											%><div><i class="fa fa-telegram" aria-hidden="true"></i> <%=userId %></div><%
 										}
 									}
 								}
