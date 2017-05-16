@@ -52,9 +52,9 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	<c:import url="${ROOT_PATH}/inc/mainMenu.jsp" />
+	<c:import url="/WEB-INF/jsp/inc/mainMenu.jsp" />
 	<div id="container">
-		<c:import url="${ROOT_PATH}/manager/sideMenu.jsp">
+		<c:import url="/WEB-INF/jsp/manager/sideMenu.jsp">
 			<c:param name="lcat" value="collections" />
 			<c:param name="mcat" value="${collectionId}" />
 			<c:param name="scat" value="config" />
@@ -91,6 +91,8 @@ $(document).ready(function(){
 				Element dataPlanConfig = root.getChild("data-plan");
 				List<Element> searchNodeElList = searchNodeList.getChildren("node");
 				List<Element> dataNodeElList = dataNodeList.getChildren("node");
+				String fullIndexingAlertTimeout = root.getChildText("full-indexing-alert-timeout");
+				String addIndexingAlertTimeout = root.getChildText("add-indexing-alert-timeout");
 				
 				String searchNodeListString = "";
 				for(int i = 0; i < searchNodeElList.size(); i++){
@@ -233,15 +235,43 @@ $(document).ready(function(){
 								</div>
 							</div>
 						</div>
-						
+					</div>
+
+					<div class="col-md-12">
+						<div class="widget">
+							<div class="widget-header">
+								<h4>Indexing Timeout Setting</h4>
+							</div>
+							<div class="widget-content">
+								<div class="row">
+									<div class="col-md-12 form-horizontal">
+
+										<div class="form-group">
+											<label class="col-md-3 control-label">Full Indexing Alert Timeout :</label>
+											<div class="col-md-9">
+												<input type="text" name="fullIndexingAlertTimeout" class="form-control required digits fcol2" value="<%=fullIndexingAlertTimeout%>">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-md-3 control-label">Add Indexing Alert Timeout :</label>
+											<div class="col-md-9">
+												<input type="text" name="addIndexingAlertTimeout" class="form-control required digits fcol2" value="<%=addIndexingAlertTimeout%>">
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
 						<div class="form-actions">
 							<input type="submit" value="Update Settings" class="btn btn-primary pull-right">
 						</div>
 					</div>
 				
 				</form>
-				
-				
+
 				
 			</div>
 		</div>
