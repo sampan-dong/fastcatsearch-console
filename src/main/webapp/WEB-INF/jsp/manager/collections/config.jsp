@@ -247,14 +247,14 @@ $(document).ready(function(){
 									<div class="col-md-12 form-horizontal">
 
 										<div class="form-group">
-											<label class="col-md-3 control-label">Full Indexing Alert Timeout :</label>
+											<label class="col-md-3 control-label">Full Indexing Alert Timeout (Minute) :</label>
 											<div class="col-md-9">
 												<input type="text" name="fullIndexingAlertTimeout" class="form-control required digits fcol2" value="<%=fullIndexingAlertTimeout%>">
 											</div>
 										</div>
 
 										<div class="form-group">
-											<label class="col-md-3 control-label">Add Indexing Alert Timeout :</label>
+											<label class="col-md-3 control-label">Add Indexing Alert Timeout (Minute) :</label>
 											<div class="col-md-9">
 												<input type="text" name="addIndexingAlertTimeout" class="form-control required digits fcol2" value="<%=addIndexingAlertTimeout%>">
 											</div>
