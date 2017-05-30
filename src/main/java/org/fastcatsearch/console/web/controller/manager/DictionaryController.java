@@ -110,7 +110,9 @@ public class DictionaryController extends AbstractController {
 			dictionaryPrefix = "SET";
 		}else if(dictionaryType.equalsIgnoreCase("INVERT_MAP")){
             dictionaryPrefix = "MAP";
-        }
+        }else if(dictionaryType.equalsIgnoreCase("COMPOUND")) {
+			dictionaryPrefix = "COMPOUND";
+		}
 		int start = 0;
 		
 		if(pageNo > 0){
@@ -191,7 +193,7 @@ public class DictionaryController extends AbstractController {
 				if(pageNo > 0){
 					start = (pageNo - 1) * PAGE_SIZE + 1;
 				}
-				
+
 				try {
 					jsonObj = httpPost(session, requestUrl)
 							.addParameter("pluginId", analysisId)
