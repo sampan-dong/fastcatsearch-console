@@ -151,16 +151,16 @@ $(document).ready(function(){
 			success: function(response, statusText, xhr, $form){
 				if(response["success"]==true) {
 					$("div.modal").addClass("hidden");
-					noty({text: "Datasource update success", type: "success", layout:"topRight", timeout: 3000});
+					noty({text: "데이터소스가 업데이트 되었습니다.", type: "success", layout:"topRight", timeout: 3000});
 					setTimeout(function() {
 						location.href = location.href;
 					},1000);
 				} else {
-					noty({text: "Datasource update fail", type: "error", layout:"topRight", timeout: 5000});
+					noty({text: "데이터소스 업데이트에 실패했습니다.", type: "error", layout:"topRight", timeout: 5000});
 				}
 				
 			}, fail: function() {
-				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
+				noty({text: "데이터를 보낼수 없습니다.", type: "error", layout:"topRight", timeout: 5000});
 			}
 			
 		});
@@ -187,14 +187,14 @@ $(document).ready(function(){
 			success:function(response, statusText, xhr, $form) {
 				if(response["success"]==true) {
 					$("div.modal").addClass("hidden");
-					noty({text: "JDBC Source update success", type: "success", layout:"topRight", timeout: 3000});
+					noty({text: "JDBC 소스를 업데이트 했습니다.", type: "success", layout:"topRight", timeout: 3000});
 					location.href = location.href;
 				} else {
-					noty({text: "JDBC Source update fail", type: "error", layout:"topRight", timeout: 5000});
+					noty({text: "JDBC 소스 업데이트에 실패했습니다.", type: "error", layout:"topRight", timeout: 5000});
 				}
 				
 			}, fail:function() {
-				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
+				noty({text: "데이터를 보낼수 없습니다.", type: "error", layout:"topRight", timeout: 5000});
 			}
 		});
 		
@@ -229,10 +229,10 @@ function downloadDatasource() {
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Collections</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 컬렉션</li>
 						<li class="current"> ${collectionId}</li>
-						<li class="current"> Datasource</li>
+						<li class="current"> 데이터소스</li>
 					</ul>
 
 				</div>
@@ -241,25 +241,25 @@ function downloadDatasource() {
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Datasource</h3>
+						<h3>데이터소스</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
 				<div class="widget">
 					<div class="widget-header">
-						<a href="javascript:downloadDatasource()">Datasource Download</a>
+						<a href="javascript:downloadDatasource()">데이터소스 다운로드</a>
 					</div>
 					<div class="widget-header">
-						<h4>Full Indexing</h4>
+						<h4>전체색인</h4>
 					</div>
 					<div class="widget-content">
-						<a data-toggle="modal" data-target="#newSourceModal" index-type="full" update-type="new"><span class="icon-plus-sign"></span> Add Datasource</a>
+						<a data-toggle="modal" data-target="#newSourceModal" index-type="full" update-type="new"><span class="icon-plus-sign"></span> 데이터소스 추가</a>
 						<table class="table table-hover table-bordered table-checkable">
 							<thead>
 								<tr>
-									<th>Name</th>
-									<th>Enable</th>
-									<th>Reader / Modifier</th>
+									<th>이름</th>
+									<th>사용여부</th>
+									<th>리더 / 모디파이어</th>
 									<th> </th>
 								</tr>
 							</thead>
@@ -308,13 +308,13 @@ function downloadDatasource() {
 									<input type="hidden" name="uri" value="/management/collections/update-datasource"/>
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-										<h4 class="modal-title"> Full Indexing Source</h4>
+										<h4 class="modal-title"> 전체색인소스</h4>
 									</div>
 									<div class="modal-body">
 										<div class="col-md-12">
 											<div class="widget">
 												<div class="widget-header">
-													<h4>Setting</h4>
+													<h4>설정</h4>
 												</div>
 												<div class="widget-content">
 													<div class="row">
@@ -328,9 +328,9 @@ function downloadDatasource() {
 										</div>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-primary">Save changes</button>
+										<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">삭제</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+										<button type="submit" class="btn btn-primary">저장</button>
 									</div>
 								</form>
 							</div>
@@ -352,13 +352,13 @@ function downloadDatasource() {
 									<input type="hidden" name="uri" value="/management/collections/update-datasource"/>
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-										<h4 class="modal-title"> Indexing Source</h4>
+										<h4 class="modal-title"> 색인소스</h4>
 									</div>
 									<div class="modal-body">
 										<div class="col-md-12">
 											<div class="widget">
 												<div class="widget-header">
-													<h4>Setting</h4>
+													<h4>설정</h4>
 												</div>
 												<div class="widget-content">
 													<div class="row">
@@ -369,8 +369,8 @@ function downloadDatasource() {
 										</div>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-primary">Save changes</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+										<button type="submit" class="btn btn-primary">저장</button>
 									</div>
 								</form>
 							</div>
@@ -381,16 +381,16 @@ function downloadDatasource() {
 						
 					<div class="widget">
 						<div class="widget-header">
-							<h4>Add Indexing</h4>
+							<h4>증분색인</h4>
 						</div>
 						<div class="widget-content">
-							<a data-toggle="modal" data-target="#newSourceModal" index-type="add"><span class="icon-plus-sign"></span> Add Datasource</a>
+							<a data-toggle="modal" data-target="#newSourceModal" index-type="add"><span class="icon-plus-sign"></span> 데이터소스 추가</a>
 							<table class="table table-hover table-bordered table-checkable">
 								<thead>
 									<tr>
-										<th>Name</th>
-										<th>Enable</th>
-										<th>Reader / Modifier</th>
+										<th>이름</th>
+										<th>사용여부</th>
+										<th>리더 / 모디파이어</th>
 										<th> </th>
 									</tr>
 								</thead>
@@ -406,9 +406,9 @@ function downloadDatasource() {
 									%>
 									<tr class="_add_<%=i %>">
 										<td class="._name"><%=name %></td>
-										<td class="._active"><%="true".equals(active) ? "Enabled" : "Disabled" %></td>
-										<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(No modifier)</p>" %></td>
-										<td class=""><a data-toggle="modal" data-target="#addSourceModal_<%=i %>">Edit</a></td>
+										<td class="._active"><%="true".equals(active) ? "사용" : "사용안함" %></td>
+										<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(모디파이어 없음)</p>" %></td>
+										<td class=""><a data-toggle="modal" data-target="#addSourceModal_<%=i %>">수정</a></td>
 									</tr>
 									<%
 									}
@@ -438,13 +438,13 @@ function downloadDatasource() {
 										<input type="hidden" name="uri" value="/management/collections/update-datasource"/>
 										<div class="modal-header">
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-											<h4 class="modal-title"> Add Indexing Source</h4>
+											<h4 class="modal-title"> 증분색인소스</h4>
 										</div>
 										<div class="modal-body">
 											<div class="col-md-12">
 												<div class="widget">
 													<div class="widget-header">
-														<h4>Setting</h4>
+														<h4>설정</h4>
 													</div>
 													<div class="widget-content">
 														<div class="row">
@@ -458,9 +458,9 @@ function downloadDatasource() {
 											</div>
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">Remove</button>
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-											<button type="submit" class="btn btn-primary">Save changes</button>
+											<button type="button" class="btn btn-danger pull-left" onclick="javascript:void(0)">삭제</button>
+											<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+											<button type="submit" class="btn btn-primary">저장</button>
 										</div>
 									</form>
 								</div>
@@ -475,22 +475,22 @@ function downloadDatasource() {
 						
 						<div class="widget">
 						<div class="widget-header">
-							<h4>JDBC List</h4>
+							<h4>JDBC 리스트</h4>
 						</div>
 						<div class="widget-content">
 								
-								<a data-toggle="modal" data-target="#newJdbcSourceModal"><span class="icon-plus-sign"></span> Add JDBC</a>
+								<a data-toggle="modal" data-target="#newJdbcSourceModal"><span class="icon-plus-sign"></span> JDBC 추가</a>
 								
 							<table class="table table-hover table-bordered">
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>ID</th>
-										<th>Name</th>
-										<th>Driver</th>
+										<th>아이디</th>
+										<th>이름</th>
+										<th>드라이버</th>
 										<th>URL</th>
-										<th>User</th>
-										<th>Password</th>
+										<th>사용자</th>
+										<th>비밀번호</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -514,7 +514,7 @@ function downloadDatasource() {
 										<td><%=url %></td>
 										<td><%=user %></td>
 										<td><%=maskedPassword %></td>
-										<td><a data-toggle="modal" data-target="#jdbcSourceModal_<%=i%>">Edit</a></td>
+										<td><a data-toggle="modal" data-target="#jdbcSourceModal_<%=i%>">수정</a></td>
 									</tr>
 								<%
 								}
@@ -543,43 +543,43 @@ function downloadDatasource() {
 									<input type="hidden" name="mode" value="update"/>
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-										<h4 class="modal-title"> Jdbc Source</h4>
+										<h4 class="modal-title"> Jdbc 소스</h4>
 									</div>
 									<div class="modal-body">
 										<div class="col-md-12">
 											<div class="widget">
 												<div class="widget-header">
-													<h4>Setting</h4>
+													<h4>설정</h4>
 												</div>
 												<div class="widget-content">
 													<div class="row">
 														<div class="col-md-12 form-horizontal">
 															<div class="form-group">
-																<label class="col-md-3 control-label">Id:</label>
+																<label class="col-md-3 control-label">아이디:</label>
 																<div class="col-md-9"><input type="text" name="id" class="form-control input-width-small required" value="<%=id%>" placeholder="ID"></div>
 															</div>
 															<div class="form-group">
-																<label class="col-md-3 control-label">Name:</label>
+																<label class="col-md-3 control-label">이름:</label>
 																<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" value="<%=name%>" placeholder="NAME"></div>
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">Driver:</label>
+																<label class="col-md-3 control-label">드라이버:</label>
 																<div class="col-md-9"><input type="text" name="driver" class="form-control required" value="<%=driver%>" placeholder="DRIVER"></div>
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">Url:</label>
+																<label class="col-md-3 control-label">URL:</label>
 																<div class="col-md-9"><input type="text" name="url" class="form-control required" value="<%=url%>" placeholder="URL"></div>
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">User:</label>
+																<label class="col-md-3 control-label">사용자:</label>
 																<div class="col-md-9"><input type="text" name="user" class="form-control" value="<%=user%>" placeholder="USER"></div>
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">Password:</label>
+																<label class="col-md-3 control-label">비밀번호:</label>
 																<div class="col-md-9"><input type="text" name="password" class="form-control" placeholder="PASSWORD (LEAVE BLANK IF YOU DON'T WANT CHANGE)"></div>
 															</div>
 														</div>
@@ -590,9 +590,9 @@ function downloadDatasource() {
 										</div>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-danger pull-left">Remove</button>
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-primary">Save changes</button>
+										<button type="button" class="btn btn-danger pull-left">삭제</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+										<button type="submit" class="btn btn-primary">저장</button>
 									</div>
 								</form>
 							</div>
@@ -613,28 +613,28 @@ function downloadDatasource() {
 									<input type="hidden" name="mode" value="update"/>
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-										<h4 class="modal-title"> Jdbc Source</h4>
+										<h4 class="modal-title"> Jdbc 소스</h4>
 									</div>
 									<div class="modal-body">
 										<div class="col-md-12">
 											<div class="widget">
 												<div class="widget-header">
-													<h4>Setting</h4>
+													<h4>설정</h4>
 												</div>
 												<div class="widget-content">
 													<div class="row">
 														<div class="col-md-12 form-horizontal">
 															<div class="form-group">
-																<label class="col-md-3 control-label">Id:</label>
+																<label class="col-md-3 control-label">아이디:</label>
 																<div class="col-md-9"><input type="text" name="id" class="form-control input-width-small required" placeholder="ID"></div>
 															</div>
 															<div class="form-group">
-																<label class="col-md-3 control-label">Name:</label>
+																<label class="col-md-3 control-label">이름:</label>
 																<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" placeholder="NAME"></div>
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">DB Vendor:</label>
+																<label class="col-md-3 control-label">DB 제공자:</label>
 																<div class="col-md-9">
 																	<select class=" select_flat form-control fcol2 required">
 																	</select>
@@ -642,40 +642,40 @@ function downloadDatasource() {
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">Driver:</label>
+																<label class="col-md-3 control-label">드라이버:</label>
 																<div class="col-md-9"><input type="text" name="driver" class="form-control required" placeholder="DRIVER"></div>
 																
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">Host:</label>
+																<label class="col-md-3 control-label">호스트주소:</label>
 																<div class="col-md-9"><input type="text" name="host" class="form-control fcol2 required"></div>
 															</div>
 															<div class="form-group">
-																<label class="col-md-3 control-label">Port:</label>
+																<label class="col-md-3 control-label">포트:</label>
 																<div class="col-md-9"><input type="text" name="port" class="form-control fcol2 required number"></div>
 															</div>
 															<div class="form-group">
-																<label class="col-md-3 control-label">DB Name:</label>
+																<label class="col-md-3 control-label">DB명:</label>
 																<div class="col-md-9"><input type="text" name="dbName" class="form-control fcol2 required"></div>
 															</div>
 															<div class="form-group">
-																<label class="col-md-3 control-label">User:</label>
+																<label class="col-md-3 control-label">사용자:</label>
 																<div class="col-md-9"><input type="text" name="user" class="form-control" placeholder="USER"></div>
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">Password:</label>
+																<label class="col-md-3 control-label">비밀번호:</label>
 																<div class="col-md-9"><input type="text" name="password" class="form-control" placeholder="PASSWORD"></div>
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">JDBC Parameter:</label>
+																<label class="col-md-3 control-label">JDBC 파라미터:</label>
 																<div class="col-md-9"><input type="text" name="parameter" class="form-control" value=""></div>
 															</div>
 															
 															<div class="form-group">
-																<label class="col-md-3 control-label">Url:</label>
+																<label class="col-md-3 control-label">URL:</label>
 																<div class="col-md-9"><input type="text" name="url" class="form-control required" placeholder="URL"></div>
 															</div>
 														</div>
@@ -686,9 +686,9 @@ function downloadDatasource() {
 										</div>
 									</div>
 									<div class="modal-footer">
-										<input type="button" value="Close" class="btn btn-default" data-dismiss="modal"/>
-										<input type="button" value="Test Connection" id="testJdbcConnectionBtn" class="btn">
-										<input type="submit" value="Save changes" class="btn btn-primary"/>
+										<input type="button" value="닫기" class="btn btn-default" data-dismiss="modal"/>
+										<input type="button" value="연결테스트" id="testJdbcConnectionBtn" class="btn">
+										<input type="submit" value="저장" class="btn btn-primary"/>
 									</div>
 								</form>
 							</div>

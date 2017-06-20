@@ -47,10 +47,10 @@ $(document).ready(function(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Collections</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 컬렉션</li>
 						<li class="current"> ${collectionId}</li>
-						<li class="current"> Data</li>
+						<li class="current"> 데이터</li>
 					</ul>
 
 				</div>
@@ -59,7 +59,7 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Data</h3>
+						<h3>데이터</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -67,8 +67,8 @@ $(document).ready(function(){
 				
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul id="data_tab" class="nav nav-tabs">
-						<li class="active"><a href="#tab_raw_data" data-toggle="tab">Raw</a></li>
-						<li class=""><a href="#tab_analyzed_data" data-toggle="tab">Analyzed Index</a></li>
+						<li class="active"><a href="#tab_raw_data" data-toggle="tab">기본</a></li>
+						<li class=""><a href="#tab_analyzed_data" data-toggle="tab">분석된 색인어</a></li>
 					</ul>
 					<div class="tab-content row">
 

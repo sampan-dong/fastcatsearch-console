@@ -25,16 +25,16 @@ function goIndexingHistoryPage(ignore, pageNo){
 				<thead>
 					<tr>
 						<th>#</th>
-						<th class="hidden">Collection</th>
-						<th>Type</th>
-						<th>Step</th>
-						<th>Status</th>
-						<th>Documents</th>
-						<th>Deletes</th>
-						<th>Schedule</th>
-						<th>Start</th>
-						<th>End</th>
-						<th>Duration</th>
+						<th class="hidden">컬렉션</th>
+						<th>종류</th>
+						<th>스텝</th>
+						<th>상태</th>
+						<th>문서</th>
+						<th>삭제</th>
+						<th>스케줄</th>
+						<th>시작</th>
+						<th>종료</th>
+						<th>소요시간</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -62,11 +62,11 @@ function goIndexingHistoryPage(ignore, pageNo){
 			</table>
 			<div class="table-footer">
 				<div class="col-md-12">
-				Rows 
+				행
 				<% if(entryList.length() > 0) { %>
 				<%=start %> - <%=start + entryList.length() - 1%> of <%=totalSize %> 
 				<% } else { %>
-				Empty
+				결과없음
 				<% } %>
 				
 				<jsp:include page="../../inc/pagenation.jsp" >

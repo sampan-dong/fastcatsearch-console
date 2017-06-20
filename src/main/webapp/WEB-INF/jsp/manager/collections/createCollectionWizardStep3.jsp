@@ -75,12 +75,12 @@ $(document).ready(function() {
 			success:function(response, status) {
 				if(response.success) {
 					$.noty.closeAll();
-					noty({text: "Schema update success", type: "success", layout:"topRight", timeout: 3000});
+					noty({text: "스키마가 업데이트 되었습니다.", type: "success", layout:"topRight", timeout: 3000});
 				} else {
 					noty({text: response.errorMessage, type: "error", layout:"topRight", timeout: 0}); //클릭해야 사라진다.
 				}
 			}, fail:function() {
-				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
+				noty({text: "데이터를 보낼수 없습니다.", type: "error", layout:"topRight", timeout: 5000});
 			}
 		});
 		return;
@@ -145,19 +145,19 @@ $(document).ready(function() {
 			<!-- Breadcrumbs line -->
 			<div class="crumbs">
 				<ul id="breadcrumbs" class="breadcrumb">
-					<li><i class="icon-home"></i> <a href="${ROOT_PATH}/manager/index.html">Manager</a></li>
-					<li class="current"> Create Collection Wizard</li>
+					<li><i class="icon-home"></i> <a href="${ROOT_PATH}/manager/index.html">관리</a></li>
+					<li class="current"> 컬렉션생성 마법사</li>
 				</ul>
 	
 			</div>
-			<h3>Create Collection Wizard</h3>
+			<h3>컬렉션생성 마법사</h3>
 			<div class="widget">
 				<ul class="wizard">
-					<li><span class="badge">1</span> Set Collection Information</li>
-					<li><span class="badge">2</span> Data Mapping</li>
-					<li class="current"><span class="badge">3</span> Set Field Schema</li>
-					<li><span class="badge">4</span> Confirmation</li>
-					<li><span class="badge">5</span> Finish</li>
+					<li><span class="badge">1</span> 컬렉션 정보입력</li>
+					<li><span class="badge">2</span> 데이터맵핑</li>
+					<li class="current"><span class="badge">3</span> 필드정의</li>
+					<li><span class="badge">4</span> 최종확인</li>
+					<li><span class="badge">5</span> 완료</li>
 				</ul>
 				<div class="wizard-content">
 					<div class="wizard-card current">
@@ -170,13 +170,13 @@ $(document).ready(function() {
 										<thead>
 											<tr>
 												<th>#</th>
-												<th>ID</th>
-												<th>Name</th>
-												<th>Type</th>
-												<th>Length</th>
-												<th>Remove Tags</th>
-												<th>Multi Value</th>
-												<th>Multi Value<br>Delimiter</th>
+												<th>아이디</th>
+												<th>이름</th>
+												<th>타입</th>
+												<th>길이</th>
+												<th>태그제거</th>
+												<th>다중값</th>
+												<th>다중값<br>구분자</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -236,15 +236,15 @@ $(document).ready(function() {
 									</table>
 									
 									<div class="form-group">
-										<input type="submit" value="Save changes" class="btn btn-primary">
-										<input type="button" value="Test Field Mapping.." class="btn" data-target="#testFieldMapping" data-toggle="modal" data-backdrop="static">
+										<input type="submit" value="저장" class="btn btn-primary">
+										<input type="button" value="필드맵핑 테스트.." class="btn" data-target="#testFieldMapping" data-toggle="modal" data-backdrop="static">
 									</div>
 								</div>
 							</div>
 							<div class="wizard-bottom" >
-								<input type="button" value="Back" class="btn" onClick="javascript:prevStep('${collectionId}', 2)">
-								<input type="button" value="Next" class="btn btn-primary fcol2" onClick="javascript:nextStep()">
-								<a href="javascript:cancelCollectionWizard('${collectionId}')" class="btn btn-danger pull-right">Cancel collection</a>
+								<input type="button" value="이전" class="btn" onClick="javascript:prevStep('${collectionId}', 2)">
+								<input type="button" value="다음" class="btn btn-primary fcol2" onClick="javascript:nextStep()">
+								<a href="javascript:cancelCollectionWizard('${collectionId}')" class="btn btn-danger pull-right">컬렉션 취소</a>
 							</div>
 						</form>
 					</div>
@@ -260,11 +260,11 @@ $(document).ready(function() {
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title"> Field Mapping Test</h4>
+					<h4 class="modal-title"> 필드맵핑 테스트</h4>
 				</div>
 				<div class="modal-body">
 					<div class="col-md-12 bottom-space-sm form-control"></div>
-					<input type="button" value="Close" class="btn"  data-dismiss="modal">
+					<input type="button" value="닫기" class="btn"  data-dismiss="modal">
 				</div>
 			</div>
 		</div>

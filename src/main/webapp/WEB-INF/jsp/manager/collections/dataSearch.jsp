@@ -35,7 +35,7 @@ $(document).ready(function(){
 				
 				<div class="col-md-4">
 					<select id="shardSelect" class="select_flat col-md-12">
-						<option value="">:: SHARD ::</option>
+						<option value="">:: 샤드 ::</option>
 						<%
 						for( int i = 0 ; i < indexDataStatusList.length() ; i++ ){
 							JSONObject indexDataStatus = indexDataStatusList.getJSONObject(i);
@@ -55,11 +55,11 @@ $(document).ready(function(){
 				JSONArray fieldList = searchResult.getJSONArray("fieldname_list");
 				if(result.length() > 0){
 				%>
-					<span>Rows ${start} - ${end} of <%=totalSize %></span>
+					<span>행 ${start} - ${end} of <%=totalSize %></span>
 				<%
 				}else{
 				%>
-					<span>Rows 0</span>
+					<span>행 0</span>
 				<%
 				}
 				%>
@@ -124,7 +124,7 @@ $(document).ready(function(){
 			</div>
 
 			<div class="table-footer">
-				<label class="col-md-2 control-label">Selected Column Data:</label>
+				<label class="col-md-2 control-label">선택된 컬럼데이터:</label>
 				<div class="col-md-10">
 					<div id="selectedDataRawPanel" class="panel"></div>
 				</div>

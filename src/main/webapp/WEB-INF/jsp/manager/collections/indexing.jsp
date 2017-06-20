@@ -79,10 +79,10 @@ function reloadIndexingSchdulePage(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Collections</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 컬렉션</li>
 						<li class="current"> ${collectionId}</li>
-						<li class="current"> Indexing</li>
+						<li class="current"> 색인</li>
 					</ul>
 
 				</div>
@@ -91,7 +91,7 @@ function reloadIndexingSchdulePage(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Index</h3>
+						<h3>색인</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -99,11 +99,11 @@ function reloadIndexingSchdulePage(){
 				
 				<div class="tabbable tabbable-custom tabbable-full-width ">
 					<ul class="nav nav-tabs" id="indexing_tab">
-						<li class="active"><a href="#tab_indexing_status" data-toggle="tab">Status</a></li>
-						<li class=""><a href="#tab_indexing_schedule" data-toggle="tab">Schedule</a></li>
-						<li class=""><a href="#tab_indexing_run" data-toggle="tab">Build</a></li>
-						<li class=""><a href="#tab_indexing_history" data-toggle="tab">History</a></li>
-						<li class=""><a href="#tab_indexing_management" data-toggle="tab">Management</a></li>
+						<li class="active"><a href="#tab_indexing_status" data-toggle="tab">상태</a></li>
+						<li class=""><a href="#tab_indexing_schedule" data-toggle="tab">스케줄</a></li>
+						<li class=""><a href="#tab_indexing_run" data-toggle="tab">빌드</a></li>
+						<li class=""><a href="#tab_indexing_history" data-toggle="tab">히스토리</a></li>
+						<li class=""><a href="#tab_indexing_management" data-toggle="tab">관리</a></li>
 					</ul>
 					<div class="tab-content row">
 
@@ -118,22 +118,22 @@ function reloadIndexingSchdulePage(){
 								
 								<div class="widget ">
 									<div class="widget-header">
-										<h4>Collection Indexing</h4>
+										<h4>컬렉션 색인</h4>
 										<div class="toolbar no-padding">
-											<a href="#advanceIndexTool" role="button" data-toggle="modal" class="transparent">advance</a>
+											<a href="#advanceIndexTool" role="button" data-toggle="modal" class="transparent">고급설정</a>
 										</div>
 									</div>
 									<div class="widget-content">
 										<div class="row">
 											<div class=" col-md-12">
 												<a href="javascript:runFullIndexing('${collectionId}');" class="btn btn-sm"><span
-													class="glyphicon glyphicon-play"></span> Run Full Indexing</a>
+													class="glyphicon glyphicon-play"></span> 전체색인 실행</a>
 													&nbsp;
 												<a href="javascript:runAddIndexing('${collectionId}');" class="btn btn-sm"><span
-													class="glyphicon glyphicon-play"></span> Run Add Indexing</a>
+													class="glyphicon glyphicon-play"></span> 증분색인 실행</a>
 													&nbsp;
 												<a href="javascript:stopIndexing('${collectionId}');" class="btn btn-sm btn-danger">
-													<span class="glyphicon glyphicon-stop"></span> Stop Indexing</a>
+													<span class="glyphicon glyphicon-stop"></span> 색인중지</a>
 														&nbsp;
 														
 											</div>
@@ -143,20 +143,20 @@ function reloadIndexingSchdulePage(){
 								
 								<div class="widget ">
 									<div class="widget-header">
-										<h4>Indexing Task Status</h4>
+										<h4>색인작업상태</h4>
 									</div>
 									<div class="widget-content">
 										<span class="checkbox"><label><input type="checkbox" id="autoUpdate"> Auto Update <i class="icon-refresh"></i></label></span>
 										<table class="table table-hover table-bordered">
 											<thead>
 												<tr>
-													<th>Type</th>
-													<th>State</th>
-													<th>Document Count</th>
-													<th>Schedule</th>
-													<th>Start</th>
-													<th>End</th>
-													<th>Duration</th>
+													<th>종류</th>
+													<th>상태</th>
+													<th>문서갯수</th>
+													<th>스케줄</th>
+													<th>시작</th>
+													<th>종료</th>
+													<th>소요시간</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -200,16 +200,16 @@ function reloadIndexingSchdulePage(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Advance Index Tool</h4>
+					<h4 class="modal-title">고급색인도구</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class=" col-md-12">
 							<a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
-								Run Document Full Indexing</a>
+								문서 전체색인 실행</a>
 								&nbsp;|&nbsp;
 							<a href="javascript:runIndexBuildFullIndexing('${collectionId}');" class="">
-								Buld Index Full Indexing</a>
+								전체색인 인덱스 생성</a>
 								&nbsp;
 							<%-- <a href="javascript:runDocumentFullIndexing('${collectionId}');" class="">
 								<span class="glyphicon glyphicon-play"></span> Run Document Add Indexing</a>
@@ -223,15 +223,15 @@ function reloadIndexingSchdulePage(){
 					<div class="row">
 						<div class=" col-md-12">
 							<a href="javascript:runRebuildIndex('${collectionId}');" class="">
-								Copy Index to Search Nodes..</a>
+								검색노드로 색인전송..</a>
 							&nbsp;|&nbsp;
 							<a href="javascript:runRebuildIndex('${collectionId}');" class="">
-								Switch to Next Sequence Index</a>
+								다음시퀀스로 색인변경</a>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 		      	</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->

@@ -23,9 +23,9 @@ JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginO
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Analysis</li>
-						<li class="current"> Plugin</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 분석기</li>
+						<li class="current"> 플러그인</li>
 					</ul>
 
 				</div>
@@ -34,7 +34,7 @@ JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginO
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Plugin</h3>
+						<h3>플러그인</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -43,11 +43,11 @@ JSONArray analysisPluginList = (JSONArray) request.getAttribute("analysisPluginO
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Version</th>
-							<th>Decription</th>
-							<th>Class</th>
+							<th>아이디</th>
+							<th>이름</th>
+							<th>버전</th>
+							<th>설명</th>
+							<th>클래스</th>
 						</tr>
 					</thead>
 					<tbody>

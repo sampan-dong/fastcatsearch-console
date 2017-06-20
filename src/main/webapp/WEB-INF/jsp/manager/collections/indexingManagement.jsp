@@ -27,20 +27,20 @@ $(document).ready(function(){
 								
 	<div class="widget ">
 		<div class="widget-header">
-			<h4>Index Copy</h4>
+			<h4>색인복사</h4>
 		</div>
 		<div class="widget-content">
 			<table id="indexCopyTable" class="table table-bordered table-checkable">
 				<thead>
 				<tr>
-					<th>Node</th>
-					<th>Data Path</th>
+					<th>노드</th>
+					<th>데이터경로</th>
 					<th>UUID</th>
-					<th>Documents</th>
-					<th>Disk Size</th>
-					<th>Create Time</th>
-					<th class="checkbox-column">Source</th>
-					<th class="checkbox-column">Destination</th>
+					<th>문서갯수</th>
+					<th>디스크용량</th>
+					<th>생성시각</th>
+					<th class="checkbox-column">소스</th>
+					<th class="checkbox-column">목적지</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -72,25 +72,25 @@ $(document).ready(function(){
 				%>
 				</tbody>
 			</table>
-			<a href="javascript:void(0);" id="copyDataButton" class="btn btn-primary">Copy Data</a>
+			<a href="javascript:void(0);" id="copyDataButton" class="btn btn-primary">데이터 복사</a>
 		</div>
 	</div>
 	
 	
 	<div class="widget ">
 		<div class="widget-header">
-			<h4>Index Restore</h4>
+			<h4>색인복원</h4>
 		</div>
 		<div class="widget-content">
 			<table id="restoreTable"  class="table table-bordered table-checkable">
 				<thead>
 				<tr>
 					<th class="checkbox-column"></th>
-					<th>Node</th>
-					<th>Data Path</th>
+					<th>노드</th>
+					<th>데이터경로</th>
 					<th>UUID</th>
-					<th>Documents</th>
-					<th>Disk Size</th>
+					<th>문서갯수</th>
+					<th>디스크용량</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -121,15 +121,15 @@ $(document).ready(function(){
 				%>
 				</tbody>
 			</table>
-			<a href="javascript:void(0);" id="restoreCollection" class="btn btn-primary">Restore</a>
+			<a href="javascript:void(0);" id="restoreCollection" class="btn btn-primary">복원</a>
 		</div>
 	</div>
     <div class="widget ">
         <div class="widget-header">
-            <h4>Index Truncate</h4>
+            <h4>색인데이터 지우기</h4>
         </div>
         <div class="widget-content">
-            <h5 class="text-danger">This will delete all data in a collection.</h5>
-            <a href="javascript:void(0);" id="truncateCollection" class="btn btn-danger btn-lg">Truncate</a>
+            <h5 class="text-danger">컬렉션 스키마는 유지하면서 모든 데이터를 지웁니다.</h5>
+            <a href="javascript:void(0);" id="truncateCollection" class="btn btn-danger btn-lg">지우기</a>
         </div>
 </div>

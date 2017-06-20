@@ -64,10 +64,10 @@ $(document).ready(function(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Collections</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 컬렉션</li>
 						<li class="current"> ${collectionId}</li>
-						<li class="current"> Config</li>
+						<li class="current"> 설정</li>
 					</ul>
 
 				</div>
@@ -76,7 +76,7 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Settings</h3>
+						<h3>설정</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -120,19 +120,19 @@ $(document).ready(function(){
 					<div class="col-md-12">
 						<div class="widget">
 							<div class="widget-header">
-								<h4>General Information</h4>
+								<h4>일반정보</h4>
 							</div>
 							<div class="widget-content">
 								<div class="row">
 									<div class="col-md-12 form-horizontal">
 										<div class="form-group">
-											<label class="col-md-3 control-label">Collection Name:</label>
+											<label class="col-md-3 control-label">컬렉션명:</label>
 											<div class="col-md-9"><input type="text" name="collectionName" class="form-control required" value="<%=collectionName %>"></div>
 										</div>
 									</div>
 									<div class="col-md-12 form-horizontal">
 										<div class="form-group">
-											<label class="col-md-3 control-label">Index Node:</label>
+											<label class="col-md-3 control-label">색인노드:</label>
 											<div class="col-md-9">
 											<select class=" select_flat form-control fcol2" name="indexNode">
 												<%
@@ -154,11 +154,11 @@ $(document).ready(function(){
 									</div>
 									<div class="col-md-12 form-horizontal">
 										<div class="form-group">
-											<label class="col-md-3 control-label">Search Node List :</label>
+											<label class="col-md-3 control-label">검색노드 리스트:</label>
 											<div class="col-md-9 form-inline">
 												<input type="text" name="searchNodeList" class="form-control fcol5 node-data required" value="<%=searchNodeListString%>">
 												&nbsp;<select class=" select_flat form-control fcol2 node-select">
-													<option value="">:: Add Node ::</option>
+													<option value="">:: 노드추가 ::</option>
 													<%
 													for(int inx=0;inx<serverList.length();inx++) {
 														JSONObject serverInfo = serverList.optJSONObject(inx);
@@ -192,11 +192,11 @@ $(document).ready(function(){
 									<div class="col-md-12 form-horizontal">
 										
 										<div class="form-group">
-											<label class="col-md-3 control-label">Data Node List :</label>
+											<label class="col-md-3 control-label">데이터노드 리스트:</label>
 											<div class="col-md-9 form-inline">
 												<input type="text" name="dataNodeList" class="form-control fcol5 node-data required" value="<%=dataNodeListString%>">
 												&nbsp;<select class="select_flat form-control fcol2 node-select">
-													<option value="">:: Add Node ::</option>
+													<option value="">:: 노드추가 ::</option>
 													<%
 													for(int inx=0;inx<serverList.length();inx++) {
 														JSONObject serverInfo = serverList.optJSONObject(inx);
@@ -215,20 +215,20 @@ $(document).ready(function(){
 										</div>
 										
 										<div class="form-group">
-											<label class="col-md-3 control-label">Data-sequence-cycle :</label>
+											<label class="col-md-3 control-label">색인 시퀀스 사이클 :</label>
 											<div class="col-md-9"><input type="text" name="dataSequenceCycle" class="form-control required digits fcol1" value="<%=dataPlanConfig.getChildText("data-sequence-cycle") %>" maxlength="1" minlength="1"></div>
 										</div>
 	
 										<div class="form-group">
-											<label class="col-md-3 control-label">Segment-revision-backup-size :</label>
+											<label class="col-md-3 control-label">세그먼트 리비전 백업갯수 :</label>
 											<div class="col-md-9"><input type="text" name="segmentRevisionBackupSize" class="form-control required digits fcol1" value="<%=dataPlanConfig.getChildText("segment-revision-backup-size") %>" maxlength="2" minlength="1"></div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-3 control-label">Segment-document-limit :</label>
+											<label class="col-md-3 control-label">세그먼트 최대문서 :</label>
 											<div class="col-md-9"><input type="text" name="segmentDocumentLimit" class="form-control required digits fcol2" value="<%=dataPlanConfig.getChildText("segment-document-limit") %>"></div>
 										</div>
 										<div class="form-group">
-											<label class="col-md-3 control-label">Full-Indexing Segment-size :</label>
+											<label class="col-md-3 control-label">전체색인 세그먼트갯수 :</label>
 											<div class="col-md-9"><input type="text" name="fullIndexingSegmentSize" class="form-control required digits fcol2" value="<%=fullIndexingSegmentSize %>"></div>
 										</div>
 									</div>
@@ -240,21 +240,21 @@ $(document).ready(function(){
 					<div class="col-md-12">
 						<div class="widget">
 							<div class="widget-header">
-								<h4>Indexing Timeout Setting</h4>
+								<h4>색인 타임아웃 설정</h4>
 							</div>
 							<div class="widget-content">
 								<div class="row">
 									<div class="col-md-12 form-horizontal">
 
 										<div class="form-group">
-											<label class="col-md-3 control-label">Full Indexing Alert Timeout (Minute) :</label>
+											<label class="col-md-3 control-label">전체색인 타임아웃 알림 (분) :</label>
 											<div class="col-md-9">
 												<input type="text" name="fullIndexingAlertTimeout" class="form-control required digits fcol2" value="<%=fullIndexingAlertTimeout%>">
 											</div>
 										</div>
 
 										<div class="form-group">
-											<label class="col-md-3 control-label">Add Indexing Alert Timeout (Minute) :</label>
+											<label class="col-md-3 control-label">증분색인 타임아웃 알림 (분) :</label>
 											<div class="col-md-9">
 												<input type="text" name="addIndexingAlertTimeout" class="form-control required digits fcol2" value="<%=addIndexingAlertTimeout%>">
 											</div>

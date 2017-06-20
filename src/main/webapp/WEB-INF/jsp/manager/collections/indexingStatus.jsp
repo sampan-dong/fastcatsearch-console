@@ -17,35 +17,35 @@
 
 	<div class="widget ">
 		<div class="widget-header">
-			<h4>Index Data Status</h4>
+			<h4>색인데이터 상태</h4>
 		</div>
 		<div class="widget-content">
 			<dl class="dl-horizontal">
-				<dt>Indexing Node : </dt>
+				<dt>색인노드 : </dt>
 				<dd><%=indexNodeStatus.getString("nodeName") %> (<%=indexNodeStatus.getString("nodeId") %>)</dd>
-				<dt>Data Path : </dt>
+				<dt>데이터경로 : </dt>
 				<dd><%=indexNodeStatus.getString("dataPath") %></dd>
-				<dt>Live Document Size : </dt>
+				<dt>라이브 문서갯수 : </dt>
 				<dd><%=indexNodeStatus.getInt("documentSize") - indexNodeStatus.optInt("deleteSize") %></dd>
-                <dt>Delete Size : </dt>
+                <dt>삭제갯수 : </dt>
                 <dd><%=indexNodeStatus.optInt("deleteSize") %></dd>
-				<dt>Total Disk Size : </dt>
+				<dt>총 디스크용량 : </dt>
 				<dd><%=indexNodeStatus.getString("diskSize") %></dd>
-				<dt>Create Time : </dt>
+				<dt>생성시각 : </dt>
 				<dd><%=indexNodeStatus.getString("createTime") %></dd>
-				<dt>Segment Size : </dt>
+				<dt>세그먼트갯수 : </dt>
 				<dd><%=indexNodeStatus.getInt("segmentSize") %></dd>
 			</dl>
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Node(ID)</th>
-						<th>Document Size</th>
-						<th>Data Path</th>
-						<th>Data Disk Size</th>
-						<th>Segment Size</th>
-						<th>Update Time</th>
+						<th>노드(아이디)</th>
+						<th>문서갯수</th>
+						<th>데이터경로</th>
+						<th>데이터 디스크용량</th>
+						<th>세그먼트갯수</th>
+						<th>업데이트시각</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -83,20 +83,20 @@
 	
 	<div class="widget ">
 		<div class="widget-header">
-			<h4>Indexing Result</h4>
+			<h4>색인결과</h4>
 		</div>
 		<div class="widget-content">
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
-						<th>Type</th>
-						<th>Result</th>
-						<th>Scheduled</th>
-						<th>Documents</th>
-						<th>Deletes</th>
-						<th>Start</th>
-						<th>End</th>
-						<th>Duration</th>
+						<th>종류</th>
+						<th>결과</th>
+						<th>스케줄</th>
+						<th>문서갯수</th>
+						<th>삭제</th>
+						<th>시작</th>
+						<th>종료</th>
+						<th>소요시간</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -105,7 +105,7 @@
 						JSONObject fullIndexingResult = indexingResult.getJSONObject("FULL");
 					%>
 					<tr>
-						<td><strong>FullIndexing</strong></td>
+						<td><strong>전체색인</strong></td>
                         <% if(fullIndexingResult != null) { %>
 						<td><%=fullIndexingResult.optString("status") %></td>
 						<td><%=fullIndexingResult.optString("isScheduled") %></td>
@@ -115,7 +115,7 @@
 						<td><%=fullIndexingResult.optString("endTime") %></td>
 						<td><%=fullIndexingResult.optString("duration") %></td>
 						<% } else { %>
-						<td colspan="9">No full indexing result.</td>
+						<td colspan="9">전체색인 내역이 없습니다.</td>
 						<% } %>
 					</tr>
 					<%
@@ -125,7 +125,7 @@
 						JSONObject addIndexingResult = indexingResult.getJSONObject("ADD");
 					%>
 					<tr>
-						<td><strong>AddIndexing</strong></td>
+						<td><strong>증분색인</strong></td>
 						<% if(addIndexingResult != null) { %> 
 						<td><%=addIndexingResult.optString("status") %></td>
 						<td><%=addIndexingResult.optString("isScheduled") %></td>
@@ -135,7 +135,7 @@
 						<td><%=addIndexingResult.optString("endTime") %></td>
 						<td><%=addIndexingResult.optString("duration") %></td>
 						<% } else { %>
-						<td colspan="9">No add indexing result.</td>
+						<td colspan="9">증분색인 내역이 없습니다.</td>
 						<% } %>
 					</tr>
 					<%

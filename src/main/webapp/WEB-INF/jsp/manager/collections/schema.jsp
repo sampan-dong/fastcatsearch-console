@@ -61,10 +61,10 @@ $(document).ready(function(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Collections</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 컬렉션</li>
 						<li class="current"> ${collectionId}</li>
-						<li class="current"> Schema</li>
+						<li class="current"> 스키마</li>
 					</ul>
 
 				</div>
@@ -77,13 +77,13 @@ $(document).ready(function(){
 				%>
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Schema</h3>
+						<h3>스키마</h3>
 					</div>
 					<div class="btn-group" style="float:right; padding: 25px 0;">
 						<a href="javascript:reloadSchema();" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
 						<!-- 2017-04-14 지앤클라우드 전제현 추가: schema.xml 다운로드 -->
-						<a href="javascript:downloadSchemaConfig()" class="btn btn-sm">Download</a>
-						<a href="workSchema.html" class="btn btn-sm">View Work Schema</a>
+						<a href="javascript:downloadSchemaConfig()" class="btn btn-sm">다운로드</a>
+						<a href="workSchema.html" class="btn btn-sm">작업스키마</a>
 					</div>
 				</div>
 				<% }else{ %>
@@ -93,10 +93,10 @@ $(document).ready(function(){
 					</div>
 					<div class="btn-group" style="float:right; padding: 25px 0;">
 						<a href="javascript:reloadSchema();" class="btn btn-sm" rel="tooltip"><i class="icon-refresh"></i></a>
-						<a href="schema.html" class="btn btn-sm">View Schema</a>
+						<a href="schema.html" class="btn btn-sm">스키마</a>
 						<!-- 2017-04-14 지앤클라우드 전제현 추가: schema.work.xml 다운로드 -->
-						<a href="javascript:downloadWorkSchemaConfig()" class="btn btn-sm">Download</a>
-						<a href="javascript:editWorkSchema();" class="btn btn-sm"><span class="icon-edit"></span> Edit Work Schema</a>
+						<a href="javascript:downloadWorkSchemaConfig()" class="btn btn-sm">다운로드</a>
+						<a href="javascript:editWorkSchema();" class="btn btn-sm"><span class="icon-edit"></span> 작업스키마 수정</a>
 					</div>
 				</div>
 				
@@ -140,13 +140,13 @@ $(document).ready(function(){
 				%>
 				<div class="tabbable tabbable-custom tabbable-full-width" id="schema_tabs">
 					<ul class="nav nav-tabs">
-						<li class="active" id="tab_key_overview"><a href="javascript:showOverview();">Overview</a></li>
-						<li class=""><a href="#tab_fields" data-toggle="tab">Fields</a></li>
-						<li class=""><a href="#tab_constraints" data-toggle="tab">Primary Key</a></li>
-						<li class=""><a href="#tab_analyzers" data-toggle="tab">Analyzers</a></li>
-						<li class=""><a href="#tab_search_indexes" data-toggle="tab">Search Indexes</a></li>
-						<li class=""><a href="#tab_field_indexes" data-toggle="tab">Field Indexes</a></li>
-						<li class=""><a href="#tab_group_indexes" data-toggle="tab">Group Indexes</a></li>
+						<li class="active" id="tab_key_overview"><a href="javascript:showOverview();">개요</a></li>
+						<li class=""><a href="#tab_fields" data-toggle="tab">필드</a></li>
+						<li class=""><a href="#tab_constraints" data-toggle="tab">기본키</a></li>
+						<li class=""><a href="#tab_analyzers" data-toggle="tab">분석기</a></li>
+						<li class=""><a href="#tab_search_indexes" data-toggle="tab">검색인덱스</a></li>
+						<li class=""><a href="#tab_field_indexes" data-toggle="tab">필드인덱스</a></li>
+						<li class=""><a href="#tab_group_indexes" data-toggle="tab">그룹인덱스</a></li>
 					</ul>
 					<div class="tab-content row">
 						
@@ -155,8 +155,8 @@ $(document).ready(function(){
 							<div class="col-md-12">
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Fields</h4>
-										<p><a href="javascript:toggleExtraColumn()">Show/Hide Extra Column</a></p>
+										<h4>필드</h4>
+										<p><a href="javascript:toggleExtraColumn()">추가컬럼 보이기/숨기기</a></p>
 									</div>
 
 									<div class="widget-content">
@@ -166,15 +166,15 @@ $(document).ready(function(){
 											<thead>
 												<tr>
 													<th class="fcol1">#</th>
-													<th class="">ID</th>
-													<th class="">Name</th>
-													<th class="">Type</th>
-													<th class="">Length</th>
-													<th class="fcol1">Store</th>
-													<th class="fcol1 extra-column">Source</th>
-													<th class="fcol1 extra-column">Remove Tags</th>
-													<th class="fcol1 extra-column">Multi Value</th>
-													<th class="fcol1 extra-column">Multi Value Delimiter</th>
+													<th class="">아이디</th>
+													<th class="">이름</th>
+													<th class="">타입</th>
+													<th class="">길이</th>
+													<th class="fcol1">저장</th>
+													<th class="fcol1 extra-column">소스</th>
+													<th class="fcol1 extra-column">태그제거</th>
+													<th class="fcol1 extra-column">다중값</th>
+													<th class="fcol1 extra-column">다중값 구분자</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -226,7 +226,7 @@ $(document).ready(function(){
 							
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Primary Keys</h4>
+										<h4>기본키</h4>
 									</div>
 
 									<div class="widget-content">
@@ -234,7 +234,7 @@ $(document).ready(function(){
 											<thead>
 												<tr>
 													<th class="fcol1">#</th>
-													<th class="fcol2">Field</th>
+													<th class="fcol2">필드</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -270,7 +270,7 @@ $(document).ready(function(){
 							
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Analyzers</h4>
+										<h4>분석기</h4>
 									</div>
 
 									<div class="widget-content">
@@ -278,10 +278,10 @@ $(document).ready(function(){
 											<thead>
 												<tr>
 													<th class="fcol1">#</th>
-													<th class="fcol2">ID</th>
-													<th class="fcol2">Core<br>Pool Size</th>
-													<th class="fcol2">Maximum<br>Pool Size</th>
-													<th class="">Analyzer</th>
+													<th class="fcol2">아이디</th>
+													<th class="fcol2">기본<br>풀크기</th>
+													<th class="fcol2">최대<br>풀크기</th>
+													<th class="">분석기클래스</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -325,7 +325,7 @@ $(document).ready(function(){
 							
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Search Indexes</h4>
+										<h4>검색인덱스</h4>
 									</div>
 
 									<div class="widget-content">
@@ -334,14 +334,14 @@ $(document).ready(function(){
 											<thead>
 												<tr>
 													<th class="fcol1">#</th>
-													<th class="fcol1-2">ID</th>
-													<th class="fcol2">Name</th>
-													<th class="">Field</th>
-													<th class="fcol2">Index Analyzer</th>
-													<th class="fcol2">Query Analyzer</th>
-													<th class="fcol1">Ignore Case</th>
-													<th class="fcol1">Store Position</th>
-													<th class="fcol1">Position Increment Gap</th>
+													<th class="fcol1-2">아이디</th>
+													<th class="fcol2">이름</th>
+													<th class="">필드</th>
+													<th class="fcol2">색인용 분석기</th>
+													<th class="fcol2">쿼리용 분석기</th>
+													<th class="fcol1">대소문자무시</th>
+													<th class="fcol1">포지션저장</th>
+													<th class="fcol1">포지션증가Gap</th>
 												</tr>
 											</thead>
 											
@@ -404,7 +404,7 @@ $(document).ready(function(){
 							
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Field Indexes</h4>
+										<h4>필드인덱스</h4>
 									</div>
 
 									<div class="widget-content">
@@ -412,11 +412,11 @@ $(document).ready(function(){
 											<thead>
 												<tr>
 													<th class="fcol1">#</th>
-													<th class="fcol2">ID</th>
-													<th class="fcol2">Name</th>
-													<th class="fcol2">Field</th>
-													<th class="fcol2">Size</th>
-													<th class="fcol1">Ignore Case</th>
+													<th class="fcol2">아이디</th>
+													<th class="fcol2">이름</th>
+													<th class="fcol2">필드</th>
+													<th class="fcol2">길이</th>
+													<th class="fcol1">대소문자무시</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -462,7 +462,7 @@ $(document).ready(function(){
 							
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Group Indexes</h4>
+										<h4>그룹인덱스</h4>
 									</div>
 
 									<div class="widget-content">
@@ -470,9 +470,9 @@ $(document).ready(function(){
 											<thead>
 												<tr>
 													<th class="fcol1">#</th>
-													<th class="fcol2">ID</th>
-													<th class="fcol2">Name</th>
-													<th class="fcol2">Field</th>
+													<th class="fcol2">아이디</th>
+													<th class="fcol2">이름</th>
+													<th class="fcol2">필드</th>
 												</tr>
 											</thead>
 											<tbody>

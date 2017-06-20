@@ -46,9 +46,9 @@ $(document).ready(function(){
 
 		<!-- Top Left Menu -->
 		<ul class="nav navbar-nav navbar-left">
-				<li><a href="<c:url value="/main/dashboard.html"/>"> Dashboard </a></li>
-				<li><a href="<c:url value="/manager/index.html"/>"> Manager </a></li>
-				<li><a href="<c:url value="/main/search.html"/>"> Search </a></li>
+				<li><a href="<c:url value="/main/dashboard.html"/>"> 대시보드 </a></li>
+				<li><a href="<c:url value="/manager/index.html"/>"> 관리 </a></li>
+				<li><a href="<c:url value="/main/search.html"/>"> 검색 </a></li>
 			</ul>
 		<!-- /Top Left Menu -->
 
@@ -84,7 +84,7 @@ $(document).ready(function(){
 			</a>
 				<ul class="dropdown-menu extended notification" id="running_tasks_top">
 					<li class="title">
-						<p>You have <span class="count"></span> running tasks</p>
+						<p><span class="count"></span> 개의 태스크가 실행중입니다.</p>
 					</li>
 					<%-- <li class="footer"><a href="<c:url value="/manager/logs/tasks.html"/>">View all
 							tasks</a></li> --%>
@@ -120,8 +120,8 @@ $(document).ready(function(){
 			</a>
 				<ul class="dropdown-menu">
 					<li><a href="<c:url value="/main/profile.html"/>"><i class="icon-user"></i>
-							My Profile</a></li>
-					<li><a href="<c:url value="/logout.html" />"><i class="icon-key"></i> Log Out</a></li>
+							내 프로필</a></li>
+					<li><a href="<c:url value="/logout.html" />"><i class="icon-key"></i> 로그아웃</a></li>
 				</ul>
 			</li>
 			<li><span id="hostString" class="host" data-toggle="tooltip" data-placement="bottom" title="Connected server : ${_hostString}"><i class="icon-globe"></i> ${_hostString}</span></li>

@@ -56,19 +56,19 @@ $(document).ready(function() {
 			<!-- Breadcrumbs line -->
 			<div class="crumbs">
 				<ul id="breadcrumbs" class="breadcrumb">
-					<li><i class="icon-home"></i> <a href="${ROOT_PATH}/manager/index.html">Manager</a></li>
-					<li class="current"> Create Collection Wizard</li>
+					<li><i class="icon-home"></i> <a href="${ROOT_PATH}/manager/index.html">관리</a></li>
+					<li class="current"> 컬렉션생성 마법사</li>
 				</ul>
 	
 			</div>
-			<h3>Create Collection Wizard</h3>
+			<h3>컬렉션생성 마법사</h3>
 			<div class="widget">
 				<ul class="wizard">
-					<li class="current"><span class="badge">1</span> Set Collection Information</li>
-					<li><span class="badge">2</span> Data Mapping</li>
-					<li><span class="badge">3</span> Set Field Schema</li>
-					<li><span class="badge">4</span> Confirmation</li>
-					<li><span class="badge">5</span> Finish</li>
+					<li class="current"><span class="badge">1</span> 컬렉션 정보입력</li>
+					<li><span class="badge">2</span> 데이터맵핑</li>
+					<li><span class="badge">3</span> 필드정의</li>
+					<li><span class="badge">4</span> 최종확인</li>
+					<li><span class="badge">5</span> 완료</li>
 				</ul>
 				<div class="wizard-content">
 					<div class="wizard-card current">
@@ -78,15 +78,15 @@ $(document).ready(function() {
 							<div class="row">
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
-										<label class="col-md-2 control-label">Collection ID:</label>
+										<label class="col-md-2 control-label">컬렉션 아이디:</label>
 										<div class="col-md-10"><input type="text" name="collectionId" class="form-control required fcol2" value="${collectionId}"></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Collection Name:</label>
+										<label class="col-md-2 control-label">컬렉션 이름:</label>
 										<div class="col-md-10"><input type="text" name="collectionName" class="form-control required fcol2" value="<%=dataNodeList %>"></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Index Node:</label>
+										<label class="col-md-2 control-label">색인노드:</label>
 										<div class="col-md-10">
 											<select class=" select_flat form-control fcol2" name="indexNode">
 												<%
@@ -106,11 +106,11 @@ $(document).ready(function() {
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Search Node List :</label>
+										<label class="col-md-2 control-label">검색노드 리스트 :</label>
 										<div class="col-md-10 form-inline">
 											<input type="text" name="searchNodeList" class="form-control fcol2 node-data required" value="<%=searchNodeList%>">
 											&nbsp;<select class=" select_flat form-control fcol2 node-select">
-												<option value="">:: Add Node ::</option>
+												<option value="">:: 노드추가 ::</option>
 												<%
 												for(int inx=0;inx<serverList.length();inx++) {
 													JSONObject serverInfo = serverList.optJSONObject(inx);
@@ -128,11 +128,11 @@ $(document).ready(function() {
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Data Node List :</label>
+										<label class="col-md-2 control-label">데이터노드 리스트 :</label>
 										<div class="col-md-10 form-inline">
 											<input type="text" name="dataNodeList" class="form-control fcol2 node-data required" value="<%=dataNodeList%>">
 											&nbsp;<select class="select_flat form-control fcol2 node-select">
-												<option value="">:: Add Node ::</option>
+												<option value="">:: 노드추가 ::</option>
 												<%
 												for(int inx=0;inx<serverList.length();inx++) {
 													JSONObject serverInfo = serverList.optJSONObject(inx);
@@ -153,8 +153,8 @@ $(document).ready(function() {
 							</div>
 							
 							<div class="wizard-bottom" >
-								<input type="submit" value="Next" class="btn btn-primary fcol2">
-								<a href="javascript:cancelCollectionWizard('${collectionId}')" class="btn btn-danger pull-right">Cancel collection</a>
+								<input type="submit" value="다음" class="btn btn-primary fcol2">
+								<a href="javascript:cancelCollectionWizard('${collectionId}')" class="btn btn-danger pull-right">컬렉션 취소</a>
 							</div>
 						</form>
 					</div>

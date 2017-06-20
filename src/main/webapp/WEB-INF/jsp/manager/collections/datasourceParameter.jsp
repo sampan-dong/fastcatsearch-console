@@ -25,27 +25,27 @@
 	}
 %>
 	<div class="form-group">
-		<label class="col-md-2 control-label">Name</label>
+		<label class="col-md-2 control-label">이름</label>
 		<div class="col-md-10">
 			<input type="text" name="name" class="form-control fcol2" value="${name}">
 			<span class="help-block"></span>
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-md-2 control-label">Enabled</label>
+		<label class="col-md-2 control-label">사용여부</label>
 		<div class="col-md-10">
 			<label class="checkbox">
 				<input type="checkbox" name="active" class="form-control" value="true"<c:if test="${parameterValues.get('active') == 'true'}"> checked</c:if>>
-				Yes
+				사용함
 			</label>
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<label class="col-md-2 control-label">Reader Class</label>
+		<label class="col-md-2 control-label">리더 클래스</label>
 		<div class="col-md-10">
 			<select name="readerClass" class="select_flat form-control display-inline jdbc-select required">
-				<option value="">::Select::</option>
+				<option value="">::선택::</option>
 				<%
 				for (int readerInx = 0; readerInx < sourceReaderList.length(); readerInx++) {
 					JSONObject readerObject = sourceReaderList.optJSONObject(readerInx);
@@ -61,7 +61,7 @@
 	</div>
 	
 	<div class="form-group">
-		<label class="col-md-2 control-label">Modifier Class</label>
+		<label class="col-md-2 control-label">모디파이어 클래스</label>
 		<div class="col-md-10">
 			<input type="text" name="modifierClass" class="form-control" value="<%=modifier%>">
 			<span class="help-block">modifier class (in FQDN)</span>

@@ -49,13 +49,13 @@ $(document).ready(function(){
 			data:$(this).serializeArray(),
 			success:function(response, status) {
 				if(response["success"]==true) {
-					noty({text: "Schedule update success", type: "success", layout:"topRight", timeout: 3000});
+					noty({text: "스케줄이 업데이트 되었습니다.", type: "success", layout:"topRight", timeout: 3000});
 					reloadIndexingSchdulePage();
 				} else {
-					noty({text: "Schedule update fail", type: "error", layout:"topRight", timeout: 5000});
+					noty({text: "스케줄 업데이트에 실패했습니다.", type: "error", layout:"topRight", timeout: 5000});
 				}
 			}, fail:function() {
-				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
+				noty({text: "데이터를 보낼수 없습니다.", type: "error", layout:"topRight", timeout: 5000});
 			}
 		});
 		return false;
@@ -70,49 +70,49 @@ $(document).ready(function(){
 		<div class="widget">
 		
 			<div class="widget-header">
-				<h4>Full Indexing</h4>
+				<h4>전체색인</h4>
 			</div>
 			<div class="widget-content">
 				<div class="row form-horizontal">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="col-md-2 control-label">Scheduled:</label>
+							<label class="col-md-2 control-label">스케줄:</label>
 							<div class="col-md-10">
-								<span class="checkbox"><label><input type="checkbox" name="fullIndexingScheduled" <%=fullActive %> value="true"> Yes</label></span>
+								<span class="checkbox"><label><input type="checkbox" name="fullIndexingScheduled" <%=fullActive %> value="true"> 사용</label></span>
 							</div>
 						</div>
 						
 						<div class="form-group form-inline">
-							<label class="col-md-2 control-label">Base Date:</label>
+							<label class="col-md-2 control-label">시작일자:</label>
 							<div class="col-md-10">
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Date</span>
+									<span class="input-group-addon">일자</span>
 									<input type="text" name="fullBaseDate" class="datepicker form-control input-width-small" placeholder="Date" value="<%=fullStartDate %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Hr</span>
+									<span class="input-group-addon">시</span>
 									<input type="text" name="fullBaseHour" class="form-control input-width-small digits" placeholder="Hour" value="<%=fullStartHour %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Min</span>
+									<span class="input-group-addon">분</span>
 									<input type="text" name="fullBaseMin" class="form-control input-width-small digits" placeholder="Minute" value="<%=fullStartMinute %>">
 								</div>
 							</div>
 						</div>
 							
 						<div class="form-group form-inline">
-							<label class="col-md-2 control-label">Period:</label>
+							<label class="col-md-2 control-label">주기:</label>
 							<div class="col-md-10">
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Day</span>
+									<span class="input-group-addon">일</span>
 									<input type="text" name="fullPeriodDay" class="form-control input-width-small digits" value="<%=fullTimeUnits[0] %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Hr</span>
+									<span class="input-group-addon">시</span>
 									<input type="text" name="fullPeriodHour" class="form-control input-width-small digits" value="<%=fullTimeUnits[1] %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Min</span>
+									<span class="input-group-addon">분</span>
 									<input type="text" name="fullPeriodMin" class="form-control input-width-small digits" value="<%=fullTimeUnits[2] %>">
 								</div>
 							</div>
@@ -125,49 +125,49 @@ $(document).ready(function(){
 		
 		<div class="widget">
 			<div class="widget-header">
-				<h4>Add Indexing</h4>
+				<h4>증분색인</h4>
 			</div>
 			<div class="widget-content">
 				<div class="row form-horizontal">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="col-md-2 control-label">Scheduled:</label>
+							<label class="col-md-2 control-label">스케줄:</label>
 							<div class="col-md-10">
-								<span class="checkbox"><label><input type="checkbox" name="addIndexingScheduled" <%=addActive %> value="true"> Yes</label></span>
+								<span class="checkbox"><label><input type="checkbox" name="addIndexingScheduled" <%=addActive %> value="true"> 사용</label></span>
 							</div>
 						</div>
 						
 						<div class="form-group form-inline">
-							<label class="col-md-2 control-label">Base Date:</label>
+							<label class="col-md-2 control-label">시작일자:</label>
 							<div class="col-md-10">
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Date</span>
+									<span class="input-group-addon">일자</span>
 									<input type="text" name="addBaseDate" class="datepicker form-control input-width-small" placeholder="Date" value="<%=addStartDate %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Hr</span>
+									<span class="input-group-addon">시</span>
 									<input type="text" name="addBaseHour" class="form-control input-width-small digits" placeholder="Hour" value="<%=addStartHour %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Min</span>
+									<span class="input-group-addon">분</span>
 									<input type="text" name="addBaseMin" class="form-control input-width-small digits" placeholder="Minute" value="<%=addStartMinute %>">
 								</div>
 							</div>
 						</div>
 							
 						<div class="form-group form-inline">
-							<label class="col-md-2 control-label">Period:</label>
+							<label class="col-md-2 control-label">주기:</label>
 							<div class="col-md-10">
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Day</span>
+									<span class="input-group-addon">일</span>
 									<input type="text" name="addPeriodDay" class="form-control input-width-small" value="<%=addTimeUnits[0] %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Hr</span>
+									<span class="input-group-addon">시</span>
 									<input type="text" name="addPeriodHour" class="form-control input-width-small" value="<%=addTimeUnits[1] %>">
 								</div>
 								<div class="input-group col-md-1" style="padding-left: 0px;">
-									<span class="input-group-addon">Min</span>
+									<span class="input-group-addon">분</span>
 									<input type="text" name="addPeriodMin" class="form-control input-width-small" value="<%=addTimeUnits[2] %>">
 								</div>
 							</div>
@@ -180,7 +180,7 @@ $(document).ready(function(){
 		</div> <!-- /.widget -->
 		
 		<div class="form-actions">
-			<input type="submit" value="Update Schedule" class="btn btn-primary ">
+			<input type="submit" value="스케줄 업데이트" class="btn btn-primary ">
 		</div>
 	
 	</form>

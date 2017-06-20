@@ -166,10 +166,10 @@ $(document).ready(function(){
 				if(response.success) {
 					submitGet("schema.html");
 				} else {
-					noty({text: "Work schema remove fail", type: "error", layout:"topRight", timeout: 5000});
+					noty({text: "작업스키마를 삭제할수 없습니다.", type: "error", layout:"topRight", timeout: 5000});
 				}
 			}, function() {
-				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
+				noty({text: "데이터를 보낼수 없습니다.", type: "error", layout:"topRight", timeout: 5000});
 			});
 	}
 	
@@ -201,10 +201,10 @@ $(document).ready(function(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Collections</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 컬렉션</li>
 						<li class="current"> ${collectionId}</li>
-						<li class="current"> Schema</li>
+						<li class="current"> 스키마</li>
 					</ul>
 
 				</div>
@@ -213,13 +213,13 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Work Schema</h3>
+						<h3>작업스키마</h3>
 					</div>
 					<div class="btn-group" style="float:right; padding: 25px 0;">
-						<a href="javascript:removeSchema(0);" class="btn btn-sm btn-danger"><span class="icon-trash"></span> Remove</a>
-						<a href="javascript:saveSchema();" class="btn btn-sm" style="margin-left:5px"><span class="icon-ok"></span> Save</a>
+						<a href="javascript:removeSchema(0);" class="btn btn-sm btn-danger"><span class="icon-trash"></span> 삭제</a>
+						<a href="javascript:saveSchema();" class="btn btn-sm" style="margin-left:5px"><span class="icon-ok"></span> 저장</a>
 						<a href="javascript:reloadSchema();" class="btn btn-sm" style="margin-left:5px"><i class="icon-refresh"></i></a>
-						<a href="javascript:backToSchema();" class="btn btn-sm"><span class="icon-eye-open"></span> View</a>
+						<a href="javascript:backToSchema();" class="btn btn-sm"><span class="icon-eye-open"></span> 스키마보기</a>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -236,8 +236,8 @@ $(document).ready(function(){
 					<div class="col-md-12">
 						<div class="widget">
 							<div class="widget-header">
-								<h4>Fields</h4>
-								<p><a href="javascript:toggleExtraColumn()">Show/Hide Extra Column</a></p>
+								<h4>필드</h4>
+								<p><a href="javascript:toggleExtraColumn()">추가컬럼 보이기/숨기기</a></p>
 							</div>
 			
 							<div class="widget-content">
@@ -246,18 +246,15 @@ $(document).ready(function(){
 									
 									<thead>
 										<tr>
-											<th class="fcol2">ID</th>
-											<th class="fcol2">Name</th>
-											<th class="fcol2">Type</th>
-											<th class="fcol2">Length</th>
-											<th class="fcol1">Store</th>
-											<th class="fcol1 extra-column">Source</th>
-											<th class="fcol1 extra-column">Remove Tags</th>
-											<th class="fcol1 extra-column">Multi Value</th>
-											<th class="fcol1 extra-column">Multi Value Delimiter</th>
-											<%--<th class="fcol1 extra-column">Function</th>--%>
-											<%--<th class="fcol1 extra-column">Param</th>--%>
-											<%--<th class="fcol1 extra-column">Compress</th>--%>
+											<th class="fcol2">아이디</th>
+											<th class="fcol2">이름</th>
+											<th class="fcol2">타입</th>
+											<th class="fcol2">길이</th>
+											<th class="fcol1">저장</th>
+											<th class="fcol1 extra-column">소스</th>
+											<th class="fcol1 extra-column">태그제거</th>
+											<th class="fcol1 extra-column">다중값</th>
+											<th class="fcol1 extra-column">다중값 구분자</th>
 											<th class="fcol1-1"></th>
 										</tr>
 									</thead>
@@ -269,7 +266,7 @@ $(document).ready(function(){
 										List<Element> fieldList = el.getChildren();
 										%>
 										<tr class="no-entry <%=fieldList.size() > 0 ? "hide2" : ""%>">
-											<td colspan="9"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+											<td colspan="9"><a href="javascript:void(0)" class="addRow">필드추가</a></td>
 										</tr>
 										<%
 										for(int i = 0; i <fieldList.size(); i++){
@@ -342,7 +339,7 @@ $(document).ready(function(){
 					
 						<div class="widget">
 							<div class="widget-header">
-								<h4>Primary Keys</h4>
+								<h4>기본키</h4>
 							</div>
 
 							<div class="widget-content">
@@ -350,7 +347,7 @@ $(document).ready(function(){
 									<table class="table table-bordered table-hover table-highlight-head table-condensed">
 										<thead>
 											<tr>
-												<th>Field</th>
+												<th>필드</th>
 												<th class="fcol1-1"></th>
 											</tr>
 										</thead>
@@ -362,7 +359,7 @@ $(document).ready(function(){
 											List<Element> fieldList = el.getChildren();
 											%>
 											<tr class="no-entry <%=fieldList.size() > 0 ? "hide2" : ""%>">
-												<td colspan="2"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+												<td colspan="2"><a href="javascript:void(0)" class="addRow">추가</a></td>
 											</tr>
 											<%
 											for(int i = 0; i < fieldList.size(); i++){
@@ -397,7 +394,7 @@ $(document).ready(function(){
 					
 						<div class="widget">
 							<div class="widget-header">
-								<h4>Analyzers</h4>
+								<h4>분석기</h4>
 							</div>
 
 							<div class="widget-content">

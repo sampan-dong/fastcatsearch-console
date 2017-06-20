@@ -115,8 +115,8 @@ if(rootElement!=null) {
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Analysis</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 분석기</li>
 						<li class="current"> ${analysisId} </li>
 					</ul>
 
@@ -133,8 +133,8 @@ if(rootElement!=null) {
 
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#tab_analysis_settings" data-toggle="tab">Settings</a></li>
-						<li class=""><a href="#tab_analysis_tools" data-toggle="tab">Tools</a></li>
+						<li class="active"><a href="#tab_analysis_settings" data-toggle="tab">설정</a></li>
+						<li class=""><a href="#tab_analysis_tools" data-toggle="tab">도구</a></li>
 					</ul>
 					
 					<div class="tab-content row">
@@ -142,21 +142,21 @@ if(rootElement!=null) {
 							<div class="col-md-12">
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Overview</h4>
+										<h4>개요</h4>
 									</div>
 									<div class="widget-content">
 										<dl class="dl-horizontal">
-											<dt>ID</dt>
+											<dt>아이디</dt>
 											<dd>${analysisId} analysis</dd>
-											<dt>Namespace</dt>
+											<dt>이름공간</dt>
 											<dd><%=namespace%></dd>
-											<dt>Class</dt>
+											<dt>클래스</dt>
 											<dd><%=analyzerClass%></dd>
-											<dt>Name</dt>
+											<dt>이름</dt>
 											<dd><%=analyzerName%></dd>
-											<dt>Version</dt>
+											<dt>버전</dt>
 											<dd><%=analyzerVersion%></dd>
-											<dt>Decription</dt>
+											<dt>설명</dt>
 											<dd><%=description %></dd>
 										</dl>
 									</div>
@@ -166,19 +166,19 @@ if(rootElement!=null) {
 								%>
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Dictionary</h4>
+										<h4>사전</h4>
 									</div>
 									<div class="widget-content">
 										<table class="table table-hover table-bordered">
 											<thead>
 												<tr>
 													<th>#</th>
-													<th>ID</th>
-													<th>Name</th>
-													<th>Dictionary File</th>
-													<th>Dictionary Type</th>
-													<th>Ignore Case</th>
-													<th>Columns</th>
+													<th>아이디</th>
+													<th>이름</th>
+													<th>사전파일</th>
+													<th>사전타입</th>
+													<th>대소문자무시</th>
+													<th>컬럼</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -237,9 +237,9 @@ if(rootElement!=null) {
 											<thead>
 												<tr>
 													<th>#</th>
-													<th>ID</th>
-													<th>Name</th>
-													<th>Class</th>
+													<th>아이디</th>
+													<th>이름</th>
+													<th>클래스</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -283,8 +283,8 @@ if(rootElement!=null) {
 												<tr>
 													<th>#</th>
 													<th>URI</th>
-													<th>Method</th>
-													<th>Class</th>
+													<th>메소드</th>
+													<th>클래스</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -334,9 +334,9 @@ if(rootElement!=null) {
 											<thead>
 												<tr>
 													<th>#</th>
-													<th>Task</th>
-													<th>Base Time</th>
-													<th>Period</th>
+													<th>작업</th>
+													<th>시작시간</th>
+													<th>주기</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -394,14 +394,14 @@ if(rootElement!=null) {
 								<form role="form" id="analyzeToolsForm">
 									
 									<div class="form-group">
-										<label for="words" class="control-label">Query Words:</label>
+										<label for="words" class="control-label">검색어:</label>
 										<input type="text" class="form-control required largeText" name="queryWords" placeholder="Query Words" value="Sandisk Extream Z80 USB 16gb"/>
 									</div>
 									
 									<div class="form-inline">
 										<div class="form-group">
 											<label class="radio">
-												<input type="radio" name="type" class="form-control" value="simple" checked> Simple
+												<input type="radio" name="type" class="form-control" value="simple" checked> 간략
 											</label>
 										</div>
 										<%
@@ -410,7 +410,7 @@ if(rootElement!=null) {
 										&nbsp;
 										<div class="form-group">
 											<label class="radio">
-												<input type="radio" name="type" class="form-control" value="detail"> Detail
+												<input type="radio" name="type" class="form-control" value="detail"> 상세
 											</label>
 										</div>
 										<%
@@ -419,7 +419,7 @@ if(rootElement!=null) {
 										&nbsp;
 										<div class="form-group">
 											<label class="checkbox">
-												<input type="checkbox" name="isForQuery" class="" value="true" checked > For Query
+												<input type="checkbox" name="isForQuery" class="" value="true" checked > 쿼리용도
 											</label>
 										</div>
 										&nbsp;
@@ -442,7 +442,7 @@ if(rootElement!=null) {
 										&nbsp;
 											
 										<div class="form-group">
-											<button class="btn btn-sm">Analyze</button>
+											<button class="btn btn-sm">분석</button>
 										</div>
 									</div>
 								</form>
@@ -481,20 +481,20 @@ if(rootElement!=null) {
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title">Dictionary Schema ( <%=dictionaryName %> )</h4>
+						<h4 class="modal-title">사전 구조 ( <%=dictionaryName %> )</h4>
 					</div>
 					<div class="modal-body">
 						<table class="table table-hover table-bordered">
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Name</th>
-								<th>Type</th>
-								<th>Key</th>
-								<th>Index</th>
-								<th>Search</th>
-								<th>Compile</th>
-								<th>NullUnique</th>
+								<th>이름</th>
+								<th>타입</th>
+								<th>키</th>
+								<th>인덱스</th>
+								<th>검색</th>
+								<th>컴파일</th>
+								<th>NullableUnique</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -533,7 +533,7 @@ if(rootElement!=null) {
 						</table>
 					</div>
 					<div class="modal-footer">
-			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 		      		</div>
 				</div>
 				<!-- /.modal-content -->

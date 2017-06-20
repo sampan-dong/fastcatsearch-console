@@ -30,7 +30,7 @@ $(document).ready(function(){
 					<textarea class="form-control" name="searchID" placeholder="ID">${pkValue }</textarea>
 				</div>
 				<div style="float:left;margin-left:10px">
-					<button class="btn btn-sm">Search ID</button>
+					<button class="btn btn-sm">찾기</button>
 				</div>
 			</div>
 		</form>
@@ -49,11 +49,11 @@ $(document).ready(function(){
 					
 					if(indexDataList.length() > 0){
 					%>
-						<span>Rows ${start} - ${end} of <%=indexDataResult.getInt("documentSize") %></span>
+						<span>행 ${start} - ${end} of <%=indexDataResult.getInt("documentSize") %></span>
 					<%
 					}else{
 					%>
-						<span>Rows 0</span>
+						<span>행 0</span>
 					<%
 					}
 					%>
@@ -81,9 +81,9 @@ $(document).ready(function(){
 				<table class="table table-bordered" >
 					<thead>
 						<tr class="active">
-							<th>Index ID</th>
-							<th class="col-md-5">Data</th>
-							<th class="col-md-6">Analyzed</th>
+							<th>아이디</th>
+							<th class="col-md-5">값</th>
+							<th class="col-md-6">분석결과</th>
 						</tr>
 					</thead>
 					<tbody>

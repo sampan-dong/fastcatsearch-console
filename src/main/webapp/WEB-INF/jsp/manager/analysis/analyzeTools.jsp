@@ -16,7 +16,7 @@ if(!isSuccess){
 	<tbody>
 		<tr>
 			<td>
-				<label>Error Message: </label>
+				<label>에러내용: </label>
 				<div class="col-md-12 text-danger"><%=errorMessage %></div>
 			</td>
 		</tr>
@@ -45,13 +45,13 @@ if(!isSuccess){
 	<tbody>
 		<tr>
 			<td>
-				<label>1. Analyzed Terms: </label>
+				<label>1. 분석된 단어들: </label>
 				<div class="col-md-12"><%=resultList %></div>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<label>2. Analyzed Terms List: </label>
+				<label>2. 분석된 단어 리스트: </label>
 				<div class="col-md-12">
 					<table class="table table-fixed table-bordered">
 						<tr>

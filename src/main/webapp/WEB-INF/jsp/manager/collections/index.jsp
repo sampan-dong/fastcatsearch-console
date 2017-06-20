@@ -36,11 +36,11 @@ $(document).ready(function(){
 				if(response["success"]==true) {
 					location.href = location.href;
 				} else {
-					noty({text: "Cannot create collection : " + response["errorMessage"], type: "error", layout:"topRight", timeout: 5000});
+					noty({text: "컬렉션을 만들수 없습니다. : " + response["errorMessage"], type: "error", layout:"topRight", timeout: 5000});
 				}
 				
 			}, fail: function() {
-				noty({text: "Can't submit data", type: "error", layout:"topRight", timeout: 5000});
+				noty({text: "데이터를 보낼수 없습니다.", type: "error", layout:"topRight", timeout: 5000});
 			}
 			
 		});
@@ -87,9 +87,9 @@ $(document).ready(function(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Collections</li>
-						<li class="current"> Overview</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 컬렉션</li>
+						<li class="current"> 개요</li>
 					</ul>
 
 				</div>
@@ -98,7 +98,7 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Overview</h3>
+						<h3>개요</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -107,7 +107,7 @@ $(document).ready(function(){
 						<div class="dataTables_header clearfix">
 							<div class="input-group col-md-12">
 								<a data-toggle="modal" data-target="#newCollectionModal" class="btn btn-sm" data-backdrop="static"><span
-									class="glyphicon glyphicon-plus-sign"></span> Create Collection</a>
+									class="glyphicon glyphicon-plus-sign"></span> 컬렉션 추가</a>
 							</div>
 							
 						</div>
@@ -115,12 +115,12 @@ $(document).ready(function(){
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Collection ID</th>
-									<th>Name</th>
-									<th>Status</th>
-									<th>Index Node</th>
-									<th>Data Node List</th>
-									<th>Search Node List</th>
+									<th>아이디</th>
+									<th>이름</th>
+									<th>상태</th>
+									<th>색인노드</th>
+									<th>데이터노드 리스트</th>
+									<th>검색노드 리스트</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -168,7 +168,7 @@ $(document).ready(function(){
 					<input type="hidden" name="uri" value="/management/collections/create-update"/>
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title"> Create Collection</h4>
+						<h4 class="modal-title"> 컬렉션 추가</h4>
 					</div>
 					<div class="modal-body">
 						<div class="col-md-12">
@@ -177,17 +177,17 @@ $(document).ready(function(){
 									<div class="row">
 										<div class="col-md-12 form-horizontal">
 											<div class="form-group">
-												<label class="col-md-3 control-label">Collection ID:</label>
+												<label class="col-md-3 control-label">컬렉션 아이디:</label>
 												<div class="col-md-9"><input type="text" name="collectionId" class="form-control input-width-medium required" value="" placeholder="Collection ID"></div>
 											</div>
 											
 											<div class="form-group">
-												<label class="col-md-3 control-label">Name:</label>
+												<label class="col-md-3 control-label">이름:</label>
 												<div class="col-md-9"><input type="text" name="name" class="form-control input-width-medium required" value="" placeholder="NAME"></div>
 											</div>
 											
 											<div class="form-group">
-												<label class="col-md-3 control-label">Index Node:</label>
+												<label class="col-md-3 control-label">색인노드:</label>
 												<div class="col-md-9">
 												<select class=" select_flat form-control fcol2" name="indexNode">
 													<%
@@ -219,11 +219,11 @@ $(document).ready(function(){
 											</div>
 -->
 											<div class="form-group">
-												<label class="col-md-3 control-label">Search Node List :</label>
+												<label class="col-md-3 control-label">검색노드 리스트 :</label>
 												<div class="col-md-9 form-inline">
 													<input type="text" name="searchNodeList" class="form-control fcol2 node-data required" value="">
 													&nbsp;<select class=" select_flat form-control fcol2 node-select">
-														<option value="">:: Add Node ::</option>
+														<option value="">:: 노드추가 ::</option>
 														<%
 														for(int inx=0;inx<serverList.length();inx++) {
 															JSONObject serverInfo = serverList.optJSONObject(inx);
@@ -241,11 +241,11 @@ $(document).ready(function(){
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-md-3 control-label">Data Node List :</label>
+												<label class="col-md-3 control-label">데이터노드 리스트 :</label>
 												<div class="col-md-9 form-inline">
 													<input type="text" name="dataNodeList" class="form-control fcol2 node-data required" value="">
 													&nbsp;<select class="select_flat form-control fcol2 node-select">
-														<option value="">:: Add Node ::</option>
+														<option value="">:: 노드추가 ::</option>
 														<%
 														for(int inx=0;inx<serverList.length();inx++) {
 															JSONObject serverInfo = serverList.optJSONObject(inx);
@@ -271,8 +271,8 @@ $(document).ready(function(){
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Create</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+						<button type="submit" class="btn btn-primary">만들기</button>
 					</div>
 				</form>
 			</div>
