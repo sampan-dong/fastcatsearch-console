@@ -65,7 +65,7 @@ function toggleJsonFormat() {
 	</div>
 	<% } %>
 	<div class="well well-sm result-queryString">
-		<b>QueryString:</b><br>
+		<b>쿼리문자열:</b><br>
 		<div class="wordwrap"><%=queryString%></div>
 	</div>
 	<div class="widget box">
@@ -77,20 +77,20 @@ function toggleJsonFormat() {
 					if (totalCount > 0) {
 						if (resultCount > 0) {
 				%>
-						<span>Rows <%=resultCount%> of <%=totalCount%>. Time: <%=time%></span>
+						<span>행 <%=resultCount%> of <%=totalCount%>. 시간: <%=time%></span>
 					<%
 						} else {
 					%>
-						<span>Rows 0 of <%=totalCount%> (<%=time%>)</span>
+						<span>행 0 of <%=totalCount%> (<%=time%>)</span>
 					<%
 						}
 						} else {
 					%>
-						<span>Rows 0 (<%=time%>)</span>
+						<span>행 0 (<%=time%>)</span>
 					<%
 						}
 					%>
-					<span class="pull-right"><a href="javascript:toggleJsonFormat()">JSON Format</a></span>
+					<span class="pull-right"><a href="javascript:toggleJsonFormat()">JSON 포맷결과</a></span>
 				</div>
 				<div class="col-md-12 ">
 					
@@ -175,7 +175,7 @@ function toggleJsonFormat() {
 				%>
 			</div>
 			<div class="table-footer">
-				<label class="col-md-2 control-label">Selected Column Data:</label>
+				<label class="col-md-2 control-label">선택된 컬럼데이터:</label>
 				<div class="col-md-10">
 					<div id="selectedDataRawPanel" class="panel"></div>
 				</div>
@@ -200,8 +200,8 @@ function toggleJsonFormat() {
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title group-panel-title">
-					 [Group] <%=label%> 
-					&nbsp;<a data-toggle="collapse" data-parent="#accordion" href="#_group_<%=label%>">[toggle]</a>
+					 [그룹] <%=label%>
+					&nbsp;<a data-toggle="collapse" data-parent="#accordion" href="#_group_<%=label%>">[토글]</a>
 				</h4>
 			</div>
 			<div id="_group_<%=label%>" class="panel-collapse collapse in">
@@ -209,7 +209,7 @@ function toggleJsonFormat() {
 				<table class="table table-hover table-bordered" style="white-space:nowrap;table-layout:fixed; ">
 					<thead>
 						<tr>
-							<th>KEY</th>
+							<th>키</th>
 							<%
 								for (int m = 0; m < functionNameList.length(); m++) {
 							%>

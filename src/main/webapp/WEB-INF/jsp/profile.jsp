@@ -64,7 +64,7 @@ $(document).ready(function(){
 			<!-- Breadcrumbs line -->
 			<div class="crumbs">
 				<ul id="breadcrumbs" class="breadcrumb">
-					<li><i class="icon-home"></i> <a href="javascript:void(0);">My Profile</a>
+					<li><i class="icon-home"></i> <a href="javascript:void(0);">내 프로필</a>
 					</li>
 				</ul>
 	
@@ -73,7 +73,7 @@ $(document).ready(function(){
 			<!--=== Page Header ===-->
 			<div class="page-header">
 				<div class="page-title">
-					<h3>My Profile</h3>
+					<h3>내 프로필</h3>
 					
 				</div>
 			</div>
@@ -86,29 +86,29 @@ $(document).ready(function(){
 				<div class="col-md-12">
 					<div class="widget">
 						<div class="widget-header">
-							<h4>General Information</h4>
+							<h4>일반정보</h4>
 						</div>
 						<div class="widget-content">
 							<div class="row">
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
-										<label class="col-md-2 control-label">User ID:</label>
+										<label class="col-md-2 control-label">사용자 아이디:</label>
 										<div class="col-md-3" style="padding-top: 6px;"><%=userInfo.optString("userId") %></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Group:</label>
+										<label class="col-md-2 control-label">그룹:</label>
 										<div class="col-md-3" style="padding-top: 6px;"><%=userInfo.optString("groupName") %></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">User Name:</label>
+										<label class="col-md-2 control-label">이름:</label>
 										<div class="col-md-3"><input type="text" name="name" class="form-control fcol2 required" value="<%=userInfo.optString("name")%>" /></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Email Address:</label>
+										<label class="col-md-2 control-label">이메일:</label>
 										<div class="col-md-3"><input type="text" name="email" class="form-control fcol3 email" value="<%=userInfo.optString("email") %>" /></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">SMS Number:</label>
+										<label class="col-md-2 control-label">SMS번호:</label>
 										<div class="col-md-3"><input type="text" name="sms" class="form-control fcol2 digits" value="<%=userInfo.optString("sms") %>" /></div>
 									</div>
 									
@@ -120,21 +120,21 @@ $(document).ready(function(){
 				<div class="col-md-12">
 					<div class="widget">
 						<div class="widget-header">
-							<h4>Password</h4>
+							<h4>비밀번호</h4>
 						</div>
 						<div class="widget-content">
 							<div class="row">
 								<div class="col-md-12 form-horizontal">		
 									<div class="form-group">
-										<label class="col-md-2 control-label">Old Password:</label>
+										<label class="col-md-2 control-label">현재 비밀번호:</label>
 										<div class="col-md-3"><input type="password" name="password" class="form-control fcol3" placeholder="Leave empty for no password-change"></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">New Password:</label>
+										<label class="col-md-2 control-label">새 비밀번호:</label>
 										<div class="col-md-3"><input type="password" id="password" name="newPassword" class="form-control fcol3" minlength="4" placeholder="Leave empty for no password-change"></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Repeat New Password:</label>
+										<label class="col-md-2 control-label">새 비밀번호 다시입력:</label>
 										<div class="col-md-3"><input type="password" name="reqPassword" class="form-control fcol3" minlength="4" placeholder="Leave empty for no password-change"></div>
 									</div>
 								</div>

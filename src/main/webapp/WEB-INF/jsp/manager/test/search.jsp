@@ -146,9 +146,9 @@ function searchQuery(isExplain){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Test</li>
-						<li class="current"> Search</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 테스트</li>
+						<li class="current"> 검색</li>
 					</ul>
 
 				</div>
@@ -157,14 +157,14 @@ function searchQuery(isExplain){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Search</h3>
+						<h3>검색</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul id="data_tab" class="nav nav-tabs">
-						<li class="active"><a href="#tab_structured_search" data-toggle="tab">Structured Search</a></li>
-						<li class=""><a href="#tab_query_search" data-toggle="tab">Query Search</a></li>
+						<li class="active"><a href="#tab_structured_search" data-toggle="tab">폼검색</a></li>
+						<li class=""><a href="#tab_query_search" data-toggle="tab">쿼리검색</a></li>
 					</ul>
 					<div class="tab-content row">
 						<div class="tab-pane active" id="tab_structured_search">
@@ -172,97 +172,97 @@ function searchQuery(isExplain){
 							<div class="col-md-12">
 								<form class="col-md-12 form-horizontal searchTest" id="structuredSearchTest" role="form">
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">COLLECTION ID</label>
+										<label for="query_se" class="col-sm-2 control-label">컬렉션</label>
 										<div class="col-sm-10">
 											<textarea class="form-control required" name="cn" placeholder="CN"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">FIELD LIST</label>
+										<label for="query_se" class="col-sm-2 control-label">필드리스트</label>
 										<div class="col-sm-10">
 											<textarea class="form-control required" name="fl" placeholder="FL"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">SEARCH</label>
+										<label for="query_se" class="col-sm-2 control-label">검색조건</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" name="se" placeholder="SE"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">FILTER</label>
+										<label for="query_se" class="col-sm-2 control-label">필터</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" name="ft" placeholder="FT"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">GROUP</label>
+										<label for="query_se" class="col-sm-2 control-label">그룹</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" name="gr" placeholder="GR"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">RANK</label>
+										<label for="query_se" class="col-sm-2 control-label">정렬</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" name="ra" placeholder="RA"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">BUNDLE</label>
+										<label for="query_se" class="col-sm-2 control-label">번들</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" name="bd" placeholder="BD"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">START</label>
+										<label for="query_se" class="col-sm-2 control-label">시작번호</label>
 										<div class="col-sm-2">
 											<input type="text" class="form-control required digits" name="sn" placeholder="SN" value="1">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">LENGTH</label>
+										<label for="query_se" class="col-sm-2 control-label">결과갯수</label>
 										<div class="col-sm-2">
 											<input type="text" class="form-control required digits" name="ln" placeholder="LN" value="100">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">HIGHLIGHT TAG</label>
+										<label for="query_se" class="col-sm-2 control-label">하이라이트 태그</label>
 										<div class="col-sm-2">
 											<input type="text" class="form-control" name="ht" placeholder="HT">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">SEARCH OPTION</label>
+										<label for="query_se" class="col-sm-2 control-label">검색옵션</label>
 										<div class="col-sm-10">
 											<input type="text" class="form-control" name="so" placeholder="SO" value="nocache">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_qm" class="col-sm-2 control-label">QUERY MODIFIER</label>
+										<label for="query_qm" class="col-sm-2 control-label">쿼리 모디파이어</label>
 										<div class="col-sm-10">
 											<input type="text" class="form-control" name="qm" placeholder="QM">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_rm" class="col-sm-2 control-label">RESULT MODIFIER</label>
+										<label for="query_rm" class="col-sm-2 control-label">결과 모디파이어</label>
 										<div class="col-sm-10">
 											<input type="text" class="form-control" name="rm" placeholder="RM">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_sp" class="col-sm-2 control-label">STORED PROCEDURE</label>
+										<label for="query_sp" class="col-sm-2 control-label">저장프로시저</label>
 										<div class="col-sm-10">
 											<input type="text" class="form-control" name="sp" placeholder="SP">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">USER DATA</label>
+										<label for="query_se" class="col-sm-2 control-label">사용자데이터</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" name="ud" placeholder="UD"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="query_se" class="col-sm-2 control-label">TIMEOUT</label>
+										<label for="query_se" class="col-sm-2 control-label">타임아웃</label>
 										<div class="col-sm-2">
 											<input type="text" class="form-control" name="timeout" placeholder="TIMEOUT" value="10">
 										</div>
@@ -281,14 +281,14 @@ function searchQuery(isExplain){
 												%>
 											</select>
 											<select name="requestUri" class="form-control select_flat fcol2-1" >
-												<option value="/service/search.json">Search</option>
-												<option value="/service/search/group.json">Grouping</option>
+												<option value="/service/search.json">일반검색</option>
+												<option value="/service/search/group.json">그룹검색</option>
 												<!-- <option value="/service/search-single.json">Search (Single)</option>
 												<option value="/service/search-single/group.json">Grouping (Single)</option> -->
 											</select>
-											&nbsp;<a href="javascript:void(0);" id="searchStructuredButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
-											&nbsp;<a href="javascript:void(0);" id="explainStructuredButton" class="btn" data-loading-text="Explaining..">Explain</a>
-											&nbsp;<a href="javascript:void(0);" id="clearStructuredButton" class="btn btn-default">Clear</a>
+											&nbsp;<a href="javascript:void(0);" id="searchStructuredButton" class="btn btn-primary" data-loading-text="Searching..">검색</a>
+											&nbsp;<a href="javascript:void(0);" id="explainStructuredButton" class="btn" data-loading-text="Explaining..">상세내역</a>
+											&nbsp;<a href="javascript:void(0);" id="clearStructuredButton" class="btn btn-default">초기화</a>
 										</div>
 									</div>
 		
@@ -308,7 +308,7 @@ function searchQuery(isExplain){
 									<div class="form-group">
 										<div class="form-inline">
 											<select id="requestHost2" class="form-control select_flat fcol1-2" >
-												<option value="">Master Node</option>
+												<option value="">마스터노드</option>
 												<%
 												for(int i = 0;i < serverList.length(); i++) {
 													JSONObject obj = serverList.getJSONObject(i);
@@ -319,14 +319,14 @@ function searchQuery(isExplain){
 												%>
 											</select>
 											<select id="requestUri2" class="form-control select_flat fcol2-1" >
-												<option value="/service/search.json">Search</option>
-												<option value="/service/search/group.json">Grouping</option>
+												<option value="/service/search.json">일반검색</option>
+												<option value="/service/search/group.json">그룹검색</option>
 												<!-- <option value="/service/search-single.json">Search (Single)</option>
 												<option value="/service/search-single/group.json">Grouping (Single)</option> -->
 											</select>
-											&nbsp;<a href="javascript:void(0);" id="searchQueryButton" class="btn btn-primary" data-loading-text="Searching..">Search</a>
-											&nbsp;<a href="javascript:void(0);" id="explainQueryButton" class="btn" data-loading-text="Explaining..">Explain</a>
-											&nbsp;<a href="javascript:void(0);" id="clearQueryButton" class="btn btn-default">Clear</a>
+											&nbsp;<a href="javascript:void(0);" id="searchQueryButton" class="btn btn-primary" data-loading-text="Searching..">검색</a>
+											&nbsp;<a href="javascript:void(0);" id="explainQueryButton" class="btn" data-loading-text="Explaining..">상세내역</a>
+											&nbsp;<a href="javascript:void(0);" id="clearQueryButton" class="btn btn-default">초기화</a>
 										</div>
 									</div>
 								</form>
@@ -349,12 +349,12 @@ function searchQuery(isExplain){
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Search Result</h4>
+				<ㄴh4 class="modal-title">검색결과</ㄴh4>
 			</div>
 			<div class="modal-body" id="searchResultModalBody">
 			</div>
 			<div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 	      	</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

@@ -7,6 +7,6 @@ if(menuId == null){
 }
 %>
 <ul class="nav nav-tabs tabs-left">
-	<li class="<%="group".equals(menuId) ? "active" : "" %>"><a href="group.html"><strong>Group</strong></a>
-	<li class="<%="user".equals(menuId) ? "active" : "" %>"><a href="user.html"><strong>User</strong></a>
+	<li class="<%="group".equals(menuId) ? "active" : "" %>"><a href="group.html"><strong>그룹</strong></a>
+	<li class="<%="user".equals(menuId) ? "active" : "" %>"><a href="user.html"><strong>사용자</strong></a>
 </ul>

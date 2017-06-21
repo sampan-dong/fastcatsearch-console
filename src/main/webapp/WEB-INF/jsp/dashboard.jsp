@@ -401,7 +401,7 @@
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> <a href="javascript:void(0);">Dashboard</a>
+						<li><i class="icon-home"></i> <a href="javascript:void(0);">대시보드</a>
 						</li>
 					</ul>
 
@@ -411,7 +411,7 @@
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Dashboard</h3>
+						<h3>대시보드</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -421,7 +421,7 @@
 					<div class="col-md-12">
 						<div class="widget box">
 							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> Realtime Query Request</h4>
+								<h4><i class="icon-reorder"></i> 실시간 검색요청</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
 										<span class="btn btn-xs" id="graph-toggle">&nbsp;<i class="icon-play"></i>&nbsp;</span>
@@ -437,19 +437,19 @@
 								<ul class="stats stats-sm"> <!-- .no-dividers -->
 									<li>
 										<strong id="current_time">&nbsp;</strong>
-										<small>Current Time</small>
+										<small>현재시각</small>
 									</li>
 									<li>
 										<strong id="time_elapsed">&nbsp;</strong>
-										<small>Time Elapsed</small>
+										<small>소요시간</small>
 									</li>
 									<li>
 										<strong id="avg_qps">0</strong>
-										<small>Average QPS</small>
+										<small>평균 처리량(QPS)</small>
 									</li>
 									<li>
 										<strong id="rt_qps">0</strong>
-										<small>Realtime QPS</small>
+										<small>실시간 처리량(QPS)</small>
 									</li>
 								</ul>
 								
@@ -462,7 +462,7 @@
 					<div class="col-md-6">
 						<div class="widget box">
 							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> Collections</h4>
+								<h4><i class="icon-reorder"></i> 컬렉션</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
 										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
@@ -474,10 +474,10 @@
 								<table id="collection_info_table" class="table table-bordered table-hover">
 									<thead>
 										<tr>
-											<th>Collection</th>
-											<th>Documents</th>
-											<th>Disk Size</th>
-											<th>Update Time</th>
+											<th>컬렉션</th>
+											<th>문서갯수</th>
+											<th>디스크용량</th>
+											<th>업데이트시각</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -491,7 +491,7 @@
 					<div class="col-md-6">
 						<div class="widget box">
 							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> Indexing Result</h4>
+								<h4><i class="icon-reorder"></i> 색인결과</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
 										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
@@ -502,11 +502,11 @@
 								<table id="indexing_info_table" class="table table-hover table-bordered">
 									<thead>
 										<tr>
-											<th>Collection</th>
-											<th>Status</th>
-											<th>Documents</th>
-											<th>Duration</th>
-											<th>Time</th>
+											<th>컬렉션</th>
+											<th>상태</th>
+											<th>문서갯수</th>
+											<th>소요시간</th>
+											<th>시각</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -522,7 +522,7 @@
 					<div class="col-md-12">
 						<div class="widget box">
 							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> Server Status</h4>
+								<h4><i class="icon-reorder"></i> 서버상태</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
 										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
@@ -535,16 +535,16 @@
 									<thead>
 										<tr>
 											<th>#</th>
-											<th>Server Name</th>
-											<th>IP Address</th>
-											<th>Port</th>
-											<th>Status</th>
-											<th>Disk</th>
+											<th>서버이름</th>
+											<th>IP주소</th>
+											<th>포트</th>
+											<th>상태</th>
+											<th>디스크</th>
 											<th>Java CPU</th>
 											<th>System CPU</th>
-											<th>Java Memory</th>
-											<th>System Memory</th>
-											<th>Load</th>
+											<th>Java 메모리</th>
+											<th>System 메모리</th>
+											<th>부하</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -559,7 +559,7 @@
 					<div class="col-md-6">
 						<div class="widget box">
 							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> Notifications</h4>
+								<h4><i class="icon-reorder"></i> 알림</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
 										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
@@ -571,8 +571,8 @@
 								<table id="log_table" class="table table-hover table-bordered">
 									<thead>
 										<tr>
-											<th>Message</th>
-											<th class="fcol2">Time</th>
+											<th>내용</th>
+											<th class="fcol2">시각</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -586,7 +586,7 @@
 					<div class="col-md-6">
 						<div class="widget box">
 							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> Task Status</h4>
+								<h4><i class="icon-reorder"></i> 작업상태</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
 										<span class="btn btn-xs"><i class="icon-refresh"></i></span>
@@ -599,11 +599,11 @@
 									<thead>
 										<tr>
 											<th>#</th>
-											<th>Task</th>
-											<th>Status</th>
-											<th>Elapsed</th>
-											<th>Start Time</th>
-											<th>End Time</th>
+											<th>작업</th>
+											<th>상태</th>
+											<th>소요시간</th>
+											<th>시작</th>
+											<th>종료</th>
 										</tr>
 									</thead>
 									<tbody>

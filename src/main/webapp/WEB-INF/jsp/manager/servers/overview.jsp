@@ -31,9 +31,9 @@
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li> Servers</li>
-						<li class="current"> Overview</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li> 서버</li>
+						<li class="current"> 개요</li>
 					</ul>
 
 				</div>
@@ -42,27 +42,27 @@
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Overview</h3>
+						<h3>개요</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
 
 				<div class="widget">
 					<div class="widget-header">
-						<h4>Node Settings</h4>
+						<h4>노드설정</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>ID</th>
-									<th>Name</th>
-									<th>IP Address</th>
-									<th>Node Port</th>
-									<th>Service Port</th>
-									<th>Enabled</th>
-									<th>Active</th>
+									<th>아이디</th>
+									<th>이름</th>
+									<th>IP주소</th>
+									<th>노드포트</th>
+									<th>서비스포트</th>
+									<th>사용여부</th>
+									<th>동작여부</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -106,13 +106,13 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Node</th>
-									<th>Disk</th>
+									<th>노드</th>
+									<th>디스크</th>
 									<th>Java CPU</th>
 									<th>System CPU</th>
-									<th>Java Memory</th>
-									<th>System Memory</th>
-									<th>Load</th>
+									<th>Java 메모리</th>
+									<th>System 메모리</th>
+									<th>부하</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -165,20 +165,20 @@
 				
 				<div class="widget">
 					<div class="widget-header">
-						<h4>System Information</h4>
+						<h4>시스템정보</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Node</th>
-									<th>Engine Path</th>
-									<th>OS Name</th>
+									<th>노드</th>
+									<th>엔진경로</th>
+									<th>OS 이름</th>
 									<th>OS Arch</th>
-									<th>Java Path</th>
-									<th>Java Vendor</th>
-									<th>Java Version</th>
+									<th>Java 경로</th>
+									<th>Java 제공자</th>
+									<th>Java 버전</th>
 								</tr>
 							</thead>
 							<tbody>

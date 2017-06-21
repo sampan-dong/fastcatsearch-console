@@ -77,7 +77,7 @@ $(document).ready(function() {
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> <a href="javascript:void(0);">Settings</a>
+						<li><i class="icon-home"></i> <a href="javascript:void(0);">설정</a>
 						</li>
 					</ul>
 
@@ -87,7 +87,7 @@ $(document).ready(function() {
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Settings</h3>
+						<h3>설정</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -109,14 +109,14 @@ $(document).ready(function() {
 										<div class="dataTables_header clearfix">
 											<div class="input-group col-md-12">
 												<button class="btn btn-sm" data-toggle="modal" data-target="#groupNew" data-backdrop="static">
-												 <span class="icon-group"></span> New Group
+												 <span class="icon-group"></span> 새그룹
 												 </button>
 											</div>
 										</div>
 										<table class="table table-bordered">
 											<thead>
 												<tr>
-													<th>Group Name</th>
+													<th>그룹이름</th>
 													<%
 													for(int authorityInx=0; authorityInx < jAuthorities.length(); authorityInx++) {
 														JSONObject jGroupRecord = jAuthorities.optJSONObject(authorityInx);
@@ -153,11 +153,11 @@ $(document).ready(function() {
 													<%
 													if(groupName.contains("Built-In")){
 													%>
-													<span class="text-muted">Edit</span>
+													<span class="text-muted">수정</span>
 													<%
 													}else{
 													%>
-													<a href="javascript:showUpdateGroupModal('<%=groupId%>')">Edit</a>
+													<a href="javascript:showUpdateGroupModal('<%=groupId%>')">수정</a>
 													<%
 													}
 													%>
@@ -186,7 +186,7 @@ $(document).ready(function() {
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New Group</h4>
+					<h4 class="modal-title">새그룹</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="new-group-form">
@@ -194,7 +194,7 @@ $(document).ready(function() {
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value="-1"/>
 						<div class="form-group">
-							<label for="groupName" class="col-sm-3 control-label">Group Name</label>
+							<label for="groupName" class="col-sm-3 control-label">그룹이름</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control fcol2" id="groupName" name="groupName" placeholder="Group name">
 							</div>
@@ -228,8 +228,8 @@ $(document).ready(function() {
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('new-group-form','update')">Create group</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('new-group-form','update')">그룹 만들기</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -242,7 +242,7 @@ $(document).ready(function() {
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Edit Group</h4>
+					<h4 class="modal-title">그룹 수정</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="update-group-form">
@@ -250,7 +250,7 @@ $(document).ready(function() {
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="groupId" value=""/>
 						<div class="form-group">
-							<label for="groupName" class="col-sm-3 control-label">Group Name</label>
+							<label for="groupName" class="col-sm-3 control-label">그룹이름</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control fcol2" name="groupName" placeholder="Group name">
 							</div>
@@ -284,9 +284,9 @@ $(document).ready(function() {
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger pull-left" onclick="updateUsingProxy('update-group-form','delete')">Remove</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('update-group-form','update')">Save chages</button>
+					<button type="button" class="btn btn-danger pull-left" onclick="updateUsingProxy('update-group-form','delete')">삭제</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('update-group-form','update')">저장</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->

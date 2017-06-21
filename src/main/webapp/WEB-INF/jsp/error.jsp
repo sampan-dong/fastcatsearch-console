@@ -29,7 +29,7 @@
 <body class='error'>
 	<div class="main">
 		<div class="wrapper">
-			<div class="code"><span>ERROR</span><span class="icon-warning-sign"></span></div>
+			<div class="code"><span>에러</span><span class="icon-warning-sign"></span></div>
 			<%
 			if(exception != null){
 				if(exception instanceof InvalidAuthenticationException) {
@@ -50,7 +50,7 @@
 			}
 			%>
 			<div class="buttons">
-				<div><a href="javascript:history.back();" class="btn btn-default"><i class="icon-arrow-left"></i> Back</a></div>
+				<div><a href="javascript:history.back();" class="btn btn-default"><i class="icon-arrow-left"></i> 뒤로</a></div>
 			</div>
 		</div>
 	</div>

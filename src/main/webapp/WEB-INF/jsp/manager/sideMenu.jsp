@@ -65,9 +65,9 @@
 				if (!checkCollectionsAuthority) {
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>">
-				<a href="javascript:void(0);"> <i class="icon-desktop"></i> Collections</a>
+				<a href="javascript:void(0);"> <i class="icon-desktop"></i> 컬렉션</a>
 				<ul class="sub-menu">
-					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/index.html"/>"> <i class="icon-angle-right"></i> Overview</a></li>
+					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/index.html"/>"> <i class="icon-angle-right"></i> 개요</a></li>
 					<%
 					for(int i=0;collectionList != null && i<collectionList.length(); i++){
 						String id = collectionList.getJSONObject(i).getString("id");
@@ -78,19 +78,19 @@
 					</a>
 						<ul class="sub-menu">
 							<li class="<%=(maybeCurrent && "schema".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/schema.html"> <i
-									class="icon-angle-right"></i> Schema
+									class="icon-angle-right"></i> 스키마
 							</a></li>
 							<li class="<%=(maybeCurrent && "data".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/data.html"> <i
-									class="icon-angle-right"></i> Data
+									class="icon-angle-right"></i> 데이터
 							</a></li>
 							<li class="<%=(maybeCurrent && "datasource".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/datasource.html"> <i
-									class="icon-angle-right"></i> DataSource
+									class="icon-angle-right"></i> 데이터소스
 							</a></li>
 							<li class="<%=(maybeCurrent && "indexing".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/indexing.html"> <i
-									class="icon-angle-right"></i> Index
+									class="icon-angle-right"></i> 색인
 							</a></li>
 							<li class="<%=(maybeCurrent && "config".equals(scat)) ? "current" : "" %>"><a href="<c:url value="/manager/collections/"/><%=id %>/config.html"> <i
-									class="icon-angle-right"></i> Config
+									class="icon-angle-right"></i> 구성
 							</a></li>
 						</ul></li>
 					<%
@@ -111,11 +111,11 @@
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>">
 				<a href="javascript:void(0);"> <i class="icon-edit"></i>
-					Analysis <%-- <span class="label label-info pull-right"><%=analysisPluginList.length() %></span> --%>
+					분석기 <%-- <span class="label label-info pull-right"><%=analysisPluginList.length() %></span> --%>
 				</a>
 				<ul class="sub-menu">
 					<li class="<%=(lcatCurrent && "plugin".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/analysis/plugin.html"/>"> <i
-							class="icon-cogs"></i> Plugin
+							class="icon-cogs"></i> 플러그인
 					</a></li>
 					<%
 					for(int i=0;analysisPluginList != null && i<analysisPluginList.length(); i++){
@@ -140,11 +140,11 @@
 				if (!checkServersAuthority) {
 			%>
 			<li class="<%="servers".equals(lcat) ? "current" :"" %>">
-				<a href="javascript:void(0);"> <i class="icon-globe"></i>Servers <!-- <span class="label label-info pull-right">3</span> -->
+				<a href="javascript:void(0);"> <i class="icon-globe"></i>서버 <!-- <span class="label label-info pull-right">3</span> -->
 				</a>
 				<ul class="sub-menu">
 					<li class="<%=(lcatCurrent && "overview".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/servers/overview.html"/>"> <i
-							class="icon-dashboard"></i> Overview
+							class="icon-dashboard"></i> 개요
 					</a></li>
 					<%
 					for(int i=0;serverList != null && i<serverList.length(); i++){
@@ -159,7 +159,7 @@
 					}
 					%>
 					<li class="<%=(lcatCurrent && "settings".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/servers/settings.html"/>"> <i
-							class="icon-cogs"></i> Settings
+							class="icon-cogs"></i> 설정
 					</a></li>
 				</ul>
 			</li>
@@ -174,17 +174,17 @@
 				if (!checkLogsAuthority) {
 			%>
 			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-list-ol"></i>
-							Logs
+							로그
 			</a>
 				<ul class="sub-menu">
 					<li class="<%=(lcatCurrent && "notifications".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/logs/notifications.html"/>">
-							<i class="icon-angle-right"></i> Notifications <span class="arrow"></span>
+							<i class="icon-angle-right"></i> 알림 <span class="arrow"></span>
 					</a></li>
 					<li class="<%=(lcatCurrent && "exceptions".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/logs/exceptions.html"/>">
-							<i class="icon-angle-right"></i> Exceptions <span class="arrow"></span>
+							<i class="icon-angle-right"></i> 예외 <span class="arrow"></span>
 					</a></li>
 					<li class="<%=(lcatCurrent && "tasks".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/logs/tasks.html"/>">
-							<i class="icon-angle-right"></i> Running Tasks <span class="arrow"></span>
+							<i class="icon-angle-right"></i> 실행중인 작업 <span class="arrow"></span>
 					</a></li>
 				</ul></li>
 			<%
@@ -198,14 +198,14 @@
 				if (!checkSettingsAuthority) {
 			%>
 			<li class="<%=lcatCurrent ? "current" : "" %>"><a href="javascript:void(0);"> <i class="icon-fire"></i>
-							Test
+							테스트
 			</a>
 				<ul class="sub-menu">
 					<li class="<%=(lcatCurrent && "search".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/test/search.html"/>">
-							<i class="icon-search"></i> Search <span class="arrow"></span>
+							<i class="icon-search"></i> 검색 <span class="arrow"></span>
 					</a></li>
 					<li class="<%=(lcatCurrent && "db".equals(mcat)) ? "current" : "" %>"><a href="<c:url value="/manager/test/db.html"/>">
-							<i class="icon-angle-right"></i> SYSTEM DB <span class="arrow"></span>
+							<i class="icon-angle-right"></i> 시스템DB <span class="arrow"></span>
 					</a></li>
 				</ul></li>
 			<%

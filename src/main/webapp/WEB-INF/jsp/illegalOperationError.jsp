@@ -38,7 +38,7 @@
 			}
 			%>
 			<div class="buttons">
-				<div><a href="javascript:history.back();" class="btn btn-default"><i class="icon-arrow-left"></i> Back</a></div>
+				<div><a href="javascript:history.back();" class="btn btn-default"><i class="icon-arrow-left"></i> 뒤로</a></div>
 			</div>
 		</div>
 	</div>

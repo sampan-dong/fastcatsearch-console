@@ -19,24 +19,22 @@
 		<!-- Breadcrumbs line -->
 		<div class="crumbs">
 			<ul id="breadcrumbs" class="breadcrumb">
-				<li><i class="icon-home"></i> <a href="javascript:void(0);">Manager</a>
+				<li><i class="icon-home"></i> <a href="javascript:void(0);">관리</a>
 				</li>
 			</ul>
 
 		</div>
 		<!-- /Breadcrumbs line -->
 		
-		<h3>Create Collection Wizard</h3>
-		<p>Start <a href="collections/createCollectionWizard.html" class="show-link">collection wizard</a></p>
+		<h3>컬렉션생성 마법사</h3>
+		<p><a href="collections/createCollectionWizard.html" class="show-link">생성마법사</a>를 시작합니다.</p>
 		
-		<h3>Add New Server</h3>
-		<p>Go to <a href="servers/settings.html" class="show-link">server setting</a></p>
+		<h3>서버추가</h3>
+		<p><a href="servers/settings.html" class="show-link">서버설정</a>으로 이동합니다.</p>
 		
-		<h3>Check Logs</h3>
-		<p>Go to <a href="logs/exceptions.html" class="show-link">system exceptions</a></p>
-		<p>Go to <a href="logs/notifications.html" class="show-link">system notifications</a></p>
-		
-		
+		<h3>로그확인</h3>
+		<p><a href="logs/exceptions.html" class="show-link">예외로그</a>로 이동합니다.</p>
+		<p><a href="logs/notifications.html" class="show-link">시스템알림</a>으로 이동합니다.</p>
 		
 	</div>
 </div>

@@ -79,7 +79,7 @@ function showUpdateUserModal(id){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> <a href="javascript:void(0);">Settings</a>
+						<li><i class="icon-home"></i> <a href="javascript:void(0);">설정</a>
 						</li>
 					</ul>
 				</div>
@@ -87,7 +87,7 @@ function showUpdateUserModal(id){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Settings</h3>
+						<h3>설정</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -105,19 +105,19 @@ function showUpdateUserModal(id){
 										<div class="dataTables_header clearfix">
 											<div class="input-group col-md-12">
 												<button class="btn btn-sm" data-toggle="modal" data-target="#userNew" data-backdrop="static">
-												 <span class="icon-user"></span> New User
+												 <span class="icon-user"></span> 사용자추가
 												 </button>
 											</div>
 										</div>
 										<table class="table table-bordered">
 											<thead>
 												<tr>
-													<th>User Name</th>
-													<th>User Id</th>
-													<th>Group</th>
-													<th>Email</th>
-													<th>Sms</th>
-													<th>Telegram</th>
+													<th>이름</th>
+													<th>아이디</th>
+													<th>그룹</th>
+													<th>이메일</th>
+													<th>SMS번호</th>
+													<th>텔레그램</th>
 													<th></th>
 												</tr>
 											</thead>	
@@ -145,7 +145,7 @@ function showUpdateUserModal(id){
 													<td><%=email %></td>
 													<td><%=sms %></td>
 													<td><%=telegram %></td>
-													<td><a href="javascript:showUpdateUserModal('<%=id%>')">Edit</a></td>
+													<td><a href="javascript:showUpdateUserModal('<%=id%>')">수정</a></td>
 												</tr>
 											<%
 											}
@@ -170,7 +170,7 @@ function showUpdateUserModal(id){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New User</h4>
+					<h4 class="modal-title">사용자 추가</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="new-user-form">
@@ -178,19 +178,19 @@ function showUpdateUserModal(id){
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="id" value="-1"/>
 						<div class="form-group">
-							<label for="name" class="col-sm-3 control-label">Name</label>
+							<label for="name" class="col-sm-3 control-label">이름</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control required" id="name" name="name" placeholder="Name" minlength="3">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="userId" class="col-sm-3 control-label">User Id</label>
+							<label for="userId" class="col-sm-3 control-label">아이디</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control required" id="userId" name="userId" placeholder="User Id" minlength="4">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="password" class="col-sm-3 control-label">Password</label>
+							<label for="password" class="col-sm-3 control-label">비밀번호</label>
 							<div class="col-sm-4">
 								<input type="password" class="form-control required" id="password" name="password" placeholder="Password" minlength="4">
 							</div>
@@ -200,10 +200,10 @@ function showUpdateUserModal(id){
 						</div>
 						
 						<div class="form-group">
-							<label for="groupId" class="col-sm-3 control-label">Group</label>
+							<label for="groupId" class="col-sm-3 control-label">그룹</label>
 							<div class="col-sm-9">
 								<select class="form-control select_flat required" id="groupId" name="groupId">
-									<option value="">NONE</option>
+									<option value="">없음</option>
 									<% 
 									if(jGroupList!=null) { 
 										JSONArray groupArray = jGroupList.optJSONArray("groupList");
@@ -225,19 +225,19 @@ function showUpdateUserModal(id){
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="email" class="col-sm-3 control-label">E-mail</label>
+							<label for="email" class="col-sm-3 control-label">이메일</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control email" id="email" name="email" placeholder="E-mail">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="sms" class="col-sm-3 control-label">SMS</label>
+							<label for="sms" class="col-sm-3 control-label">SMS번호</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control number" id="sms" name="sms" placeholder="SMS">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="telegram" class="col-sm-3 control-label">Telegram</label>
+							<label for="telegram" class="col-sm-3 control-label">텔레그램</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control number" id="telegram" name="telegram" placeholder="Telegram">
 							</div>
@@ -245,8 +245,8 @@ function showUpdateUserModal(id){
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('new-user-form','update')">Create User</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('new-user-form','update')">사용자 만들기</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -259,7 +259,7 @@ function showUpdateUserModal(id){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Edit User</h4>
+					<h4 class="modal-title">사용자 수정</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" role="form" id="update-user-form">
@@ -267,22 +267,22 @@ function showUpdateUserModal(id){
 						<input type="hidden" name="mode" value=""/>
 						<input type="hidden" name="id" value="-1"/>
 						<div class="form-group">
-							<label for="name" class="col-sm-3 control-label">Name</label>
+							<label for="name" class="col-sm-3 control-label">이름</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control required" id="name" name="name" placeholder="Name" minlength="3">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="userId" class="col-sm-3 control-label">User Id</label>
+							<label for="userId" class="col-sm-3 control-label">아이디</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control required" id="userId" name="userId" placeholder="User Id" minlength="4" readonly>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="groupId" class="col-sm-3 control-label">Group</label>
+							<label for="groupId" class="col-sm-3 control-label">그룹</label>
 							<div class="col-sm-9">
 								<select class="form-control select_flat required" id="groupId" name="groupId">
-									<option value="">NONE</option>
+									<option value="">없음</option>
 									<% 
 									if(jGroupList!=null) { 
 										JSONArray groupArray = jGroupList.optJSONArray("groupList");
@@ -304,25 +304,25 @@ function showUpdateUserModal(id){
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="email" class="col-sm-3 control-label">E-mail</label>
+							<label for="email" class="col-sm-3 control-label">이메일</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control email" id="email" name="email" placeholder="E-mail">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="sms" class="col-sm-3 control-label">SMS</label>
+							<label for="sms" class="col-sm-3 control-label">SMS번호</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control number" id="sms" name="sms" placeholder="SMS">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="telegram" class="col-sm-3 control-label">Telegram</label>
+							<label for="telegram" class="col-sm-3 control-label">텔레그램</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control number" id="telegram" name="telegram" placeholder="Telegram">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="password" class="col-sm-3 control-label">Password</label>
+							<label for="password" class="col-sm-3 control-label">비밀번호</label>
 							<div class="col-sm-4">
 								<input type="password" class="form-control" id="password2" name="password" placeholder="Password" minlength="4">
 							</div>
@@ -333,9 +333,9 @@ function showUpdateUserModal(id){
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger pull-left" onclick="updateUsingProxy('update-user-form','delete')">Remove</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('update-user-form','update')">Save changes</button>
+					<button type="button" class="btn btn-danger pull-left" onclick="updateUsingProxy('update-user-form','delete')">삭제</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary" onclick="updateUsingProxy('update-user-form','update')">저장</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->

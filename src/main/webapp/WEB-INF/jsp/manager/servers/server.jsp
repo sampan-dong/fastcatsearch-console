@@ -142,8 +142,8 @@ function hideAllJobArgs(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class=""> Servers</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class=""> 서버</li>
 						<li class="current"> <%=nodeName %></li>
 					</ul>
 
@@ -154,26 +154,26 @@ function hideAllJobArgs(){
 				<div class="page-header">
 					<div class="page-title">
 						<h3><%=nodeName %></h3>
-						<p>Each server information </p>
+						<p>서버정보 </p>
 					</div>
 				</div>
 				<!-- /Page Header -->
 
 				<div class="widget" id="nodeStatus">
 					<div class="widget-header">
-						<h4>Node Settings</h4>
+						<h4>노드설정</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>Name</th>
-									<th>IP Address</th>
-									<th>Node Port</th>
-									<th>Service Port</th>
-									<th>Enabled</th>
-									<th>Active</th>
+									<th>아이디</th>
+									<th>이름</th>
+									<th>IP 주소</th>
+									<th>노드포트</th>
+									<th>서비스포트</th>
+									<th>사용여부</th>
+									<th>동작여부</th>
 									<%if (systemActive) { %>
 									<th>&nbsp;</th>
 									<% } %>
@@ -205,8 +205,8 @@ function hideAllJobArgs(){
 									<td><%=activeStatus %></td>
 									<% if(active) { %>
 									<td>
-										<a class="restart">Restart</a>&nbsp;
-										<a class="shutdown">Shutdown</a>
+										<a class="restart">재시작</a>&nbsp;
+										<a class="shutdown">종료하기</a>
 									</td>
 									<% } %>
 								</tr>
@@ -222,18 +222,18 @@ function hideAllJobArgs(){
 				%>
 				<div class="widget">
 					<div class="widget-header">
-						<h4>System Health</h4>
+						<h4>시스템상태</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
-									<th>Disk</th>
+									<th>디스트</th>
 									<th>Java CPU</th>
 									<th>System CPU</th>
-									<th>Java Memory</th>
-									<th>System Memory</th>
-									<th>Load</th>
+									<th>Java 메모리</th>
+									<th>System 메모리</th>
+									<th>부하</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -277,18 +277,18 @@ function hideAllJobArgs(){
 				</div>
 				<div class="widget">
 					<div class="widget-header">
-						<h4>Task Status</h4>
+						<h4>작업상태</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Task</th>
-									<th>State</th>
-									<th>Elapsed</th>
-									<th>Start</th>
-									<th>End</th>
+									<th>작업</th>
+									<th>상태</th>
+									<th>소요시간</th>
+									<th>시작</th>
+									<th>종료</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -316,19 +316,19 @@ function hideAllJobArgs(){
 				</div>
 				<div class="widget">
 					<div class="widget-header">
-						<h4>System Information</h4>
+						<h4>시스템정보</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
-									<th>Engine Path</th>
-                                    <th>Server ID</th>
-									<th>OS Name</th>
+									<th>엔진경로</th>
+                                    <th>서버아이디</th>
+									<th>OS 이름</th>
 									<th>OS Arch</th>
-									<th>Java Path</th>
-									<th>Java Vendor</th>
-									<th>Java Version</th>
+									<th>Java 경로</th>
+									<th>Java 제공자</th>
+									<th>Java 버전</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -357,19 +357,19 @@ function hideAllJobArgs(){
 
 				<div class="widget ">
 					<div class="widget-header">
-						<h4>Collection Status</h4>
+						<h4>컬렉션상태</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
-									<th>Name</th>
-									<th>Document Size</th>
-									<th>Data Path</th>
-									<th>Data Disk Size</th>
-									<th>Segment Size</th>
-									<th>Revision UUID</th>
-									<th>Update Time</th>
+									<th>이름</th>
+									<th>문서갯수</th>
+									<th>데이터경로</th>
+									<th>데이터 디스크용량</th>
+									<th>세그먼트 갯수</th>
+									<th>리비전 UUID</th>
+									<th>업데이트시각</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -403,18 +403,18 @@ function hideAllJobArgs(){
 				
 				<div class="widget ">
 					<div class="widget-header">
-						<h4>Plugin Status</h4>
+						<h4>플러그인상태</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
-									<th>Name</th>
-									<th>ID</th>
-									<th>Analyzers</th>
-									<th>License</th>
-									<th>Version</th>
-									<th>Decription</th>
+									<th>이름</th>
+									<th>아이디</th>
+									<th>분석기</th>
+									<th>라이선스</th>
+									<th>버전</th>
+									<th>설명</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -454,14 +454,14 @@ function hideAllJobArgs(){
 				
 				<div class="widget" id="moduleStatus">
 					<div class="widget-header">
-						<h4>Module Status</h4>
+						<h4>모듈상태</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
-									<th>Name</th>
-									<th>Status</th>
+									<th>이름</th>
+									<th>상태</th>
 									<th>&nbsp;</th>
 								</tr>
 							</thead>
@@ -482,12 +482,12 @@ function hideAllJobArgs(){
 									<%
 									if(running) {
 									%>
-										<a class="stop">Stop</a> &nbsp;
-										<a class="restart">Restart</a>
+										<a class="stop">정지</a> &nbsp;
+										<a class="restart">재시작</a>
 									<%
 									} else {
 									%>
-										<a class="restart">Start</a>
+										<a class="restart">재시작</a>
 									<%
 									}
 									%>
@@ -503,24 +503,24 @@ function hideAllJobArgs(){
 				
 				<div class="widget">
 					<div class="widget-header">
-						<h4>Thread Status</h4>
+						<h4>쓰레드상태</h4>
 					</div>
 					<div class="widget-content">
-						<p>Thread count : <%=threadStatus.optInt("count", 0) %>
-						&nbsp;&nbsp;&nbsp;<a href="javascript:showAllThreadStacktrace();" class="show-link">Show all stacktrace</a>
-						&nbsp; | &nbsp;&nbsp;<a href="javascript:hideAllThreadStacktrace();" class="show-link">Collapse all stacktrace</a>
+						<p>쓰레드 갯수 : <%=threadStatus.optInt("count", 0) %>
+						&nbsp;&nbsp;&nbsp;<a href="javascript:showAllThreadStacktrace();" class="show-link">모든 Stacktrace 보기</a>
+						&nbsp; | &nbsp;&nbsp;<a href="javascript:hideAllThreadStacktrace();" class="show-link">모든 Stacktrace 닫기</a>
 						</p>
 						<div style="height:400px; overflow-y:scroll">
 						<table id="thread-status" class="table table-hover table-bordered table-highlight-head">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Group</th>
-									<th>Name</th>
+									<th>그룹</th>
+									<th>이름</th>
 									<th>Tid</th>
-									<th>Priority</th>
-									<th>State</th>
-									<th>Daemon</th>
+									<th>우선순위</th>
+									<th>상태</th>
+									<th>데몬여부</th>
 									<th>Alive</th>
 									<th>Interrupted</th>
 									<th>&nbsp;</th>
@@ -563,10 +563,10 @@ function hideAllJobArgs(){
 				
 				<div class="widget">
 					<div class="widget-header">
-						<h4>Running Jobs</h4>
+						<h4>실행작업들</h4>
 					</div>
 					<div class="widget-content">
-						<p>Job Size : <%=runningJobList.optInt("size", 0) %>
+						<p>작업갯수 : <%=runningJobList.optInt("size", 0) %>
 						&nbsp;&nbsp;&nbsp;<a href="javascript:showAllJobArgs();" class="show-link">Show all job arguments</a>
 						&nbsp; | &nbsp;&nbsp;<a href="javascript:hideAllJobArgs();" class="show-link">Collapse all job arguments</a>
 						</p>
@@ -575,11 +575,11 @@ function hideAllJobArgs(){
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Job ID</th>
-									<th>ClassName</th>
-									<th>Schedule</th>
-									<th>HasResult</th>
-									<th>Start Time</th>
+									<th>작업아이디</th>
+									<th>클래스명</th>
+									<th>스케줄</th>
+									<th>결과존재여부</th>
+									<th>시작</th>
 									<th>&nbsp;</th>
 								</tr>
 							</thead>

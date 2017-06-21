@@ -109,8 +109,8 @@ function searchPage(uri, pageNo){
 						</ul>
 					</div>
 					<div style="padding-left: 0px;">
-						<button class="btn btn-primary" type="submit" id="searchButton" style=" height:40px;">Search</button>
-						<span style="float:right; margin: 0px 15px;"><a href="search/config.html"><i class="icon-cog"></i> Config</a></span>
+						<button class="btn btn-primary" type="submit" id="searchButton" style=" height:40px;">검색</button>
+						<span style="float:right; margin: 0px 15px;"><a href="search/config.html"><i class="icon-cog"></i> 구성</a></span>
 					</div>
 				</form>
 			</div>
@@ -123,7 +123,7 @@ function searchPage(uri, pageNo){
 					<div class="tabbable tabbable-custom tabs-left">
 						<!-- Only required for left/right tabs -->
 						<ul id="category_tab" class="nav nav-tabs tabs-left">
-							<li class="<%=(category == null || category.length() == 0) ? "active" : ""%>"><a href="javascript:searchCategory()"><strong>Total Search</strong></a></li>
+							<li class="<%=(category == null || category.length() == 0) ? "active" : ""%>"><a href="javascript:searchCategory()"><strong>통합검색</strong></a></li>
 							<%
 							JSONArray categoryList = searchPageResult.getJSONArray("category-list");
 							for(int i = 0 ; i < categoryList.length(); i++){
@@ -156,7 +156,7 @@ function searchPage(uri, pageNo){
 								}
 								%>
 								<div class="">
-								<%=totalCount %> results (<%=searchPageResult.optString("time") %>s) 
+								<%=totalCount %> 건 결과 (<%=searchPageResult.optString("time") %>초)
 								</div>
 								
 								<%
@@ -220,7 +220,7 @@ function searchPage(uri, pageNo){
 										<%
 										if(categoryTotalCount > searchResultList.length()){
 										%>
-										<div class="pull-right"><a href="javascript:searchCategory('<%=categoryId %>');">more results »</a></div>
+										<div class="pull-right"><a href="javascript:searchCategory('<%=categoryId %>');">더보기 »</a></div>
 										<%
 										}
 										%>
@@ -257,7 +257,7 @@ function searchPage(uri, pageNo){
 									if(categoryTotalCount > 0){
 									%>
 									<div>
-									Page <%=pageNumber %> of <%=searchResult.getInt("total_count") %> results (<%=searchPageResult.getString("time") %>s) 
+									페이지 <%=pageNumber %> of <%=searchResult.getInt("total_count") %> 건 결과 (<%=searchPageResult.getString("time") %>초)
 									</div>
 									<h3 style="border-bottom:1px solid #eee;"><%=categoryName %></h3>
 									<div class="col-md-12 ires">
@@ -313,7 +313,7 @@ function searchPage(uri, pageNo){
 									}else{
 									%>
 									<h3 style="border-bottom:1px solid #eee;"><%=categoryName %></h3>
-									<div class="col-md-12 ires"> No result. </div>
+									<div class="col-md-12 ires"> 결과가 없습니다. </div>
 									
 									<%
 									}
@@ -335,7 +335,7 @@ function searchPage(uri, pageNo){
 					%>
 					<div class="panel panel-default" style="border-left: 0px;">
 						<div class="panel-heading">
-							<h3 class="panel-title">Popular Keyword</h3>
+							<h3 class="panel-title">인기검색어</h3>
 						</div>
 						<div class="panel-body" style="padding: 10px 2px 0px 10px;">
 							<ol class="popular-keyword">

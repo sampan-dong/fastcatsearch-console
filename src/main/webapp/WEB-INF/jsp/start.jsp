@@ -100,7 +100,7 @@
 			<!-- Breadcrumbs line -->
 			<div class="crumbs">
 				<ul id="breadcrumbs" class="breadcrumb">
-					<li><i class="icon-home"></i> <a href="javascript:void(0);">Start</a>
+					<li><i class="icon-home"></i> <a href="javascript:void(0);">시작하기</a>
 					</li>
 				</ul>
 	
@@ -109,7 +109,7 @@
 			<!--=== Page Header ===-->
 			<div class="page-header">
 				<div class="page-title">
-					<h3>Start</h3>
+					<h3>시작페이지</h3>
 				</div>
 			</div>
 			

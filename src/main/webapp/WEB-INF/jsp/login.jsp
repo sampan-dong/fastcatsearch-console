@@ -100,7 +100,7 @@ $(document).ready(function(){
 								<!-- <label class="checkbox pull-left"><input type="checkbox"
 									class="uniform" name="remember"> Remember me</label> -->
 								<button type="submit" class="submit btn btn-primary pull-right">
-									Sign In <i class="icon-angle-right"></i>
+									로그인 <i class="icon-angle-right"></i>
 								</button>
 							</div>
 						</form>
@@ -114,10 +114,10 @@ $(document).ready(function(){
 	<div class="footer">
 		<div class="copy">
 			<p class="address">
-				Copyright(c) Fastcat. All rights reserved.<br /> <i
+				Copyright(c) 지앤클라우드 패스트캣 Team. All rights reserved.<br /> <i
 					class="icon-envelope-alt"></i> support@fastcat.co<br /> <i
-					class="glyphicon glyphicon-phone-alt"></i> +82-2-508-1151<br /> 2F
-				Samseong-dong 122-30 Gangnam-gu Seoul, Korea<br />
+					class="glyphicon glyphicon-phone-alt"></i> +82-2-508-1151<br /> 5F
+				18, Sinbanpo-ro 45-gil, Seocho-gu, Seoul, Republic of Korea<br />
 			</p>
 		</div>
 	</div>

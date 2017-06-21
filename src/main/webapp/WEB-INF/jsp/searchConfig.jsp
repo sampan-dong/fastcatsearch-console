@@ -101,7 +101,7 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Search Page Config</h3>
+						<h3>검색페이지구성</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -123,16 +123,16 @@ $(document).ready(function(){
 
 						<div class="widget margin-space">
 							<div class="widget-header">
-								<h4>Common Settings</h4>
+								<h4>일반설정</h4>
 							</div>
 							<div class="widget-content">
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
-										<label class="col-md-2 control-label">Total Search List Size :</label>
+										<label class="col-md-2 control-label">통합검색결과 리스트길이 :</label>
 										<div class="col-md-10"><input type="text" name="totalSearchListSize" class="form-control fcol2 required" value="<%=totalSearchListSize%>"></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Search List Size :</label>
+										<label class="col-md-2 control-label">카테고리별 검색결과 리스트길이 :</label>
 										<div class="col-md-10"><input type="text" name="searchListSize" class="form-control fcol2 required" value="<%=searchListSize%>"></div>
 									</div>
 								</div>
@@ -145,7 +145,7 @@ $(document).ready(function(){
 						
 						<div class="widget margin-space">
 							<div class="widget-header">
-								<h4>Category List</h4>
+								<h4>카테고리 리스트</h4>
 							</div>
 							<div id="category_ist" class="widget-content">
 								<%
@@ -154,52 +154,52 @@ $(document).ready(function(){
 								%>
 								<div class="category-group col-md-12 form-horizontal">
 									<div class="form-group">
-										<label class="col-md-2 control-label">Display Order :</label>
+										<label class="col-md-2 control-label">순번 :</label>
 										<div class="col-md-10"><input type="text" name="order_<%=i %>" class="form-control fcol2 display-inline digit required" value="<%=el.getAttributeValue("order") %>"> <span class="remove-category btn">Remove</span></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Category Name :</label>
+										<label class="col-md-2 control-label">카테고리 이름 :</label>
 										<div class="col-md-10"><input type="text" name="categoryName_<%=i %>" class="form-control fcol2 display-inline required" value="<%=el.getAttributeValue("name")%>"></div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Category ID :</label>
+										<label class="col-md-2 control-label">카테고리 아이디 :</label>
 										<div class="col-md-10">
 											<input type="text" name="categoryId_<%=i %>" class="form-control fcol2 required" value="<%=el.getAttributeValue("id")%>">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Search Query :</label>
+										<label class="col-md-2 control-label">검색쿼리 :</label>
 										<div class="col-md-10">
 											<textarea rows="3" name="searchQuery_<%=i %>" class="form-control required"><%=el.getChildText("search-query")%></textarea>
-											<div class="help-block">ex) cn=news_kor&fl=title,content:150,regdate,username&se={title:#keyword}&ud=keyword:#keyword</div>
+											<div class="help-block">예) cn=news_kor&fl=title,content:150,regdate,username&se={title:#keyword}&ud=keyword:#keyword</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Thumbnail Field :</label>
+										<label class="col-md-2 control-label">썸네일 필드 :</label>
 										<div class="col-md-10">
 											<textarea rows="3" name="thumbnailField_<%=i %>" class="form-control"><%=getString(el.getChildText("thumbnail-field")) %></textarea>
-											<div class="help-block">ex) &lt;img src="path/to/img/$img_src" /&gt;</div>
+											<div class="help-block">예) &lt;img src="path/to/img/$img_src" /&gt;</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Title Field :</label>
+										<label class="col-md-2 control-label">제목 필드 :</label>
 										<div class="col-md-10">
 											<textarea rows="3" name="titleField_<%=i %>" class="form-control required"><%=getString(el.getChildText("title-field"))%></textarea>
-											<div class="help-block">ex) $title</div>
+											<div class="help-block">예) $title</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Body Field :</label>
+										<label class="col-md-2 control-label">본문 필드 :</label>
 										<div class="col-md-10">
 											<textarea rows="3" name="bodyField_<%=i %>" class="form-control"><%=getString(el.getChildText("body-field"))%></textarea>
-											<div class="help-block">ex) $content</div>
+											<div class="help-block">예) $content</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Bundle Field :</label>
+										<label class="col-md-2 control-label">번들 필드 :</label>
 										<div class="col-md-10">
 											<textarea rows="3" name="bundleField_<%=i %>" class="form-control"><%=getString(el.getChildText("bundle-field")) %></textarea>
-											<div class="help-block">ex) $title - $content</div>
+											<div class="help-block">예) $title - $content</div>
 										</div>
 									</div>
 								</div>
@@ -211,14 +211,14 @@ $(document).ready(function(){
 							</div>
 							<div class="row">
 								<div class="col-md-12 col-md-offset-2">
-									<span id="addCategoryBtn" class="btn"><i class="icon-plus"></i> Add Category</span>
+									<span id="addCategoryBtn" class="btn"><i class="icon-plus"></i> 카테고리추가</span>
 								</div>
 							</div>
 						</div>
 						
 						<div class="widget margin-space">
 							<div class="widget-header">
-								<h4>Relate Keyword</h4>
+								<h4>연관키워드</h4>
 							</div>
 							<div class="widget-content">
 								<div class="col-md-12 form-horizontal">
@@ -226,7 +226,7 @@ $(document).ready(function(){
 										<label class="col-md-2 control-label">URL :</label>
 										<div class="col-md-10">
 											<input type="text" name="relateKeywordURL" class="form-control" value="<%=relateKeywordUrl%>">
-											<div class="help-block">ex) http://demo.fastcatsearch.org:8050/service/keyword/relate.json?keyword=#keyword</div>
+											<div class="help-block">예) http://demo.fastcat.co:8050/service/keyword/relate.json?keyword=#keyword</div>
 										</div>
 										
 									</div>
@@ -236,7 +236,7 @@ $(document).ready(function(){
 						
 						<div class="widget margin-space">
 							<div class="widget-header">
-								<h4>Realtime Popular Keyword</h4>
+								<h4>실시간 인기검색어</h4>
 							</div>
 							<div class="widget-content">
 								<div class="col-md-12 form-horizontal">
@@ -244,7 +244,7 @@ $(document).ready(function(){
 										<label class="col-md-2 control-label">URL :</label>
 										<div class="col-md-10">
 											<input type="text" name="realtimePopularKeywordURL" class="form-control" value="<%=realtimePopularKeywordUrl%>">
-											<div class="help-block">ex) http://demo.fastcatsearch.org:8050/service/keyword/popular/rt.json?siteId=total</div>
+											<div class="help-block">예) http://demo.fastcat.co:8050/service/keyword/popular/rt.json?siteId=total</div>
 										</div>
 									</div>
 								</div>
@@ -253,18 +253,18 @@ $(document).ready(function(){
 						
 						<div class="widget margin-space">
 							<div class="widget-header">
-								<h4>UI Customizing</h4>
+								<h4>UI 설정</h4>
 							</div>
 							<div class="widget-content">
 								<div class="col-md-12 form-horizontal">
 									<div class="form-group">
-										<label class="col-md-2 control-label">Stylesheet :</label>
+										<label class="col-md-2 control-label">스타일시트 :</label>
 										<div class="col-md-10">
 											<textarea rows="5" name="css" class="form-control"><%=css != null ? css : ""%></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-md-2 control-label">Javascript :</label>
+										<label class="col-md-2 control-label">자바스크립트 :</label>
 										<div class="col-md-10">
 											<textarea rows="5" name="js" class="form-control"><%=js != null ? js : ""%></textarea>
 										</div>
@@ -274,7 +274,7 @@ $(document).ready(function(){
 						</div>
 						
 						<div class="form-actions">
-							<button type="submit" class="btn btn-primary fcol2" >Save Changes</button>
+							<button type="submit" class="btn btn-primary fcol2" >저장</button>
 						</div>
 					</form>
 				
@@ -289,49 +289,49 @@ $(document).ready(function(){
 		<div id="category_template">
 			<div class="category-group col-md-12 form-horizontal hide2">
 				<div class="form-group">
-					<label class="col-md-2 control-label">Display Order :</label>
-					<div class="col-md-10"><input type="text" name="order" class="form-control fcol2 display-inline digit required" value=""> <span class="remove-category btn">Remove</span></div>
+					<label class="col-md-2 control-label">순번 :</label>
+					<div class="col-md-10"><input type="text" name="order" class="form-control fcol2 display-inline digit required" value=""> <span class="remove-category btn">삭제</span></div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Category Name :</label>
+					<label class="col-md-2 control-label">카테고리 이름 :</label>
 					<div class="col-md-10"><input type="text" name="categoryName" class="form-control fcol2 display-inline required" value=""></div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Category ID :</label>
+					<label class="col-md-2 control-label">카테고리 아이디 :</label>
 					<div class="col-md-10"><input type="text" name="categoryId" class="form-control fcol2 required" value=""></div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Search Query :</label>
+					<label class="col-md-2 control-label">검색 쿼리 :</label>
 					<div class="col-md-10"><textarea rows="3" name="searchQuery" class="form-control required"></textarea>
-						<div class="help-block">ex) cn=news_kor&fl=title,content:150,regdate,username&se={title:#keyword}</div>
+						<div class="help-block">예) cn=news_kor&fl=title,content:150,regdate,username&se={title:#keyword}</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Thumbnail Field :</label>
+					<label class="col-md-2 control-label">썸네일 필드 :</label>
 					<div class="col-md-10">
 						<textarea rows="3" name="thumbnailField" class="form-control"></textarea>
-						<div class="help-block">ex) &lt;img src="path/to/img/$img_src" /&gt;</div>
+						<div class="help-block">예) &lt;img src="path/to/img/$img_src" /&gt;</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Title Field :</label>
+					<label class="col-md-2 control-label">제목 필드 :</label>
 					<div class="col-md-10">
 						<textarea rows="3" name="titleField" class="form-control required"></textarea>
-						<div class="help-block">ex) $title</div>
+						<div class="help-block">예) $title</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Body Field :</label>
+					<label class="col-md-2 control-label">본문 필드 :</label>
 					<div class="col-md-10">
 						<textarea rows="3" name="bodyField" class="form-control"></textarea>
-						<div class="help-block">ex) $content</div>
+						<div class="help-block">예) $content</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Bundle Field :</label>
+					<label class="col-md-2 control-label">번들 필드 :</label>
 					<div class="col-md-10">
 						<textarea rows="3" name="bundleField" class="form-control"></textarea>
-						<div class="help-block">ex) $title - $content</div>
+						<div class="help-block">예) $title - $content</div>
 					</div>
 				</div>
 			</div>

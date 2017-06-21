@@ -60,9 +60,9 @@ if(! $("#dbQueryTest").valid()){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Test</li>
-						<li class="current"> SYSTEM DB</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 테스트</li>
+						<li class="current"> 시스템DB</li>
 					</ul>
 
 				</div>
@@ -71,7 +71,7 @@ if(! $("#dbQueryTest").valid()){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>SYSTEM DB</h3>
+						<h3>시스템DB</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -85,16 +85,16 @@ if(! $("#dbQueryTest").valid()){
 						<div class="form-group">
 							<div class=" form-inline">
 								<input type="text" class="form-control fcol2 required" id="dbName" name="db" placeholder="DB Name" value="system">
-								&nbsp;<a href="javascript:void(0);" id="dbQueryButton" class="btn btn-primary" data-loading-text="Searching..">Execute</a>
-								&nbsp;<a href="javascript:void(0);" id="clearQueryButton" class="btn btn-default">Clear</a>
+								&nbsp;<a href="javascript:void(0);" id="dbQueryButton" class="btn btn-primary" data-loading-text="Searching..">실행</a>
+								&nbsp;<a href="javascript:void(0);" id="clearQueryButton" class="btn btn-default">초기화</a>
 							</div>
 						</div>
 					</form>
 				</div>
 				
 				<div class="col-md-12">
-					<h5><i class="icon-reorder"></i> Query Result:</h5>
-					<pre id="dbQueryResult">Ready</pre>
+					<h5><i class="icon-reorder"></i> 쿼리결과:</h5>
+					<pre id="dbQueryResult">준비</pre>
 				</div>
 			</div>
 		</div>
