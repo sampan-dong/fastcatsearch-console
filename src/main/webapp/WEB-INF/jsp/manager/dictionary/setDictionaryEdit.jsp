@@ -77,14 +77,14 @@ $(document).ready(function(){
 				success: function(resp){
 					console.log("upload response ", resp);
 					if(resp.success){
-						noty({text: "File upload success", type: "success", layout:"topRight", timeout: 3000});
+						noty({text: "파일업로드를 완료했습니다.", type: "success", layout:"topRight", timeout: 3000});
 						$("#<%=dictionaryId%>WordInsertModal").modal("hide");
 					}else{
-						noty({text: "File upload fail. "+resp.errorMessage, type: "error", layout:"topRight", timeout: 5000});
+						noty({text: "파일업로드를 실패했습니다. "+resp.errorMessage, type: "error", layout:"topRight", timeout: 5000});
 					}
 				}
 				, error: function(a){
-					noty({text: "File upload error!", type: "error", layout:"topRight", timeout: 5000});
+					noty({text: "파일업로드에 에러발생!", type: "error", layout:"topRight", timeout: 5000});
 				}
 				, complete: function(){
 					//지워준다.
@@ -97,7 +97,7 @@ $(document).ready(function(){
 	
 });
 function <%=dictionaryId%>Truncate(){
-	if(confirm("Clean all data including invisible entries.")){
+	if(confirm("보이지 않는 데이터를 포함하여 모든 데이터를 삭제합니다.")){
 		truncateDictionary('${analysisId}', '${dictionaryId}', <%=dictionaryId%>LoadList);
 	}
 }
@@ -110,7 +110,7 @@ function <%=dictionaryId%>SetInsert(){
 	wordInputObj.val(keyword);
 	
 	if(keyword == ""){
-		wordInputResultObj.text("Keyword is required.");
+		wordInputResultObj.text("키워드를 입력해주세요.");
 		return;
 	}
 	
@@ -158,10 +158,10 @@ function <%=dictionaryId%>deleteSelectWord(){
 		idList.push(id);
 	});
 	if(idList.length == 0){
-		alert("Please select words.");
+		alert("단어를 선택해주세요.");
 		return;
 	}
-	if(! confirm("Delete "+idList.length+" word?")){
+	if(! confirm(idList.length+"를 삭제하시겠습니까?")){
 		return;
 	}
 	var deleteIdList = idList.join(",");
@@ -176,11 +176,11 @@ function <%=dictionaryId%>deleteSelectWord(){
             <div class="col-md-12">
 				<div class="pagination-info pull-left">
 					&nbsp;&nbsp;&nbsp;
-					Rows
+					행
 					<% if(entryList.length() > 0) { %>
 					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> ( <i class="icon-filter"></i> <%=filteredSize %> / <%=totalSize %> )<% } %>
 					<% } else { %>
-					Empty
+					결과없음
 					<% } %>
 				</div>
 
@@ -195,7 +195,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 						&nbsp;
 						<div class="checkbox">
 						<label>
-							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Words
+							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> 단어
 						</label>
 						</div>
 					</div>
@@ -209,7 +209,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 					</div>
 					&nbsp;
 					<a href="javascript:go<%=dictionaryId%>ViewablePage('${pageNo}');"  class="btn btn-default btn-sm">
-						<span class="glyphicon glyphicon-eye-open"></span> View
+						<span class="glyphicon glyphicon-eye-open"></span> 보기
 					</a>
 				</div>
 			</div>
@@ -228,7 +228,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 							<th class="checkbox-column">
 								<input type="checkbox">
 							</th>
-							<th>Word</th>
+							<th>단어</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -263,7 +263,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 							<th class="checkbox-column">
 								<input type="checkbox">
 							</th>
-							<th>Word</th>
+							<th>단어</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -305,7 +305,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 			</div>
 			<div class="col-md-4">
 				<a href="javascript:<%=dictionaryId%>Truncate();" class="btn btn-default btn-md btn-clear">
-					<span class="glyphicon glyphicon-trash"></span> Clean
+					<span class="glyphicon glyphicon-trash"></span> 지우기
 				</a>
 			</div>
 		</div>	
@@ -318,14 +318,14 @@ function <%=dictionaryId%>deleteSelectWord(){
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title"><%=dictionaryId.toUpperCase() %> Word Insert</h4>
+				<h4 class="modal-title"><%=dictionaryId.toUpperCase() %> 단어입력</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="input-group col-md-7">
 						<input type="text" name="word_input" id="word_input_${dictionaryId}" class="form-control" placeholder="Word">
 						<span class="input-group-btn">
-			              <button class="btn btn-default" type="button" id="word_input_button_${dictionaryId}">Put</button>
+			              <button class="btn btn-default" type="button" id="word_input_button_${dictionaryId}">입력</button>
 			            </span>
 					</div>
 				</div>
@@ -334,9 +334,9 @@ function <%=dictionaryId%>deleteSelectWord(){
 			<div class="modal-footer">
 				<form action="set/upload.html" method="POST" enctype="multipart/form-data" style="display: inline;">
 					<input type="hidden" name="dictionaryId" value="${dictionaryId}"/>
-					<span class="fileContainer btn btn-primary"><span class="icon icon-upload"></span> File Upload ...<input type="file" name="filename" id="${dictionaryId}_file_upload"></span>
+					<span class="fileContainer btn btn-primary"><span class="icon icon-upload"></span> 파일업로드...<input type="file" name="filename" id="${dictionaryId}_file_upload"></span>
 				</form>
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 	      	</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

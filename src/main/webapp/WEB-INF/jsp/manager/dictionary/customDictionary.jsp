@@ -70,18 +70,18 @@ function go<%=dictionaryId%>EditablePage(pageNo){
             <div class="col-md-12">
 				<div class="pagination-info pull-left">
 					&nbsp;&nbsp;&nbsp;
-					Rows
+					행
 					<% if(entryList.length() > 0) { %>
 					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> ( <i class="icon-filter"></i> <%=filteredSize %> / <%=totalSize %> )<% } %>
 					<% } else { %>
-					Empty
+					결과없음
 					<% } %>
 				</div>
 
 				<div class="form-inline" style="float:left;">
 					<div class="form-group">
 						<select id="<%=dictionaryId %>SearchColumn" class="select_flat form-control">
-							<option value="_ALL">ALL</option>
+							<option value="_ALL">전체</option>
 							<%
 							for(int i=0; i < searchableColumnList.length(); i++){
 								String columnName = searchableColumnList.optString(i);
@@ -102,7 +102,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 						&nbsp;
 						<div class="checkbox">
 						<label>
-							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Words
+							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> 단어
 						</label>
 						</div>
 					</div>
@@ -110,7 +110,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 
 				<div class="pull-right">
 					<a href="javascript:downloadDictionary('custom', '<%=dictionaryId%>')"  class="btn btn-default btn-sm">
-						<span class="icon icon-download"></span> Download
+						<span class="icon icon-download"></span> 다운로드
 					</a>
 					&nbsp;
 					<div class="btn-group">
@@ -118,7 +118,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 					</div>
 					&nbsp;
 					<a href="javascript:go<%=dictionaryId%>EditablePage('${pageNo}');"  class="btn btn-default btn-sm">
-						<span class="glyphicon glyphicon-edit"></span> Edit
+						<span class="glyphicon glyphicon-edit"></span> 수정
 					</a>
 				</div>
 			</div>

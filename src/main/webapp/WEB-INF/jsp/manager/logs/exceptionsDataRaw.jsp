@@ -44,11 +44,11 @@ int totalCount = 0;
 				<%
 				if(exceptionList.length() > 0){
 				%>
-					<span>Rows ${start} - ${end} of <%=totalCount%></span>
+					<span>행 ${start} - ${end} of <%=totalCount%></span>
 				<%
 				}else{
 				%>
-					<span>Rows 0</span>
+					<span>행 0</span>
 				<%
 				}
 				%>
@@ -70,9 +70,9 @@ int totalCount = 0;
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>Time</th>
-					<th>Node</th>
-					<th>Message</th>
+					<th>시각</th>
+					<th>노드</th>
+					<th>내용</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -119,13 +119,13 @@ int totalCount = 0;
 		</table>
 		<div class="table-footer" id="exception_detail">
 			<dl class="dl-horizontal col-md-12" >
-				<dt>Time</dt>
+				<dt>시각</dt>
 				<dd class="_time"></dd>
-				<dt>Node</dt>
+				<dt>노드</dt>
 				<dd class="_node"></dd>
-				<dt>Message</dt>
+				<dt>내용</dt>
 				<dd class="_message"></dd>
-				<dt>Trace</dt>
+				<dt>트레이스</dt>
 				<dd><div class="panel _trace"></div></dd>
 			</dl>
 		</div>

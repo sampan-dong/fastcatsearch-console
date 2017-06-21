@@ -17,7 +17,7 @@ $(document).ready(function() {
 		<div class="dataTables_header clearfix">
 			<div class="input-group col-md-12">
 				<a href="javascript:applySelectDictionary('${analysisId}');" class="btn btn-sm"><span
-					class="glyphicon glyphicon-saved"></span> Apply Dictionary</a>
+					class="glyphicon glyphicon-saved"></span> 사전적용</a>
 			</div>
 		</div>
 
@@ -27,14 +27,14 @@ $(document).ready(function() {
 					<th class="checkbox-column">
 						<input type="checkbox">
 					</th>
-					<th>Name</th>
-					<th>Type</th>
-					<th>Working Entry Size</th>
-					<th>Modified Time</th>
-					<th>Applied Entry Size</th>
-					<th>Applied Time</th>
-					<th>Token Type</th>
-					<th>Ignore Case</th>
+					<th>이름</th>
+					<th>타입</th>
+					<th>작업단어갯수</th>
+					<th>수정시각</th>
+					<th>적용단어갯수</th>
+					<th>적용시각</th>
+					<th>토큰타입</th>
+					<th>대소문자무시</th>
 				</tr>
 			</thead>
 			<tbody>

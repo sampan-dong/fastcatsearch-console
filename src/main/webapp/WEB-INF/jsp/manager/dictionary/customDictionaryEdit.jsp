@@ -106,7 +106,7 @@ $(document).ready(function(){
 	});
 });
 function <%=dictionaryId%>Truncate(){
-	if(confirm("Clean all data including invisible entries.")){
+	if(confirm("보이지 않는 데이터를 포함하여 모든 데이터를 지웁니다.")){
 		truncateDictionary('${analysisId}', '${dictionaryId}', <%=dictionaryId%>LoadList);
 	}
 }
@@ -235,7 +235,7 @@ function go<%=dictionaryId%>ViewablePage(pageNo){
 	loadDictionaryTab("custom", '<%=dictionaryId %>', pageNo, '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), false, '<%=targetId%>');	
 }
 function <%=dictionaryId%>deleteOneWord(deleteId){
-	if(confirm("Are you sure to delete?")){
+	if(confirm("정말 삭제할까요?")){
 		loadDictionaryTab("custom", '<%=dictionaryId %>', '${pageNo}', '${keyword}', searchColumnObj.val(), exactMatchObj.is(":checked"), true, '<%=targetId%>', deleteId);
 	}
 }
@@ -246,7 +246,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 		idList.push(id);
 	});
 	if(idList.length == 0){
-		alert("Please select words.");
+		alert("단어를 선택해주세요.");
 		return;
 	}
 	if(! confirm("Delete "+idList.length+" word?")){
@@ -264,18 +264,18 @@ function <%=dictionaryId%>deleteSelectWord(){
             <div class="col-md-12">
 				<div class="pagination-info pull-left">
 					&nbsp;&nbsp;&nbsp;
-					Rows
+					행
 					<% if(entryList.length() > 0) { %>
 					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> ( <i class="icon-filter"></i> <%=filteredSize %> / <%=totalSize %> )<% } %>
 					<% } else { %>
-					Empty
+					결과없음
 					<% } %>
 				</div>
 
 				<div class="form-inline" style="float:left;">
 					<div class="form-group">
 						<select id="<%=dictionaryId %>SearchColumn" class="select_flat form-control">
-							<option value="_ALL">ALL</option>
+							<option value="_ALL">전체</option>
 							<%
 							for(int i=0; i < searchableColumnList.length(); i++){
 								String columnName = searchableColumnList.getString(i);
@@ -296,7 +296,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 						&nbsp;
 						<div class="checkbox">
 						<label>
-							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> Words
+							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> 단어
 						</label>
 						</div>
 					</div>
@@ -310,7 +310,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 					</div>
 					&nbsp;
 					<a href="javascript:go<%=dictionaryId%>ViewablePage('${pageNo}');"  class="btn btn-default btn-sm">
-						<span class="glyphicon glyphicon-eye-open"></span> View
+						<span class="glyphicon glyphicon-eye-open"></span> 보기
 					</a>
 				</div>
 			</div>
@@ -330,7 +330,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 						<% for(int columnInx=0;columnInx < viewColumnList.length(); columnInx++) { %>
 						<th><%=viewColumnList.optString(columnInx) %></th>
 						<% } %>
-						<th>Action</th>
+						<th>액션</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -387,7 +387,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title"><%=dictionaryId.toUpperCase() %> Word Insert</h4>
+				<h4 class="modal-title"><%=dictionaryId.toUpperCase() %> 단어입력</h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-horizontal">
@@ -404,7 +404,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 					<% } %>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<button class="btn btn-default" type="button" id="word_input_button_${dictionaryId}">Put</button>
+							<button class="btn btn-default" type="button" id="word_input_button_${dictionaryId}">입력</button>
 						</div>
 					</div>
 				</div>
@@ -413,9 +413,9 @@ function <%=dictionaryId%>deleteSelectWord(){
 			<div class="modal-footer">
 				<form action="synonym/upload.html" method="POST" enctype="multipart/form-data" style="display: inline;">
 					<input type="hidden" name="dictionaryId" value="${dictionaryId}"/>
-					<span class="fileContainer btn btn-primary"><span class="icon icon-upload"></span> File Upload ...<input type="file" name="filename" id="${dictionaryId}_file_upload"></span>
+					<span class="fileContainer btn btn-primary"><span class="icon icon-upload"></span> 파일업로드 ...<input type="file" name="filename" id="${dictionaryId}_file_upload"></span>
 				</form>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 		  	</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

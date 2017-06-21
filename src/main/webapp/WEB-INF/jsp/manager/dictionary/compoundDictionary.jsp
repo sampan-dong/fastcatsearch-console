@@ -64,17 +64,17 @@ function go<%=dictionaryId%>EditablePage(pageNo){
             <div class="col-md-12">
 				<div class="pagination-info pull-left">
 					&nbsp;&nbsp;&nbsp;
-					Rows
+					행
 					<% if(entryList.length() > 0) { %>
 					<%=start %> - <%=start + entryList.length() - 1 %> of <%=filteredSize %> <% if(filteredSize != totalSize) {%> ( <i class="icon-filter"></i> <%=filteredSize %> / <%=totalSize %> )<% } %>
 					<% } else { %>
-					Empty
+					결과없음
 					<% } %>
 				</div>
 				<div class="form-inline" style="float:left;">
 					<div class="form-group">
 						<select id="<%=dictionaryId %>SearchColumn" class="select_flat form-control">
-							<option value="_ALL">ALL</option>
+							<option value="_ALL">전체</option>
 							<%
 							for(int i=0; i < searchableColumnList.length(); i++){
 								String columnName = searchableColumnList.getString(i);
@@ -125,8 +125,8 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
-						<th>Keyword</th>
-						<th>Value</th>
+						<th>키워드</th>
+						<th>값</th>
 					</tr>
 				</thead>
 				<tbody>

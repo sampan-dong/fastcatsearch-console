@@ -542,7 +542,7 @@ function hideAllJobArgs(){
 									<td><%=thread.optString("priority") %></td>
 									<td><%=thread.optString("state") %></td>
 									<td><%=thread.optBoolean("daemon", false) ? "Daemom" : "User" %></td>
-									<td><%=thread.optBoolean("alive", false) ? "Alive" : "Stop" %></td>
+									<td><%=thread.optBoolean("alive", false) ? "실행중" : "정지" %></td>
 									<td><%=thread.optBoolean("interrupt", false) ? "Interrupted" : "-" %></td>
 									<td><a href="javascript:toggle(<%=thread.optString("tid") %>)">Stacktrace</a></td>
 								</tr>
@@ -596,14 +596,14 @@ function hideAllJobArgs(){
 									<td><%=inx + 1 %></td>
 									<td><%=job.optInt("jobId") %></td>
 									<td><%=job.optString("className") %></td>
-									<td><%=job.optBoolean("isScheduled", false) ? "Scheduled" : "Not Scheduled" %></td>
-									<td><%=job.optBoolean("noResult", false) ? "No result" : "Has result" %></td>
+									<td><%=job.optBoolean("isScheduled", false) ? "스케줄됨" : "스케줄안됨" %></td>
+									<td><%=job.optBoolean("noResult", false) ? "결과없음" : "결과존재" %></td>
 									<td><%=job.optString("startTime") %></td>
-									<td><a href="javascript:toggleJob(<%=job.optInt("jobId") %>)">Argument</a></td>
+									<td><a href="javascript:toggleJob(<%=job.optInt("jobId") %>)">인자</a></td>
 								</tr>
 								<tr id="job-<%=job.optInt("jobId") %>" class="jobArgument">
 									<td>&nbsp;</td>
-									<td colspan = "7"><pre><%=args != null && args.length() > 0 ? args : "[Empty]" %></pre></td>
+									<td colspan = "7"><pre><%=args != null && args.length() > 0 ? args : "[없음]" %></pre></td>
 								</tr>
 							<%
 							}

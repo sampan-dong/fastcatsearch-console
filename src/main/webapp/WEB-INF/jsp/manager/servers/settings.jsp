@@ -69,9 +69,9 @@ $(document).ready(function(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li> Servers</li>
-						<li class="current"> Settings</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li> 서버</li>
+						<li class="current"> 설정</li>
 					</ul>
 
 				</div>
@@ -80,7 +80,7 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Settings</h3>
+						<h3>설정</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -90,7 +90,7 @@ $(document).ready(function(){
 						<div class="dataTables_header clearfix">
 							<div class="input-group col-md-12">
 								<a data-toggle="modal" data-target="#newServerInfoModal" class="btn btn-sm"><span
-									class="glyphicon glyphicon-plus-sign"></span> Add Server</a>
+									class="glyphicon glyphicon-plus-sign"></span> 서버추가</a>
 								
 								<!-- <span class="pull-right">
 								<a href="javascript:void(0);" class="btn btn-sm btn-primary">
@@ -104,12 +104,12 @@ $(document).ready(function(){
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>ID</th>
-									<th>Name</th>
-									<th>IP Address</th>
-									<th>Port</th>
-									<th>Enabled</th>
-									<th>Active</th>
+									<th>아이디</th>
+									<th>이름</th>
+									<th>IP주소</th>
+									<th>포트</th>
+									<th>사용여부</th>
+									<th>동작여부</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -123,8 +123,8 @@ $(document).ready(function(){
 								boolean enabled = nodeList.getJSONObject(i).getBoolean("enabled");
 								boolean active = nodeList.getJSONObject(i).getBoolean("active");
 								
-								String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
-								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">InActive</span>";
+								String enabledStatus = enabled ? "<span class=\"text-primary\">활성화</span>" : "<span class=\"text-danger\">비활성</span>";
+								String activeStatus = active ? "<span class=\"text-primary\">동작중</span>" : "<span class=\"text-danger\">미동작</span>";
 							%>
 								<tr>
 									<td><%=i+1 %></td>
@@ -134,7 +134,7 @@ $(document).ready(function(){
 									<td><%=port %></td>
 									<td><%=enabledStatus %></td>
 									<td><%=activeStatus %></td>
-									<td><a href="#" data-toggle="modal" data-target="#serverInfoModal_<%=i %>">Edit</a></td>
+									<td><a href="#" data-toggle="modal" data-target="#serverInfoModal_<%=i %>">수정</a></td>
 								</tr>
 							<%
 							}
@@ -152,8 +152,8 @@ $(document).ready(function(){
 					boolean enabled = nodeList.getJSONObject(i).getBoolean("enabled");
 					boolean active = nodeList.getJSONObject(i).getBoolean("active");
 					
-					String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
-					String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">InActive</span>";
+					String enabledStatus = enabled ? "<span class=\"text-primary\">활성화</span>" : "<span class=\"text-danger\">비활성</span>";
+					String activeStatus = active ? "<span class=\"text-primary\">동작중</span>" : "<span class=\"text-danger\">미동작</span>";
 				%>
 				<div class="modal" id="serverInfoModal_<%=i %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
@@ -165,7 +165,7 @@ $(document).ready(function(){
 								<input type="hidden" name="id" value="<%=id%>"/>
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title"> Server Setting for Node ["<%=id %>"]</h4>
+									<h4 class="modal-title"> 노드 ["<%=id %>"] 서버설정</h4>
 								</div>
 								<div class="modal-body">
 									<div class="col-md-12">
@@ -175,26 +175,26 @@ $(document).ready(function(){
 													<div class="col-md-12 form-horizontal">
 														
 														<div class="form-group">
-															<label class="col-md-3 control-label">Name:</label>
+															<label class="col-md-3 control-label">이름:</label>
 															<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" value="<%=name%>"></div>
 														</div>
 														
 														<div class="form-group">
-															<label class="col-md-3 control-label">Ip Address:</label>
+															<label class="col-md-3 control-label">IP주소:</label>
 															<div class="col-md-9"><input type="text" name="host" class="form-control required" value="<%=host %>"></div>
 														</div>
 														
 														<div class="form-group">
-															<label class="col-md-3 control-label">Port:</label>
+															<label class="col-md-3 control-label">포트:</label>
 															<div class="col-md-9"><input type="text" name="port" class="form-control input-width-small required" value="<%=port %>"></div>
 														</div>
 														
 														<div class="form-group">
-															<label class="col-md-3 control-label">Enabled:</label>
+															<label class="col-md-3 control-label">사용여부:</label>
 															<div class="col-md-9">
 																<label class="checkbox">
 																	<input type="checkbox" name="enable" class="form-control" value="true" <%=enabled?"checked=\"checked\"":"" %>>
-																	Yes
+																	사용
 																</label>
 															</div>
 														</div>
@@ -206,9 +206,9 @@ $(document).ready(function(){
 									</div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="removeBtn btn btn-danger pull-left">Remove</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									<button type="submit" class="btn btn-primary">Save changes</button>
+									<button type="button" class="removeBtn btn btn-danger pull-left">삭제</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+									<button type="submit" class="btn btn-primary">저장</button>
 								</div>
 							</form>
 						</div>
@@ -228,7 +228,7 @@ $(document).ready(function(){
 								<input type="hidden" name="uri" value="/management/servers/update"/>
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title"> Server Setting</h4>
+									<h4 class="modal-title"> 서버설정</h4>
 								</div>
 								<div class="modal-body">
 									<div class="col-md-12">
@@ -237,27 +237,27 @@ $(document).ready(function(){
 												<div class="row">
 													<div class="col-md-12 form-horizontal">
 														<div class="form-group">
-															<label class="col-md-3 control-label">ID:</label>
+															<label class="col-md-3 control-label">아이디:</label>
 															<div class="col-md-9"><input type="text" name="id" class="form-control input-width-small required" value="" placeholder="ID"></div>
 														</div>
 														
 														<div class="form-group">
-															<label class="col-md-3 control-label">Name:</label>
+															<label class="col-md-3 control-label">이름:</label>
 															<div class="col-md-9"><input type="text" name="name" class="form-control input-width-small required" value="" placeholder="NAME"></div>
 														</div>
 														
 														<div class="form-group">
-															<label class="col-md-3 control-label">Ip Address:</label>
+															<label class="col-md-3 control-label">IP주소:</label>
 															<div class="col-md-9"><input type="text" name="host" class="form-control required" value="" placeholder="IP ADDRESS"></div>
 														</div>
 														
 														<div class="form-group">
-															<label class="col-md-3 control-label">Port:</label>
+															<label class="col-md-3 control-label">포트:</label>
 															<div class="col-md-9"><input type="text" name="port" class="form-control input-width-small required" value="" placeholder="PORT NUMBER"></div>
 														</div>
 														
 														<div class="form-group">
-															<label class="col-md-3 control-label">Enabled:</label>
+															<label class="col-md-3 control-label">사용여부:</label>
 															<div class="col-md-9">
 																<label class="checkbox">
 																	<input type="checkbox" name="enable" class="form-control" value="true" />
@@ -273,8 +273,8 @@ $(document).ready(function(){
 									</div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									<button type="submit" class="btn btn-primary">Save changes</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+									<button type="submit" class="btn btn-primary">저장</button>
 								</div>
 							</form>
 						</div>

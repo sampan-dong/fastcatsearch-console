@@ -32,9 +32,9 @@ $(document).ready(function(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Logs</li>
-						<li class="current"> Tasks</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 로그</li>
+						<li class="current"> 작업</li>
 					</ul>
 
 				</div>
@@ -43,7 +43,7 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Tasks</h3>
+						<h3>작업</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->
@@ -52,40 +52,14 @@ $(document).ready(function(){
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>Task</th>
-							<th>Elapsed</th>
-							<th>Start</th>
+							<th>작업</th>
+							<th>소요시간</th>
+							<th>시작</th>
 						</tr>
 					</thead>
 					<tbody>
-						<!-- <tr>
-							<td>2</td>
-							<td><span class="task">
-								<span class="desc">Collection Vol1 indexing..</span> <span class="percent">20%</span>
-								</span>
-									<div class="progress progress-small progress-striped active">
-										<div style="width: 20%;" class="progress-bar progress-bar-info"></div>
-									</div>
-							</td>
-							<td>1h 20m</td>
-							<td>2013-09-10 12:35:00</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><span class="task">
-								<span class="desc">Apply dictionary</span> <span class="percent">80%</span>
-								</span>
-									<div class="progress progress-small progress-striped active">
-										<div style="width: 80%;" class="progress-bar progress-bar-info"></div>
-									</div>
-							</td>
-							<td>1h</td>
-							<td>2013-09-10 12:35:00</td>
-						</tr> -->
 					</tbody>
 				</table>
-
-						
 				<!-- /Page Content -->
 			</div>
 		</div>

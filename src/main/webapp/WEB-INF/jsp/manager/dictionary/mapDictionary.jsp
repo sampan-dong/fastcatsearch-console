@@ -74,7 +74,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 				<div class="form-inline" style="float:left;">
 					<div class="form-group">
 						<select id="<%=dictionaryId %>SearchColumn" class="select_flat form-control">
-							<option value="_ALL">ALL</option>
+							<option value="_ALL">전체</option>
 							<%
 							for(int i=0; i < searchableColumnList.length(); i++){
 								String columnName = searchableColumnList.getString(i);

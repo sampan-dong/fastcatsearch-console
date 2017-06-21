@@ -25,9 +25,9 @@ $(document).ready(function(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Logs</li>
-						<li class="current"> Exceptions</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 로그</li>
+						<li class="current"> 예외</li>
 					</ul>
 
 				</div>
@@ -36,7 +36,7 @@ $(document).ready(function(){
 				<!--=== Page Header ===-->
 				<div class="page-header">
 					<div class="page-title">
-						<h3>Exceptions</h3>
+						<h3>예외</h3>
 					</div>
 				</div>
 				<!-- /Page Header -->

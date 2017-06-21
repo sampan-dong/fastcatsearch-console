@@ -46,8 +46,8 @@ $(document).ready(function(){
 				<!-- Breadcrumbs line -->
 				<div class="crumbs">
 					<ul id="breadcrumbs" class="breadcrumb">
-						<li><i class="icon-home"></i> Manager</li>
-						<li class="current"> Dictionary</li>
+						<li><i class="icon-home"></i> 관리</li>
+						<li class="current"> 사전</li>
 						<li class="current"> ${analysisId}</li>
 					</ul>
 
@@ -63,8 +63,8 @@ $(document).ready(function(){
 				<!-- /Page Header -->
 				<div class="tabbable tabbable-custom tabbable-full-width">
 					<ul id="dictionary_tab" class="nav nav-tabs">
-						<li class="active"><a href="#tab_dictionary_overview" data-toggle="tab">Overview</a></li>
-						<li class=""><a href="#tab_dictionary_search_tab" data-toggle="tab" _type="SYSTEM" _id="search_tab">Search</a></li>
+						<li class="active"><a href="#tab_dictionary_overview" data-toggle="tab">개요</a></li>
+						<li class=""><a href="#tab_dictionary_search_tab" data-toggle="tab" _type="SYSTEM" _id="search_tab">검색</a></li>
 						<%
 						for(int i = 0; i < dictionaryList.length(); i++){
 							JSONObject dictionary = dictionaryList.getJSONObject(i);

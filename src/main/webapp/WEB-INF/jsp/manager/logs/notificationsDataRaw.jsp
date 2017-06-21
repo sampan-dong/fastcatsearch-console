@@ -49,11 +49,11 @@ try {
 				<%
 				if(notificationList.length() > 0){
 				%>
-					<span>Rows ${start} - ${end} of <%=totalCount%></span>
+					<span>행 ${start} - ${end} of <%=totalCount%></span>
 				<%
 				}else{
 				%>
-					<span>Rows 0</span>
+					<span>행 0</span>
 				<%
 				}
 				%>
@@ -75,10 +75,10 @@ try {
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>Time</th>
-					<th>Node</th>
-					<th>Code</th>
-					<th>Message</th>
+					<th>시각</th>
+					<th>노드</th>
+					<th>코드</th>
+					<th>내용</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -118,7 +118,7 @@ try {
 			} else {
 			%>
 				<tr>
-					<td colspan="5">No data</td>
+					<td colspan="5">데이터가 없습니다</td>
 				</tr>
 			<%
 			}
@@ -127,13 +127,13 @@ try {
 		</table>
 		<div class="table-footer" id="notification_detail">
 			<dl class="dl-horizontal col-md-12" >
-				<dt>Time</dt>
+				<dt>시각</dt>
 				<dd class="_time"></dd>
-				<dt>Node</dt>
+				<dt>노드</dt>
 				<dd class="_node"></dd>
-				<dt>Message Code</dt>
+				<dt>메시지코드</dt>
 				<dd class="_messageCode"></dd>
-				<dt>Message</dt>
+				<dt>메시지</dt>
 				<dd class="_message"></dd>
 			</dl>
 		</div>

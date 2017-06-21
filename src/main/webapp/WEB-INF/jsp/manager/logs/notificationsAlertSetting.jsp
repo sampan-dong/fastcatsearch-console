@@ -64,9 +64,9 @@ $(document).ready(function(){
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Notification Code</th>
-						<th>Notification Type</th>
-						<th>Alert To</th>
+						<th>알림코드</th>
+						<th>알림타입</th>
+						<th>받을사람</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -107,7 +107,7 @@ $(document).ready(function(){
 							}
 							%>
 						</td>
-						<td><a data-toggle="modal" data-target="#alertSettingModal_<%=i %>" href="javascript:void(0);">Edit</a></td>
+						<td><a data-toggle="modal" data-target="#alertSettingModal_<%=i %>" href="javascript:void(0);">수정</a></td>
 					</tr>
 				<%
 				}
@@ -131,7 +131,7 @@ for(int i=0;i < settingList.length() ;i++){
 				<input type="hidden" name="id" value="<%=setting.optInt("id")%>"/>
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title"> Alert Setting</h4>
+					<h4 class="modal-title"> 알림셋팅</h4>
 				</div>
 				<div class="modal-body">
 					<div class="col-md-12">
@@ -140,10 +140,10 @@ for(int i=0;i < settingList.length() ;i++){
 								<div class="row">
 									<div class="col-md-12 form-horizontal">
 										<div class="form-group">
-											<label class="col-md-3 control-label">Notification Type:</label>
+											<label class="col-md-3 control-label">알림타입:</label>
 											<div class="col-md-9">
 											<select name="code" class="select_flat form-control required" name="code">
-												<option>:: SELECT ::</option>
+												<option>:: 선택 ::</option>
 												<%
 												for(int k = 0; k < codeTypeList.length(); k++){
 													JSONObject obj = codeTypeList.getJSONObject(k);
@@ -155,7 +155,7 @@ for(int i=0;i < settingList.length() ;i++){
 										</div>
 										
 										<div class="form-group">
-											<label class="col-md-3 control-label">Alert To:</label>
+											<label class="col-md-3 control-label">받을사람:</label>
 											<div class="col-md-9">
 												<textarea name="alertTo" class="form-control required" placeholder="SMS:swsong,EMAIL:swsong,EMAIL:johndoe,TELEGRAM:jhjeon,TELEGRAM:swsong,SLACK:channelname"><%=setting.optString("alertTo") %></textarea>
 											</div>
@@ -170,9 +170,9 @@ for(int i=0;i < settingList.length() ;i++){
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger pull-left">Remove</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-danger pull-left">삭제</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="submit" class="btn btn-primary">저장</button>
 				</div>
 			</form>
 		</div>
@@ -191,7 +191,7 @@ for(int i=0;i < settingList.length() ;i++){
 				<input type="hidden" name="uri" value="/management/logs/update-notification-setting"/>
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title"> Alert Setting</h4>
+					<h4 class="modal-title"> 알림설정</h4>
 				</div>
 				<div class="modal-body">
 					<div class="col-md-12">
@@ -200,10 +200,10 @@ for(int i=0;i < settingList.length() ;i++){
 								<div class="row">
 									<div class="col-md-12 form-horizontal">
 										<div class="form-group">
-											<label class="col-md-3 control-label">Notification Type:</label>
+											<label class="col-md-3 control-label">알림타입:</label>
 											<div class="col-md-9">
 											<select name="code" class="select_flat form-control required" name="code">
-												<option>:: SELECT ::</option>
+												<option>:: 선택 ::</option>
 												<%
 												for(int k = 0; k < codeTypeList.length(); k++){
 													JSONObject obj = codeTypeList.getJSONObject(k);
@@ -215,7 +215,7 @@ for(int i=0;i < settingList.length() ;i++){
 										</div>
 										
 										<div class="form-group">
-											<label class="col-md-3 control-label">Alert To:</label>
+											<label class="col-md-3 control-label">받을사람:</label>
 											<div class="col-md-9">
 												<textarea name="alertTo" class="form-control required" placeholder="SMS:swsong,EMAIL:swsong,EMAIL:johndoe,TELEGRAM:jhjeon,TELEGRAM:swsong,SLACK:channelname"></textarea>
 											</div>
@@ -230,8 +230,8 @@ for(int i=0;i < settingList.length() ;i++){
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Save</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="submit" class="btn btn-primary">저장</button>
 				</div>
 			</form>
 		</div>

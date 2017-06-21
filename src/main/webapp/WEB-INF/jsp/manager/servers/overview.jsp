@@ -76,8 +76,8 @@
 								boolean enabled = nodeList.getJSONObject(i).getBoolean("enabled");
 								boolean active = nodeList.getJSONObject(i).getBoolean("active");
 								
-								String enabledStatus = enabled ? "<span class=\"text-primary\">Enabled</span>" : "<span class=\"text-danger\">Disabled</span>";
-								String activeStatus = active ? "<span class=\"text-primary\">Active</span>" : "<span class=\"text-danger\">Inactive</span>";
+								String enabledStatus = enabled ? "<span class=\"text-primary\">활성</span>" : "<span class=\"text-danger\">비활성</span>";
+								String activeStatus = active ? "<span class=\"text-primary\">동작중</span>" : "<span class=\"text-danger\">미동작</span>";
 							%>
 								<tr class="<%=active ? "" : "danger"%>">
 									<td><%=i+1 %></td>
@@ -99,7 +99,7 @@
 
 				<div class="widget">
 					<div class="widget-header">
-						<h4>System Health</h4>
+						<h4>시스템상태</h4>
 					</div>
 					<div class="widget-content">
 						<table class="table table-hover table-bordered">
