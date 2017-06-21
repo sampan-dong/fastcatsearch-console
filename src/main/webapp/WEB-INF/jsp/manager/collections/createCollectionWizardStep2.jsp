@@ -84,7 +84,7 @@ function showQueryTestModal(){
 	if(jdbcSourceId != null && jdbcSourceId != ""){
 		$('#testDataSourceModal').modal({show: true, backdrop: 'static'});
 	}else{
-		alert("Please select jdbc source.");
+		alert("JDBC소스를 선택해주세요.");
 	}
 }
 function showJdbcCreateModal(){

@@ -34,7 +34,7 @@
 				if (!checkDictionaryAuthority) {
 			%>
 			<li class="<%=lcatCurrent ? "current" :"" %>"><a href="javascript:void(0);"> <i class="icon-edit"></i>
-					Dictionary <%-- <span class="label label-info pull-right"><%=analysisPluginList.length() %></span> --%>
+					사전 <%-- <span class="label label-info pull-right"><%=analysisPluginList.length() %></span> --%>
 			</a>
 				<ul class="sub-menu">
 					<%

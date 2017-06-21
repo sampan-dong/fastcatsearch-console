@@ -146,7 +146,7 @@ function reloadIndexingSchdulePage(){
 										<h4>색인작업상태</h4>
 									</div>
 									<div class="widget-content">
-										<span class="checkbox"><label><input type="checkbox" id="autoUpdate"> Auto Update <i class="icon-refresh"></i></label></span>
+										<span class="checkbox"><label><input type="checkbox" id="autoUpdate"> 자동업데이트 <i class="icon-refresh"></i></label></span>
 										<table class="table table-hover table-bordered">
 											<thead>
 												<tr>

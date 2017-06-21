@@ -110,7 +110,7 @@ int totalCount = 0;
 			} else {
 			%>
 				<tr>
-					<td colspan="5">Empty row</td>
+					<td colspan="5">데이터가 없습니다</td>
 				</tr>
 			<%
 			}

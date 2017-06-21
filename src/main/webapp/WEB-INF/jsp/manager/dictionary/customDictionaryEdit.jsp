@@ -158,7 +158,7 @@ function <%=dictionaryId%>ValueInsert(){
 				}
 				var message = wordInputResultObj.attr("message");
 				if(message) {
-					wordInputResultObj.text("\""+message+"\" Inserted.");
+					wordInputResultObj.text("\""+message+"\" 추가됨.");
 				}
 				wordInputResultObj.removeClass("text-danger-imp");
 				wordInputResultObj.addClass("text-success-imp");
@@ -296,7 +296,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 						&nbsp;
 						<div class="checkbox">
 						<label>
-							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> 단어
+							<input type="checkbox" id="<%=dictionaryId %>ExactMatch" <c:if test="${exactMatch}">checked</c:if>> 단어매칭
 						</label>
 						</div>
 					</div>

@@ -27,7 +27,7 @@
 		<!-- /Breadcrumbs line -->
 		
 		<h3>컬렉션생성 마법사</h3>
-		<p><a href="collections/createCollectionWizard.html" class="show-link">생성마법사</a>를 시작합니다.</p>
+		<p><a href="collections/createCollectionWizard.html" class="show-link">마법사를 시작</a>합니다.</p>
 		
 		<h3>서버추가</h3>
 		<p><a href="servers/settings.html" class="show-link">서버설정</a>으로 이동합니다.</p>

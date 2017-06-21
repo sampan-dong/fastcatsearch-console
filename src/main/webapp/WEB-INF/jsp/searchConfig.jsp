@@ -155,7 +155,7 @@ $(document).ready(function(){
 								<div class="category-group col-md-12 form-horizontal">
 									<div class="form-group">
 										<label class="col-md-2 control-label">순번 :</label>
-										<div class="col-md-10"><input type="text" name="order_<%=i %>" class="form-control fcol2 display-inline digit required" value="<%=el.getAttributeValue("order") %>"> <span class="remove-category btn">Remove</span></div>
+										<div class="col-md-10"><input type="text" name="order_<%=i %>" class="form-control fcol2 display-inline digit required" value="<%=el.getAttributeValue("order") %>"> <span class="remove-category btn">삭제</span></div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">카테고리 이름 :</label>

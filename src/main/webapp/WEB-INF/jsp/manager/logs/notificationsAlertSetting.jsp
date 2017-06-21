@@ -57,7 +57,7 @@ $(document).ready(function(){
 			<div class="dataTables_header clearfix">
 				<div class="input-group col-md-12">
 					<a data-toggle="modal" data-target="#newAlertSettingModal" data-backdrop="static" class="btn btn-sm"><span
-								class="glyphicon glyphicon-plus-sign"></span> Add Alert</a>
+								class="glyphicon glyphicon-plus-sign"></span> 알림추가</a>
 				</div>
 			</div>
 			<table class="table table-hover table-bordered">

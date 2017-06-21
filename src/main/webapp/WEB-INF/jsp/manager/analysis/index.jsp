@@ -230,7 +230,7 @@ if(rootElement!=null) {
 								%>		
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Analyzer</h4>
+										<h4>분석기</h4>
 									</div>
 									<div class="widget-content">
 										<table class="table table-hover table-bordered">
@@ -275,7 +275,7 @@ if(rootElement!=null) {
 								%>		
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Action</h4>
+										<h4>액션</h4>
 									</div>
 									<div class="widget-content">
 										<table class="table table-hover table-bordered">
@@ -327,7 +327,7 @@ if(rootElement!=null) {
 								%>
 								<div class="widget">
 									<div class="widget-header">
-										<h4>Schedule</h4>
+										<h4>스케줄</h4>
 									</div>
 									<div class="widget-content">
 										<table class="table table-hover table-bordered">

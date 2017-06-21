@@ -144,7 +144,7 @@ $(document).ready(function(){
 				</div>
 				<div>
 					<div class="form-actions">
-						<input type="submit" value="Update Profile" class="btn btn-primary pull-right">
+						<input type="submit" value="프로필 저장" class="btn btn-primary pull-right">
 					</div>
 				</div>
 			

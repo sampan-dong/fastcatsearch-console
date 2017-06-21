@@ -93,7 +93,7 @@ function showUpdateUserModal(id){
 				<!-- /Page Header -->
 				<!--=== Page Content ===-->
 				<div class="tabbable tabbable-custom tabs-left">
-					<c:import url="${ROOT_PATH}/settings/sideMenu.jsp">
+					<c:import url="sideMenu.jsp">
 					 	<c:param name="menuId" value="<%=menuId %>"/>
 					</c:import>
 					 

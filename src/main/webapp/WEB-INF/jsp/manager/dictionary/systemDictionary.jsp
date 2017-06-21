@@ -70,7 +70,7 @@ $(document).ready(function(){
 			<%
 			}else{
 			%>
-				<h4><em>"<%=keyword%>"</em>를 찾을수 없습니다.</h4>
+				<h4><em>"<%=keyword%>"</em> 를 찾을수 없습니다.</h4>
 			<%
 			}
 			%>

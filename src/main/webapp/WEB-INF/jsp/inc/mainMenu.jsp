@@ -84,7 +84,7 @@ $(document).ready(function(){
 			</a>
 				<ul class="dropdown-menu extended notification" id="running_tasks_top">
 					<li class="title">
-						<p><span class="count"></span> 개의 태스크가 실행중입니다.</p>
+						<p><span class="count"></span> 개의 작업이 실행중입니다.</p>
 					</li>
 					<%-- <li class="footer"><a href="<c:url value="/manager/logs/tasks.html"/>">View all
 							tasks</a></li> --%>
@@ -109,7 +109,7 @@ $(document).ready(function(){
 							messages</a></li>
 				</ul></li> -->
 			<!-- .row .row-bg Toggler -->
-			<li><a id="settingButton" href="<c:url value="/settings/index.html"/>" data-toggle="tooltip" data-placement="bottom" title="Settings"> <i class="icon-cog"></i>
+			<li><a id="settingButton" href="<c:url value="/settings/index.html"/>" data-toggle="tooltip" data-placement="bottom" title="설정"> <i class="icon-cog"></i>
 			</a></li>
 
 			<!-- User Login Dropdown -->
@@ -124,7 +124,7 @@ $(document).ready(function(){
 					<li><a href="<c:url value="/logout.html" />"><i class="icon-key"></i> 로그아웃</a></li>
 				</ul>
 			</li>
-			<li><span id="hostString" class="host" data-toggle="tooltip" data-placement="bottom" title="Connected server : ${_hostString}"><i class="icon-globe"></i> ${_hostString}</span></li>
+			<li><span id="hostString" class="host" data-toggle="tooltip" data-placement="bottom" title="연결된 서버 : ${_hostString}"><i class="icon-globe"></i> ${_hostString}</span></li>
 			<!-- /user login dropdown -->
 		</ul>
 		<!-- /Top Right Menu -->

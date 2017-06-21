@@ -598,20 +598,20 @@ function loadExceptionTab(pageNo, targetId){
 
 /////
 function startCollection(collectionId){
-	operateCollection(collectionId, "Start");
+	operateCollection(collectionId, "시작");
 }
 function stopCollection(collectionId){
-	operateCollection(collectionId, "Stop");
+	operateCollection(collectionId, "정지");
 }
 function removeCollection(collectionId){
-	operateCollection(collectionId, "Remove");
+	operateCollection(collectionId, "삭제");
 }
 function truncateCollection(collectionId) {
-    operateCollection(collectionId, "Truncate");
+    operateCollection(collectionId, "트렁케이트");
 }
 function operateCollection(collectionId, command){
 	
-	if(confirm(command+" collection " + collectionId + "?")){
+	if(confirm(collectionId+" 컬렉션을 " + command + "하시겠습니까?")){
 		requestSyncProxy("POST", {uri:"/management/collections/operate", collectionId: collectionId, command: command}, "json"
 			, function(){
 				location.href = location.href;
