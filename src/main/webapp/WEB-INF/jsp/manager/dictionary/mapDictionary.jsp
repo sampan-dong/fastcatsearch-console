@@ -111,7 +111,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 					</div>
 					&nbsp;
 					<a href="javascript:go<%=dictionaryId%>EditablePage('${pageNo}');"  class="btn btn-default btn-sm">
-						<span class="glyphicon glyphicon-edit"></span> Edit
+						<span class="glyphicon glyphicon-edit"></span> 수정
 					</a>
 				</div>
 			</div>
