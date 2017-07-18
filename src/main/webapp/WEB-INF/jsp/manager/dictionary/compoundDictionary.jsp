@@ -103,7 +103,7 @@ function go<%=dictionaryId%>EditablePage(pageNo){
 
 				<div class="pull-right">
 					<a href="javascript:downloadDictionary('compound', '<%=dictionaryId%>')"  class="btn btn-default btn-sm">
-						<span class="icon icon-download"></span> Download
+						<span class="icon icon-download"></span> 다운로드
 					</a>
 					&nbsp;
 					<div class="btn-group">

@@ -349,7 +349,7 @@ function searchQuery(isExplain){
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<ㄴh4 class="modal-title">검색결과</ㄴh4>
+				<h4 class="modal-title">검색결과</h4>
 			</div>
 			<div class="modal-body" id="searchResultModalBody">
 			</div>
