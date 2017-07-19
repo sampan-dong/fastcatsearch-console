@@ -252,8 +252,7 @@ public class DictionaryController extends AbstractController {
 			fileName = itr.next();
 		}catch(Exception ignore){
 		}
-		logger.debug("fileName {}", fileName);
-		
+
 		boolean isSuccess = false;
 		String errorMessage = null;
 		int totalCount = 0;
@@ -261,8 +260,8 @@ public class DictionaryController extends AbstractController {
 		if(fileName != null){
 			
 			MultipartFile multipartFile = request.getFile(fileName);
-			logger.debug("uploaded {}", multipartFile.getOriginalFilename());
-			
+			String name = multipartFile.getOriginalFilename();
+			logger.debug("Uploaded Dict type[{}] name[{}] size[{}]", multipartFile.getContentType(),name, multipartFile.getSize());
 			BufferedReader reader = null;
 			
 			try {
@@ -274,10 +273,9 @@ public class DictionaryController extends AbstractController {
 	
 				String contentType = multipartFile.getContentType();
 				
-				if(!contentType.contains("text")){
-					
+				if(! (contentType.contains("text") || name.endsWith(".txt") || name.endsWith(".csv"))){
 					isSuccess = false;
-					errorMessage = "File must be plain text.";
+					errorMessage = "File must be plain text. contentType:"+ contentType;
 				}else{
 			
 					String requestUrl = "/management/dictionary/bulkPut.json";
@@ -285,7 +283,6 @@ public class DictionaryController extends AbstractController {
 					int bulkSize = 100;
 					
 					reader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
-
 					StringBuilder list = new StringBuilder();
 					// 2017-04-14 지앤클라우드 전제현: 중복되는 단어를 제거하기 위해 HashSet을 사용
 					// 파일로 등록 시 파일 용량에 따라 메모리가 필요
@@ -306,7 +303,6 @@ public class DictionaryController extends AbstractController {
 								break;
 							}
 						}
-						
 						if(count > 0){
 							try {
 								JSONObject jsonObj = httpPost(session, requestUrl)
@@ -331,13 +327,13 @@ public class DictionaryController extends AbstractController {
 						
 					} while(line != null);
 					dictionarySet.clear();
+
+					isSuccess = true;
 				}
-				
-				isSuccess = true;
-				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				isSuccess = false;
 				errorMessage = e.getMessage();
+				logger.error("Error while upload:", e);
 			} finally {
 				if(reader != null){
 					try {
@@ -351,9 +347,10 @@ public class DictionaryController extends AbstractController {
 			isSuccess = false;
 			errorMessage = "Filename is empty.";
 		}
-		
+		logger.debug("isSuccess [{}], totalCount[{}]", isSuccess, totalCount);
+		PrintWriter writer = null;
 		try{
-			Writer writer = response.getWriter();
+			writer = response.getWriter();
 			JSONWriter jsonWriter = new JSONWriter(writer);
 			jsonWriter.object()
 				.key("success").value(isSuccess)
@@ -363,9 +360,12 @@ public class DictionaryController extends AbstractController {
 				jsonWriter.key("errorMessage").value(errorMessage);
 			}
 			jsonWriter.endObject();
-			writer.close();
 		}catch(Exception e){
 			logger.error("", e);
+		} finally {
+			if(writer != null){
+				writer.close();
+			}
 		}
 	
 	}

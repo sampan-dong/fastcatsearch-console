@@ -403,7 +403,7 @@ function <%=dictionaryId%>deleteSelectWord(){
 				<label id="word_input_result_${dictionaryId}" for="word_input" class="help-block" style="word-wrap: break-word;"></label>
 			</div>
 			<div class="modal-footer">
-				<form action="synonym/upload.html" method="POST" enctype="multipart/form-data" style="display: inline;">
+				<form action="map/upload.html" method="POST" enctype="multipart/form-data" style="display: inline;">
 					<input type="hidden" name="dictionaryId" value="${dictionaryId}"/>
 					<span class="fileContainer btn btn-primary"><span class="icon icon-upload"></span> 파일업로드...<input type="file" name="filename" id="${dictionaryId}_file_upload"></span>
 				</form>
