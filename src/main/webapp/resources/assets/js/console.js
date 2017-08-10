@@ -598,20 +598,30 @@ function loadExceptionTab(pageNo, targetId){
 
 /////
 function startCollection(collectionId){
-	operateCollection(collectionId, "시작");
+	operateCollection(collectionId, "START");
 }
 function stopCollection(collectionId){
-	operateCollection(collectionId, "정지");
+	operateCollection(collectionId, "STOP");
 }
 function removeCollection(collectionId){
-	operateCollection(collectionId, "삭제");
+	operateCollection(collectionId, "REMOVE");
 }
 function truncateCollection(collectionId) {
-    operateCollection(collectionId, "트렁케이트");
+    operateCollection(collectionId, "TRUNCATE");
 }
 function operateCollection(collectionId, command){
-	
-	if(confirm(collectionId+" 컬렉션을 " + command + "하시겠습니까?")){
+	commandStr = "";
+	if(command == "START") {
+		commandStr = "시작";
+	}else if(command == "STOP") {
+		commandStr = "정지";
+	}else if(command == "REMOVE") {
+		commandStr = "삭제";
+	}else if(command == "TRUNCATE") {
+		commandStr = "비우기";
+	}
+
+	if(confirm(collectionId+" 컬렉션을 " + commandStr + "하시겠습니까?")){
 		requestSyncProxy("POST", {uri:"/management/collections/operate", collectionId: collectionId, command: command}, "json"
 			, function(){
 				location.href = location.href;
