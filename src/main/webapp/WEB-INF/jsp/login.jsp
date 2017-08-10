@@ -57,7 +57,7 @@ $(document).ready(function(){
 <body class="login">
 	<!-- Logo -->
 	<div class="logo">
-		<strong>Fastcat</strong>Search
+		<strong>패스트캣</strong> 검색엔진
 	</div>
 	<!-- /Logo -->
 
