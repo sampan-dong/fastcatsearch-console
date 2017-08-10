@@ -206,7 +206,7 @@ $(document).ready(function(){
 													<td class="extra-column" ><%="true".equalsIgnoreCase(removeTag) ? "&#x2714;" : "" %></td>
 													<td class="_field_multivalue extra-column"><%="true".equalsIgnoreCase(multiValue) ? "&#x2714;" : "" %></td>
 													<td class="_field_multivalue_delimiter extra-column" ><%=multiValueDelimiter %></td>
-												</tr>														
+												</tr>
 												<%
 												}
 											}
@@ -336,12 +336,13 @@ $(document).ready(function(){
 													<th class="fcol1">#</th>
 													<th class="fcol1-2">아이디</th>
 													<th class="fcol2">이름</th>
-													<th class="">필드</th>
+													<th class="">필드리스트</th>
 													<th class="fcol2">색인용 분석기</th>
 													<th class="fcol2">쿼리용 분석기</th>
 													<th class="fcol1">대소문자무시</th>
 													<th class="fcol1">포지션저장</th>
 													<th class="fcol1">포지션증가Gap</th>
+													<th class="fcol1">추가단어색인제외</th>
 												</tr>
 											</thead>
 											
@@ -371,6 +372,7 @@ $(document).ready(function(){
 													String ignoreCase = field.getAttributeValue("ignoreCase", "");
 													String storePosition = field.getAttributeValue("storePosition", "");
 													String positionIncrementGap = field.getAttributeValue("positionIncrementGap", "");
+													String noAdditional = field.getAttributeValue("noAdditional", "false");
 												%>
 												<tr id="_search_indexes_<%=id%>">
 													<td class="fcol1"><%=i+1 %></td>
@@ -382,6 +384,7 @@ $(document).ready(function(){
 													<td class="_search_indexes_ignorecase" ><%="true".equalsIgnoreCase(ignoreCase) ? "&#x2714;" : "" %></td>
 													<td class="_search_indexes_store_position" ><%="true".equalsIgnoreCase(storePosition) ? "&#x2714;" : "" %></td>
 													<td class="_search_indexes_positionIncrementGap" ><%=positionIncrementGap %></td>
+													<td class="_search_indexes_noAdditional" ><%="true".equalsIgnoreCase(noAdditional) ? "&#x2714;" : "" %></td>
 												</tr>														
 												<%
 												}

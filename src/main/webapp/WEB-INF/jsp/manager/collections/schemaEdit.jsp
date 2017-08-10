@@ -402,10 +402,10 @@ $(document).ready(function(){
 									<table class="table table-bordered table-hover table-highlight-head table-condensed" >
 										<thead>
 											<tr>
-												<th class="fcol2">ID</th>
-												<th class="fcol1-1">Core<br>Pool Size</th>
-												<th class="fcol1-1">Maximum<br>Pool Size</th>
-												<th>Analyzer</th>
+												<th class="fcol2">아이디</th>
+												<th class="fcol1-1">기본<br>풀크기</th>
+												<th class="fcol1-1">최대<br>풀크기</th>
+												<th>분석기클래스</th>
 												<th class="fcol1-1"></th>
 											</tr>
 										</thead>
@@ -417,7 +417,7 @@ $(document).ready(function(){
 											List<Element> analyzerList = el.getChildren();
 											%>
 											<tr class="no-entry <%=analyzerList.size() > 0 ? "hide2" : ""%>">
-												<td colspan="5"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+												<td colspan="5"><a href="javascript:void(0)" class="addRow">분석기추가</a></td>
 											</tr>
 											<%
 											for(int i = 0; i < analyzerList.size(); i++){
@@ -459,21 +459,22 @@ $(document).ready(function(){
 					
 						<div class="widget">
 							<div class="widget-header">
-								<h4>Search Indexes</h4>
+								<h4>검색인덱스</h4>
 							</div>
 
 							<div class="widget-content">
 								<table id="schema_table_search_indexes" class="table table-bordered table-hover table-highlight-head table-condensed">
 									<thead>
 										<tr>
-											<th class="fcol2">ID</th>
-											<th class="fcol2">Name</th>
-											<th class="fcol2-1">Field List</th>
-											<th>Index Analyzer</th>
-											<th>Query Analyzer</th>
-											<th class="fcol1">Ignore Case</th>
-											<th class="fcol1">Store Position</th>
-											<th class="fcol1">Position Increment Gap</th>
+											<th class="fcol2">아이디</th>
+											<th class="fcol2">이름</th>
+											<th class="fcol2-1">필드리스트</th>
+											<th>색인용 분석기</th>
+											<th>쿼리용 분석기</th>
+											<th class="fcol1">대소문자무시</th>
+											<th class="fcol1">포지션저장</th>
+											<th class="fcol1">포지션증가Gap</th>
+											<th class="fcol1">추가단어색인제외</th>
 											<th class="fcol1-1"></th>
 										</tr>
 									</thead>
@@ -486,7 +487,7 @@ $(document).ready(function(){
 										List<Element> indexList = el.getChildren();
 										%>
 										<tr class="no-entry <%=indexList.size() > 0 ? "hide2" : ""%>">
-											<td colspan="9"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+											<td colspan="9"><a href="javascript:void(0)" class="addRow">인덱스추가</a></td>
 										</tr>
 										<%
 										for(int i = 0; i <indexList.size(); i++){
@@ -509,6 +510,7 @@ $(document).ready(function(){
 											String ignoreCase = field.getAttributeValue("ignoreCase", "");
 											String storePosition = field.getAttributeValue("storePosition", "");
 											String positionIncrementGap = field.getAttributeValue("positionIncrementGap", "");
+											String noAdditional = field.getAttributeValue("noAdditional", "false");
 										%>
 										<tr>
 											<td>
@@ -526,6 +528,7 @@ $(document).ready(function(){
 											<td><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-ignoreCase" <%="true".equalsIgnoreCase(ignoreCase) ? "checked" : "" %>></label></td>
 											<td><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-storePosition" <%="true".equalsIgnoreCase(storePosition) ? "checked" : "" %>></label></td>
 											<td><input type="text" name="_index-list_<%=i%>-pig" class="form-control digits" value="<%=positionIncrementGap %>"></td>
+											<td><label class="checkbox"><input type="checkbox" value="true" name="_index-list_<%=i%>-noAdditional" <%="true".equalsIgnoreCase(noAdditional) ? "checked" : "" %>></label></td>
 											<td>
 												<span><a class="btn btn-xs addRow" href="javascript:void(0);"><i class="icon-plus-sign"></i></a></span>
 												<span><a class="btn btn-xs deleteRow" href="javascript:void(0);" style="margin-left:5px;"><i class="icon-minus-sign text-danger"></i></a></span>
@@ -548,18 +551,18 @@ $(document).ready(function(){
 					
 						<div class="widget">
 							<div class="widget-header">
-								<h4>Field Indexes</h4>
+								<h4>필드인덱스</h4>
 							</div>
 
 							<div class="widget-content">
 								<table class="table table-bordered table-hover table-highlight-head table-condensed">
 									<thead>
 										<tr>
-											<th class="fcol2">ID</th>
-											<th>Name</th>
-											<th class="fcol2">Field</th>
-											<th class="fcol1">Size</th>
-											<th class="fcol1">Ignore Case</th>
+											<th class="fcol2">아이디</th>
+											<th>이름</th>
+											<th class="fcol2">필드</th>
+											<th class="fcol1">길이</th>
+											<th class="fcol1">대소문자무시</th>
 											<th class="fcol1-1"></th>
 										</tr>
 									</thead>
@@ -571,7 +574,7 @@ $(document).ready(function(){
 										List<Element> indexList = el.getChildren();
 										%>
 										<tr class="no-entry <%=indexList.size() > 0 ? "hide2" : ""%>">
-											<td colspan="6"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+											<td colspan="6"><a href="javascript:void(0)" class="addRow">인덱스추가</a></td>
 										</tr>
 										<%
 										for(int i = 0; i < indexList.size(); i++){
@@ -614,16 +617,16 @@ $(document).ready(function(){
 					
 						<div class="widget">
 							<div class="widget-header">
-								<h4>Group Indexes</h4>
+								<h4>그룹인덱스</h4>
 							</div>
 							<div class="widget-content">
 								<div>
 									<table class="table table-bordered table-hover table-highlight-head table-condensed">
 										<thead>
 											<tr>
-												<th class="fcol2">ID</th>
-												<th>Name</th>
-												<th class="fcol2">Field</th>
+												<th class="fcol2">아이디</th>
+												<th>이름</th>
+												<th class="fcol2">필드</th>
 												<th class="fcol1-1"></th>
 											</tr>
 										</thead>
@@ -635,7 +638,7 @@ $(document).ready(function(){
 											List<Element> indexList = el.getChildren();
 											%>
 											<tr class="no-entry <%=indexList.size() > 0 ? "hide2" : ""%>">
-												<td colspan="5"><a href="javascript:void(0)" class="addRow">Add Entry</a></td>
+												<td colspan="5"><a href="javascript:void(0)" class="addRow">인덱스추가</a></td>
 											</tr>
 											<%
 											for(int i = 0; i<indexList.size(); i++){
@@ -691,7 +694,7 @@ $(document).ready(function(){
 			</td>
 			<td><input type="text" name="name" class="form-control required"></td>
 			<td><select class="select_flat form-control required select-field-type" name="type" >
-				<option value="">:: Type ::</option>
+				<option value="">:: 타입 ::</option>
 			<%
 			for(int typeInx=0;typeInx < typeList.length(); typeInx++) { 
 				String typeStr = typeList.optString(typeInx);

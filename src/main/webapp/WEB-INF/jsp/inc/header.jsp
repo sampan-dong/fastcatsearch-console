@@ -107,7 +107,7 @@
 <script type="text/javascript" src="${contextPath}/resources/assets/js/jdbc-create-helper.js"></script>
 
 <!-- 2017-04-28 지앤클라우드 전제현: 아이콘 -->
-<script type="text/javascript" src="${contextPath}/resources/assets/js/libs/fontawesome.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/assets/js/libs/fontAwesome.js"></script>
 
 <script>
 	$(document).ready(function() {
