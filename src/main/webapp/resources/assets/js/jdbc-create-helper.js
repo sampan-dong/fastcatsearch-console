@@ -18,7 +18,7 @@ function jdbcCreateHelper(jdbcCreateForm) {
 			
 			var option = document.createElement("option");
 			option.value = "";
-			option.text = ":: Select ::";
+			option.text = ":: 선택 ::";
 			options.add(option);
 			var paramMap = {};
 			for(var jdbcInx=0;jdbcInx<jdbcList.length;jdbcInx++) {
@@ -67,7 +67,7 @@ function jdbcCreateHelper(jdbcCreateForm) {
 			});
 		});
 		//jdbc 새로생성 버튼
-		jdbcCreateForm.find("div.form-group input[value=Create]").click(function() {
+		jdbcCreateForm.find("div.form-group input.btn-primary").click(function() {
 			if(jdbcCreateForm.valid()) {
 				var form = jdbcCreateForm[0];
 				requestProxy("post", {
