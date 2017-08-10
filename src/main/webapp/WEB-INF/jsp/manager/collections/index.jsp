@@ -108,6 +108,9 @@ $(document).ready(function(){
 							<div class="input-group col-md-12">
 								<a data-toggle="modal" data-target="#newCollectionModal" class="btn btn-sm" data-backdrop="static"><span
 									class="glyphicon glyphicon-plus-sign"></span> 컬렉션 추가</a>
+
+								&nbsp;
+								<a class="btn btn-sm" href="createCollectionWizard.html"><span class="fa fa-magic"></span> 컬렉션생성 마법사</a>
 							</div>
 							
 						</div>
@@ -135,16 +138,16 @@ $(document).ready(function(){
 									<td><%=i+1 %></td>
 									<td><strong><%=collectionInfo.getString("id") %></strong></td>
 									<td><%=collectionInfo.getString("name") %></td>
-									<td><%=isActive ? "<span class='text-success'>Active</span>" : "<span class='text-danger'>InActive</span>" %></td>
+									<td><%=isActive ? "<span class='text-success'>실행중</span>" : "<span class='text-danger'>정지중</span>" %></td>
 									<td><%=collectionInfo.getString("indexNode") %></td>
 									<td><%=collectionInfo.getString("dataNodeList") %></td>
 									<td><%=collectionInfo.getString("searchNodeList") %></td>
 									<td>
 									<% if(isActive) { %>
-									<a href="javascript:stopCollection('<%=collectionId%>')">STOP</a>
+									<a href="javascript:stopCollection('<%=collectionId%>')">정지</a>
 									<% } else { %>
-									<a href="javascript:startCollection('<%=collectionId%>')">START</a>
-									 | <a href="javascript:removeCollection('<%=collectionId%>')" class="text-danger">REMOVE</a>
+									<a href="javascript:startCollection('<%=collectionId%>')">시작</a>
+									 | <a href="javascript:removeCollection('<%=collectionId%>')" class="text-danger">삭제</a>
 									<% } %>
 									</td>
 								</tr>
