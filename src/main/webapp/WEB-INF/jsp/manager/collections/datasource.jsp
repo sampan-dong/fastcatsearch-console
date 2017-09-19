@@ -276,7 +276,7 @@ function downloadDatasource() {
 								<tr class="_full_<%=i %>">
 									<td class="._name"><%=name %></td>
 									<td class="._active"><%="true".equals(active) ? "사용" : "사용안함" %></td>
-									<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(모디파이어 없)</p>" %></td>
+									<td class="._reader"><%=reader %><%=modifier != null && modifier.length() > 0 ? "<p>("+modifier+")</p>" : "<p>(모디파이어 없음)</p>" %></td>
 									<td class="">
 										<a data-toggle="modal" data-target="#fullSourceModal_<%=i%>">수정</a>
 									</td>
