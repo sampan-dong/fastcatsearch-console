@@ -170,7 +170,7 @@ function hideAllJobArgs(){
 									<th>아이디</th>
 									<th>이름</th>
 									<th>IP 주소</th>
-									<th>데이터 IP 주소</th>
+									<th>데이터 IP주소</th>
 									<th>노드포트</th>
 									<th>서비스포트</th>
 									<th>사용여부</th>
