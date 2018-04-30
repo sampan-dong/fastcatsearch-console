@@ -1,12 +1,5 @@
 package org.fastcatsearch.console.web.controller;
 
-import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.util.Enumeration;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.fastcatsearch.console.web.http.IllegalOperationException;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
@@ -15,11 +8,14 @@ import org.jdom2.Document;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.Enumeration;
 
 @Controller
 public class MainController extends AbstractController {
@@ -40,9 +36,9 @@ public class MainController extends AbstractController {
 
 	@RequestMapping(value = "/doLogin", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView doLogin(HttpSession session, @RequestParam("host") String host, @RequestParam("userId") String userId,
-			@RequestParam("password") String password, @RequestParam(value="redirect", required=false) String redirect) throws Exception {
+			@RequestParam("password") String password, @RequestParam(value="redirect", required=false) String redirect, @CookieValue("JSESSIONID") String jSessionId) throws Exception {
 
-		logger.debug("login {} : {}:{}", host, userId, password);
+		logger.debug("login {} : {}:{}, JSessionId: {}", host, userId, password, jSessionId);
 
 		if (host == null || host.length() == 0 || userId.length() == 0 || password.length() == 0) {
 			ModelAndView mav = new ModelAndView();
@@ -51,7 +47,8 @@ public class MainController extends AbstractController {
 		}
 		
 		try{
-			ResponseHttpClient httpClient = new ResponseHttpClient(host);
+			ResponseHttpClient httpClient = new ResponseHttpClient(host, jSessionId);
+
 			/*
 			 * 1. check server is alive
 			 * */
@@ -69,7 +66,9 @@ public class MainController extends AbstractController {
 			/*
 			 * 2. proceed login action
 			 * */
-			JSONObject loginResult = httpClient.httpPost("/management/login").addParameter("id", userId).addParameter("password", password)
+			JSONObject loginResult = httpClient.httpPost("/management/login")
+											   .addParameter("id", userId)
+											   .addParameter("password", password)
 					.requestJSON();
 			logger.debug("loginResult > {}", loginResult);
 			if (loginResult != null && loginResult.getInt("status") == 0) {
@@ -109,14 +108,14 @@ public class MainController extends AbstractController {
 
 	@RequestMapping(value = "/checkAlive", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String checkAlive(HttpSession session, @RequestParam("host") String host) throws Exception {
+	public String checkAlive(HttpSession session, @RequestParam("host") String host, @CookieValue("JSESSIONID") String jSessionId) throws Exception {
 
 		logger.debug("checkAlive {}", host);
 
 		String message = null;
         ResponseHttpClient httpClient = null;
         try{
-			httpClient = new ResponseHttpClient(host, 60, 1);
+			httpClient = new ResponseHttpClient(host, 60, 1, jSessionId);
 
 			/*
 			 * 1. check server is alive
@@ -190,7 +189,7 @@ public class MainController extends AbstractController {
 	}
 
 	@RequestMapping("/main/search")
-	public ModelAndView search(HttpSession session, @RequestParam(required=false) String keyword, @RequestParam(required=false) String category, @RequestParam(required=false) String page) throws Exception {
+	public ModelAndView search(HttpSession session, @RequestParam(required=false) String keyword, @RequestParam(required=false) String category, @RequestParam(required=false) String page, @CookieValue("JSESSIONID") String jSessionId) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("search");
@@ -229,7 +228,7 @@ public class MainController extends AbstractController {
 				
 				String realtimePopularKeywordURL = searchResults.getString("realtimePopularKeywordURL");
 				if(realtimePopularKeywordURL != null && realtimePopularKeywordURL.length() > 0){
-					ResponseHttpClient httpClient = new ResponseHttpClient(null);
+					ResponseHttpClient httpClient = new ResponseHttpClient(null, jSessionId);
 					JSONObject popularKeywordResult = httpClient.httpGet(realtimePopularKeywordURL).requestJSON();
 					httpClient.close();
 					mav.addObject("popularKeywordResult", popularKeywordResult);
@@ -237,7 +236,7 @@ public class MainController extends AbstractController {
 				}
 				String relateKeywordURL = searchResults.getString("relateKeywordURL");
 				if(relateKeywordURL != null && relateKeywordURL.length() > 0){
-					ResponseHttpClient httpClient = new ResponseHttpClient(null);
+					ResponseHttpClient httpClient = new ResponseHttpClient(null, jSessionId);
 					JSONObject relateKeywordResult = httpClient.httpGet(relateKeywordURL).requestJSON();
 					httpClient.close();
 					mav.addObject("relateKeywordResult", relateKeywordResult);

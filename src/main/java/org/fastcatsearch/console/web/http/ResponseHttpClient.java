@@ -15,6 +15,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.fastcatsearch.console.web.controller.InvalidAuthenticationException;
 import org.jdom2.Document;
@@ -44,17 +45,20 @@ public class ResponseHttpClient {
 	private static final ResponseHandler<String> textResponseHandler = new TextResponseHandler();
 
     private static Map<String, CloseableHttpClient> clientMap = new ConcurrentHashMap<String, CloseableHttpClient>();
-    public ResponseHttpClient(String host) {
-        this(host, 10 * 60, 2); //10분.
+    public ResponseHttpClient(String host, String jSessionId) {
+        this(host, 10 * 60, 2, jSessionId); //10분.
     }
 
-	public ResponseHttpClient(String host, int socketTimeout, int connectTimeout) {
+	public ResponseHttpClient(String host, int socketTimeout, int connectTimeout, String jSessionId) {
 
-        httpclient  = clientMap.get(host);
+        httpclient  = clientMap.get(jSessionId);
         if(httpclient == null) {
             PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
             cm.setMaxTotal(10);
             BasicCookieStore cookieStore = new BasicCookieStore();
+			BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", jSessionId);
+			cookie.setPath("/");
+			cookieStore.addCookie(cookie);
             HttpClientBuilder clientBuilder = HttpClients.custom().setConnectionManager(cm).setDefaultCookieStore(cookieStore);
             if (socketTimeout > 0 || connectTimeout > 0) {
                 RequestConfig requestConfig = RequestConfig.custom()
@@ -65,7 +69,7 @@ public class ResponseHttpClient {
                 clientBuilder = clientBuilder.setDefaultRequestConfig(requestConfig);
             }
             httpclient = clientBuilder.build();
-            clientMap.put(host, httpclient);
+            clientMap.put(jSessionId, httpclient);
         }
 
         this.host = host;

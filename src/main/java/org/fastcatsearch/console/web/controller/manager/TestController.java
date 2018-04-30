@@ -1,18 +1,18 @@
 package org.fastcatsearch.console.web.controller.manager;
 
-import java.net.URLDecoder;
-
-import javax.servlet.http.HttpSession;
-
 import org.fastcatsearch.console.web.controller.AbstractController;
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.AbstractMethod;
 import org.fastcatsearch.console.web.http.ResponseHttpClient.PostMethod;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
+import java.net.URLDecoder;
 
 @Controller
 @RequestMapping("/manager/test")
@@ -30,7 +30,8 @@ public class TestController extends AbstractController {
 			, @RequestParam String cn, @RequestParam String fl, @RequestParam String se, @RequestParam String ft
 			, @RequestParam String gr, @RequestParam String ra, @RequestParam(required = false) String bd, @RequestParam String ht, @RequestParam String sn
 			, @RequestParam String ln, @RequestParam String so, @RequestParam String timeout, @RequestParam String ud
-			, @RequestParam String qm, @RequestParam String rm, @RequestParam String sp, @RequestParam(required = false) String requestExplain) throws Exception {
+			, @RequestParam String qm, @RequestParam String rm, @RequestParam String sp, @RequestParam(required = false) String requestExplain
+			, @CookieValue("JSESSIONID") String jSessionId) throws Exception {
 
 		boolean isExplain = requestExplain != null && requestExplain.equalsIgnoreCase("true");
 		if(isExplain) {
@@ -46,7 +47,7 @@ public class TestController extends AbstractController {
 		try {
 			PostMethod postMethod = null;
 			if (host != null && host.length() > 0) {
-				tmpHttpClient = new ResponseHttpClient(host);
+				tmpHttpClient = new ResponseHttpClient(host, jSessionId);
 				postMethod = tmpHttpClient.httpPost(requestUri);
 			} else {
 				postMethod = (PostMethod) httpPost(session, requestUri);
@@ -78,14 +79,14 @@ public class TestController extends AbstractController {
 	}
 	
 	@RequestMapping("searchQueryResult")
-	public ModelAndView searchQueryResult(HttpSession session, @RequestParam(required = false) String host, @RequestParam String requestUri, @RequestParam String queryString, @RequestParam(required = false) String requestExplain) throws Exception {
+	public ModelAndView searchQueryResult(HttpSession session, @RequestParam(required = false) String host, @RequestParam String requestUri, @RequestParam String queryString, @RequestParam(required = false) String requestExplain, @CookieValue("JSESSIONID") String jSessionId) throws Exception {
 		boolean isExplain = requestExplain != null && requestExplain.equalsIgnoreCase("true");
 		
 		ResponseHttpClient tmpHttpClient = null;
 		try {
 			PostMethod postMethod = null;
 			if (host != null && host.length() > 0) {
-				tmpHttpClient = new ResponseHttpClient(host);
+				tmpHttpClient = new ResponseHttpClient(host, jSessionId);
 				postMethod = tmpHttpClient.httpPost(requestUri);
 			} else {
 				postMethod = (PostMethod) httpPost(session, requestUri);
