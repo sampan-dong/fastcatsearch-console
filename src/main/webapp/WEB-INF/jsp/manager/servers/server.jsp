@@ -170,6 +170,7 @@ function hideAllJobArgs(){
 									<th>아이디</th>
 									<th>이름</th>
 									<th>IP 주소</th>
+									<th>데이터 IP 주소</th>
 									<th>노드포트</th>
 									<th>서비스포트</th>
 									<th>사용여부</th>
@@ -187,6 +188,7 @@ function hideAllJobArgs(){
 								String id = nodeSetting.optString("id");
 								String name = nodeSetting.optString("name");
 								String host = nodeSetting.optString("host");
+								String dataHost = nodeSetting.optString("dataHost");
 								int port = nodeSetting.optInt("port");
 								int servicePort = nodeSetting.optInt("servicePort");
 								boolean enabled = nodeSetting.optBoolean("enabled");
@@ -199,6 +201,7 @@ function hideAllJobArgs(){
 									<td><strong><%=id %></strong></td>
 									<td><%=name %></td>
 									<td><%=host %></td>
+									<td><%=dataHost %></td>
 									<td><%=port %></td>
 									<td><%=servicePort %></td>
 									<td><%=enabledStatus %></td>

@@ -107,6 +107,7 @@ $(document).ready(function(){
 									<th>아이디</th>
 									<th>이름</th>
 									<th>IP주소</th>
+									<th>데이터 IP주소</th>
 									<th>포트</th>
 									<th>사용여부</th>
 									<th>동작여부</th>
@@ -119,6 +120,10 @@ $(document).ready(function(){
 								String id = nodeList.getJSONObject(i).getString("id");
 								String name = nodeList.getJSONObject(i).getString("name");
 								String host = nodeList.getJSONObject(i).getString("host");
+								String datHost = new String();
+								if (!nodeList.getJSONObject(i).isNull("dataHost")) {
+									datHost = nodeList.getJSONObject(i).getString("dataHost");
+								}
 								int port = nodeList.getJSONObject(i).getInt("port");
 								boolean enabled = nodeList.getJSONObject(i).getBoolean("enabled");
 								boolean active = nodeList.getJSONObject(i).getBoolean("active");
@@ -131,6 +136,7 @@ $(document).ready(function(){
 									<td><strong><%=id %></strong></td>
 									<td><%=name %></td>
 									<td><%=host %></td>
+									<td><%=datHost %></td>
 									<td><%=port %></td>
 									<td><%=enabledStatus %></td>
 									<td><%=activeStatus %></td>
@@ -148,6 +154,10 @@ $(document).ready(function(){
 					String id = nodeList.getJSONObject(i).getString("id");
 					String name = nodeList.getJSONObject(i).getString("name");
 					String host = nodeList.getJSONObject(i).getString("host");
+					String datHost = new String();
+					if (!nodeList.getJSONObject(i).isNull("dataHost")) {
+						datHost = nodeList.getJSONObject(i).getString("dataHost");
+					}
 					int port = nodeList.getJSONObject(i).getInt("port");
 					boolean enabled = nodeList.getJSONObject(i).getBoolean("enabled");
 					boolean active = nodeList.getJSONObject(i).getBoolean("active");
@@ -183,7 +193,12 @@ $(document).ready(function(){
 															<label class="col-md-3 control-label">IP주소:</label>
 															<div class="col-md-9"><input type="text" name="host" class="form-control required" value="<%=host %>"></div>
 														</div>
-														
+
+														<div class="form-group">
+															<label class="col-md-3 control-label">데이터 IP주소:</label>
+															<div class="col-md-9"><input type="text" name="dataHost" class="form-control" value="<%=datHost %>" placeholder="IP ADDRESS"></div>
+														</div>
+
 														<div class="form-group">
 															<label class="col-md-3 control-label">포트:</label>
 															<div class="col-md-9"><input type="text" name="port" class="form-control input-width-small required" value="<%=port %>"></div>
@@ -249,6 +264,11 @@ $(document).ready(function(){
 														<div class="form-group">
 															<label class="col-md-3 control-label">IP주소:</label>
 															<div class="col-md-9"><input type="text" name="host" class="form-control required" value="" placeholder="IP ADDRESS"></div>
+														</div>
+
+														<div class="form-group">
+															<label class="col-md-3 control-label">데이터 IP주소:</label>
+															<div class="col-md-9"><input type="text" name="dataHost" class="form-control" value="" placeholder="IP ADDRESS"></div>
 														</div>
 														
 														<div class="form-group">

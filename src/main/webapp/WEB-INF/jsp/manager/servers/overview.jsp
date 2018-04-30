@@ -59,6 +59,7 @@
 									<th>아이디</th>
 									<th>이름</th>
 									<th>IP주소</th>
+									<th>데이터 IP주소</th>
 									<th>노드포트</th>
 									<th>서비스포트</th>
 									<th>사용여부</th>
@@ -71,6 +72,10 @@
 								String id = nodeList.getJSONObject(i).getString("id");
 								String name = nodeList.getJSONObject(i).getString("name");
 								String host = nodeList.getJSONObject(i).getString("host");
+								String datHost = new String();
+								if (!nodeList.getJSONObject(i).isNull("dataHost")) {
+									datHost = nodeList.getJSONObject(i).getString("dataHost");
+								}
 								int port = nodeList.getJSONObject(i).getInt("port");
 								int servicePort = nodeList.getJSONObject(i).getInt("servicePort");
 								boolean enabled = nodeList.getJSONObject(i).getBoolean("enabled");
@@ -84,6 +89,7 @@
 									<td><strong><%=id %></strong></td>
 									<td><%=name %></td>
 									<td><%=host %></td>
+									<td><%=datHost %></td>
 									<td><%=port %></td>
 									<td><%=servicePort %></td>
 									<td><%=enabledStatus %></td>
