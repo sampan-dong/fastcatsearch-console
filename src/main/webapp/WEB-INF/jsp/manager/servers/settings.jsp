@@ -196,7 +196,7 @@ $(document).ready(function(){
 
 														<div class="form-group">
 															<label class="col-md-3 control-label">데이터 IP주소:</label>
-															<div class="col-md-9"><input type="text" name="dataHost" class="form-control required" value="<%=datHost %>" placeholder="IP ADDRESS"></div>
+															<div class="col-md-9"><input type="text" name="dataHost" class="form-control" value="<%=datHost %>" placeholder="IP ADDRESS"></div>
 														</div>
 
 														<div class="form-group">
@@ -268,7 +268,7 @@ $(document).ready(function(){
 
 														<div class="form-group">
 															<label class="col-md-3 control-label">데이터 IP주소:</label>
-															<div class="col-md-9"><input type="text" name="dataHost" class="form-control required" value="" placeholder="IP ADDRESS"></div>
+															<div class="col-md-9"><input type="text" name="dataHost" class="form-control" value="" placeholder="IP ADDRESS"></div>
 														</div>
 														
 														<div class="form-group">

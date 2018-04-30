@@ -277,6 +277,7 @@
 								var info = health[nodeId];
 								var diskPrint = "";
 								var memoryPrint = "";
+								var systemLoadAverage = 0
 								if(info) {
 									diskPrint = info["totalDiskSize"];
 									if(diskPrint > 0) {
