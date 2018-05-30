@@ -266,7 +266,7 @@ $(document).ready(function(){
 						</div>
 
 						<div class="form-actions">
-							<input type="submit" value="Update Settings" class="btn btn-primary pull-right">
+							<input type="submit" value="저장" class="btn btn-primary pull-right">
 						</div>
 					</div>
 				
