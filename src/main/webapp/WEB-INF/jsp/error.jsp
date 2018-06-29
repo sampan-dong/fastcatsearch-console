@@ -31,6 +31,7 @@
 		<div class="wrapper">
 			<div class="code"><span>에러</span><span class="icon-warning-sign"></span></div>
 			<%
+			String isDebug = System.getProperty("debug");
 			if(exception != null){
 				if(exception instanceof InvalidAuthenticationException) {
 				%>
@@ -38,7 +39,7 @@
 				Not Authorized User
 				</div>
 				<%
-				} else {
+				} else if("true".equals(isDebug)) {
 				%>
 				<div class="trace">
 				<%
