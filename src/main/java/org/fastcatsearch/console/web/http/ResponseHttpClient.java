@@ -27,32 +27,66 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ResponseHttpClient {
 	private static Logger logger = LoggerFactory.getLogger(ResponseHttpClient.class);
 
+	private ClientInfo httpclientInfo;
 	private CloseableHttpClient httpclient;
 	private String urlPrefix;
 	private boolean isActive;
 	private String host;
-	
+	private String jSessionId;
+
 	private static final ResponseHandler<JSONObject> jsonResponseHandler = new JSONResponseHandler();
 	private static final ResponseHandler<Document> xmlResponseHandler = new XMLResponseHandler();
 	private static final ResponseHandler<String> textResponseHandler = new TextResponseHandler();
 
-    private static Map<String, CloseableHttpClient> clientMap = new ConcurrentHashMap<String, CloseableHttpClient>();
+    private static Map<String, ClientInfo> clientMap = new ConcurrentHashMap<String, ClientInfo>();
+	private static Timer timer = new Timer();
+	private static TimerTask connectorGC = new TimerTask(){
+		long TIME_LIMIT = 35 * 60 * 1000; //35분
+//		long TIME_LIMIT = 20 * 1000;
+
+		@Override
+		public void run() {
+			//주기적으로 돌면서 안쓰는(세션타임아웃포함) 커넥션을 끊어준다.
+			logger.info("Check http connection gc..");
+			long now = new Date().getTime();
+			Iterator<Map.Entry<String, ClientInfo>> iterator = clientMap.entrySet().iterator();
+			while(iterator.hasNext()) {
+				Map.Entry<String, ClientInfo> entry = iterator.next();
+				if (now - entry.getValue().getUpdateTime().getTime() > TIME_LIMIT) {
+					//커넥션을 끊고 제거한다
+					iterator.remove();
+					try {
+						logger.info("Auto connection close. jSessionId[{}] UpdateTime[{}] ConnectionId[{}]", entry.getKey(), entry.getValue().getUpdateTime(), entry.getValue().getClient().hashCode());
+						entry.getValue().getClient().close();
+					} catch (IOException e) {
+						logger.error("", e);
+					}
+				}
+			}
+		}
+	};
+
+	static {
+		long period = 5 * 60 * 1000; //5분.
+//		period = 10000;
+		timer.schedule(connectorGC, 1000, period);
+	}
+
     public ResponseHttpClient(String host, String jSessionId) {
         this(host, 10 * 60, 2, jSessionId); //10분.
     }
 
 	public ResponseHttpClient(String host, int socketTimeout, int connectTimeout, String jSessionId) {
+		this.jSessionId = jSessionId;
+        httpclientInfo = clientMap.get(jSessionId);
 
-        httpclient  = clientMap.get(jSessionId);
-        if(httpclient == null) {
+        if(httpclientInfo == null) {
             PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
             cm.setMaxTotal(10);
             BasicCookieStore cookieStore = new BasicCookieStore();
@@ -69,8 +103,11 @@ public class ResponseHttpClient {
                 clientBuilder = clientBuilder.setDefaultRequestConfig(requestConfig);
             }
             httpclient = clientBuilder.build();
-            clientMap.put(jSessionId, httpclient);
-        }
+			httpclientInfo = new ClientInfo(httpclient);
+            clientMap.put(jSessionId, httpclientInfo);
+        } else {
+			httpclient = httpclientInfo.getClient();
+		}
 
         this.host = host;
 		if(host != null){
@@ -85,6 +122,7 @@ public class ResponseHttpClient {
 	public String getHostString(){
 		return host;
 	}
+
 	public boolean isActive() {
 		return isActive;
 	}
@@ -101,9 +139,41 @@ public class ResponseHttpClient {
 		return new PostMethod(this, getURL(uri));
 	}
 
+	public <T> T execute(HttpUriRequest request, ResponseHandler<? extends T> responseHandler) throws IOException, ClientProtocolException, SessionExpiredException {
+		// 접근시간 업데이트
+		ClientInfo clientInfo = clientMap.get(jSessionId);
+		if(clientInfo == null) {
+			throw new SessionExpiredException("clientInfo is null. jSessionId=" + jSessionId);
+		}
+		clientInfo.updateTime();
+		try {
+			return clientInfo.getClient().execute(request, responseHandler);
+		} catch (Exception e) {
+			logger.error("error execute httpclient.", e);
+			throw new SessionExpiredException("httpclient execute error. jSessionId=" + jSessionId);
+		}
+	}
+
 	public void close() {
+		//do nothing.
+	}
+
+	public void disconnect() {
 		if (httpclient != null) {
-            httpclient = null;
+			try {
+				ClientInfo clientInfo = clientMap.remove(jSessionId);
+				if(clientInfo != null) {
+					CloseableHttpClient client = clientInfo.getClient();
+					if(client != null) {
+						client.close();
+					}
+				}
+//				this.httpclient = null;
+//				this.httpclientInfo = null;
+
+			} catch (IOException e) {
+				logger.error("disconnect error", e);
+			}
 		}
 		isActive = false;
 	}
@@ -141,11 +211,11 @@ public class ResponseHttpClient {
 			return this;
 		}
 
-		public JSONObject requestJSON() throws ClientProtocolException, IOException, Http404Error {
+		public JSONObject requestJSON() throws ClientProtocolException, IOException, Http404Error, SessionExpiredException {
 			HttpUriRequest httpUriRequest = null;
 			try {
 				httpUriRequest = getHttpRequest();
-				JSONObject obj = responseHttpClient.httpclient.execute(httpUriRequest, jsonResponseHandler);
+				JSONObject obj = responseHttpClient.execute(httpUriRequest, jsonResponseHandler);
 
 				checkAuthorizedMessage(obj);
 
@@ -164,9 +234,9 @@ public class ResponseHttpClient {
 			return null;
 		}
 
-		public Document requestXML() throws ClientProtocolException, IOException, Http404Error {
+		public Document requestXML() throws ClientProtocolException, IOException, Http404Error, SessionExpiredException {
 			try {
-				return responseHttpClient.httpclient.execute(getHttpRequest(), xmlResponseHandler);
+				return responseHttpClient.execute(getHttpRequest(), xmlResponseHandler);
 			} catch (SocketException e) {
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
@@ -180,9 +250,9 @@ public class ResponseHttpClient {
 			return null;
 		}
 
-		public String requestText() throws ClientProtocolException, IOException, Http404Error {
+		public String requestText() throws ClientProtocolException, IOException, Http404Error, SessionExpiredException {
 			try {
-				return responseHttpClient.httpclient.execute(getHttpRequest(), textResponseHandler);
+				return responseHttpClient.execute(getHttpRequest(), textResponseHandler);
 			} catch (SocketException e) {
 				logger.debug("httpclient socket error! >> {}", e.getMessage());
 				responseHttpClient.close();
@@ -321,6 +391,28 @@ public class ResponseHttpClient {
 			return null;
 		}
 
+	}
+
+	public static class ClientInfo {
+		private CloseableHttpClient client;
+		private Date updateTime;
+
+		public ClientInfo(CloseableHttpClient client) {
+			this.client = client;
+			updateTime = new Date();
+		}
+
+		public CloseableHttpClient getClient() {
+			return client;
+		}
+
+		public Date getUpdateTime() {
+			return updateTime;
+		}
+
+		public void updateTime() {
+			updateTime = new Date();
+		}
 	}
 
 }

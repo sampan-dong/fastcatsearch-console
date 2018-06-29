@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.fastcatsearch.console.web.http.ResponseHttpClient;
+import org.fastcatsearch.console.web.http.SessionExpiredException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,13 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
 			
 			// /service/isAlive
 			String getCollectionListURL = "/service/isAlive";
-			JSONObject isAlive = httpClient.httpGet(getCollectionListURL).requestJSON();
-			if(isAlive == null){
+			try {
+				JSONObject isAlive = httpClient.httpGet(getCollectionListURL).requestJSON();
+				if (isAlive == null) {
+					checkLoginRedirect(request, response);
+					return false;
+				}
+			} catch (SessionExpiredException e) {
 				checkLoginRedirect(request, response);
 				return false;
 			}

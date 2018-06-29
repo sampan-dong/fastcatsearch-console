@@ -145,9 +145,10 @@ public class MainController extends AbstractController {
 	public ModelAndView logout(HttpSession session) throws Exception {
 
 		//세션삭제를 처리한다.
-		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute("httpclient");
+		ResponseHttpClient httpClient = (ResponseHttpClient) session.getAttribute(HTTPCLIENT_ID);
 		if(httpClient != null){
-			httpClient.close();
+			httpClient.disconnect();
+			session.removeAttribute(HTTPCLIENT_ID);
 		}
 		session.invalidate();
 		// 로긴 화면으로 이동한다.
