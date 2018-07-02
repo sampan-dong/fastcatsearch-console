@@ -34,7 +34,7 @@ public class MainController extends AbstractController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/doLogin", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/doLogin", method = { RequestMethod.POST })
 	public ModelAndView doLogin(HttpSession session, @RequestParam("host") String host, @RequestParam("userId") String userId,
 			@RequestParam("password") String password, @RequestParam(value="redirect", required=false) String redirect, @CookieValue("JSESSIONID") String jSessionId) throws Exception {
 
