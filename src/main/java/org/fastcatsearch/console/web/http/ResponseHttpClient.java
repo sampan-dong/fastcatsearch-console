@@ -47,8 +47,8 @@ public class ResponseHttpClient {
     private static Map<String, ClientInfo> clientMap = new ConcurrentHashMap<String, ClientInfo>();
 	private static Timer timer = new Timer();
 	private static TimerTask connectorGC = new TimerTask(){
-		long TIME_LIMIT = 35 * 60 * 1000; //35분
-//		long TIME_LIMIT = 20 * 1000;
+		long TIME_LIMIT = 35 * 60 * 1000; //35분이 지나면 끊는다.
+//		long TIME_LIMIT = 30 * 1000;
 
 		@Override
 		public void run() {
@@ -58,7 +58,7 @@ public class ResponseHttpClient {
 			Iterator<Map.Entry<String, ClientInfo>> iterator = clientMap.entrySet().iterator();
 			while(iterator.hasNext()) {
 				Map.Entry<String, ClientInfo> entry = iterator.next();
-				if (now - entry.getValue().getUpdateTime().getTime() > TIME_LIMIT) {
+				if (now - entry.getValue().getUpdateTime().getTime() >= TIME_LIMIT) {
 					//커넥션을 끊고 제거한다
 					iterator.remove();
 					try {
@@ -73,8 +73,8 @@ public class ResponseHttpClient {
 	};
 
 	static {
-		long period = 5 * 60 * 1000; //5분.
-//		period = 10000;
+		long period = 5 * 60 * 1000; //5분에 한번 확인
+//		long period = 10000;
 		timer.schedule(connectorGC, 1000, period);
 	}
 
